@@ -175,6 +175,7 @@ public class FkEMail
    * FkEMail.checkEMailAdresse( "ABCDEF@GHIJKL"                  ) = 34 = Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
    * FkEMail.checkEMailAdresse( "ABC.DEF@GHI.JKL."               ) = 36 = Trennzeichen: der letzte Punkt darf nicht am Ende liegen
    * FkEMail.checkEMailAdresse( "ABC.DEF@"                       ) = 27 = AT-Zeichen: kein AT-Zeichen am Ende
+   * FkEMail.checkEMailAdresse( "ABC.DEF\@"                      ) = 28 = AT-Zeichen: kein AT-Zeichen gefunden (... da hier das AT-Zeichen maskiert ist)
    * FkEMail.checkEMailAdresse( "ABC.DEF@@GHI.JKL"               ) = 29 = AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
    * FkEMail.checkEMailAdresse( "ABC\@DEF@GHI.JKL"               ) =  0 = eMail-Adresse korrekt (erstes AT-Zeichen im lokal Part wurde maskiert)
    * 
@@ -364,6 +365,8 @@ public class FkEMail
    * - There don't seem to be any perfect libraries or ways to do this yourself ...
    * - Another option is use the Hibernate email validator, using the annotation Email or using the validator class programatically
    * - I agree that the Apache Commons validator works well, but I find it to be quite slow - over 3ms per call. 
+   * - After actually trying to build my project, it seems apache commons doesn't work with Android very well, hundreds of warnings and some errors, it didn't even compile.
+   * - Same problem with me as of Benjiko99. After adding the dependency, the project wont compile, says java.exe finished with non zero exit code 2.
    * - You may also want to check for the length - emails are a maximum of 254 chars long. I use the apache commons validator and it doesn't check for this.
    * - But really what you want is a lexer that properly parses a string and breaks it up into the component structure according to the RFC grammar. 
    *   EmailValidator4J seems promising in that regard, but is still young and limited.
@@ -943,7 +946,7 @@ public class FkEMail
              */
             akt_index--;
           }
-          else if ( aktuelles_zeichen >= '\\' )
+          else if ( aktuelles_zeichen == '\\' )
           {
             /*
              * Maskiertes Zeichen 
@@ -1699,7 +1702,7 @@ public class FkEMail
              */
             akt_index--;
           }
-          else if ( aktuelles_zeichen >= '\\' )
+          else if ( aktuelles_zeichen == '\\' )
           {
             /*
              * Maskiertes Zeichen 
@@ -2046,7 +2049,7 @@ public class FkEMail
     return "Unbekannte Fehlernummer";
   }
 
-  private static void assertIsTrue( String pString )
+  public static void assertIsTrue( String pString )
   {
     int return_code = checkEMailAdresse( pString );
 
@@ -2057,7 +2060,7 @@ public class FkEMail
     System.out.println( "assertIsTrue  " + FkString.getFeldLinksMin( ( pString == null ? "null" : pString ), 50 ) + " = " + ( return_code < 10 ? " " : "" ) + return_code + " = " + ( knz_soll_wert ? "TRUE " : "FALSE" ) + "  " + ( is_true == knz_soll_wert ? " OK " : " #### FEHLER #### " ) );
   }
 
-  private static void assertIsFalse( String pString )
+  public static void assertIsFalse( String pString )
   {
     int return_code = checkEMailAdresse( pString );
 
@@ -2247,4 +2250,5 @@ public class FkEMail
 
     System.exit( 0 );
   }
+
 }
