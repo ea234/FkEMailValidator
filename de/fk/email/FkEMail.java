@@ -2049,7 +2049,10 @@ public class FkEMail
     return "Unbekannte Fehlernummer";
   }
 
-  public static void assertIsTrue( String pString )
+  /**
+   * @param pString der zu pruefende String 
+   */
+  private static void assertIsTrue( String pString )
   {
     int return_code = checkEMailAdresse( pString );
 
@@ -2060,7 +2063,10 @@ public class FkEMail
     System.out.println( "assertIsTrue  " + FkString.getFeldLinksMin( ( pString == null ? "null" : pString ), 50 ) + " = " + ( return_code < 10 ? " " : "" ) + return_code + " = " + ( knz_soll_wert ? "TRUE " : "FALSE" ) + "  " + ( is_true == knz_soll_wert ? " OK " : " #### FEHLER #### " ) );
   }
 
-  public static void assertIsFalse( String pString )
+  /**
+   * @param pString der zu pruefende String 
+   */
+  private static void assertIsFalse( String pString )
   {
     int return_code = checkEMailAdresse( pString );
 
@@ -2107,6 +2113,7 @@ public class FkEMail
       assertIsFalse( "                " );
       assertIsFalse( "ABCDEFGHIJKLMNOP" );
       assertIsFalse( "A" );
+      assertIsFalse( "A.B.C.D" );
       assertIsFalse( "ABC.DEF@GHI.J" );
       assertIsTrue( "ME@MYSELF.LOCALHOST" );
       assertIsFalse( "ME@MYSELF.LOCALHORST" );
@@ -2168,6 +2175,7 @@ public class FkEMail
       assertIsFalse( "ABC.DEF@GHI)JKL" );
       assertIsFalse( ")ABC.DEF@GHI.JKL" );
       assertIsFalse( "ABC.DEF@(GHI).JKL" );
+      assertIsFalse( "ABCDEF(@)GHI.JKL" );
       assertIsFalse( "ABC(DEF@GHI).JKL" );
       assertIsFalse( "(A(B(C)DEF@GHI.JKL" );
       assertIsFalse( "(A)B)C)DEF@GHI.JKL" );
