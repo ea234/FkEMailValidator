@@ -148,8 +148,10 @@ public class FkEMail
    * 
    * Grundlegendes ----------------------------------------------------------------------------------------------------
    * 
-   * FkEMail.checkEMailAdresse( "A@B.CD"                         ) =  0 = eMail-Adresse korrekt
-   * FkEMail.checkEMailAdresse( "ABC1.DEF2@GHI3.JKL4"            ) =  0 = eMail-Adresse korrekt
+   * FkEMail.checkEMailAdresse( "A@B.CD"                         ) =  0 = eMail-Adresse korrekt (Minimal gueltige eMail-Adresslaenge)
+   * FkEMail.checkEMailAdresse( "ABC1.DEF2@GHI3.JKL4"            ) =  0 = eMail-Adresse korrekt 
+   * FkEMail.checkEMailAdresse( "ABC.DEF_@GHI.JKL"               ) =  0 = eMail-Adresse korrekt (Underscore vor AT-Zeichen)
+   * FkEMail.checkEMailAdresse( "#ABC.DEF@GHI.JKL"               ) =  0 = eMail-Adresse korrekt (Beginn mit #)
    * FkEMail.checkEMailAdresse( null                             ) = 10 = Laenge: Eingabe ist null
    * FkEMail.checkEMailAdresse( " "                              ) = 12 = Laenge: Laengenbegrenzungen stimmen nicht
    * FkEMail.checkEMailAdresse( "                "               ) = 22 = Zeichen: ungueltiges Zeichen in der Eingabe gefunden
@@ -168,12 +170,15 @@ public class FkEMail
    * FkEMail.checkEMailAdresse( "A . B & C . D"                  ) = 22 = Zeichen: ungueltiges Zeichen in der Eingabe gefunden
    * FkEMail.checkEMailAdresse( "(?).[!]@{&}.<:>"                ) = 30 = Trennzeichen: kein Beginn mit einem Punkt
    * FkEMail.checkEMailAdresse( ".ABC.DEF@GHI.JKL"               ) = 30 = Trennzeichen: kein Beginn mit einem Punkt
+   * FkEMail.checkEMailAdresse( "ABC..DEF@GHI.JKL"               ) = 31 = Trennzeichen: keine zwei Punkte hintereinander
    * FkEMail.checkEMailAdresse( "ABC.DEF@GHI..JKL"               ) = 31 = Trennzeichen: keine zwei Punkte hintereinander
+   * FkEMail.checkEMailAdresse( "ABC.DEF@GHI.JKL.."              ) = 31 = Trennzeichen: keine zwei Punkte hintereinander
    * FkEMail.checkEMailAdresse( "ABC.DEF.@GHI.JKL"               ) = 32 = Trennzeichen: ungueltige Zeichenkombination ".@"
    * FkEMail.checkEMailAdresse( "ABC.DEF@."                      ) = 33 = Trennzeichen: ungueltige Zeichenkombination "@."
    * FkEMail.checkEMailAdresse( "ABC.DEF@.GHI.JKL"               ) = 33 = Trennzeichen: ungueltige Zeichenkombination "@."
    * FkEMail.checkEMailAdresse( "ABCDEF@GHIJKL"                  ) = 34 = Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
    * FkEMail.checkEMailAdresse( "ABC.DEF@GHI.JKL."               ) = 36 = Trennzeichen: der letzte Punkt darf nicht am Ende liegen
+   * FkEMail.checkEMailAdresse( "@GHI.JKL"                       ) = 26 = AT-Zeichen: kein AT-Zeichen am Anfang
    * FkEMail.checkEMailAdresse( "ABC.DEF@"                       ) = 27 = AT-Zeichen: kein AT-Zeichen am Ende
    * FkEMail.checkEMailAdresse( "ABC.DEF\@"                      ) = 28 = AT-Zeichen: kein AT-Zeichen gefunden (... da hier das AT-Zeichen maskiert ist)
    * FkEMail.checkEMailAdresse( "ABC.DEF@@GHI.JKL"               ) = 29 = AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
@@ -271,15 +276,15 @@ public class FkEMail
    *                                                                      Eine IPv6 Adresse muss mit einem grossem "I" eingeleitet werden
    *                                                                      Es wurde hier keine IPv6-Adresse erkannt, daher wird versucht eine IPv4-Adresse zu lesen.
    *  
-   * FkEMail.checkEMailAdresse( "ABC@[IPv6:1:2:3::5:6:7:8]"      ) =  4 = eMail-Adresse korrekt (IP6-Adresse)
-   * FkEMail.checkEMailAdresse( "ABC@[IPv6:1:2:3::5::7:8]"       ) = 50 = IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
-   * FkEMail.checkEMailAdresse( "ABC@[IPv6::ffff:.127.0.0.1]"    ) = 55 = IP4-Adressteil: keine Ziffern vorhanden
-   * FkEMail.checkEMailAdresse( "ABC@[IPv6::FFFF:127.0.0.1]"     ) =  4 = eMail-Adresse korrekt (IP6-Adresse)
-   * FkEMail.checkEMailAdresse( "ABC@[IPv6::ffff:127.0.0.1]"     ) =  4 = eMail-Adresse korrekt (IP6-Adresse)
-   * FkEMail.checkEMailAdresse( "ABC@[IPv6::fff:127.0.0.1]"      ) = 62 = IP6-Adressteil: IPv4 in IPv6 - falsche Angabe der IP4-Einbettung (Zeichenfolge 'ffff' erwartet)
-   * FkEMail.checkEMailAdresse( "ABC@[IPv6::1234:127.0.0.1]"     ) = 62 = IP6-Adressteil: IPv4 in IPv6 - falsche Angabe der IP4-Einbettung (Zeichenfolge 'ffff' erwartet)
-   * FkEMail.checkEMailAdresse( "ABC@[IPv6:127.0.0.1]"           ) = 47 = IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
-   * FkEMail.checkEMailAdresse( "ABC@[IPv6:::127.0.0.1]"         ) = 62 = IP6-Adressteil: IPv4 in IPv6 - falsche Angabe der IP4-Einbettung (Zeichenfolge 'ffff' erwartet)
+   * FkEMail.checkEMailAdresse( "ABC.DEF@[IPv6:1:2:3::5:6:7:8]"  ) =  4 = eMail-Adresse korrekt (IP6-Adresse)
+   * FkEMail.checkEMailAdresse( "ABC.DEF@[IPv6:1:2:3::5::7:8]"   ) = 50 = IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
+   * FkEMail.checkEMailAdresse( "ABC.DEF@[IPv6::ffff:.127.0.1]"  ) = 55 = IP4-Adressteil: keine Ziffern vorhanden (erste Ziffer IPv4-Adresse fehlt)
+   * FkEMail.checkEMailAdresse( "ABC.DEF@[IPv6::FFFF:127.0.0.1]" ) =  4 = eMail-Adresse korrekt (IP6-Adresse)
+   * FkEMail.checkEMailAdresse( "ABC.DEF@[IPv6::ffff:127.0.0.1]" ) =  4 = eMail-Adresse korrekt (IP6-Adresse)
+   * FkEMail.checkEMailAdresse( "ABC.DEF@[IPv6::fff:127.0.0.1]"  ) = 62 = IP6-Adressteil: IPv4 in IPv6 - falsche Angabe der IP4-Einbettung (Zeichenfolge 'ffff' erwartet)
+   * FkEMail.checkEMailAdresse( "ABC.DEF@[IPv6::1234:127.0.0.1]" ) = 62 = IP6-Adressteil: IPv4 in IPv6 - falsche Angabe der IP4-Einbettung (Zeichenfolge 'ffff' erwartet)
+   * FkEMail.checkEMailAdresse( "ABC.DEF@[IPv6:127.0.0.1]"       ) = 47 = IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
+   * FkEMail.checkEMailAdresse( "ABC.DEF@[IPv6:::127.0.0.1]"     ) = 62 = IP6-Adressteil: IPv4 in IPv6 - falsche Angabe der IP4-Einbettung (Zeichenfolge 'ffff' erwartet)
    *
    * FkEMail.checkEMailAdresse( "ABC.DEF@[1.2.3.4]"              ) =  2 = eMail-Adresse korrekt (IP4-Adresse)
    * FkEMail.checkEMailAdresse( "ABC.DEF@[1.2.3.Z]"              ) = 59 = IP4-Adressteil: Falsches Zeichen in der IP-Adresse
@@ -290,14 +295,14 @@ public class FkEMail
    * FkEMail.checkEMailAdresse( "ABC.DEF@[1234.5.6.7]"           ) = 53 = IP4-Adressteil: zu viele Ziffern, maximal 3 Ziffern
    * FkEMail.checkEMailAdresse( "ABC.DEF@[1.2...3.4]"            ) = 55 = IP4-Adressteil: keine Ziffern vorhanden
    * 
-   * FkEMail.checkEMailAdresse( "ABC@[IPv6:1:2:3:4:5:6]"         ) =  4 = eMail-Adresse korrekt (IP6-Adresse)
-   * FkEMail.checkEMailAdresse( "ABC@[IPv6:1:2:3:4:5:Z]"         ) = 49 = IP6-Adressteil: Falsches Zeichen in der IP-Adresse
-   * FkEMail.checkEMailAdresse( "ABC@[IPv6:12:34]"               ) = 43 = IP6-Adressteil: Zu wenig Trennzeichen
-   * FkEMail.checkEMailAdresse( "ABC@[IPv6:1:2:3:4:5:]"          ) = 44 = IP6-Adressteil: ungueltige Kombination ":]"
-   * FkEMail.checkEMailAdresse( "ABC@[IPv6:1:2:3:4:5:6] "        ) = 45 = IP6-Adressteil: Abschlusszeichen "]" muss am Ende stehen
-   * FkEMail.checkEMailAdresse( "ABC@[IPv6:1:2:3:4:5:6"          ) = 61 = IP-Adressteil: Kein Abschluss der IP-Adresse auf ']'
-   * FkEMail.checkEMailAdresse( "ABC@[IPv6:12345:6:7:8:9]"       ) = 46 = IP6-Adressteil: zu viele Ziffern, maximal 4 Ziffern
-   * FkEMail.checkEMailAdresse( "ABC@[IPv6:1:2:3:::6:7:8]"       ) = 50 = IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
+   * FkEMail.checkEMailAdresse( "ABC.DEF@[IPv6:1:2:3:4:5:6]"     ) =  4 = eMail-Adresse korrekt (IP6-Adresse)
+   * FkEMail.checkEMailAdresse( "ABC.DEF@[IPv6:1:2:3:4:5:Z]"     ) = 49 = IP6-Adressteil: Falsches Zeichen in der IP-Adresse
+   * FkEMail.checkEMailAdresse( "ABC.DEF@[IPv6:12:34]"           ) = 43 = IP6-Adressteil: Zu wenig Trennzeichen
+   * FkEMail.checkEMailAdresse( "ABC.DEF@[IPv6:1:2:3:4:5:]"      ) = 44 = IP6-Adressteil: ungueltige Kombination ":]"
+   * FkEMail.checkEMailAdresse( "ABC.DEF@[IPv6:1:2:3:4:5:6] "    ) = 45 = IP6-Adressteil: Abschlusszeichen "]" muss am Ende stehen
+   * FkEMail.checkEMailAdresse( "ABC.DEF@[IPv6:1:2:3:4:5:6"      ) = 61 = IP-Adressteil: Kein Abschluss der IP-Adresse auf ']'
+   * FkEMail.checkEMailAdresse( "ABC.DEF@[IPv6:12345:6:7:8:9]"   ) = 46 = IP6-Adressteil: zu viele Ziffern, maximal 4 Ziffern
+   * FkEMail.checkEMailAdresse( "ABC.DEF@[IPv6:1:2:3:::6:7:8]"   ) = 50 = IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
    * 
    * 
    * Kommentare -------------------------------------------------------------------------------------------------------
@@ -605,7 +610,9 @@ public class FkEMail
       /*
        * Bedingungen Zeichen A-Z, a-z und Zahlen
        */
-      if ( ( ( aktuelles_zeichen >= 'a' ) && ( aktuelles_zeichen <= 'z' ) ) || ( ( aktuelles_zeichen >= 'A' ) && ( aktuelles_zeichen <= 'Z' ) ) || ( ( aktuelles_zeichen >= '0' ) && ( aktuelles_zeichen <= '9' ) ) )
+      if ( ( ( aktuelles_zeichen >= 'a' ) && ( aktuelles_zeichen <= 'z' ) ) || 
+           ( ( aktuelles_zeichen >= 'A' ) && ( aktuelles_zeichen <= 'Z' ) ) || 
+           ( ( aktuelles_zeichen >= '0' ) && ( aktuelles_zeichen <= '9' ) ) )
       {
         /*
          * Buchstaben ("A" bis "Z" und "a" bis "z") und Zahlen duerfen an jeder Stelle der eMail-Adresse vorkommen.
@@ -799,7 +806,11 @@ public class FkEMail
           return 84; // String: Ungueltige Escape-Sequenz im String
         }
       }
-      else if ( ( aktuelles_zeichen == '!' ) || ( aktuelles_zeichen == '#' ) || ( aktuelles_zeichen == '$' ) || ( aktuelles_zeichen == '%' ) || ( aktuelles_zeichen == '&' ) || ( aktuelles_zeichen == '\'' ) || ( aktuelles_zeichen == '*' ) || ( aktuelles_zeichen == '+' ) || ( aktuelles_zeichen == '-' ) || ( aktuelles_zeichen == '/' ) || ( aktuelles_zeichen == '=' ) || ( aktuelles_zeichen == '?' ) || ( aktuelles_zeichen == '^' ) || ( aktuelles_zeichen == '`' ) || ( aktuelles_zeichen == '{' ) || ( aktuelles_zeichen == '|' ) || ( aktuelles_zeichen == '}' ) || ( aktuelles_zeichen == '~' ) )
+      else if ( ( aktuelles_zeichen == '!' ) || ( aktuelles_zeichen == '#' )  || ( aktuelles_zeichen == '$' ) || ( aktuelles_zeichen == '%' ) || 
+                ( aktuelles_zeichen == '&' ) || ( aktuelles_zeichen == '\'' ) || ( aktuelles_zeichen == '*' ) || ( aktuelles_zeichen == '+' ) || 
+                ( aktuelles_zeichen == '-' ) || ( aktuelles_zeichen == '/' )  || ( aktuelles_zeichen == '=' ) || ( aktuelles_zeichen == '?' ) ||
+                ( aktuelles_zeichen == '^' ) || ( aktuelles_zeichen == '`' )  || ( aktuelles_zeichen == '{' ) || ( aktuelles_zeichen == '|' ) || 
+                ( aktuelles_zeichen == '}' ) || ( aktuelles_zeichen == '~' ) )
       {
         /*
          *   asc("!") = 033   asc("*") = 042 
@@ -926,7 +937,12 @@ public class FkEMail
           {
             // OK - Zahlen
           }
-          else if ( ( aktuelles_zeichen == '_' ) || ( aktuelles_zeichen == '-' ) || ( aktuelles_zeichen == '@' ) || ( aktuelles_zeichen == '.' ) || ( aktuelles_zeichen == ' ' ) || ( aktuelles_zeichen == '!' ) || ( aktuelles_zeichen == '#' ) || ( aktuelles_zeichen == '$' ) || ( aktuelles_zeichen == '%' ) || ( aktuelles_zeichen == '&' ) || ( aktuelles_zeichen == '\'' ) || ( aktuelles_zeichen == '*' ) || ( aktuelles_zeichen == '+' ) || ( aktuelles_zeichen == '-' ) || ( aktuelles_zeichen == '/' ) || ( aktuelles_zeichen == '=' ) || ( aktuelles_zeichen == '?' ) || ( aktuelles_zeichen == '^' ) || ( aktuelles_zeichen == '`' ) || ( aktuelles_zeichen == '{' ) || ( aktuelles_zeichen == '|' ) || ( aktuelles_zeichen == '}' ) || ( aktuelles_zeichen == '~' ) )
+          else if ( ( aktuelles_zeichen == '_' ) || ( aktuelles_zeichen == '-' ) || ( aktuelles_zeichen == '@' )  || ( aktuelles_zeichen == '.' ) || 
+                    ( aktuelles_zeichen == ' ' ) || ( aktuelles_zeichen == '!' ) || ( aktuelles_zeichen == '#' )  || ( aktuelles_zeichen == '$' ) ||
+                    ( aktuelles_zeichen == '%' ) || ( aktuelles_zeichen == '&' ) || ( aktuelles_zeichen == '\'' ) || ( aktuelles_zeichen == '*' ) ||
+                    ( aktuelles_zeichen == '+' ) || ( aktuelles_zeichen == '-' ) || ( aktuelles_zeichen == '/' )  || ( aktuelles_zeichen == '=' ) ||
+                    ( aktuelles_zeichen == '?' ) || ( aktuelles_zeichen == '^' ) || ( aktuelles_zeichen == '`' )  || ( aktuelles_zeichen == '{' ) ||
+                    ( aktuelles_zeichen == '|' ) || ( aktuelles_zeichen == '}' ) || ( aktuelles_zeichen == '~' ) )
           {
             // OK - Sonderzeichen
           }
@@ -1236,11 +1252,15 @@ public class FkEMail
               /*
                * IPv4 Adressangabe
                * Wird innerhalb der IPv6-Adresse eine IPv4-Adresse angegeben, wird 
-               * dieses durch einen Punkt erkannt. 
+               * dieses durch einen Punkt erkannt.  
                * 
-               * Der Leseprozess wird auf das letzte Trennzeichen gesetzt.
-               * Die IPv4-Adresse wird vom IP4-Adressparser geprueft.
-               * Die erste Angabeder IPv4-Adresse wird demnach doppelt gelesen. 
+               * Der Leseprozess wird in die Erkennungsroutine fuer die IPv4-Adresse umgelenkt.
+               * 
+               * Die erste Zahl der IPv4-Adresse muss nochmal gelesen werden, damit die 
+               * IPv4-Erkennungsroutine korrekt pruefen kann. Dazu wird der Leseprozessindex 
+               * auf die Position des letzten Trennzeichens zurueckgesetzt.
+               * 
+               * Die erste Angabe der IPv4-Adresse wird doppelt gelesen. 
                */
 
               /*
@@ -1285,7 +1305,7 @@ public class FkEMail
               {
                 if ( ( pEingabe.charAt( akt_index - 1 ) == 'F' ) && ( pEingabe.charAt( akt_index - 2 ) == 'F' ) && ( pEingabe.charAt( akt_index - 3 ) == 'F' ) && ( pEingabe.charAt( akt_index - 4 ) == 'F' ) )
                 {
-                  // OK - FFFF gefunden
+                  // OK - FFFF gefunden - Wobei die Frage offen bleibt, ob die Grossschreibung hier so in Ordnung ist. 
                 }
                 else
                 {
@@ -1367,7 +1387,7 @@ public class FkEMail
             else if ( aktuelles_zeichen == ']' )
             {
               /*
-               * Abschlusszeichen "]"
+               * IP6-Adressteil - Abschlusszeichen "]" 
                */
 
               if ( ip_adresse_zaehler_trennzeichen == 0 )
@@ -1531,7 +1551,7 @@ public class FkEMail
             else if ( aktuelles_zeichen == ']' )
             {
               /*
-               * Abschlusszeichen "]"
+               * IP4-Adressteil - Abschlusszeichen "]"
                */
 
               /*
@@ -1587,8 +1607,8 @@ public class FkEMail
          * Pruefung: Abschluss mit ']' ?
          * 
          * Ist die IP-Adressangabe korrekt, steht nach der While-Schleife das abschliessende 
-         * Zeichen ']' in der Variablen "aktuelles_zeichen". Ist es ein anderes Zeichen, wird 
-         * der Fehler 61 zurueckgebeben. 
+         * Zeichen ']' in der Variablen "aktuelles_zeichen". Ist in der Variablen ein anderes 
+         * Zeichen vorhanden, wird der Fehler 61 zurueckgebeben. 
          */
         if ( aktuelles_zeichen != ']' )
         {
@@ -1680,7 +1700,12 @@ public class FkEMail
           {
             // OK - Zahlen
           }
-          else if ( ( aktuelles_zeichen == '_' ) || ( aktuelles_zeichen == '-' ) || ( aktuelles_zeichen == '@' ) || ( aktuelles_zeichen == '.' ) || ( aktuelles_zeichen == ' ' ) || ( aktuelles_zeichen == '!' ) || ( aktuelles_zeichen == '#' ) || ( aktuelles_zeichen == '$' ) || ( aktuelles_zeichen == '%' ) || ( aktuelles_zeichen == '&' ) || ( aktuelles_zeichen == '\'' ) || ( aktuelles_zeichen == '*' ) || ( aktuelles_zeichen == '+' ) || ( aktuelles_zeichen == '-' ) || ( aktuelles_zeichen == '/' ) || ( aktuelles_zeichen == '=' ) || ( aktuelles_zeichen == '?' ) || ( aktuelles_zeichen == '^' ) || ( aktuelles_zeichen == '`' ) || ( aktuelles_zeichen == '{' ) || ( aktuelles_zeichen == '|' ) || ( aktuelles_zeichen == '}' ) || ( aktuelles_zeichen == '~' ) )
+          else if ( ( aktuelles_zeichen == '_' ) || ( aktuelles_zeichen == '-' ) || ( aktuelles_zeichen == '@' )  || ( aktuelles_zeichen == '.' ) || 
+                    ( aktuelles_zeichen == ' ' ) || ( aktuelles_zeichen == '!' ) || ( aktuelles_zeichen == '#' )  || ( aktuelles_zeichen == '$' ) || 
+                    ( aktuelles_zeichen == '%' ) || ( aktuelles_zeichen == '&' ) || ( aktuelles_zeichen == '\'' ) || ( aktuelles_zeichen == '*' ) || 
+                    ( aktuelles_zeichen == '+' ) || ( aktuelles_zeichen == '-' ) || ( aktuelles_zeichen == '/' )  || ( aktuelles_zeichen == '=' ) || 
+                    ( aktuelles_zeichen == '?' ) || ( aktuelles_zeichen == '^' ) || ( aktuelles_zeichen == '`' )  || ( aktuelles_zeichen == '{' ) || 
+                    ( aktuelles_zeichen == '|' ) || ( aktuelles_zeichen == '}' ) || ( aktuelles_zeichen == '~' ) )
           {
             // OK - Sonderzeichen
           }
@@ -1963,17 +1988,17 @@ public class FkEMail
    */
   public static String getFehlerText( int pFehlerNr )
   {
-    if ( pFehlerNr == 0 ) return "eMail-Adresse korrekt";
-    if ( pFehlerNr == 1 ) return "eMail-Adresse korrekt (Local Part mit String)";
-    if ( pFehlerNr == 2 ) return "eMail-Adresse korrekt (IP4-Adresse)";
-    if ( pFehlerNr == 3 ) return "eMail-Adresse korrekt (Local Part mit String und IP4-Adresse)";
-    if ( pFehlerNr == 4 ) return "eMail-Adresse korrekt (IP6-Adresse)";
-    if ( pFehlerNr == 5 ) return "eMail-Adresse korrekt (Local Part mit String und IP6-Adresse)";
+    if ( pFehlerNr ==  0 ) return "eMail-Adresse korrekt";
+    if ( pFehlerNr ==  1 ) return "eMail-Adresse korrekt (Local Part mit String)";
+    if ( pFehlerNr ==  2 ) return "eMail-Adresse korrekt (IP4-Adresse)";
+    if ( pFehlerNr ==  3 ) return "eMail-Adresse korrekt (Local Part mit String und IP4-Adresse)";
+    if ( pFehlerNr ==  4 ) return "eMail-Adresse korrekt (IP6-Adresse)";
+    if ( pFehlerNr ==  5 ) return "eMail-Adresse korrekt (Local Part mit String und IP6-Adresse)";
 
-    if ( pFehlerNr == 6 ) return "eMail-Adresse korrekt (Kommentar)";
-    if ( pFehlerNr == 7 ) return "eMail-Adresse korrekt (Kommentar, String)";
-    if ( pFehlerNr == 8 ) return "eMail-Adresse korrekt (Kommentar, String, IP4-Adresse)";
-    if ( pFehlerNr == 9 ) return "eMail-Adresse korrekt (Kommentar, String, IP6-Adresse)";
+    if ( pFehlerNr ==  6 ) return "eMail-Adresse korrekt (Kommentar)";
+    if ( pFehlerNr ==  7 ) return "eMail-Adresse korrekt (Kommentar, String)";
+    if ( pFehlerNr ==  8 ) return "eMail-Adresse korrekt (Kommentar, String, IP4-Adresse)";
+    if ( pFehlerNr ==  9 ) return "eMail-Adresse korrekt (Kommentar, String, IP6-Adresse)";
 
     if ( pFehlerNr == 10 ) return "Laenge: Eingabe ist null";
     if ( pFehlerNr == 11 ) return "Laenge: Eingabe ist Leerstring";
@@ -2046,13 +2071,10 @@ public class FkEMail
     if ( pFehlerNr == 98 ) return "Kommentar: Kein lokaler Part vorhanden";
     if ( pFehlerNr == 99 ) return "Kommentar: kein zweiter Kommentar gueltig";
 
-    return "Unbekannte Fehlernummer";
+    return "Unbekannte Fehlernummer " + pFehlerNr;
   }
 
-  /**
-   * @param pString der zu pruefende String 
-   */
-  private static void assertIsTrue( String pString )
+  public static void assertIsTrue( String pString )
   {
     int return_code = checkEMailAdresse( pString );
 
@@ -2063,10 +2085,7 @@ public class FkEMail
     System.out.println( "assertIsTrue  " + FkString.getFeldLinksMin( ( pString == null ? "null" : pString ), 50 ) + " = " + ( return_code < 10 ? " " : "" ) + return_code + " = " + ( knz_soll_wert ? "TRUE " : "FALSE" ) + "  " + ( is_true == knz_soll_wert ? " OK " : " #### FEHLER #### " ) );
   }
 
-  /**
-   * @param pString der zu pruefende String 
-   */
-  private static void assertIsFalse( String pString )
+  public static void assertIsFalse( String pString )
   {
     int return_code = checkEMailAdresse( pString );
 
@@ -2113,7 +2132,6 @@ public class FkEMail
       assertIsFalse( "                " );
       assertIsFalse( "ABCDEFGHIJKLMNOP" );
       assertIsFalse( "A" );
-      assertIsFalse( "A.B.C.D" );
       assertIsFalse( "ABC.DEF@GHI.J" );
       assertIsTrue( "ME@MYSELF.LOCALHOST" );
       assertIsFalse( "ME@MYSELF.LOCALHORST" );
@@ -2175,7 +2193,6 @@ public class FkEMail
       assertIsFalse( "ABC.DEF@GHI)JKL" );
       assertIsFalse( ")ABC.DEF@GHI.JKL" );
       assertIsFalse( "ABC.DEF@(GHI).JKL" );
-      assertIsFalse( "ABCDEF(@)GHI.JKL" );
       assertIsFalse( "ABC(DEF@GHI).JKL" );
       assertIsFalse( "(A(B(C)DEF@GHI.JKL" );
       assertIsFalse( "(A)B)C)DEF@GHI.JKL" );
@@ -2260,3 +2277,4 @@ public class FkEMail
   }
 
 }
+

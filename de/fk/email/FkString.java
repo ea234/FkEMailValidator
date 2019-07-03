@@ -30,7 +30,7 @@ class FkString
    * 
    * Ist der Parameeter "pZeichen" gleich null, wird ein Leerstring zurueckgegeben.
    * </pre>
-   * 
+   *  
    * @param pAnzahlStellen die Laenge
    * @param pZeichen das zu wiederholende Zeichen
    * @return einen String der angegebenen Laenge mit dem uebergebenen Zeichen
