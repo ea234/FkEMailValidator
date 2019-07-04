@@ -326,16 +326,56 @@ public class FkEMail
    * FkEMail.checkEMailAdresse( "(A(B(C)DEF@GHI.JKL"             ) = 92 = Kommentar: Ungueltiges Zeichen im Kommentar
    * FkEMail.checkEMailAdresse( "(A)B)C)DEF@GHI.JKL"             ) = 22 = Zeichen: ungueltiges Zeichen in der Eingabe gefunden
    * FkEMail.checkEMailAdresse( "(A)BCDE(F)@GHI.JKL"             ) = 99 = Kommentar: kein zweiter Kommentar gueltig
+   *
+   *
+   * eMail-Adressen mit eckigen Klammern ------------------------------------------------------------------------------
+   * 
+   * FkEMail.checkEMailAdresse( "ABC DEF <ABC.DEF@GHI.JKL>"      ) =  0 = eMail-Adresse korrekt
+   * FkEMail.checkEMailAdresse( "<ABC.DEF@GHI.JKL> ABC DEF"      ) =  0 = eMail-Adresse korrekt
+   * 
+   * FkEMail.checkEMailAdresse( "ABC DEF ABC.DEF@GHI.JKL>"       ) = 16 = Struktur: keine oeffnende eckige Klammer gefunden.
+   * FkEMail.checkEMailAdresse( "<ABC.DEF@GHI.JKL ABC DEF"       ) = 17 = Struktur: keine schliessende eckige Klammer gefunden.
+   * FkEMail.checkEMailAdresse( ""ABC DEF "<ABC.DEF@GHI.JKL>"    ) = 18 = Struktur: Fehler in Adress-String-X
+   * FkEMail.checkEMailAdresse( ">"                              ) = 16 = Struktur: keine oeffnende eckige Klammer gefunden.
+   *
+   * Mehr eckige Klammern als erwartet:
+   * 
+   * FkEMail.checkEMailAdresse( ""ABC<DEF>"@JKL.DE"              ) = 89 = String: Ungueltiges Zeichen innerhalb Anfuehrungszeichen
+   * FkEMail.checkEMailAdresse( ""ABC<DEF@GHI.COM>"@JKL.DE"      ) = 89 = String: Ungueltiges Zeichen innerhalb Anfuehrungszeichen
+   * FkEMail.checkEMailAdresse( "ABC DEF <ABC.<DEF@GHI.JKL>"     ) = 18 = Struktur: Fehler in Adress-String-X
+   * 
+   * FkEMail.checkEMailAdresse( "<ABC.DEF@GHI.JKL> MNO <PQR.STU@VW.XYZ>" ) = 18 = Struktur: Fehler in Adress-String-X 
+   *
+   *
+   * Wird keine oeffnende oder schliessende eckige Klammer gefunden, wird der Rest  
+   * der Eingabe nicht nach einer eckigen Klammer durchsucht. In diesem Fall die 
+   * bereits vorhandene Fehlernummer 22 zurueckgegeben. 
+   * 
+   * FkEMail.checkEMailAdresse( "ABC DEF <ABC.DEF@GHI.JKL"       ) = 22 = Zeichen: ungueltiges Zeichen in der Eingabe gefunden 
+   * FkEMail.checkEMailAdresse( "ABC.DEF@GHI.JKL> ABC DEF"       ) = 22 = Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+   *
+   * FkEMail.checkEMailAdresse( "ABC DEF >ABC.DEF@GHI.JKL<"      ) = 22 = Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+   * FkEMail.checkEMailAdresse( ">ABC.DEF@GHI.JKL< ABC DEF"      ) = 22 = Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+   * 
+   * eMail-Adresse in eckigen Klammern zu kurz:
+   *  
+   * FkEMail.checkEMailAdresse( "ABC DEF <A@A>"                  ) = 12 = Laenge: Laengenbegrenzungen stimmen nicht
+   * FkEMail.checkEMailAdresse( "<A@A> ABC DEF"                  ) = 12 = Laenge: Laengenbegrenzungen stimmen nicht
+   *
+   * FkEMail.checkEMailAdresse( "ABC DEF <>"                     ) = 12 = Laenge: Laengenbegrenzungen stimmen nicht
+   * FkEMail.checkEMailAdresse( "<> ABC DEF"                     ) = 12 = Laenge: Laengenbegrenzungen stimmen nicht
+   *
+   * Die gesamte Eingabe ohne spitzen Klammern darf 255 Zeichen nicht ueberschreiten.
+   * 
    * 
    * Korrekte eMail-Adressen, welche nicht erkannt werden -------------------------------------------------------------
    * 
-   * FkEMail.checkEMailAdresse( "ABC DEF <ABC.DEF@GHJ.com>" ) = 29 = Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-   * 
-   *                                                          Vorgeschaltete While-Schleife um die eMail-Adresse in spitzen Klammern zu suchen
-   *                                                          Hauptroutine so umstellen, dass es einen Index-Von und einen Index-Bis gibt.
-   *                                                          Andere Zeichen ausserhalb der spitzen Klammern seperat pruefen                                                           
-   * 
    * FkEMail.checkEMailAdresse( "ABC@localhost"             ) = 34 = Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
+   * FkEMail.checkEMailAdresse( "ABC.DEF@localhost"         ) = 35 = Trennzeichen: der letzte Punkt muss nach dem AT-Zeichen liegen
+   * 
+   *                                                          ALTERNATIV: Fehler 34 und Fehler 35 spezifizieren genau diesen FALL.
+   *                                                                      Diese Fehlernummern koennen als korrekt akzeptiert werden, wenn
+   *                                                                      solche eMail-Adressangaben zugelassen werden sollen
    * 
    * nicht geklaert ---------------------------------------------------------------------------------------------------
    *
@@ -353,6 +393,9 @@ public class FkEMail
    *                                                       (sonst gibt es einen "... .... .. -"@storm.de)
    * 
    * FkEMail.checkEMailAdresse( "(A(B(C)DEF@GHI.JKL"  ) In einem Kommentar auch oeffnende Klammer '(' zulassen ?
+   * 
+   * "<ABC.DEF@GHI.JKL>"         = korrekte eMail-Adressangabe ?
+   * "<ABC.DEF@GHI.JKL> ABC DEF" = korrekte eMail-Adressangabe ? (... das die Klammern am Start des Strings kommen)
    * 
    * ------------------------------------------------------------------------------------------------------------------
    * 
@@ -377,7 +420,6 @@ public class FkEMail
    *   EmailValidator4J seems promising in that regard, but is still young and limited.
    *
    * https://www.regular-expressions.info/email.html
-   *
    * https://de.wikipedia.org/wiki/Top-Level-Domain
    * https://stackoverflow.com/questions/2049502/what-characters-are-allowed-in-an-email-address?rq=1
    * https://tools.ietf.org/id/draft-ietf-behave-address-format-10.html
@@ -391,7 +433,18 @@ public class FkEMail
     /*
      * Grober Ablaufplan:
      * 
-     * Laengenpruefungen
+     * Laengenpruefungen 1 - Eingabe gesamt 
+     * 
+     * Ende auf '>'
+     *    JA = suche '<'
+     * 
+     * Start auf '<'
+     *    JA = suche '>'
+     *    
+     * Eckige Klamern vorhanden?
+     *    JA = Pruefe den nicht eMail-String
+     * 
+     * Laengenprufungen 2 - eMail-Adresse
      * 
      * While-Schleife 1
      * 
@@ -479,7 +532,259 @@ public class FkEMail
       return 11; // Laenge: Eingabe ist Leerstring
     }
 
+    /*
+     * Laenge Eingabestring
+     * Die Variable "laenge_eingabe_string" bezeichnete in der ersten Version 
+     * die tatsaechliche Laenge des Eingabestrings. Durch den Einbau der Pruefroutine
+     * fuer eckige Klammern, kann der Inhalt aber auch die Bedeutung einer 
+     * Positonsangabe haben. 
+     */
     int laenge_eingabe_string = pEingabe.length();
+
+    /*
+     * Generell darf die Eingabe nicht laenger als 255 Zeichen sein.
+     * Die Pruefung auf die minimale Laenge der eMail-Adresse folgt weiter unten.
+     */
+    if ( laenge_eingabe_string > 255 )
+    {
+      return 12;
+    }
+
+    /*
+     * Position AT-Zeichen
+     * Initialwert -1 steht fuer "kein AT-Zeichen gefunden"
+     */
+    int position_at_zeichen = -1;
+
+    /*
+     * Merker "letzte Position eines Punktes"
+     * Initialwert -1 steht fuer "keinen Punkt gefunden"
+     */
+    int position_letzter_punkt = -1;
+
+    /*
+     * Speichert die Position des zuletzt gefundenen Anfuehrungszeichens. 
+     * Start- oder Endzeichen. 
+     */
+    int position_anf_zeichen_akt = -1;
+
+    /*
+     * Speichert die Position der letzten geschlossenen Klammer ')' eines gueltigen Kommentares. 
+     */
+    int position_kommentar_ende = -1;
+
+    /*
+     * Zaehler fuer Zeichen zwischen zwei Trennzeichen.
+     * Die Trennzeichen sind Punkt und AT-Zeichen
+     */
+    int zeichen_zaehler = 0;
+
+    /*
+     * Start Leseposition
+     * Die Startposition fuer die While-Schleife ist hier 0. Das ist
+     * das erste Zeichen der Eingabe. 
+     * 
+     * Bei eMail-Adressen in spitzen Klammern ist die Startposition 
+     * immer die Position nach der oeffnenden eckigen Klammer.
+     */
+    int akt_index = 0;
+
+    char aktuelles_zeichen = ' ';
+
+    /*
+     * Pruefung: Eckige Klammern
+     * 
+     * Rudimentaer eingebaut
+     *  
+     * ABC DEF <ABC.DEF@GHI.JKL>
+     * 
+     * <ABC.DEF@GHI.JKL> ABC DEF
+     * 
+     * Startet die eMail-Adresse mit einer oeffnenden eckigen Klammer, wird 
+     * eine schliessende eckige Klammmer gesucht. Von vorne nach hinten.
+     * 
+     * Ende die eMail-Adresse mit einer schliessenden eckigen Klammer, wird 
+     * eine oeffnende eckige Klammer gesucht. Von hinten nach vorne.
+     * 
+     * Wird keine korrospondierende Klammer gefunden, wird die Funktion 
+     * mit einem Fehlercode (16 oder 17) beendet.
+     * 
+     * Wird die korrospondierende Klammer gefunden, wird die Start- und 
+     * Endposition fuer die eigentliche Pruefroutine auf die in den 
+     * eckigen Klammern enthaltende eMail-Adresse beschraenkt.
+     * 
+     * Der String ausserhalb der eckigen Klammern wird durch eine eigene 
+     * While-Schleife geprueft. Hierzu werden vorhandene Variablen 
+     * zweckentfremded um nicht mehr Variablen deklarieren zu muessen. 
+     * Sind die Zeichen in dem nicht eMail-String OK, werden diese 
+     * Variablen wieder auf deren Initialwert von -1 gesetzt. 
+     * 
+     * Ist im nicht eMail-String ein ungueltiges Zeichen vorhanden, wird 
+     * der Fehler 18 zurueckgegeben. 
+     */
+
+    aktuelles_zeichen = pEingabe.charAt( laenge_eingabe_string - 1 );
+
+    if ( aktuelles_zeichen == '>' )
+    {
+      /*
+       * Das letzte Zeichen ist in diesem Fall eine schliessende eckige Klammer.
+       *  
+       * Dieses Zeichen darf von der unten stehende while-Schleife nicht 
+       * geprueft werden, da ansonsten ein ungueltiges Zeichen erkannt 
+       * werden wuerde.
+       * 
+       * Es wird die BIS-Poisition fuer die eMail-Adress-Pruefschleife um 
+       * ein Zeichen vermindert. 
+       */
+      laenge_eingabe_string--;
+
+      /*
+       * In einer While-Schleife wird die oefnende eckige Klammer gesucht.
+       * Es wird von hinten nach vorne gesucht.
+       */
+      akt_index = laenge_eingabe_string;
+
+      while ( ( akt_index > 0 ) && ( aktuelles_zeichen != '<' ) )
+      {
+        akt_index--;
+
+        aktuelles_zeichen = pEingabe.charAt( akt_index );
+      }
+
+      /*
+       * Ist das letzte Zeichen eine schliessende eckige Klammer, muss es eine 
+       * eckige startende Klammer geben. 
+       * 
+       * Nach der While-Schleife muss in der Variablen "aktuelles_zeichen"
+       * die oeffnede eckige Klammer enthalten sein. 
+       * 
+       * Ist es ein anderes Zeichen, stimmt die Struktur nicht.
+       */
+      if ( aktuelles_zeichen != '<' )
+      {
+        return 16; // Struktur: keine oeffnende eckige Klammer gefunden. 
+      }
+
+      /*
+       * Bestimmung der Positionen, des seperat zu pruefenden "nicht eMail-Adress-Strings"
+       */
+      position_letzter_punkt = 0;
+      position_kommentar_ende = akt_index;
+
+      /*
+       * Der aktuelle Index steht nun auf der Position der oeffnenden eckigen Klammer. 
+       * Das dortige Zeichen wurde geprueft und ist OK, daher wird der Leseprozess 
+       * um ein Zeichen weiter gestellt. (Ausserdem Fehlervermeidung Nr. 22 )
+       */
+      akt_index++;
+    }
+    else
+    {
+      /*
+       * Eingabe endete nicht auf einer schliessenden eckigen Klammer. 
+       * Es wird geprueft, ob die Eingabe mit einer eckigen oeffnenden 
+       * Klammer startet. 
+       * 
+       * Es wird das aktuelle Zeichen an der Position 0 gelesen.
+       */
+      aktuelles_zeichen = pEingabe.charAt( akt_index );
+
+      if ( aktuelles_zeichen == '<' )
+      {
+        /*
+         * While-Schleife zum suchen der schliessenden eckigen Klammer.
+         * Es wird von vorne nach hinten gesucht.
+         */
+        while ( ( akt_index < ( laenge_eingabe_string - 1 ) ) && ( aktuelles_zeichen != '>' ) )
+        {
+          akt_index++;
+
+          aktuelles_zeichen = pEingabe.charAt( akt_index );
+        }
+
+        /*
+         * Ist das erste Zeichen eine oeffnende eckige Klammer, muss es eine 
+         * eckige schliessende Klammer geben. 
+         * 
+         * Nach der While-Schleife muss in der Variablen "aktuelles_zeichen"
+         * die schliessende eckige Klammer enthalten sein. 
+         * 
+         * Ist es ein anderes Zeichen, stimmt die Struktur nicht.
+         */
+        if ( aktuelles_zeichen != '>' )
+        {
+          return 17; // Struktur: keine schliessende eckige Klammer gefunden. 
+        }
+
+        /*
+         * Bestimmung der Positionen, des seperat zu pruefenden "nicht eMail-Adress-Strings"
+         */
+        position_letzter_punkt = akt_index + 1;
+        position_kommentar_ende = laenge_eingabe_string - 1;
+
+        /*
+         * Der Leseprozess muss ein Zeichen vor der gefundenden schliessenden eckigen Klammer enden.
+         * Die Laenge des Eingabestrings wird entsprechend angepasst.  
+         */
+        laenge_eingabe_string = akt_index;
+
+        /*
+         * Das Zeichen an Position 0 ist die oeffnende eckige Klammer. 
+         * Der Leseprozess muss bei Index 1 starten.  
+         */
+        akt_index = 1;
+      }
+    }
+
+    /*
+     * Pruefung: gibt es einen seperat zu pruefenden "nicht eMail-String" ?
+     */
+    if ( position_letzter_punkt != -1 )
+    {
+      /*
+       * Ueber eine While-Schleife werden die Zeichen im "nicht eMail-String" geprueft.
+       * Wird ein ungueltiges Zeichen erkannt, wir der Fehler 18 zurueckgegeben.
+       */
+      while ( position_letzter_punkt < position_kommentar_ende )
+      {
+        aktuelles_zeichen = pEingabe.charAt( position_letzter_punkt );
+
+        if ( ( ( aktuelles_zeichen >= 'a' ) && ( aktuelles_zeichen <= 'z' ) ) || 
+             ( ( aktuelles_zeichen >= 'A' ) && ( aktuelles_zeichen <= 'Z' ) ) || 
+             ( ( aktuelles_zeichen >= '0' ) && ( aktuelles_zeichen <= '9' ) )    )
+        {
+          // OK
+        }
+        else if ( ( aktuelles_zeichen == ' ' ) || ( aktuelles_zeichen == '(' ) || ( aktuelles_zeichen == ')' ) || ( aktuelles_zeichen == '\"' ) )
+        {
+          // OK
+        }
+        else
+        {
+          //System.out.println( aktuelles_zeichen + " Fehler " );
+
+          return 18; // Struktur: Fehler in Adress-String-X
+        }
+
+        position_letzter_punkt++;
+      }
+
+      /*
+       * Restaurierung der Vorgabewerte
+       * Die temporaer fuer andere Zwecke verwendeten Variablen, werden wieder auf deren 
+       * Vorgabewerte von -1 gestellt, damit die eigentliche Pruefroutine korrekt arbeitet.
+       */
+      position_letzter_punkt = -1;
+      position_kommentar_ende = -1;
+    }
+
+    aktuelles_zeichen = ' ';
+
+    /*
+     * Berechnung der Laenge der reinen eMail-Adressangabe.
+     */
+    zeichen_zaehler = laenge_eingabe_string - akt_index;
 
     /*
      * http://de.wikipedia.org/wiki/E-Mail-Adresse
@@ -499,10 +804,12 @@ public class FkEMail
      * 
      * Minimal moegliche eMail-Adresse ist "A@B.CD", gleich 6 Stellen.
      */
-    if ( ( laenge_eingabe_string < 6 ) || ( laenge_eingabe_string > 254 ) )
+    if ( ( zeichen_zaehler < 6 ) || ( zeichen_zaehler > 254 ) )
     {
       return 12; // Laenge: Laengenbegrenzungen stimmen nicht 
     }
+
+    zeichen_zaehler = 0;
 
     /*
      * Variable "fkt_ergebnis_email_ok"
@@ -548,47 +855,6 @@ public class FkEMail
     int fkt_ergebnis_email_ok = 0;
 
     /*
-     * Position AT-Zeichen
-     * Initialwert -1 steht fuer "kein AT-Zeichen gefunden"
-     */
-    int position_at_zeichen = -1;
-
-    /*
-     * Merker "letzte Position eines Punktes"
-     * Initialwert -1 steht fuer "keinen Punkt gefunden"
-     */
-    int position_letzter_punkt = -1;
-
-    /*
-     * Speichert die Position des zuletzt gefundenen Anfuehrungszeichens. 
-     * Start- oder Endzeichen. 
-     */
-    int position_anf_zeichen_akt = -1;
-
-    /*
-     * Speichert die Position der letzten geschlossenen Klammer ')' eines gueltigen Kommentares. 
-     */
-    int position_kommentar_ende = -1;
-
-    /*
-     * Zaehler fuer Zeichen zwischen zwei Trennzeichen.
-     * Die Trennzeichen sind Punkt und AT-Zeichen
-     */
-    int zeichen_zaehler = 0;
-
-    /*
-     * Start Leseposition
-     * Die Startposition fuer die While-Schleife ist hier 0. Das ist
-     * das erste Zeichen der Eingabe. 
-     * 
-     * Sollten einmal eMail-Adressen in spitzen Klammern validiert werden, liegt
-     * die Startposition ein Zeichen nach der oeffnenden spitzen Klammer.
-     */
-    int akt_index = 0;
-
-    char aktuelles_zeichen = ' ';
-
-    /*
      * While-Schleife 1
      * 
      * In der aeusseren While-Schleife wird eine grundlegende eMail-Adressstruktur geparst. 
@@ -612,7 +878,7 @@ public class FkEMail
        */
       if ( ( ( aktuelles_zeichen >= 'a' ) && ( aktuelles_zeichen <= 'z' ) ) || 
            ( ( aktuelles_zeichen >= 'A' ) && ( aktuelles_zeichen <= 'Z' ) ) || 
-           ( ( aktuelles_zeichen >= '0' ) && ( aktuelles_zeichen <= '9' ) ) )
+           ( ( aktuelles_zeichen >= '0' ) && ( aktuelles_zeichen <= '9' ) )    )
       {
         /*
          * Buchstaben ("A" bis "Z" und "a" bis "z") und Zahlen duerfen an jeder Stelle der eMail-Adresse vorkommen.
@@ -1890,7 +2156,7 @@ public class FkEMail
       /*
        * Pruefung: Letzter Punkt gleich Stringende ?
        * Die Position des letzten Punktes darf nicht am Stringende liegen. 
-       * Lieg der letzte Punkt am Stringende, wird der Fehler 36 zurueckgegeben.
+       * Liegt der letzte Punkt am Stringende, wird der Fehler 36 zurueckgegeben.
        *  
        * Bei einer IP-Adressangabe OK, da dort die gleichen Bedingungen gelten.
        */
@@ -2006,6 +2272,10 @@ public class FkEMail
     if ( pFehlerNr == 13 ) return "Laenge: RFC 5321 = SMTP-Protokoll = maximale Laenge des Local-Parts sind 64 Bytes";
     if ( pFehlerNr == 14 ) return "Laenge: Top-Level-Domain muss mindestens 2 Stellen lang sein.";
     if ( pFehlerNr == 15 ) return "Laenge: Top-Level-Domain darf nicht mehr als X-Stellen lang sein. (X ist hier 10)";
+
+    if ( pFehlerNr == 16 ) return "Struktur: keine oeffnende eckige Klammer gefunden.";
+    if ( pFehlerNr == 17 ) return "Struktur: keine schliessende eckige Klammer gefunden.";
+    if ( pFehlerNr == 18 ) return "Struktur: Fehler in Adress-String-X";
 
     if ( pFehlerNr == 20 ) return "Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)";
     if ( pFehlerNr == 21 ) return "Zeichen: Sonderzeichen im Domain-Part nicht erlaubt";
@@ -2265,6 +2535,10 @@ public class FkEMail
       assertIsFalse( "ABC@[IPv6::ffff:999.0.0.1]" );
       assertIsFalse( "ABC@[IPv6:a:b:c:d:127.0.0.1]" );
       assertIsFalse( "ABC@[IPv6::fffff:127.0.0.1]" );
+      assertIsTrue( "ABC DEF <ABC.DEF@GHI.JKL>" );
+      assertIsTrue( "<ABC.DEF@GHI.JKL> ABC DEF" );
+      assertIsFalse( "ABC DEF <A@A>" );
+      assertIsFalse( "<A@A> ABC DEF" );
     }
     catch ( Exception err_inst )
     {
@@ -2275,6 +2549,5 @@ public class FkEMail
 
     System.exit( 0 );
   }
-
 }
 
