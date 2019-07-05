@@ -24,6 +24,7 @@ public class FkEMail
    * Rueckgabewerte kleiner 10 sind OK.
    * 
    * Ein Rueckgabe von 0, ist eine eMail-Adresse ohne weitere Besonderheiten
+   * (... 0 kann nun auch eine eMail-Angabe in spitzen Klammern sein)
    * 
    * Rueckgabewerte von 1 bis 9, sind eMail-Adressen mit Sonderangaben String, Kommentar oder IP-Adresse.
    * 
@@ -47,6 +48,10 @@ public class FkEMail
    *    13 Laenge: RFC 5321 = SMTP-Protokoll = maximale Laenge des Local-Parts sind 64 Bytes
    *    14 Laenge: Top-Level-Domain muss mindestens 2 Stellen lang sein.
    *    15 Laenge: Top-Level-Domain darf nicht mehr als X-Stellen lang sein. (X ist hier 10)
+   *    
+   *    16 Struktur: keine oeffnende eckige Klammer gefunden.
+   *    17 Struktur: keine schliessende eckige Klammer gefunden.
+   *    18 Struktur: Fehler in Adress-String-X
    *    
    *    20 Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
    *    21 Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
@@ -336,11 +341,11 @@ public class FkEMail
    * FkEMail.checkEMailAdresse( "ABC DEF ABC.DEF@GHI.JKL>"       ) = 16 = Struktur: keine oeffnende eckige Klammer gefunden.
    * FkEMail.checkEMailAdresse( "<ABC.DEF@GHI.JKL ABC DEF"       ) = 17 = Struktur: keine schliessende eckige Klammer gefunden.
    * FkEMail.checkEMailAdresse( ""ABC DEF "<ABC.DEF@GHI.JKL>"    ) = 18 = Struktur: Fehler in Adress-String-X
+   * FkEMail.checkEMailAdresse( ""ABC<DEF>"@JKL.DE"              ) = 89 = String: Ungueltiges Zeichen innerhalb Anfuehrungszeichen
    * FkEMail.checkEMailAdresse( ">"                              ) = 16 = Struktur: keine oeffnende eckige Klammer gefunden.
    *
    * Mehr eckige Klammern als erwartet:
    * 
-   * FkEMail.checkEMailAdresse( ""ABC<DEF>"@JKL.DE"              ) = 89 = String: Ungueltiges Zeichen innerhalb Anfuehrungszeichen
    * FkEMail.checkEMailAdresse( ""ABC<DEF@GHI.COM>"@JKL.DE"      ) = 89 = String: Ungueltiges Zeichen innerhalb Anfuehrungszeichen
    * FkEMail.checkEMailAdresse( "ABC DEF <ABC.<DEF@GHI.JKL>"     ) = 18 = Struktur: Fehler in Adress-String-X
    * 
@@ -348,8 +353,8 @@ public class FkEMail
    *
    *
    * Wird keine oeffnende oder schliessende eckige Klammer gefunden, wird der Rest  
-   * der Eingabe nicht nach einer eckigen Klammer durchsucht. In diesem Fall die 
-   * bereits vorhandene Fehlernummer 22 zurueckgegeben. 
+   * der Eingabe nicht nach einer eckigen Klammer durchsucht. In diesem wird Fall 
+   * die Fehlernummer 22 - fuer ein ungueltiges Zeichen - zurueckgegeben. 
    * 
    * FkEMail.checkEMailAdresse( "ABC DEF <ABC.DEF@GHI.JKL"       ) = 22 = Zeichen: ungueltiges Zeichen in der Eingabe gefunden 
    * FkEMail.checkEMailAdresse( "ABC.DEF@GHI.JKL> ABC DEF"       ) = 22 = Zeichen: ungueltiges Zeichen in der Eingabe gefunden
@@ -376,6 +381,7 @@ public class FkEMail
    *                                                          ALTERNATIV: Fehler 34 und Fehler 35 spezifizieren genau diesen FALL.
    *                                                                      Diese Fehlernummern koennen als korrekt akzeptiert werden, wenn
    *                                                                      solche eMail-Adressangaben zugelassen werden sollen
+   *
    * 
    * nicht geklaert ---------------------------------------------------------------------------------------------------
    *
@@ -385,18 +391,19 @@ public class FkEMail
    * IPv6-Adressangaben werden nicht 100%ig korrekt erkannt
    * - Overflow in den Angaben werden nicht erkannt
    * 
-   * "ABC@[IPv6123::ffff:127.0.0.1]" - Praefix "IPv6" oder "IPv6:" (Ohne oder mit Doppelpunkt als Trennzeichen?)
+   * ABC@[IPv6123::ffff:127.0.0.1] = Praefix "IPv6" oder "IPv6:" (Ohne oder mit Doppelpunkt als Trennzeichen?)
    * 
-   * FkEMail.checkEMailAdresse( "email@192.0.2.123" ) = IP4-Adressangabe ohne eckige Klammern gueltig ?
+   * ABC.DEF@192.0.2.123         = IP4-Adressangabe ohne eckige Klammern gueltig ?
    * 
-   * FkEMail.checkEMailAdresse( ""-- --- .. -."@sh.de" ) = Zeichenkombination ". oder ." im String korrekt ?
-   *                                                       (sonst gibt es einen "... .... .. -"@storm.de)
+   * "-- --- .. -."@sh.de        = Zeichenkombination ". oder ." im String korrekt ?
+   *                               (sonst gibt es einen "... .... .. -"@storm.de)
    * 
-   * FkEMail.checkEMailAdresse( "(A(B(C)DEF@GHI.JKL"  ) In einem Kommentar auch oeffnende Klammer '(' zulassen ?
+   * "(A(B(C)DEF@GHI.JKL"        = In einem Kommentar auch oeffnende Klammer '(' zulassen ?
    * 
    * "<ABC.DEF@GHI.JKL>"         = korrekte eMail-Adressangabe ?
    * "<ABC.DEF@GHI.JKL> ABC DEF" = korrekte eMail-Adressangabe ? (... das die Klammern am Start des Strings kommen)
    * 
+   *
    * ------------------------------------------------------------------------------------------------------------------
    * 
    * " + ( FkEMail.checkEMailAdresse( str_email_adresse ) < 10 ? "eMail-Adresse OK" : " eMail-Adresse ungueltig " ) + "
@@ -418,6 +425,8 @@ public class FkEMail
    * - You may also want to check for the length - emails are a maximum of 254 chars long. I use the apache commons validator and it doesn't check for this.
    * - But really what you want is a lexer that properly parses a string and breaks it up into the component structure according to the RFC grammar. 
    *   EmailValidator4J seems promising in that regard, but is still young and limited.
+   *
+   * https://docs.microsoft.com/en-us/dotnet/standard/base-types/how-to-verify-that-strings-are-in-valid-email-format
    *
    * https://www.regular-expressions.info/email.html
    * https://de.wikipedia.org/wiki/Top-Level-Domain
@@ -508,7 +517,10 @@ public class FkEMail
      */
 
     /*
-     * Keine Eingabe --> keine gueltige Adresse
+     * Pruefung: Eingabe gleich "null" ? 
+     * 
+     * Ist die Eingabe gleich "null", ist es keine gueltige eMail-Adresse. 
+     * Es wird der Fehler 10 zurueckgegeben.
      */
     if ( pEingabe == null )
     {
@@ -619,15 +631,20 @@ public class FkEMail
      * Sind die Zeichen in dem nicht eMail-String OK, werden diese 
      * Variablen wieder auf deren Initialwert von -1 gesetzt. 
      * 
-     * Ist im nicht eMail-String ein ungueltiges Zeichen vorhanden, wird 
-     * der Fehler 18 zurueckgegeben. 
+     * Ist im "nicht eMail-Adress-String" ein ungueltiges Zeichen vorhanden, 
+     * wird der Fehler 18 zurueckgegeben. 
      */
 
     aktuelles_zeichen = pEingabe.charAt( laenge_eingabe_string - 1 );
 
+
+    /*
+     * Pruefung: Ende mit einer schliessenden eckigen Klammer ?
+     */
     if ( aktuelles_zeichen == '>' )
     {
       /*
+       * 
        * Das letzte Zeichen ist in diesem Fall eine schliessende eckige Klammer.
        *  
        * Dieses Zeichen darf von der unten stehende while-Schleife nicht 
@@ -693,7 +710,8 @@ public class FkEMail
       if ( aktuelles_zeichen == '<' )
       {
         /*
-         * While-Schleife zum suchen der schliessenden eckigen Klammer.
+         * Startet die Eingabe mit einer eckigen oeffnenden Klammer, wird
+         * in einer While-Schleife die schliessende eckige Klammer gesucht.
          * Es wird von vorne nach hinten gesucht.
          */
         while ( ( akt_index < ( laenge_eingabe_string - 1 ) ) && ( aktuelles_zeichen != '>' ) )
@@ -719,9 +737,12 @@ public class FkEMail
 
         /*
          * Bestimmung der Positionen, des seperat zu pruefenden "nicht eMail-Adress-Strings"
+         * 
+         * Der zu pruefende String startet nach dem Zeichen hinter der aktuellen Position.
+         * Der String endet am Index des letzten Zeichens.
          */
         position_letzter_punkt = akt_index + 1;
-        position_kommentar_ende = laenge_eingabe_string - 1;
+        position_kommentar_ende = laenge_eingabe_string;
 
         /*
          * Der Leseprozess muss ein Zeichen vor der gefundenden schliessenden eckigen Klammer enden.
@@ -738,12 +759,29 @@ public class FkEMail
     }
 
     /*
-     * Pruefung: gibt es einen seperat zu pruefenden "nicht eMail-String" ?
+     * Pruefung: gibt es einen seperat zu pruefenden "nicht eMail-Adress-String" ?
      */
     if ( position_letzter_punkt != -1 )
     {
       /*
-       * Ueber eine While-Schleife werden die Zeichen im "nicht eMail-String" geprueft.
+       * Eingabe = "<ABC@DEF.GHI>"
+       * 
+       * Von der Suchroutine wird eine spitze Klammer erkannt. Es wird auch 
+       * eine - in diesem Fall - oeffnende Klammer gefunden. 
+       * 
+       * Es wird die Position des letzten Punktes auf 0 gestellt. 
+       * Es bleibt jedoch kein "nicht eMail-String" uebrig. 
+       * 
+       * Ist das ein Fehler oder nicht ?
+       * Im Moment wird eine solche Eingabe als korrekte eMail-Adresse durchgelassen. 
+       */
+      //if ( position_letzter_punkt == position_kommentar_ende )
+      //{
+      //  return 19; // Struktur: es gibt keinen "nicht eMail-String" 
+      //}
+      
+      /*
+       * Ueber eine While-Schleife werden die Zeichen im "nicht eMail-Adress-String" geprueft.
        * Wird ein ungueltiges Zeichen erkannt, wir der Fehler 18 zurueckgegeben.
        */
       while ( position_letzter_punkt < position_kommentar_ende )
@@ -758,7 +796,7 @@ public class FkEMail
         }
         else if ( ( aktuelles_zeichen == ' ' ) || ( aktuelles_zeichen == '(' ) || ( aktuelles_zeichen == ')' ) || ( aktuelles_zeichen == '\"' ) )
         {
-          // OK
+          // OK ... eventuell weitere Zeichen hier zulaessig, welche zu ergaenzen waeren
         }
         else
         {
@@ -783,6 +821,11 @@ public class FkEMail
 
     /*
      * Berechnung der Laenge der reinen eMail-Adressangabe.
+     * 
+     * Die Variable "akt_index" steht hier auf dem ersten Zeichen der eMail-Adresse. 
+     * Die Variable "laenge_eingabe_string" steht nach dem letzten zu pruefenden 
+     * Zeichen der eMail-Adresse. Dieses um mit der bisherigen Variablenbezeichnung 
+     * konform zu sein, welches die Laenge des Eingabestrings war. 
      */
     zeichen_zaehler = laenge_eingabe_string - akt_index;
 
@@ -2090,7 +2133,23 @@ public class FkEMail
       }
       else
       {
-        return 22; // Zeichen: ungueltiges Zeichen in der Eingabe gefunden 
+        
+        /*
+         * Hier koennen noch die Zeichen fuer internationale eMail-Adressen hinterlegt werden,
+         * welche durchgelassen werden sollen. 
+         * 
+         * Die If-Abfrage waere denn einzukommentieren. 
+         */
+        //if ( ( aktuelles_zeichen == 'ä' ) || ( aktuelles_zeichen == 'ö' ) ) 
+        //{
+        //  OK 
+        //}
+        //else
+        //{
+        
+        return 22; // Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+        
+        //}
       }
 
       /*
@@ -2352,7 +2411,7 @@ public class FkEMail
 
     boolean is_true = return_code < 10;
 
-    System.out.println( "assertIsTrue  " + FkString.getFeldLinksMin( ( pString == null ? "null" : pString ), 50 ) + " = " + ( return_code < 10 ? " " : "" ) + return_code + " = " + ( knz_soll_wert ? "TRUE " : "FALSE" ) + "  " + ( is_true == knz_soll_wert ? " OK " : " #### FEHLER #### " ) );
+    System.out.println( "assertIsTrue  " + FkString.getFeldLinksMin( ( pString == null ? "null" : pString ), 50 ) + " = " + ( return_code < 10 ? " " : "" ) + return_code + " = " + ( knz_soll_wert ? "TRUE " : "FALSE" ) + "  " + ( is_true == knz_soll_wert ? " OK " : " #### FEHLER ####    " + getFehlerText( return_code ) ) );
   }
 
   public static void assertIsFalse( String pString )
@@ -2363,7 +2422,7 @@ public class FkEMail
 
     boolean is_true = return_code < 10;
 
-    System.out.println( "assertIsFalse " + FkString.getFeldLinksMin( ( pString == null ? "null" : pString ), 50 ) + " = " + ( return_code < 10 ? " " : "" ) + return_code + " = " + ( knz_soll_wert ? "TRUE " : "FALSE" ) + "  " + ( is_true == knz_soll_wert ? " OK " : " #### FEHLER #### " ) );
+    System.out.println( "assertIsFalse " + FkString.getFeldLinksMin( ( pString == null ? "null" : pString ), 50 ) + " = " + ( return_code < 10 ? " " : "" ) + return_code + " = " + ( knz_soll_wert ? "TRUE " : "FALSE" ) + "  " + ( is_true == knz_soll_wert ? " OK " : " #### FEHLER #### " ) + "   " + getFehlerText( return_code ) );
   }
 
   public static void main( String[] args )
@@ -2539,6 +2598,15 @@ public class FkEMail
       assertIsTrue( "<ABC.DEF@GHI.JKL> ABC DEF" );
       assertIsFalse( "ABC DEF <A@A>" );
       assertIsFalse( "<A@A> ABC DEF" );
+      assertIsTrue( "<ABC.DEF@GHI.JKL>" );
+      assertIsFalse( "ABC DEF <ABC.DEF@GHI.JKL" );
+      assertIsFalse( "ABC.DEF@GHI.JKL> ABC DEF" );
+      assertIsFalse( "ABC DEF ABC.DEF@GHI.JKL>" );
+      assertIsFalse( "<ABC.DEF@GHI.JKL ABC DEF" );
+      assertIsTrue( "\"ABC DEF \"<ABC.DEF@GHI.JKL>" );
+      assertIsFalse( "\"ABC<DEF>\"@JKL.DE" );
+      assertIsFalse( "\"ABC<DEF@GHI.COM>\"@JKL.DE" );
+      assertIsFalse( "ABC DEF <ABC.<DEF@GHI.JKL>" );
     }
     catch ( Exception err_inst )
     {
