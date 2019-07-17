@@ -1,7 +1,7 @@
 package de.fk.email;
 
 public class FkEMail
-{
+{ 
   /**
    * <pre>
    * Validierung einer eMail-Adresse.
@@ -757,6 +757,8 @@ public class FkEMail
         akt_index = 1;
       }
     }
+
+    int email_local_part_gesamt_start = akt_index;
 
     /*
      * Pruefung: gibt es einen seperat zu pruefenden "nicht eMail-Adress-String" ?
@@ -1984,6 +1986,8 @@ public class FkEMail
          */
         boolean knz_abschluss_mit_at_zeichen = ( akt_index > 0 );
 
+        knz_abschluss_mit_at_zeichen = ( akt_index == email_local_part_gesamt_start ) == false;
+        
         akt_index++;
 
         aktuelles_zeichen = 'A';
@@ -2607,6 +2611,19 @@ public class FkEMail
       assertIsFalse( "\"ABC<DEF>\"@JKL.DE" );
       assertIsFalse( "\"ABC<DEF@GHI.COM>\"@JKL.DE" );
       assertIsFalse( "ABC DEF <ABC.<DEF@GHI.JKL>" );
+      assertIsTrue( "Non EMail part <(comment)Local.\"Part\"@[IPv6::ffff:127.0.0.1]>" );
+      assertIsTrue( "Non EMail part <Local.\"Part\"(comment)@[IPv6::ffff:127.0.0.1]>" );
+      assertIsTrue( "<(comment)Local.\"Part\"@[IPv6::ffff:127.0.0.1]> Non EMail part" );
+      assertIsTrue( "<Local.\"Part\"(comment)@[IPv6::ffff:127.0.0.1]> Non EMail part " );
+
+      assertIsFalse( "Non EMail part < (comment)Local.\"Part\"@[IPv6::ffff:127.0.0.1]>" );
+      assertIsFalse( "Non EMail part <Local.\"Part\"(comment)B@[IPv6::ffff:127.0.0.1]>" );
+      assertIsFalse( "< (comment)Local.\"Part\"@[IPv6::ffff:127.0.0.1]> Non EMail part" );
+      assertIsFalse( "<Local.\"Part\"(comment)B@[IPv6::ffff:127.0.0.1]> Non EMail part " );
+
+      assertIsTrue( "()DEF@GHI.JKL" );
+      assertIsTrue( "DEF()@GHI.JKL" );
+      
     }
     catch ( Exception err_inst )
     {
