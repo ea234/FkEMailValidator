@@ -1285,7 +1285,7 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
             {
               /*
                * Counting error
-               * The number error is increased.
+               * The ip adress counter is increased.
                * Then it will be checked if more than 4 characters have been answered.
                * If so, 46 ​​will be returned.
                */
@@ -1363,7 +1363,7 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
               }
 
               /*
-               * The number error is set to 0 because an IP4 address is now read
+               * The ip adress counter is set to 0 because an IP4 address is now read
                * and the number counter is used globally in this while loop.
                */
               ip_address_numbers = 0;
@@ -1509,7 +1509,7 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
 
               /*
                * Counting error
-               * The number error is increased.
+               * The ip adress counter is increased.
                * Then it will be checked if more than 3 numbers have been answered.
                * If so, 53 will be returned.
                */
@@ -1546,7 +1546,7 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
               /*
                * Check: numbers available?
                *
-               * If the number error is 0, no numbers were read.
+               * If the ip adress counter is 0, no numbers were read.
                * 55 will be returned in this case.
                */
               if ( ip_address_numbers == 0 )
@@ -2358,6 +2358,16 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
 
       assertIsTrue( "()DEF@GHI.JKL" );
       assertIsTrue( "DEF()@GHI.JKL" );
+
+      assertIsFalse( "ABC DEF <>" );
+      assertIsFalse( "ABC DEF <       >" );
+      assertIsFalse( "ABC DEF <   @   >" );
+      assertIsFalse( "ABC DEF <(   )@   >" );
+      assertIsFalse( "ABC DEF <(COMMENT)A@   >" );
+      assertIsFalse( "ABC DEF <ABC<DEF@GHI.JKL>" );
+      assertIsTrue( "BR0w$ed.for.pr0n@PQRN.biz" );
+      assertIsTrue( "{-^-}{-=-}{-^-}@GHI.JKL" );
+
     }
     catch ( Exception err_inst )
     {
