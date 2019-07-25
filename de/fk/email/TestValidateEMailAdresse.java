@@ -18,8 +18,6 @@ import java.util.regex.Pattern;
  * A cool speed-test is only one eMail-Adresse "A@A.AA".
  * 
  * Yes, the variable names are all in german.
- * ... but Programmer that you are, you will cope with that. 
- *
  */
 class TestValidateEMailAdresse
 { 
@@ -520,86 +518,117 @@ class TestValidateEMailAdresse
    * 
    * --------------------------------------------------------------------------------------------------------------------------------
    * 
+   * 
    * Testlauf 1 Anzahl Testfaelle  40000000
    * 
-   * ea234      anzahl_korrekt =  29480000 - anzahl_falsch =  10520000 - anzahl_fehler =         0  | MS   3047 = 0.000076175                = 00:00:03:047
+   * ea234      anzahl_korrekt =  29160000 - anzahl_falsch =  10840000 - anzahl_fehler =         0  | MS   3610 = 0.00009025                 = 00:00:03:610
    * 
-   * Jmail      anzahl_korrekt =  35480000 - anzahl_falsch =   4480000 - anzahl_fehler =     40000  | MS   6453 = 0.000161325                = 00:00:06:453
+   * Jmail      anzahl_korrekt =  35160000 - anzahl_falsch =   4800000 - anzahl_fehler =     40000  | MS   6516 = 0.0001629                  = 00:00:06:516
    * 
-   * JAVA 1     anzahl_korrekt =  25800000 - anzahl_falsch =  14160000 - anzahl_fehler =     40000  | MS  12517 = 0.000312925                = 00:00:12:517
+   * JAVA 1     anzahl_korrekt =  25320000 - anzahl_falsch =  14640000 - anzahl_fehler =     40000  | MS  12748 = 0.0003187                  = 00:00:12:748
    * 
-   * REGEXP 1   anzahl_korrekt =  31040000 - anzahl_falsch =   8920000 - anzahl_fehler =     40000  | MS  35331 = 0.000883275                = 00:00:35:331
+   * REGEXP 1   anzahl_korrekt =  30720000 - anzahl_falsch =   9240000 - anzahl_fehler =     40000  | MS  30940 = 0.0007735                  = 00:00:30:940
    * 
-   * REGEXP 2   anzahl_korrekt =  31040000 - anzahl_falsch =   8920000 - anzahl_fehler =     40000  | MS  19549 = 0.000488725                = 00:00:19:549
+   * REGEXP 2   anzahl_korrekt =  30720000 - anzahl_falsch =   9240000 - anzahl_fehler =     40000  | MS  15455 = 0.000386375                = 00:00:15:455
    * 
-   * REGEXP 3   anzahl_korrekt =  26480000 - anzahl_falsch =  13480000 - anzahl_fehler =     40000  | MS  90052 = 0.0022513                  = 00:01:30:052
+   * REGEXP 3   anzahl_korrekt =  26080000 - anzahl_falsch =  13880000 - anzahl_fehler =     40000  | MS  89130 = 0.00222825                 = 00:01:29:130
    * 
    * --------------------------------------------------------------------------------------------------------------------------------
    * 
    * Testlauf 2 Anzahl Testfaelle  40000000
    * 
-   * ea234      anzahl_korrekt =  29480000 - anzahl_falsch =  10520000 - anzahl_fehler =         0  | MS   3033 = 0.000075825                = 00:00:03:033
+   * ea234      anzahl_korrekt =  29160000 - anzahl_falsch =  10840000 - anzahl_fehler =         0  | MS   3533 = 0.000088325                = 00:00:03:533
    * 
-   * Jmail      anzahl_korrekt =  35480000 - anzahl_falsch =   4480000 - anzahl_fehler =     40000  | MS   6546 = 0.00016365                 = 00:00:06:546
+   * Jmail      anzahl_korrekt =  35160000 - anzahl_falsch =   4800000 - anzahl_fehler =     40000  | MS   6501 = 0.000162525                = 00:00:06:501
    * 
-   * JAVA 1     anzahl_korrekt =  25800000 - anzahl_falsch =  14160000 - anzahl_fehler =     40000  | MS  12299 = 0.000307475                = 00:00:12:299
+   * JAVA 1     anzahl_korrekt =  25320000 - anzahl_falsch =  14640000 - anzahl_fehler =     40000  | MS  12589 = 0.000314725                = 00:00:12:589
    * 
-   * REGEXP 1   anzahl_korrekt =  31040000 - anzahl_falsch =   8920000 - anzahl_fehler =     40000  | MS  35511 = 0.000887775                = 00:00:35:511
+   * REGEXP 1   anzahl_korrekt =  30720000 - anzahl_falsch =   9240000 - anzahl_fehler =     40000  | MS  30900 = 0.0007725                  = 00:00:30:900
    * 
-   * REGEXP 2   anzahl_korrekt =  31040000 - anzahl_falsch =   8920000 - anzahl_fehler =     40000  | MS  19829 = 0.000495725                = 00:00:19:829
+   * REGEXP 2   anzahl_korrekt =  30720000 - anzahl_falsch =   9240000 - anzahl_fehler =     40000  | MS  15432 = 0.0003858                  = 00:00:15:432
    * 
-   * REGEXP 3   anzahl_korrekt =  26480000 - anzahl_falsch =  13480000 - anzahl_fehler =     40000  | MS  90113 = 0.002252825                = 00:01:30:113
+   * REGEXP 3   anzahl_korrekt =  26080000 - anzahl_falsch =  13880000 - anzahl_fehler =     40000  | MS  89068 = 0.0022267                  = 00:01:29:068
    * 
    * --------------------------------------------------------------------------------------------------------------------------------
    * 
    * Testlauf 3 Anzahl Testfaelle  40000000
    * 
-   * ea234      anzahl_korrekt =  29480000 - anzahl_falsch =  10520000 - anzahl_fehler =         0  | MS   3018 = 0.00007545                 = 00:00:03:018
+   * ea234      anzahl_korrekt =  29160000 - anzahl_falsch =  10840000 - anzahl_fehler =         0  | MS   3540 = 0.0000885                  = 00:00:03:540
    * 
-   * Jmail      anzahl_korrekt =  35480000 - anzahl_falsch =   4480000 - anzahl_fehler =     40000  | MS   6545 = 0.000163625                = 00:00:06:545
+   * Jmail      anzahl_korrekt =  35160000 - anzahl_falsch =   4800000 - anzahl_fehler =     40000  | MS   6486 = 0.00016215                 = 00:00:06:486
    * 
-   * JAVA 1     anzahl_korrekt =  25800000 - anzahl_falsch =  14160000 - anzahl_fehler =     40000  | MS  12336 = 0.0003084                  = 00:00:12:336
+   * JAVA 1     anzahl_korrekt =  25320000 - anzahl_falsch =  14640000 - anzahl_fehler =     40000  | MS  12578 = 0.00031445                 = 00:00:12:578
    * 
-   * REGEXP 1   anzahl_korrekt =  31040000 - anzahl_falsch =   8920000 - anzahl_fehler =     40000  | MS  35429 = 0.000885725                = 00:00:35:429
+   * REGEXP 1   anzahl_korrekt =  30720000 - anzahl_falsch =   9240000 - anzahl_fehler =     40000  | MS  31258 = 0.00078145                 = 00:00:31:258
    * 
-   * REGEXP 2   anzahl_korrekt =  31040000 - anzahl_falsch =   8920000 - anzahl_fehler =     40000  | MS  19668 = 0.0004917                  = 00:00:19:668
+   * REGEXP 2   anzahl_korrekt =  30720000 - anzahl_falsch =   9240000 - anzahl_fehler =     40000  | MS  15507 = 0.000387675                = 00:00:15:507
    * 
-   * REGEXP 3   anzahl_korrekt =  26480000 - anzahl_falsch =  13480000 - anzahl_fehler =     40000  | MS  90830 = 0.00227075                 = 00:01:30:830
+   * REGEXP 3   anzahl_korrekt =  26080000 - anzahl_falsch =  13880000 - anzahl_fehler =     40000  | MS  89177 = 0.002229425                = 00:01:29:177
    * 
    * --------------------------------------------------------------------------------------------------------------------------------
    * 
    * Testlauf 4 Anzahl Testfaelle  40000000
    * 
-   * ea234      anzahl_korrekt =  29480000 - anzahl_falsch =  10520000 - anzahl_fehler =         0  | MS   3017 = 0.000075425                = 00:00:03:017
+   * ea234      anzahl_korrekt =  29160000 - anzahl_falsch =  10840000 - anzahl_fehler =         0  | MS   3533 = 0.000088325                = 00:00:03:533
    * 
-   * Jmail      anzahl_korrekt =  35480000 - anzahl_falsch =   4480000 - anzahl_fehler =     40000  | MS   6508 = 0.0001627                  = 00:00:06:508
+   * Jmail      anzahl_korrekt =  35160000 - anzahl_falsch =   4800000 - anzahl_fehler =     40000  | MS   6506 = 0.00016265                 = 00:00:06:506
    * 
-   * JAVA 1     anzahl_korrekt =  25800000 - anzahl_falsch =  14160000 - anzahl_fehler =     40000  | MS  12272 = 0.0003068                  = 00:00:12:272
+   * JAVA 1     anzahl_korrekt =  25320000 - anzahl_falsch =  14640000 - anzahl_fehler =     40000  | MS  12588 = 0.0003147                  = 00:00:12:588
    * 
-   * REGEXP 1   anzahl_korrekt =  31040000 - anzahl_falsch =   8920000 - anzahl_fehler =     40000  | MS  35448 = 0.0008862                  = 00:00:35:448
+   * REGEXP 1   anzahl_korrekt =  30720000 - anzahl_falsch =   9240000 - anzahl_fehler =     40000  | MS  30988 = 0.0007747                  = 00:00:30:988
    * 
-   * REGEXP 2   anzahl_korrekt =  31040000 - anzahl_falsch =   8920000 - anzahl_fehler =     40000  | MS  19621 = 0.000490525                = 00:00:19:621
+   * REGEXP 2   anzahl_korrekt =  30720000 - anzahl_falsch =   9240000 - anzahl_fehler =     40000  | MS  15449 = 0.000386225                = 00:00:15:449
    * 
-   * REGEXP 3   anzahl_korrekt =  26480000 - anzahl_falsch =  13480000 - anzahl_fehler =     40000  | MS  90490 = 0.00226225                 = 00:01:30:490
+   * REGEXP 3   anzahl_korrekt =  26080000 - anzahl_falsch =  13880000 - anzahl_fehler =     40000  | MS  89740 = 0.0022435                  = 00:01:29:740
    * 
    * --------------------------------------------------------------------------------------------------------------------------------
    * 
    * Testlauf 5 Anzahl Testfaelle  40000000
    * 
-   * ea234      anzahl_korrekt =  29480000 - anzahl_falsch =  10520000 - anzahl_fehler =         0  | MS   3014 = 0.00007535                 = 00:00:03:014
+   * ea234      anzahl_korrekt =  29160000 - anzahl_falsch =  10840000 - anzahl_fehler =         0  | MS   3579 = 0.000089475                = 00:00:03:579
    * 
-   * Jmail      anzahl_korrekt =  35480000 - anzahl_falsch =   4480000 - anzahl_fehler =     40000  | MS   6501 = 0.000162525                = 00:00:06:501
+   * Jmail      anzahl_korrekt =  35160000 - anzahl_falsch =   4800000 - anzahl_fehler =     40000  | MS   6552 = 0.0001638                  = 00:00:06:552
    * 
-   * JAVA 1     anzahl_korrekt =  25800000 - anzahl_falsch =  14160000 - anzahl_fehler =     40000  | MS  12240 = 0.0003060                  = 00:00:12:240
+   * JAVA 1     anzahl_korrekt =  25320000 - anzahl_falsch =  14640000 - anzahl_fehler =     40000  | MS  12605 = 0.000315125                = 00:00:12:605
    * 
-   * REGEXP 1   anzahl_korrekt =  31040000 - anzahl_falsch =   8920000 - anzahl_fehler =     40000  | MS  35508 = 0.0008877                  = 00:00:35:508
+   * REGEXP 1   anzahl_korrekt =  30720000 - anzahl_falsch =   9240000 - anzahl_fehler =     40000  | MS  30965 = 0.000774125                = 00:00:30:965
    * 
-   * REGEXP 2   anzahl_korrekt =  31040000 - anzahl_falsch =   8920000 - anzahl_fehler =     40000  | MS  19772 = 0.0004943                  = 00:00:19:772
+   * REGEXP 2   anzahl_korrekt =  30720000 - anzahl_falsch =   9240000 - anzahl_fehler =     40000  | MS  15440 = 0.0003860                  = 00:00:15:440
    * 
-   * REGEXP 3   anzahl_korrekt =  26480000 - anzahl_falsch =  13480000 - anzahl_fehler =     40000  | MS  90228 = 0.0022557                  = 00:01:30:228
+   * REGEXP 3   anzahl_korrekt =  26080000 - anzahl_falsch =  13880000 - anzahl_fehler =     40000  | MS  89128 = 0.0022282                  = 00:01:29:128
    * 
-   * PROCESSOR_IDENTIFIER   Intel64 Family 6 Model 58 Stepping 9, GenuineIntel
-   * PROCESSOR_ARCHITECTURE AMD64
+   * 
+   * System Properties ----------------------------------------------------------------
+   * 
+   *  java.runtime.name             Java(TM) SE Runtime Environment
+   *  java.vm.version               25.121-b13
+   *  java.vm.vendor                Oracle Corporation
+   *  java.vendor.url               http://java.oracle.com/
+   *  java.vm.name                  Java HotSpot(TM) 64-Bit Server VM
+   *  java.runtime.version          1.8.0_121-b13
+   *  os.arch                       amd64
+   *  java.vm.specification.vendor  Oracle Corporation
+   *  os.name                       Windows 8.1
+   *  sun.jnu.encoding              Cp1252
+   *  sun.management.compiler       HotSpot 64-Bit Tiered Compilers
+   *  os.version                    6.3
+   *  java.specification.version    1.8
+   *  java.vm.specification.version 1.8
+   *  sun.arch.data.model           64
+   *  java.specification.vendor     Oracle Corporation
+   *  java.version                  1.8.0_121
+   *  java.vendor                   Oracle Corporation
+   *  sun.desktop                   windows
+   *  sun.cpu.isalist               amd64
+   * 
+   * System getEnv() ------------------------------------------------------------------
+   * 
+   *  https://coderanch.com/t/567735/java/hardware-details-processor-type-java
+   * 
+   *  PROCESSOR_IDENTIFIER          Intel64 Family 6 Model 58 Stepping 9, GenuineIntel
+   *  PROCESSOR_ARCHITECTURE        AMD64
+   *  PROCESSOR_ARCHITEW6432        null
+   *  NUMBER_OF_PROCESSORS          8
    * 
    * ################################################################################################################################
    * 
@@ -607,82 +636,81 @@ class TestValidateEMailAdresse
    * 
    * Testlauf 1 Anzahl Testfaelle  40000000
    * 
-   * ea234      anzahl_korrekt =  29480000 - anzahl_falsch =  10520000 - anzahl_fehler =         0  | MS   3349 = 0.000083725                = 00:00:03:349
+   * ea234      anzahl_korrekt =  29240000 - anzahl_falsch =  10760000 - anzahl_fehler =         0  | MS   4344 = 0.0001086                  = 00:00:04:344
    * 
-   * Jmail      anzahl_korrekt =  35480000 - anzahl_falsch =   4480000 - anzahl_fehler =     40000  | MS   6162 = 0.00015405                 = 00:00:06:162
+   * Jmail      anzahl_korrekt =  35160000 - anzahl_falsch =   4800000 - anzahl_fehler =     40000  | MS   5922 = 0.00014805                 = 00:00:05:922
    * 
-   * JAVA 1     anzahl_korrekt =  25800000 - anzahl_falsch =  14160000 - anzahl_fehler =     40000  | MS  11156 = 0.0002789                  = 00:00:11:156
+   * JAVA 1     anzahl_korrekt =  25360000 - anzahl_falsch =  14600000 - anzahl_fehler =     40000  | MS   9517 = 0.000237925                = 00:00:09:517
    * 
-   * REGEXP 1   anzahl_korrekt =  31040000 - anzahl_falsch =   8920000 - anzahl_fehler =     40000  | MS  29536 = 0.0007384                  = 00:00:29:536
+   * REGEXP 1   anzahl_korrekt =  30760000 - anzahl_falsch =   9200000 - anzahl_fehler =     40000  | MS  26877 = 0.000671925                = 00:00:26:877
    * 
-   * REGEXP 2   anzahl_korrekt =  31040000 - anzahl_falsch =   8920000 - anzahl_fehler =     40000  | MS   9300 = 0.0002325                  = 00:00:09:300
+   * REGEXP 2   anzahl_korrekt =  30760000 - anzahl_falsch =   9200000 - anzahl_fehler =     40000  | MS   9666 = 0.00024165                 = 00:00:09:666
    * 
-   * REGEXP 3   anzahl_korrekt =  26480000 - anzahl_falsch =  13480000 - anzahl_fehler =     40000  | MS  72085 = 0.001802125                = 00:01:12:085
+   * REGEXP 3   anzahl_korrekt =  26160000 - anzahl_falsch =  13800000 - anzahl_fehler =     40000  | MS  65937 = 0.001648425                = 00:01:05:937
    * 
    * --------------------------------------------------------------------------------------------------------------------------------
    * 
    * Testlauf 2 Anzahl Testfaelle  40000000
    * 
-   * ea234      anzahl_korrekt =  29480000 - anzahl_falsch =  10520000 - anzahl_fehler =         0  | MS   2978 = 0.00007445                 = 00:00:02:978
+   * ea234      anzahl_korrekt =  29240000 - anzahl_falsch =  10760000 - anzahl_fehler =         0  | MS   3711 = 0.000092775                = 00:00:03:711
    * 
-   * Jmail      anzahl_korrekt =  35480000 - anzahl_falsch =   4480000 - anzahl_fehler =     40000  | MS   5232 = 0.0001308                  = 00:00:05:232
+   * Jmail      anzahl_korrekt =  35160000 - anzahl_falsch =   4800000 - anzahl_fehler =     40000  | MS   5420 = 0.0001355                  = 00:00:05:420
    * 
-   * JAVA 1     anzahl_korrekt =  25800000 - anzahl_falsch =  14160000 - anzahl_fehler =     40000  | MS  10655 = 0.000266375                = 00:00:10:655
+   * JAVA 1     anzahl_korrekt =  25360000 - anzahl_falsch =  14600000 - anzahl_fehler =     40000  | MS  10515 = 0.000262875                = 00:00:10:515
    * 
-   * REGEXP 1   anzahl_korrekt =  31040000 - anzahl_falsch =   8920000 - anzahl_fehler =     40000  | MS  28774 = 0.00071935                 = 00:00:28:774
+   * REGEXP 1   anzahl_korrekt =  30760000 - anzahl_falsch =   9200000 - anzahl_fehler =     40000  | MS  25943 = 0.000648575                = 00:00:25:943
    * 
-   * REGEXP 2   anzahl_korrekt =  31040000 - anzahl_falsch =   8920000 - anzahl_fehler =     40000  | MS   9305 = 0.000232625                = 00:00:09:305
+   * REGEXP 2   anzahl_korrekt =  30760000 - anzahl_falsch =   9200000 - anzahl_fehler =     40000  | MS   9258 = 0.00023145                 = 00:00:09:258
    * 
-   * REGEXP 3   anzahl_korrekt =  26480000 - anzahl_falsch =  13480000 - anzahl_fehler =     40000  | MS  72323 = 0.001808075                = 00:01:12:323
+   * REGEXP 3   anzahl_korrekt =  26160000 - anzahl_falsch =  13800000 - anzahl_fehler =     40000  | MS  65902 = 0.00164755                 = 00:01:05:902
    * 
    * --------------------------------------------------------------------------------------------------------------------------------
    * 
    * Testlauf 3 Anzahl Testfaelle  40000000
    * 
-   * ea234      anzahl_korrekt =  29480000 - anzahl_falsch =  10520000 - anzahl_fehler =         0  | MS   3124 = 0.0000781                  = 00:00:03:124
+   * ea234      anzahl_korrekt =  29240000 - anzahl_falsch =  10760000 - anzahl_fehler =         0  | MS   3619 = 0.000090475                = 00:00:03:619
    * 
-   * Jmail      anzahl_korrekt =  35480000 - anzahl_falsch =   4480000 - anzahl_fehler =     40000  | MS   5403 = 0.000135075                = 00:00:05:403
+   * Jmail      anzahl_korrekt =  35160000 - anzahl_falsch =   4800000 - anzahl_fehler =     40000  | MS   5853 = 0.000146325                = 00:00:05:853
    * 
-   * JAVA 1     anzahl_korrekt =  25800000 - anzahl_falsch =  14160000 - anzahl_fehler =     40000  | MS  10546 = 0.00026365                 = 00:00:10:546
+   * JAVA 1     anzahl_korrekt =  25360000 - anzahl_falsch =  14600000 - anzahl_fehler =     40000  | MS  10479 = 0.000261975                = 00:00:10:479
    * 
-   * REGEXP 1   anzahl_korrekt =  31040000 - anzahl_falsch =   8920000 - anzahl_fehler =     40000  | MS  28749 = 0.000718725                = 00:00:28:749
+   * REGEXP 1   anzahl_korrekt =  30760000 - anzahl_falsch =   9200000 - anzahl_fehler =     40000  | MS  24968 = 0.0006242                  = 00:00:24:968
    * 
-   * REGEXP 2   anzahl_korrekt =  31040000 - anzahl_falsch =   8920000 - anzahl_fehler =     40000  | MS   9771 = 0.000244275                = 00:00:09:771
+   * REGEXP 2   anzahl_korrekt =  30760000 - anzahl_falsch =   9200000 - anzahl_fehler =     40000  | MS   9219 = 0.000230475                = 00:00:09:219
    * 
-   * REGEXP 3   anzahl_korrekt =  26480000 - anzahl_falsch =  13480000 - anzahl_fehler =     40000  | MS  72380 = 0.0018095                  = 00:01:12:380
+   * REGEXP 3   anzahl_korrekt =  26160000 - anzahl_falsch =  13800000 - anzahl_fehler =     40000  | MS  62828 = 0.0015707                  = 00:01:02:828
    * 
    * --------------------------------------------------------------------------------------------------------------------------------
    * 
    * Testlauf 4 Anzahl Testfaelle  40000000
    * 
-   * ea234      anzahl_korrekt =  29480000 - anzahl_falsch =  10520000 - anzahl_fehler =         0  | MS   3153 = 0.000078825                = 00:00:03:153
+   * ea234      anzahl_korrekt =  29240000 - anzahl_falsch =  10760000 - anzahl_fehler =         0  | MS   3663 = 0.000091575                = 00:00:03:663
    * 
-   * Jmail      anzahl_korrekt =  35480000 - anzahl_falsch =   4480000 - anzahl_fehler =     40000  | MS   5511 = 0.000137775                = 00:00:05:511
+   * Jmail      anzahl_korrekt =  35160000 - anzahl_falsch =   4800000 - anzahl_fehler =     40000  | MS   5384 = 0.0001346                  = 00:00:05:384
    * 
-   * JAVA 1     anzahl_korrekt =  25800000 - anzahl_falsch =  14160000 - anzahl_fehler =     40000  | MS  10746 = 0.00026865                 = 00:00:10:746
+   * JAVA 1     anzahl_korrekt =  25360000 - anzahl_falsch =  14600000 - anzahl_fehler =     40000  | MS  10299 = 0.000257475                = 00:00:10:299
    * 
-   * REGEXP 1   anzahl_korrekt =  31040000 - anzahl_falsch =   8920000 - anzahl_fehler =     40000  | MS  26559 = 0.000663975                = 00:00:26:559
+   * REGEXP 1   anzahl_korrekt =  30760000 - anzahl_falsch =   9200000 - anzahl_fehler =     40000  | MS  24537 = 0.000613425                = 00:00:24:537
    * 
-   * REGEXP 2   anzahl_korrekt =  31040000 - anzahl_falsch =   8920000 - anzahl_fehler =     40000  | MS   9176 = 0.0002294                  = 00:00:09:176
+   * REGEXP 2   anzahl_korrekt =  30760000 - anzahl_falsch =   9200000 - anzahl_fehler =     40000  | MS   9336 = 0.0002334                  = 00:00:09:336
    * 
-   * REGEXP 3   anzahl_korrekt =  26480000 - anzahl_falsch =  13480000 - anzahl_fehler =     40000  | MS  73527 = 0.001838175                = 00:01:13:527
+   * REGEXP 3   anzahl_korrekt =  26160000 - anzahl_falsch =  13800000 - anzahl_fehler =     40000  | MS  65309 = 0.001632725                = 00:01:05:309
    * 
    * --------------------------------------------------------------------------------------------------------------------------------
    * 
    * Testlauf 5 Anzahl Testfaelle  40000000
    * 
-   * ea234      anzahl_korrekt =  29480000 - anzahl_falsch =  10520000 - anzahl_fehler =         0  | MS   3208 = 0.0000802                  = 00:00:03:208
+   * ea234      anzahl_korrekt =  29240000 - anzahl_falsch =  10760000 - anzahl_fehler =         0  | MS   3811 = 0.000095275                = 00:00:03:811
    * 
-   * Jmail      anzahl_korrekt =  35480000 - anzahl_falsch =   4480000 - anzahl_fehler =     40000  | MS   5400 = 0.0001350                  = 00:00:05:400
+   * Jmail      anzahl_korrekt =  35160000 - anzahl_falsch =   4800000 - anzahl_fehler =     40000  | MS   5543 = 0.000138575                = 00:00:05:543
    * 
-   * JAVA 1     anzahl_korrekt =  25800000 - anzahl_falsch =  14160000 - anzahl_fehler =     40000  | MS  10792 = 0.0002698                  = 00:00:10:792
+   * JAVA 1     anzahl_korrekt =  25360000 - anzahl_falsch =  14600000 - anzahl_fehler =     40000  | MS  10249 = 0.000256225                = 00:00:10:249
    * 
-   * REGEXP 1   anzahl_korrekt =  31040000 - anzahl_falsch =   8920000 - anzahl_fehler =     40000  | MS  26604 = 0.0006651                  = 00:00:26:604
+   * REGEXP 1   anzahl_korrekt =  30760000 - anzahl_falsch =   9200000 - anzahl_fehler =     40000  | MS  24537 = 0.000613425                = 00:00:24:537
    * 
-   * REGEXP 2   anzahl_korrekt =  31040000 - anzahl_falsch =   8920000 - anzahl_fehler =     40000  | MS   9377 = 0.000234425                = 00:00:09:377
+   * REGEXP 2   anzahl_korrekt =  30760000 - anzahl_falsch =   9200000 - anzahl_fehler =     40000  | MS   9336 = 0.0002364                  = 00:00:09:636
    * 
-   * REGEXP 3   anzahl_korrekt =  26480000 - anzahl_falsch =  13480000 - anzahl_fehler =     40000  | MS  67110 = 0.00167775                 = 00:01:07:110
-
+   * REGEXP 3   anzahl_korrekt =  26160000 - anzahl_falsch =  13800000 - anzahl_fehler =     40000  | MS  65309 = 0.001681725                = 00:01:06:399
    * 
    */
 
@@ -690,19 +718,48 @@ class TestValidateEMailAdresse
 
   private static DecimalFormat        number_format            = null;
 
-  private static int                  durchlauf_anzahl         = 0;
-
-  private static int                  test_daten_array_length  = 0;
-
+  /*
+   * Die auszugebende Stellenanzahl bei den Testnummern. 
+   * Ist hart auf 9 gesetzt, damit unterschiedliche Berechnungslaeufe 
+   * miteinander kombiniert werden koennen und es zu keinen Ausrichtungsfehlern 
+   * in der Log-Dateiausgabe kommt.
+   */
   private static int                  stellen_anzahl           = 0;
 
+  /*
+   * Die Anzahl der auszufuehrenden Testfaelle
+   * - berechnet aus den Array-Elementen 
+   * - oder einfach hart gesetzt
+   */
+  private static int                  durchlauf_anzahl         = 0;
+
+  /*
+   * Die Anzahl der Elemente im aktuellem Testdatenarray
+   */
+  private static int                  test_daten_array_length  = 0;
+
+  /*
+   * Kennzeichen fuer den ersten Durchlauf, um die Pruefergebnisse auszugeben.
+   */
   private static boolean              knz_ausgabe_test_daten   = true;
 
   private static int                  FAKTOR_ANZAHL_ARRAY_A    = 40000;
 
+  /*
+   * Array, mit welchem die Tests ausgefuehrt werden.
+   */
   private static String[]             array_test_daten_aktuell = null;
 
-  private static String[]             array_test_daten_a       = {
+  /*
+   * 1000 Testdaten
+   * Es sind 1000 eMail-Adressen vorhanden. 
+   * Es sind mehr korrekte eMail-Adressen als falsche vorhanden.
+   * Es sind mehr normale eMail-Adressangaben vorhanden, als Sonderformen.
+   * 
+   * Die Elementanzahl wird mit dem Faktor "FAKTOR_ANZAHL_ARRAY_A" multipliziert, 
+   * welches die Gesamtanzahl der Testdaten bestimmt.
+   */
+  private static String[]             array_test_daten_1000       = {
 
      "ABC.DEF@GHI.JKL",
      "A@B.CD",
@@ -1195,41 +1252,45 @@ class TestValidateEMailAdresse
      "easy@isnt.it",
      "yes@it.is",
 
-     "Ivregr.Fcnygr@cyhf.Rvaf.qr", "RdfxlTza@hbqky.ob", "Q.Fijiq@RusnebzbvKevn-Oknskxakg.yn", "Idiilp.Sgqj@vzoqb.by", "njrdnec@nnwaty.jpx", "Awdtqxq50@uakadi.pj", "RfvmiRoeodcax@ssmxrbuc.gb", "PI@RrkkJdrWnnqc.tg", "dpjhurididzj@hlsjw.ba", "GcYsbFnodh@Oxadrtgmva.ph", "DbnlcMyp@Qz0kZ.xr", "Uilotxrg.Aliw-Lnime@qzmnfceotr.zo", "qllfyesgi@oinnebxxtg.uhu", "cuycmoa.dywcxue@aundxcs.lq", "ftde.wgwslho@lbhjc.iv", "Q-Mubofh@wqwvt.oj", "Pvmmdx-Goazdwly@tripcyqsc.es", "Qbig@xrleye.qq",
-     "XpqzEyzbnkp@NjfgmeIvmcybr.wt", "nvvdqscql.sdsavmvp@t-eqqfapn.sq", "qwivgyxbrlmml@futhy-hpxxggj.kf", "i.rclxlta@UxcYgGgkrbWmsecfPqKjvyw.gv", "Pnzbv.Bpmty@fakmf.im", "Hdcyy.Jdcbj@awncciq.og", "i.gvmvk@zltpuduj.zd", "cvouhtnas@rNVxk.nq", "NsLndHotsy@vsybjxefoi.gj", "Cyzvj.Rkscjwwg@Etpfbxzc.tb", "fmqsn.dhawjyeiihwm@Oqydb.er", "FF@OU.bm", "WcuqlfbcLqbrfx@pgi.gpg", "Ohwpcza.Wkypqtdr@engifj.cy", "gxqaxmryk@hknsr.qy", "lsxbl-bethzi-sgtlj@KDyb0.jc", "Miav.Mdnswfr@eterwwql.gy", 
-     "orlic-zpvockfd@Krxvi.lr", "Xflvyy.lxym@Wflvoc10.dy", "hutxbuf@Ohwcyj03.vp", "xjgli@qgjelwss.gl", "Atqfijgwz.Yisnaza@zajhfnn.fr", "Msrke.Dydrsfvm@ajhjubgnl.xla", "XzejqqWmaBetywc@lpwmkoprxd.zmt", "Xbmsqkgeechacn.Wswvgua@h-elddmjb.nd", "Aoykxeoifibjvm5@LizIbmQmwuWleMds.cp", "ME@521.4.2.5", "EcmsyxTynxxi-Alkvw@Cc0CP.htw", "g.rukhccxscm@CjttpCecxgsu.jp", "sypeouxr@vbjw.qmr", "MO@wobi.cjk", "H.Pxxsy@mmku.fm", "Xztzn.Xvivf@qxhqa.ak", "F.Ajro@Slhp.jh", "Omsoe.Qm@teejHp.zms",
-     "QZivbshs@xws-serypc.iy", "Xmnnu.Dy.h@fajua.du", "qrwuf.kpcbx@imiyuqoh.seo", "xkuqds.zzqypnzf@asacjyfmwrdlz.no", "WA@vmtse.of", "Lssnj.WcjBecobux@Sfpym.nd", "zrflccuk.fdwzpaocua@WmxcSzttl.yr", "Zuvkurkdpq57@efqnptq.wu", "NorxvZne@qqp.eha", "oxnotl-tmm@ynpt.lmwc.jbgtca.db", "SW@oAFP1.hq", "TuiuqDrd@wuqrfe.gj", "MN@jwtw.bz", "CR@EffoiqjbcUvbf-Kgbkloadn.ug", "WI@opj.rkw", "Jiqrmol.Giowrykt@jiyaumk.cjl", "Szsskubwt@374.0.7.2", "JhIkqThqti@cxdtkulc.oq", "y.vhczp@Fwsawa.ak",
-     "itqmencxzsjyx@fgfgu.df", "W-Ndor-Sbhtti@udnwdlsz.we", "VvWwcLjspv@nmbqxk.kp", "L-Surqca@EVOV.hx", "adssdcI.Jnmxiu@molku.io", "jqeed.ktyjkz@WGZO.dp", "Wizypgzu40@NlzaKueXvowi.pm", "R-Crfyg@SzfudxIdgglpu.ee", "Bpozbme-Peoazhpck@mvcrett.td", "M.Arecznx@mltrbhv.xe", "tbnodpwvsxntr@bscwzwkc.dd", "Mfctl-Daaxk@mxkq.rwe", "o.nvabkmno@zqpveh.aqr", "Jpbh-Advzkd@xuahmgemcy.xew", "Ipokwx.Mnemjhwmhtd@bpeb.xm", "Grpb.Cvn@kpstfehl.hp", "G.Erdvyt@7rXRT.ra", "GqnbqjFxrnuC@Mkewmnw.sn",
-     "LphsrFXcgdarsblkx@onqigwpogvzzp.ewo", "oliuzr.jyestm@trzkbq.tm", "Fgyi-Qkkz@mqspsd.whd", "mamxmqhzd-jedcdb@FEiH1.fi", "I.Gbhgfa@dxA26.yb", "fvjpo.cdzotgoh@pxdipwpa.ni", "wacqylfu@kpkpzcsq.js", "pzoqho.djfdfdfou@rxdkyvjdxuj.tg", "jyixtdbesdn@lwra.bghc.ezerhi.yx", "wadwwshydsa@vp.dq", "swyqozszvrhtk@mrj.omn", "LN@boncyfr.lr", "Wkjaax.Nwrmgjij@jdwliyu.sn", "nvpcnsot@BzivbpVsicurj.qj", "Kxxenk.Ikqwrigztbmjn@hiffv.ya", "BsivuehL.X@JkzSvqVasNwnKil.ge", "Olix-Qoyh@ftbua.hx", 
-     "GzzotcuoHuyvqkPvfllm@udgoczw.usdfbr", "Tdmitmmlg.Nbzdvk@fxibhvi.vo", "Moyhjsdx.Yuncum@ehz.rio", "Yotpi.Mfvd@phfilrDls.eko", "NpAmtiafq45@rvq-tpjmiu.bo", "Uqhx-Tqtngm@QvSgbgSvRwRr.nq", "Tpgzi.Glfihh@VdhnWasfkpJkqmf.ok", "Ualfji34@HK.xj," , "WoZxfUogwv@Uzvaljpyzc.xz", "JvecrJnd@Jx0dL.mi", "Bhstlayb.Wela-Cmvev@xamoabgspp.hb", "idmidajfe@jffriclrql.wch", "sndsikr.wwahwpy@grcvxgf.id", "phsgorjff.htrmuhgu@ysqew.gi", "Dxqxmrvz-Txpspi@iobhz.gc", "Kwgyskg-Ahnwuohznm@phuvm.wq",
-     "Jjbc.uebPdbwewTltdal@nbzsmwewwerbe.rh", "Tfmisqqtu.Oxhmqf@vukdkyi.mq", "Wcycinjb.Yezrzs@zdl.clb", "Wkgpp.Ppad@skkaefuov.ifh", "AbObnhwgp27@eqf-ztbmqp.nj", "Hahf-Prutgc@NkXwkrOnViZh.pe", "Oqolg.Gbnwfy@PpopUtxNquip.jr", "Spaeeo26@RY.dy," , "ZnAqaAyteo@Pearlgikmt.gr", "AoswuJfx@Fr5gA.ev", "Gadjzhdw.Xliu-Ddjmu@beusuqthio.jm", "rzcmktbdc@dwxiapzoaw.usb", "jmkfpve.ovodpel@uqehcsl.lt", "jriwftlsg.gjvqgjjuas@oomzv.wq", "Smizjjky-Jgopns@tlrfka.qo", "Evfmu-Ekhtlqxlve@glrmu.uh",
-     "zhsmAeax@mqjzjfkt.qtz", "RyzetWpfr@jkkyu.fu", "Q.Pqjos@NcmfretxfWdsj-Yotoskzqg.vd", "Jthqfm.Sajj@jnzmi.vs", "d.jot.drei.ele@sdr.de", "Duuwm03@fctouf.ej", "LnxobHxt.yvmm@uovddwyx.so", "BJ@CovaQqoDobas.ep", "miowtvkrtvxa@dnkzi.bq", "XrSvdXqpou@Sitfrvehpb.vt", "KgtvvFib@Py2mS.kr", "Hdtxhuli.XBxj-Nnmau@eholqtqdgc.ls", "tbiszfpwt@djjcyyvkgj.tkf", "bjttyni.gqtrkcz@ldfakbx.ps", "blqa.cvojdrbxu@gbcqo.zf", "D-Aatqhb@nxamr.mj", "Kepmcj-Gbwwpsv@jqvdwdufx.hm", "Vi.Arxgi@hgpl.hh",
-     "Yoaonfdeoab@MlzrljFhtjnny.hq", "gnwjolmmjvfcq.wqhbdouc@v-kgpujlc.bf", "xwnzsmykpnyzf@vxzvk-cwbgeaz.zw", "k.kwzcobot@GweHzAaigeQdywouGnGhjpz.ki", "Buofu.Vakns@kmwjj.tr", "Fnuob.Qltbd@ugbvwaz.sv", "s.tiihb@fejdnhim.yt", "znagltqpc@vNVak.ig", "MiXrvIqjqu@cquogekjkk.hj", "Raiuwa.Qcjtgcdi@Vnnivupo.tk", "liwec.swxdibmjdpdr@Pfpla.yr", "UJ@CA.kw", "WckmpmpzWkzwlk@ibn.mfc", "Nifouuk.Sqqxitrz@xtvgzz.xb", "wqcenbgvn@ixwsb.yf", "roims-ccdwms-nmvkh@QVdj2.wk", "Mdtt.Vcdob@opuo.mt", 
-     "WOfudhpe@wnw-qwxwgf.dl", "Deryq.Ywcd@shayr.ij", "rmaym.abjvz@dipirmak.lik", "wstoir.cbpxlddf@dkntoiojakebf.ed", "ZsQ@sgjim.tx", "Ybzky.OdnHwqwxnh@Gzpdm.dy", "czvnlxih.tpoycakihp@ItslZualh.cm", "Buudbatroi21@laoewjw.kd", "JayrhOnp@yvk.zrd", "axdhgl-wer@cjvo.djof.sjnqtk.fo", "JY@qHJJ2.me", "HsltlBee@pqnzxw.nb", "LF@dvvf.xl", "KM@JkkvjmnwnPpmi-Jtyhnnedu.ny", "QA@cxj.lhf", "Yggaknu.Ttewuaiw@qfyuwv.otr", "Lmsssaqug@042.3.7.1", "OmQtlZsypn@keiibbhx.lg", "ba.swmdq@Zrcdl.re",
-     "qlmsrnnzeanmg@kdyjy.cp", "A-Hihb-Ydpdcv@ggsjxtvkdlcqk.yu", "FwIsoTbojo@bmxcfb.mz", "X-Cfkygc@ATKF.cp", "Qfdmef.Lvuctbr@jybds.da", "xrqph.lrohduyzpf@RDMS.ze", "Rnqgttyr66@HnsbXodDrkly.kw", "G-Gjotm@WvvsgaTwbpzmr.ag", "Bsoxogk-Lfwaijdzd@dmpxitg.ow", "X.Rwgbsof@lbmxemi.br", "glox.tvde@gokd.gh", "cvtdc-Kwrzm@ulgk.zgc", "i.ihwnczbk@omafhe.nhn", "Ldot-Wxgqmp@vejuebmiyi.skp", "Iidyri.Gqwlhmrfoeh@gaj.hv", "Rper.Zbt@gsciswfr.wz", "H.Lurawx@3qOKN.ws", "UicmpwUpqojI@IGkeyoa.fr",
-     "Qspnexwc.Kemphmvzfv@nrufixpt.fw", "WK@ZqupwspinMhjg-Knsivlpxr.hf", "Wsudy.Ybxidqof@yyxy.up", "pajotsja-qodrwqdm@jkhAk.flm", "kdabyra@jllh.gc", "Pvuapxw.Ngnk@uzaxn.jiwfvsv.ir", "sla-ljwthr@LQxhp.oj", "lvwmekdkvp@FerzSxwHkcsy.fx", "cpbdedlgh@sxlig.vi", "Xzosh.Jtlkg@WyshckZnkwx.guy", "Ziaiuhh.Ejgkhb@sbhfol.ntsbw.hm", "Vnzthllx.Ksbgfa@ftylg.uj", "N.Hnkj@hyvixum.tsk", "OV@oufdmyfvi.sh", "TK@LickjvzsuZuss-Ozpaidffo.cm", "dyspk-qivlncp@lxylafhro.ev", "Yiei23@qem-pbpecuz.nr",
-     "frnhseka@kjeyjpdb.cla", "JlpbiAch@qhwjl.sh", "K.Qlgaj@WkuyxjxvxSaap-Unskxqzyw.lv", "Toluha.Xdjp@caljc.kn", "woidcweq@qqqewspc.dqu", "Zlja.kjksdf.jim33@ywzoby.lj", "Kwb.llE.dqzohls@zlwcbreq.nn", "FB@CpucQeoJjlrn.nn", "ioccvmbfshnh@jblhj.fk", "HaKqiWfmhu@Jvgcbazdsz.qw", "TkwvwKej@Gj0dI.bj", "Stsduapffy.Jhaz-Hqyet@gjnmjotoxt.cb", "ecwmsbobl@xbpbreeqcm.tqb", "efvbnjy.dgqdwip@xvabgad.cc", "rosy.pzipdyyob@befeq.vo", "Paiu-Hmcwcn@yrtig.se", "Uuohvz-Gvpsdfuswll@pgnsjhmct.ui", 
-     "Legqechj.Aiqktvmdde@dgploxkg.sv", "SJ@OzecbjplovxyfmFibe-Paxilasuo.ce", "Ilgox.Qduqkftr@vqwp.vv", "xttcdebkqqgrudsr-zadjsppz@feoz.sqs", "hwcqwms@akxk.ak", "Ifrjrnykhsp.Yler@tmhyc.vyxordr.mj", "umd-taayzkqbhuzbn@XRzav.sp", "cdkxfrhzwjrwkjayip@VjrcWvuFgsgo.ef", "bltxcpakuwhrfot@wbtgh.gy", "Lvswb.Bcumpdrq@OdezioCznbv.khp", "Tnyaownrqty.Lsuftp@ryiskg.pvjlv.nd", "Sjhhivhg.Nchzle@sgpha.pc", "M.Ljrgwdnmwds@tffmokv.hjq", "LP@fzahdqyao.sb", "EZ@ZxuxesylfdRkxm-Tlmwhutimtmt.qh",
-     "Funpndcaxtc@YqzdzhZosihpa.op", "xkqykucvd.njbskfir@h-jnjumux.bd", "llhimrwdvqfnq@sunvy-epyipli.zr", "o.gsgsdfrpqsd-fsdfr@BunGbQmzewHibphtWhDvcpm.dh", "Xbegw.Uoncm@mtloZ.xd", "Wcgpi.Nszcu@pmlmlnx.se", "j.jjmcr@mlkhbmen.xl", "ypyasfmhd@jFWqj.us", "IyLtlAclth@frpgtxupjm.do", "Ulruqh.Ajjdwahd@Vphboaih.bc", "mwhwf.xwepihggngbh@Scdgi.vl", "XN@AB.ub", "GcbqpywcPaudh@lha.jlt", "Gutfepy.Chyagi@nxjuvz.fi", "ikkolzjuo@mmn.cf", "dofkh-iqfthr-jxqtc@BE5.tc", "Fiwa.Zzlxrxx@ijhn.gr", 
-     "ZImeAjgo@qmd-gridam.tk", "Svrcu.Sdty@gsoca.yq", "rdikw.fgloa@lldskpsf.lzp", "ynizmt.eazxatih@uxyusfpcjvnmu.ax", "ORB@amfep.je", "Xxfkc.WszImdfmqe@Ywyfd.la", "rrjaqkud.pqssznmkby@EpasIeosa.kc", "Neeilympgr00@vrjomru.ey", "GdylrHmz@vel.vlw", "povity-ksl@jvsf.jekv.pradpd.ju", "LH@cNEV4.iq", "AliomOpx@erglpr.un", "KC@xggv.gt", "NB@PswmfipsqHmzh-Dteytjzvk.oh", "NP@nbp.nmb", "Ypbgdin.Cxiwjhrp@concsu.xbo", "Hvlmrmgyx@071.6.2.7", "LlTgdJfukk@xhjjsatl.bp", "m.fkgvps@Dbpau.ss",
-     "tftdT.pejyauda@ukrpn.ce", "R-Hmlu-Ftkrnj@kpiqxkcw.nq", "IrDzcIkslr@lwoatd.hm", "N-Jcoyhc@UBEI.sn", "Ekjzqj.Oovpuh@iqjejx.gu", "fszcx.druywx@TFTN.kb", "Whczfdac62@BdkgEunWxZkf.da", "J-Mznts@HvknzrEfwgafq.zy", "Lftmjcm-Jwjqjtljk@fppasgm.zz", "X.Ffoavta@kmldryi.ua", "grifrz.dvvnmxi@yqpjcadn.ec", "Hjewr-Kpeqg@bxgh.trn", "y.roadhgnb@licbkw.kum", "Eduj-Ctbicq@ebyfihoouj.beu", "Bcxhvl.Hfcubyauwbg@pjf.dd", "Kjdd.Qfk@fdysapdq.am", "Z.Vhmvtk@4rPBM.ig", "KrmyzfHruxwF@Rfmdet.lo",
-     "ifjbwbqj@qrldzxeu.tpf", "SbpsbVfo@qxstb.sf", "V.Jospo@SjhpogrqxYsnr-Uejseupbb.kd", "Ivqwem.Miit@kovwp.oe", "gplcrvnl@nqtont.gzx", "Tvmtotb23@tzaxmx.he", "WlrldSagnkoyt@zhpmbqaa.eh", "EL@TlouDcjPjrfr.oz", "rcblvmoebnob@ctcem.lt", "JzCqiMudid@Zkgonklozc.lt", "CwhymGsd@Ux0hX.vt", "Fmrzkorn.Pvjx-Guauk@ewrruzssod.vr", "vbfdrwxdy@sqkbvacksb.otm", "lldsxwt.iyhhvmz@lqjmrzi.qg", "tegj.pzzyqxl@dwcik.kr", "G-Wlgkux@qqhxl.yj", "Zovgci-Hteiugwb@snghtdkka.un", "Zdtiv@sanlnbqmp.zd",
-     "Uxixe.Ggrvtp@du.voco.uku.ijgu.aj", "zngrjtnim@LR.df", "Wxihunkmg@JmtggQdvtslm.ff", "orbkushbiuc@vmgfjn.hvo", "FT@ggxidv.fu", "bqonpa.akzxyoy.qycwqzjkmm@zkbeyvfv.wo", "RO@pxiacvphjzema.obd", "Prpko.Szwigdhoa@kwwfyomvaqjsw.vr", "I.Pffehseeqs@lrlz.wbs", "Vpmwj-Fbcisr@cvtd.doh", "Kbflx60@NolsiSlQwhngymSookhfw.co", "Lbxfsbv.Pbrmqf@szorwdhaje.usa", "Kvuq-Evdqffyrb@tcazjpxy.cuo", "pkce.gzhhch@vluye-vlsgk.tp", "BS@S4Mht.bw", "Gunz.Rom@opzyj.cv", "Jiunmyhb.Udhqv@cnyfmhjdf.xb",
-     "Jbnpbznrmyq@MogizsBhaefms.jz", "hbdmwtgxr.gdkqbabz@k-cxvaymu.eo", "qvccgimisthbc@xzydd-pkyhpci.hm", "d.gnadnxl@DsaFuKlpwqLygotyRmXecym.ai", "Hsroi.Olphq@laauh.sk", "Phpci.Suoci@rcdhnmq.hg", "l.mslwl@hoxnbOGr.fo", "dqpwdcejh@cZUsq.bv", "GoWtkSzzlk@ondxwpckgx.bg", "Yqwds.Eyyctfnr@Ntupudgl.oy", "pjhkm.ixhusbfadrbw@Pords.uu", "WI@MH.wj", "TpaxekpmYrareu@nyh.zqs", "Wceqpni.Iqjzzczm@qsfffonjb.ef", "znzludppo@cwmdy.uj", "tuujy-qagrng-cqfrq@VPen2.eu", "Zivi.Uwymhtk@xwhxl.qp", 
-     "PDcl.gsf@dqb-wkgxky.om", "Janle.Qxci@ittak.fo", "gaoiv.xjwse@chtkwxly.kyi", "mlzcyb.finpgoyn@dbdxjpbsmwsst.jn", "MC@sxqgu.bg", "Kpcvq.BjfCeavbit@Elbbs.my", "luvpaxke.gghbhmcqzq@CkrqHqxnz.qq", "Jnykjahzwv02@euagabz.kv", "AcgwlHet@cvo.ffc", "zfqbzb-wgs@ztte.awxi.vtnyca.df", "YR@xZUA2.xj", "NedyaLhu@codazg.jr", "HX@wuix.sb", "OF@BpietxqyrCpnp-Ourjousfj.lp", "GN@vlg.fsdsz", "Zfguv.Pqcehir@kacscnz.ewd", "Uxlojbmwc@dfjalsd.xs", "HhfcDrbfg@dfymkyue.ys", "g.plbxw@Fissvhf.ws",
-     "glafdcuxifcdj@hulnz.fw", "I-Puhz-Uvquly@hczefyvr.vw", "ZtKwaWqqja@ncunih.vr", "Y-Fdfpci@HMBR.oz", "vstzreW.Iqgsvi@zjehc.gk", "jsaku.ufrpmt@OTVU.nt", "Qbpdybjy15@BnxhSjcSxrwr.mp", "F-Ltdst@SekupqYvwbeqc.mt", "Omgenfj-Wloctasov@ieyhhnq.pv", "Y.Rypltzx@izwtnig.jn", "bzrnnojqdgvnr@ivgujuhu.ab", "Zpcsz-Dlecp@vtkp.hpr", "t.etsioplm@joufhv.cfs", "Qtgv-Qwsfmn@gkvzvzghcr.yfu", "Wdbmey.Htrvyhuonla@fzaj.vf", "Kpsl.Ncr@ersugech.fi", "W.Otsuss@6eEZN.pk", "AmwigcGmzgwV@Ovlndoh.yf",
-     "Somae.Qfiguwkizh@ebxjqusligcdx.ps", "jinsmv.nmbnrx@jxmnqe.ae", "Baiw-Nkas@jzglgh.sxm", "xfwqsdbew-nqppaq@MJjV2.ma", "X.Dreogd@ojA42.kz", "xziur.gyehhkga@qizmovyl.es", "Lsj.Qhlt@dymystlc.lf", "fpwkyy.khwqjranv@zlpvlooctyz.nm", "xtlhzmvybjr@vgmx.umsl.uzsemk.nx", "gorrijpejxc@ra.uh", "uayndedwhdirf@tsg.pis", "DU@pqgrkgr.zb", "Xhvtix.Nfmslvuq@krhlgxp.nj", "unkzhijf@LebuxpVqjovxw.ou", "Jqysux.Ozxgtscxkhzqj@gtkbk.za", "KysbahoC.K@TjeWsyLducEtpTzh.or", "Ed-Ouxkj@gnlhfmf.yr", 
-      "Vnxit.Souffbvq@fdozbmd.qbs", "AK@uphbrlh.otv", "QiopdtoykgnaJalodsku@257.5.1.1", "Lpna-Elhcyf@ZEPY.xi", "n.dvjhmxwvy@tansyfy.wo", "Gibbu.Xiooxlbq@fifcdrdtiaoje.wgr", "DF@qnt.dtz", "M.Wedzxst@rnwlnnrz.zz", "byir-yicndyz@b-cksscaj.rq", "IxRamZkhgu@rmxontvw.rg", "RO@hx5Pt.pjp", "Eoc-Zpykatu@ub.dl", "K-Vntlqivydzmfyajevi@rwh.yj", "Ezxna.Aiqjy@YvxGoqTbclOeoCrb.rr", "Pohoa.Mku@NmitAixsg.mi", "fmmzgs.iovpfkuhkg@bardthhj.vv", "Kcamew.Trumn@qIgpL.th", "Swsecv.Ajlu@dksgnj.lr",
-      "ujifg.fomwmnk@secbblqs.lv", "GU@patidnlbv.url", "Vqykp.Qhqkc@pawckhaubefcv.ht", "G.Owgffhwvee@ekhl.qoo", "Vgiqs-Mleuix@xnux.cmj", "Vncen14@XbbeeIzMlixhpiRofqmkb.de", "Wmtcioi.Erardi@wzyvtfsndf.pje", "Kdki-Qtxvdmjsxaxnt-egqnyvg.sm", "Xuzdz.Rfazbygj@aflvqpv.hlr", "ME@qwvstpk.sqp", "Zpjd@weln.ie", "Zqew-Rtktry@JGEV.fp", "u.iwmscecqc@yjfntir.ol", "Tuckj.Xcnullac@kaznmbmkxt.vkb", "ZB@ybo.tvr", "J.Ajhatlo@scbxjjyk.sy", "ozen-hrmrzmu@q-lcdipcu.nq", "IdfkoNpcit@pkdpnkvp.oi",
-      "EL@pa7Ci.arq", "Kuoxe-Zqqflzv@lwrdk.eh", "B-Vxlpfywxangryg@ydg.uk", "Xrjdn.Nwwzs@ZvlLpoLyrsEnaDcq.mj", "Prqfk.Pgq@OwhzGxggl.mj", "vekphq.tjpaawnbon@gjlnfpoc.ic", "Pjjtyb.Mxbci@xVoxP.qv", "Gcwgvxup.Rhnd@ethtxyw.pw", "qzl-klqvg@Prcjp.xEd", "Oldf.Lk@Rudzc.zx", "glcke@Wixequ30.om", "osekr@ztsdfasdnn.xJw", "Hww.Xrwfeeq@fejqoig.Zse", "Saa.Vazcyid@qtxmqxiad.hqz", "Sjfw-oak@smcooi.yrj", "Vsr.Lwnfovw@o-ngzgnao.dfv", "Bbeuum1@BbnFhgPvoa.ba", "Gomluunil.Hacdsdfr@ahdskjfh.skd",
-      "UwmyvuUsdyi.fdm-Fcbex@Al6W.mc", "Lehvw-eqfu.Nsuo@sPxjglg.bh", "Iw.prfetrwerfr.Hdpl@lovfpu.fv", "fatg.cfrgawUS@gpre.yi", "Mjh.vqlX.ttl@bgpsdfeag.cz", "Nb-aqnjlkl.Ijiu@emmgkm.qe", "Gxmpnvtyj.zmn@sFtl.fl", "Gomluunil.Har@dckkgfpd.em", "EgfhAFnN.AIhd@HxiMn.H16sdqG.ym", "cuaadaoa.knCE@Aynesn.GfH.gn", "kstnirysNudnu@Mhtxbgcfb.kmssdftuz.ok", "bth.tijre.oDt@Bveijuten.qr", "eiiyysueLMnus@ULrclro.zjnpmjg.jv", "rkaoahdeo.eLc@Rbrol.xrvb.ask", "ta.o.agnvasSc@GOeFK1.DcfdsOs.odv",
-      "P.irp.e.euieh@BesuMy.vamijdy.cj", "Ahzaea.Ar.aTe@Ueiemqkt.lzd", "naz.rqAn.BAar@Srenlrse.hald.kai", "dtaociti.eTnP@Cgrflav.ivnk.sx", "rttnal.sNlTyr@HPtzyzwe.Kivhkkno.fe", "eatnyaIpaaeai@Adjebmfb.sASDFxs.iuj", "stiia.nuzjrni@Ueahx.xa.cSl", "eiM.xistNaihn@DzDnH1N.nW.dDd", "noec.ztrermag@RuoDHirbrr.rh", "AMgi.Zaee.as@BMcAwkqwerf.qcE", "tagtOagJnB.eb@ShRmbzoh.mrwz.scb", "wnga.truPaK.s@KkCzghllewmy.tb", "eigr.iadxhayk@BeDmk.gxtmmse.sfh", "bkuhu.mguaso@ABiG.khhpjbdfj.pbe", 
-      "PxDkl.Dkksip@Woe4blb.vu", "DSa.Tu.duahk@AqnL.WM.pn", "Enviro.sahxo@Gseeavnl.fynaoid.jw", "And.To.all.you.Reg.Ex.eMail.Validator.offionardos.out.there@remember.the.soundtrack.is", "I.just.call.to.say.i.hate.you@sarkasm.com", "DANKE@terima.kasih.com"      };
+     "M.jrvgr.fcnygr@ervur.mjrv", "Hwdgfl.Raykqr@kzggsaq.vdq", "Hmqbm64@ND.zd", "V.Sahwlpk@hcfhulyzhmlxp.pb", "Gfdko.Kdxvoixjqlu@hesljipy.nc", "Wohzx.Zdtzoyrj@jdqau.qx", "eaktnhwvgsbdx@eo.xspc.hbh.xkit.vu", "WPmveql@rpqcjy.pj", "bodap.ojxmkmsuqnsq@vedoz-dgoyjid.fb", "Gmwj.Yezqkaaa@ratbovznw.gdv", "p-dqlvh@omncwto.um", "WH@mzWbe.fs", "Eail.ycefg75@txnh.xooff.qql", "kqhwel.ozhxy@yspp.zu", "Anew-Fwkrwfn@bradfsaev.zu", "Maazgajgs@duvkt.ym", "QFurasdsdadsfrm@qf.asdfqi.ar",
+     "NEhj.Jdbqzcwgizcixtfxxa@cK7n7.rp", "Kebxf.Jtisbooi@2qdMp.tv", "O.Fqnsj@PjiIlZiapdFknotvIxPxrhi.hy", "Qxwps.Wktckcfm@dmninvj.ri", "Jedjddjpaf42@qoepd.ei", "Hqvu.Wlerqacj@3mMKg.kv", "Ahsvpgwhn@wkdfnlbn.nw", "uickngdc@KX5bN.zl", "Hbcj-Apksdx@6qVqJ.ep", "Slmkk03@eitjozwcqe.ccl", "g.nfgtmegk@yvo.ddf", "Knkjpmdr.Gahgrmu@ApanIraeq.cd", "Xmqkqyu.Ryygdf@1pjZY.ihj", "rwsz-ehydyg@uuadaphg.bq", "D.Kavoglv.rcrsaun@mtn.scx", "Onimdehxf@aXW15.dz", "kpfjy-eztwmfcsdcf@ohzgq.ek",
+     "bcebjmem@aczfpjix.qa", "Crksl.Vnvdyy@tdyefiyvwt.pd", "HvnzAzifzl@cwf.gi", "d-pvwdcg@dcdgq.ai", "Jwdca07@djwp.qx", "jays.fwjro@jpdf.psr", "Fvcetk21@xlcpbgue.nt", "dyaazjannzraq@fsfoiwit.bz", "hcvmofwpy.oex@dvsmdzxark.ef", "KllgqyrRqoein@mtvihvccjt.fne", "Ljsyiieum-Aauyfqm@nuhomyhsu.scd", "NAyolnoj@AbsDmDshwp.lt", "Oidgrtdwdsoefs@wkdnkmxep.tgt", "HN@vub.ytp", "f-bwdeuc@Gqzwdm20.zj", "Oqzcnmmxn-Kkend@egpijolvbb.ddj", "z.heymkjc@yiw.zjf", "Cyxnkhy-Kiizemj@gink.gim",
+     "Pkic.Knhy@Rlhx.fn", "ddibc-vysf@PpyeBeoOmjsz.wu", "Aqfa.Yjy@finvtljx.cc", "q.rdxkvpd@dtsjate.um", "Wvcb.Hwfdyn@uhdlw.bv", "MF@tthj.pne", "J.Zmgnnzm@XQEO.bf", "slbmd.swjaqpwtborm@tdgb.cz", "BqwuvcfSmfcq@xmxk.fve", "Giyqom-Lsbguy@uvuxz.ji", "Flsazx.Mpec@Abqf.co", "EymcqExv@wmgcduv.ar", "Xdsp.Kemtu@fbi-bod.ow", "o.kyubjs@xxrtwb.ye", "hbesxpvfeqfuo@qjloep.hm", "gfct-acdnlc.tcnned@pcbak.mq", "lsial-okoqyt@kswlaa.xa", "Rgxtk.Tmcatr@lrqfpxb.tq", "x.poiyqc@swsufbpb.cq",
+     "Abev.Ljxngsdg@6wHIk.ah", "D.Tseyims@PKCN.wa", "Maqkpa-Qiznlj@wlljh.af", "LvfkyGhj@voxlgchfgk.shb", "qcgiuanqxzz@joupvqge.nm", "Dpvvm25@uxupdhlksx.wik", "NF@dwusbeas.dwe", "SygzvfUljbbn@ufqburicrmv.db", "Ujsbui67@zuvf.ls", "l-hiqec@loint.ea", "dzyg-usgf@tlcnzr.ui", "Zmgr.Dspriunv@kjtlq-nxk.vbj", "Bgcq.Jew@wmnolrs.sy", "Oxwv.Ggvfww@rQ2o3ds.vn", "Czcm.Fhqzo@fnob.dfv", "igsq.djn@jaiy.scv", "Dgp.bvbxj40@rzdfsbuz.qp", "Towfep.Zpkghf@dlszbdl.txi", "c.lixuapkx@fxa.nao",
+     "aetaf.zedxzbzyfuux@njuyn-ozizmks.vc", "Klxjkbi-Jpeeskn@yhmi.tfs", "xrbti.agotiwkngkwy@xgjw.hw", "PA@cqtg.uxi", "y.txrcymq@hnskyyt.sz", "eedrikwqgikhq@iygjnniw.bw", "Mabdhzh.Eitpuf@2glMX.rfd", "j-lvzzid@Quxpng23.hk", "XoebwAekiqt@peykzchg.er", "Frsycnuwb@nFP15.tl", "Rfnmt47@EkvNF.pg", "Lbpcs04@RF.du", "TmegzgsMyrsa@bhbj.zat", "adiva-pvbl@CznkNgoCgdbg.cy", "VT@ljHoo.nn", "Wbjji.Uazxlroms@zpyyju.fdw", "ogwfanjdcegiksgmvhk@nhmfffstdy.ns", "mjwj.mjpo@wpaooyfdgyd.st",
+     "Xrjaqahl-Uciswnk@qzskgqpor.ybf", "serx-nlitpqtxe@qmosuxvo.pw", "Faqweq.Uout@Sidd.nc", "IEtqhzot@LaeExUnetyKypkluJaQzpie.ll", "Zawmr.Uecquv@ehdzlkfstf.yk", "Zvkl-Cffale@6lIlH.gz", "Jifko.Kwwdd@wm.pfkw.saq.mdfu.tj", "wgrc.kvtrgnaz@m-mghvysq.ts", "Z.Gzyvl@GtuOePqdmpCrncdcVrEageq.wa", "Eylhp.stq@gui.ea", "Kpsia.kfu@Figg.wl", "Uknkh.Tyguc@dczrasi.ay", "Rrcol.Uwjctifzh@pbxif-ceamp.ur", "Dxc-Cofx@tuluuqzydq.ect", "WpclzvoQurwqk@egxniktftb.hhr", "Alzhhlsfq@lcgdillh.ad",
+     "gts.rgs.onruq@qo.sdfuzx.ay", "caryjqojhp.ywhmseipat@lwskqhr.cbs", "Mwmkmaynv15@gydlsqctoz.qlr", "Khaz.Ayxyjffs@1ndUv.ma", "C.Dzosxhe@mernihvqhrdwl.cq", "Ikipo.Rxekt@yidwqfxu.rih", "SXmfyqr@dcnd.le", "K-Caqyddn@omth.xw", "QmcigUuq@onyjb-bfcksmw.uw", "n.vadbgpd@etb.hnp", "Rslsltqfy-Osyzr@owfmcpwemp.aoz", "E.Zuzbxojbqgsazrnb@zsr.ynq", "Hxkhu.Khodp@Easdfg.un", "Oexwcanp.Ckfbp@rrlkmsdxj.id", "td-hjvlf@ufpdeyh.oq", "Sniblr.Dapkvq@lbAAU.se", "Kefbq.Bcyps@YxnwIltow.zz",
+     "SPfwrwr-Ookpesja@mhhby-ljm.chn", "NVkcc.sdfadwems@wymeddafi.yf", "Cvzzjing14@jfboktwhdw.sdm", "MlxsDipwov@aav.kss.yd", "Jdjexw22@zqejrvcg.nj", "utomrpubkxidl@pm.ktlp.iiu.kigl.mf", "MocvrdcbmmHccxvbv@lkdblnmidh.weq", "xdhug-zrhvak.xcihvtc@btpgs.ni", "zytxu-fcvjocajbgrondkfbdxvky@jxavrdw.to", "vfyxop@SZ7mK.ao", "Mccpaoc.Wqsrsuezsi@sjsakvAb.qt", "Sfwh.Pbfxh@hpofcqh.rw", "aidcs.sctzn@xvkkerfd.vn", "NZ@jxm.whm", "Zyrcg00@FvyNG.bi", "Lskio.Bhgkccnzn@kunwq-pykruvq.wt",
+     "JAlmbnyyc.Ixzjpbcqfjutmv@xnfwilwu.cx", "Kqkpxaea54@spslrqdyht.aou", "qqlcrorwlj.foumryqfyw@ucicgkq.ri", "Cwdov.Xmhhnzgtqhl@Yxded.kv", "Ukriu.Fysdfj@gkvxo-atxcfsdjh.ou", "BuspnsicjNjlvucg-Orql@ywbyreof.fvz", "Thvpj.Grcze@tqfbngdn.xil", "GbtqliVwqlum@nvlfqqxpihz.kb", "AJ@owfkdfyx.vaf", "GjuzyMgrcvb@ujdznn.gt", "orgmelfcdms@cwfyfjlf.wi", "ZofjMut.Grbncubz@urMIC.fw", "Srmnr.Jvfjb@xa.iivd.mtb.figx.zdh", "rvxq.ssedfkdp@f-noaxrrn.ko", "Ycxvlzypmb.Iueot@imxzuqdmcnd.sv",
+     "Lnhffmy-Cjyamqfc@rvnxr-uxi.uoq", "Kwyav-Jfzqxv@NaablVcmlimw.tz", "Zwnos-Xccjett@xqjdenvziiz.ae", "G.Jnzgcjejsvb@gvjft-nyujwsk.ao", "i.ppulbak@dpsl.yqm", "N-Eutgimm@yboxadqx.ho", "Tovwk-Dqysxp@oskrywgm.sjo", "Udfbcc03@aocnuhbm.ru", "Iqua-Joxbfk@Rftdq.ag", "XT@ogh-mzncms.cg", "xllcty.bxqnah@QdhkXxqPxoyd.ik", "lhyho.kpmsyharl@vqjzn-ulmgdbc.daa", "Bdfse.Fnmxc@vsddzaj.hj", "ZH@ciojaguv.jkf", "Wkhx.Hau@QulzBesdsjmj.ooa", "Wgdj.Mnfaggdelfan@qdxao.gh", "Rwwsf2@ypm.yjv",
+     "Xdksmy-Lwohwiewh@GiyRhRyankLpwqpzHpUcaqo.mb", "UU@XS.pb", "Voqqab.Exkkulilmd@ziiipkwn.nd", "LvrpeKcg@rutma.zo", "D.Whivgbsvz@bfwgdlbkrk.bcu", "DqemdsuCukhloaa@rzqmmyq.ce", "wrtdi@zeeswtvt.wp", "Y.Usltk@dfksjs.adskfj.kd", "sagtr@ravuw.bwdjclr.mx", "Jfef04@jN.Nb.edu", "zhcioja.guvjk.fiyt@etwqwqj.vlr", "Gnvsyd-Ulysssdqocf@Rzgmsdso75.nx", "j-edznx@msdfsgUka.ndw", "qxhg.xfoea@GM.ld", "Fckda.Epwyq@obghs.paa", "Kpk-Obypkvc@xior.hhte.ycfcge.de", "Qyltw.Pyhyi@iadiw.otv",
+     "grreeq-gvknuua@insdfsdkgb.aas", "Ndsfbq.fMvxwkw@Rdyg.mb", "Reonkrl.Cjvvk@ZskfeLrMmkdefzOrphlct.gt", "EkwkosRwsapxlhsy@HefknctaiUilk-Soaieqrxh.gg", "kjhsjliuvn@dogl.dn", "PepnwGal@qost.pel", "T.Lri@pqciesturn.nc", "G.Jnzgcj@ejsvb.gv", "Qblz.Btlvc@2WaOs.hhg", "Tejhapzbciag46@fkhnnbsgtmoug.bt", "Tovwkdq75@xposkj.oh", "Llcv.Iye@dgddushz.ng", "iqRajoxb@fkrftd.qa", "Dqemdsu.Cukhl@oaar.zqm", "Reonkrlcj66@kzskfel.rm", "Yusltk.Guyoudps@lvusb-ehu.jxg", "Tfcv51@dzaajh.ji",
+     "Ietqdo.Hadem@fhwpwrw.gkd", "TbJzdPhbpy@cghkgmb.aas", "tlripqciest@UrnNcaAvedUcrZvv.ff", "Dtduas-Mchufmv@Japfea.vv", "Glmhdc.Bevasfasadtb@nsdffjd.zb", "Wbetsnvbh-Lhdxmbrfcwia.Kvbi@bhrokmr.az", "NF@yzewidzv.mq", "Poachuri10@hbtu.xrz", "Dqemdsu0@ukh.loa", "Xllct70@Xqnah.qd", "oymsr@Ijfwrvj.xj", "ZT@NG.vx", "JI@Dnynbn03.ce", "Fzgpg51@Ibrcw.ne", "qvgdkgffbuc@ffbemmqxfq.gad", "BtiaLvycoh@ApfifkCbegq.map", "Mrjwlj.Rzbuy@Yfpgis.nk", "GJ@nzgc.jej", "Wdav-Szrks@BHkkI.wq",
+     "Ismytnuud-Ayrqkiin27@Pxuyp.aj", "Voqqab-Exkkulilm@dziiipkw.nn", "qylrettwpyyz@HY.ii", "dwhivgbs@Vzbfwg13.bk", "Zzrcnk.Qtxjpm@ynnzbtmn.oc", "KR@kwyy.hj", "ybzniljaaymam@nwwiesy.fg", "x.qoykm@HnqcUczjl.ez", "Einzsrz44@lskwh-kczsyzv.ym", "dtizy.gjsio@Dfpxen.ww", "Tbzdp-Hbpy@kG3Ba.as", "Tlrip.Qcigfdfstur@nnca.aved.ucrzvv.ff", "Dtdua26@fmvjapfe.av", "yhdjayq@qang.uvt", "veig-najrv@qdxyienb.in", "osiwzvcqvcb@ppdflmi.kb", "nfyzewidzv@mquq.uwx", "pbpfz.gimv@tiucei.buj",
+     "CepjLgezwjtt@ZZ.ld", "Ggnqjc.Rfwixazm@jhoaklm.ee", "Fwghj.Rmiogewg@vdovfqf.paa", "MVnkgx@gqpzusgmjeo.tb", "Waanvz.Zkgrjjd@zwtojtdrie.era", "fcgydrwhn.bawun@CkhgrxjkcBpsl-Seximovpz.oj", "edojy.ropqqx@KioKg.or", "Yhdjayqqa@nguv.tzqk.ywvisd.rl", "JL@Hbtaqdo.qy", "FS@yoqqbbzh.kik", "Llcviy.Eddus@Hzngfrgls.gqv", "DxlnTzzq@tijs.cup", "xlcxqn@Ahqdhk.xx", "uryj.sbpfoy@d-vuymhcc.dg", "Ekwks.Rwap@Xlhyh.ef", "Mvnkgx.Gqpzusgm@jeotbvw.mf", "Wkhx.Hauq@Ulzx.mb", "PE@pnwg.alq",
+     "DnzgGfyltp@JstnwtJxjhp.olh", "gpuavdmllco@ojorxmafxv.kbp", "IppulbaKdpsly@qmcpcbnagq.xuk", "sNvb@hlhdx-mbrfcwi.ak", "mofirwdjnpcf@DS.cm", "Q-Rdqpsqp@npgl.ef", "mmgauw-ljbfee@wjcoqt.gj", "e.sdfql@fzh.saw", "teu45@OY.pq", "t.quehd@IyehNpztr.wc", "Sar.Avuw@Bwj.cl", "WE@ebav.fde", "A.Jxlnww@pfljr.re", "Kjhs.Jliuvn@dogldnq.kt", "Aayiy-Aslrwco@ralg.ool", "Rife-Zsxasea@Poari.as", "Qbllv02@waoh.hgo", "Aeyvt63@Qgqnq.dl", "Uuxspb.Hemum@zkeuvsv.pa", "Osv.Cqcbp@pdmikb.fdq",
+     "ZAkk.Dkd@nwfbyhbg.lw", "Vhipkab.Riabx@fsel.hwa", "Eszodfqlf72@sawvqolxqm.gza", "Eakvee-Azclaqhrh@kslhtvuf.gs", "Epva.Isc@vrvlyzas.us", "Lfdfoyudh-Ihueozruedrx.Wjhe@qondavq.fu", "Gnvsy16@LysQO.cf", "Pfttutwcr-Irnjr@pabjvwhoox.wfx", "wDav.szrkS@Bhk.kiw56.xg", "Vttmr.Olnkzofq@rpxbcmf.rw", "k.pkobyp@kvcxiorh.ht", "Qoacu.Fczzkkrd@2wuTe.pd", "Ubftfcklo@dEN47.bo", "Pbpfzgi31@dvtiu.le", "adsdfL.Czr@ulfntdldads.vv", "GdjdO.pdoi@DBgyP.fl", "cdtpjtapydsnt@mp.blws.uopy.cx",
+     "ETnzsrz44@lskwhkczsyzv.ym", "dtizygjsi.odfpx@EnwwdbekgUzjs-Rprasfmmgthn.gw", "Tlripq.Ciestu@rnncaav.edu", "BZ@mwc.ifs", "QblzBtlvcjwa@OH.hg", "Tejhapz-Bciagouf@khnnb-sgt.mou", "Rhovhrdbwg63@gckdk.yf", "Opfi.Ehozhxfv@nhbpq-btn.zwc", "Poach.Urigc@hb.tuxr.zjq.iqul.uv", "BQ@Jsovgdc.xc", "R.Eonkkfe@lrm.mkd", "ztgvxkdwuv@sqhkfzzh.ql", "bunf-iivqbyiz@vjisuhlz.or", "vlqidbm@yxadw.lbb", "Dvdcx.Sebte@dmctznlr.nes", "Hzfp.Tcoyuyfm@7ssdfsCPv.nd", "Jcexe.Nbqgdn@qafpkqhc.bg",
+     "vwtm.roln@kzofsdfqr.px", "IRpc-iasdfd.bsk@PaqLfZlavpPwxyepIxTwdby.nm", "lvrp.ekcgr@utma.zoc", "Rrzkr16@ymuiskswrz.rdm", "LFzzrlx@nfoj.ak", "Cdpjlge77@jttzz-lduwymnd.qd", "Tqueh.Diyehnpzt@rwctz-bggvysw.gc", "Thnvu.Cnrqnwaq@qjgdt.eq", "Wyafy.Ahltgljwpxv@Iwfuu.qq", "Tbjzd.Phbpyc@ghkgmbaasv.of", "Nlbvw24@Tzkgl.cw", "Hfjllpvo64@zhfzfjxh.hg", "jwwvo.mogoplxtxc@jika.sg", "Irpci05@kpaq.lf", "zkgwi-wpxi@AfegEcpAznec.kn", "Cjxkbst@vnjfpzemviz.nu", "Qasfd.Udymsip@AZEM.lo", 
+     "ne-yhbwa@Clgkrb76.td", "Sekh.Meoli@0XqsdfF.fgh", "ekwkosrwsapxl@hsyhefk.nsc", "asdf-aqbavb@jqsdffrtd.ib", "vqpyxb-wxwlpumbfwv@rmckgbqxml.nl", "hzfptcoyuyf@MxsCpvNdjaQuoBzq.pj", "wdavszrksb@hkki.wqu", "Ippulbakd-yqmc@pcbnagqxu.kcc", "Fdhr.Zw0dtry@OIdqm.ke", "cjxkah.hfysm@hbstv.nj", "p-oachu@rigchbt.ux", "Lfzz-rfoja30@vsdlzlosknpk.gst", "G.Gnqjcrf@widzmjhoaklm.ee", "FwghJr.dsfmiog@edsfsdwg.vwd", "Fwcc.Ldprnmgclhyqfmnzgy@kU6r0.wc", "kjhsj-liuvndoqnxjdj@pwzdmwq.qc",
+     "SbcxzdTfuhhc@vdzrpstvvcq.kp", "Qblzb.Tlvcjwaohhg@okbdsstk.zq", "E.Jsfqe@VfrFrEruoaQlcfeaCdRteea.ug", "YavhkxnKyeog@sarx.rlp", "Qrdqpsqpn@pglef.aq", "UvcxnoevnO@ksFry.uj", "Bqjsovgdc@xcoy.zfmw.oqxtum.xk", "eakveeaz.claqh@rhkslhtv.udf", "Hii-tihyxhm@ifhduub.njn", "w.yafyah@ltgljwpx.vi", "Wawixmcte-Wlqilsux54@Yigoh.aa", "Tlrii15@turnncaave.duc", "qxhgxf@OE0gM.ld", "Fckdae-Sypwyq@obix.yu", "Neutgi.Mmybho@wbtqi-swk.bqx", "jcarg-zvxzwsed@nasdfehdey.ny", "IE@kkQzs.lu",
+     "BPiiiuqcbrYpmseiip@rpneohnbnu.ktr", "cadfas.dpjlgezw@jtdsfsdft.zzl", "uyfli.cslbtgmg@ocqftjep.ua", "Syglsdur.Ivimdw@wzaadsffdn.ly", "Weebpn-Nauvfde@vAdfdd4Kp.kr", "dtiz.dsfsdsfy@Gjsiodf.px", "Iiit.Wayebfax@wwekxpuko.shs", "tlrip.qciest@UrnNc.aa", "Gpuavdm.Llcooj@4rxMA.fxv", "MyrxbKugder@mhinalzs.jc", "irpci.bskaq@lfzlpw.xye", "Qoacufczz33@rdiute.pd", "Ubftfck.LO@den.NXBol.hx", "Ybztg15@bbtiznazwg.oku", "Cnklrlrnq-Dflsw@kyixvikddu.gac", "XayflZjbpnw@lfawhgdy.ix", 
+     "Zdvf.Hkeutk@dozjnra.lc", "Srmi.Fxu@kjsypcuz.wj", "z.tsopqdi@fhdrlyd.bl", "s.wbbfmb@tnwgjgea.mb", "Rgubv.Ixytaccm@5stDx.ny", "v.gmgyho@vwrdbrzg.yj", "dneys-wdiawkwtfionixmfiydxjo@mswpwgl.sl", "Vqkut23@PQ.zp", "Wjrgcaoydf.Pjqno@hmebjxkiech.ks", "C.Pvbwhyd@NVEA.ze", "FfwkfIkn@vxxlvrigqx.zro", "ytxn-hiqcnwgqy@ukyttcc.ez", "Cgrcj.Vwwdpqrvmfl@Eszag.hc", "Oclh.Tjczda@hmGLG.sd", "Hnvhjw-Kznakx@dcmbw.qc", "S.Kqirhewg@nhi.suz", "k-mufcf@enbziay.mq", "vkqy.ubhgg@xhqf.ysl",
+     "wehxbvkpfxwophilnas@yfpbomrnnz.in", "Zobjm76@DqlGK.cp", "Osuwy.Bhuzrqsu@xdvsqtt.au", "Jadzp.Buquiw@fbqwtxuiqw.ry", "Mjbfqd.Ghnl@Szly.ve", "P-Ocjjrpk@vsnu.mr", "dtiexabpwnqsg@ob.bmbh.hdf.rbog.gp", "Fntmy73@jsgk.nj", "Jezy-Zjjvcu@7uPrP.ga", "Cmfrzq67@vytbehnm.ce", "Blxhr.Zckhr@xs.nkkh.tkr.poto.th", "Qzic.Nngvaeeu@hhoxowvda.fwc", "xkuzu.rspdhbxelcpy@tmys.ih", "ykeh.wonephso@u-uesyrrw.sa", "x-pqjcpx@yhosl.gn", "Mrjcmtb-Jwkcsrl@qeiu.xre", "Kvxmpetsyta@unlaoxgmp.aps",
+     "Imdmfoflw32@bhlnbzmfuk.old", "psbigg-hlvzqs@daalvo.vy", "oaxuamzmpia@xwcksprr.ja", "qbpixxjfqtwyk@bnmmyubp.gx", "t.uarnowz@iez.dtl", "Aumlsvk-Wdrtgsvr@riqsq-nfy.fcv", "ekbkg-xpfz@TkxuThwGqapi.wk", "Pcjoiuxmm@ydzlupse.cj", "ldbhr.pjjndykqkiuu@dywek-ackffuo.ei", "bnmbulkngu.lkpenvrwpi@lifvczv.mu", "Iuzphbt.Nuudbo@4rsEM.avm", "Uuxdj.Vxihmwcnn@tkwbu-vioplqp.au", "WhzgrIns@kiiep-cgcxijn.xu", "Vtnhpdndw@eeayw.ju", "Aqjy.Yeenkkacjybd@fv1.zb", "gannzqjcfjbor@wzzzdh.dj", 
+     "WecuicizlhRqjxxyur@mqpyzmmhhx.gdp", "Xaxbcvjfh.Mxizpmeeznwvci@fwblacpn.yy", "jiisry.kxaix@upcmm.en", "AY@atmjmjqx.ghp", "lplvx-yjjnso.hkmihrb@svhmt.fu", "J.Eaqjw@XfiFlAwdmyFqjcjsYlIdgeq.xu", "YjucpcwhzGtcgovcze-Pddm@sxroudwrtp.oei", "Taqudpybrx17@skglk.uy", "XnclTkpstc@mlt.wg", "BewteedHyzrz@cfdk.xvg", "Mqazs.Xnqkdknpnx@indisxok.mj", "z.feoalquq@tlm.nrf", "xngdkkqa@RY1jI.di", "TSsokaz@oipqc.ni", "Ppkx.Hioimqgq@ophun.bll", "Gzirbnz@jzimz.hlr", "Z.Nipm@ajdqih.vr",
+     "TTldvlw@rwnj.fp", "VgewxwKmggal@ctqgzlunbrs.zi", "Lfmcjwnci@pVF11.ec", "Ckpqbc.Xsetak@cbdhayt.xat", "Csnurdcx.Hwllclt@NbdcMoygn.ez", "RTaa.xgbi@XsrUxYqekzFrlfoxFvJvpnu.bl",  "Gdkfu.Aryase@mrqcrosu.etm", "Vfhhpymtj-Ijgibsos@ecckjbxfn.dec", "b-eeubah@Ulbesng73.sn", "Ylgx.Aybzmsip@7cVsdfMa.lw", "Gflb.Jdgn@Rgydfdm.zf", "Ltzdsl.Xizqjbpi@vissdubd.el", "AoKqb.Emnxax@Xio3mvp.vp", "ELr.CwZ.infse@ZedL.XM.el", "Raftzy.nwdfmao@Fhizjzyf.mmeixzs.ah", "No.uvre@fcnygr.RVaf.Ur",
+     "EwzsvpcpvQxlochrel-Qscb@ylcuuafvpz.ryh", "cabir-sxkun@ithothmxixri.ie", "kEzcdygr.knsd@ugzbwosgsfk.le", "bhupdvd60@qgndarog.ev", "erdgvetBnu@cyoy.bfr", "rWzasdfopro@tfpdnu.hu", "tuwtnFdfdrn@gkfkxljsdl.ify", "Ppgsdfk-Jmwfno@7rSpJ.kk", "Akhsfddfdsfvvg-Adoezhy@kG6Aw.yp", "nzvsdffw.mztotlwxwyep@btuyr-yfxgatf.xu", "dzoxuxyqhrb@djtfwxi.hm", "ravevakd@Ensznf41.sv", "ecbdl.Ivytgvye@duCsdfRA.kdu", "shLi-uasdfJdzwb@mxpqohq.gvn", "enkf.ON@rodsu.grn", "nwvkc.xbfob@yrag.xj",  
+     "Afom.iqfsekdw@vjqtisdfwmj.jdg", "Tlufsbzxba.gxxfueqlaa@ugclozu.yv", "wedr.eebtsgb@jmnzdvus.bs", "eaflfnkyk.Bnpbpplitoofoc@izfkuvgv.ju", "bkkdo-sdasdffwR@gfdb.asdf.ttm", "Paadf.klddsksdfP@gkjmwfasdfno.zr", "dnbmdt.Elkyfg.swxsbrbl@lxhh.dfsgrgo.adyk", "eotamr-slkdffxlaS@TctvdsvsadfzvO.cwd", "And.To.all.you.Reg.Ex.eMail.Validator.offionardos.out.there@remember.the.soundtrack.is", "I.just.call.to.say.i.hate.you@sarkasm.com", "DANKE@terima.kasih.com",
+   };
 
   public static void main( String[] args )
   {
     try
     {
+      /*
+       * Initialisierung des Formatters fuer die Laufzeitwerte
+       */
       otherSymbols = new DecimalFormatSymbols( Locale.getDefault() );
 
       otherSymbols.setDecimalSeparator( '.' );
@@ -1240,6 +1301,9 @@ class TestValidateEMailAdresse
       number_format.setMaximumFractionDigits( 30 );
       number_format.setMinimumFractionDigits( 7 );
 
+      /*
+       * Tests ausfuehren
+       */
       startTest( "1" );
       startTest( "2" );
       startTest( "3" );
@@ -1247,17 +1311,13 @@ class TestValidateEMailAdresse
       startTest( "5" );
 
       /*
-       * https://coderanch.com/t/567735/java/hardware-details-processor-type-java
-       * ... not suitable for Linux
+       * System-Informationen fuer die Vergleichbarkeit ins Log schreiben
        */
-      wl( "" );
-      wl( "PROCESSOR_IDENTIFIER   " + System.getenv( "PROCESSOR_IDENTIFIER" ) );
-      wl( "PROCESSOR_ARCHITECTURE " + System.getenv( "PROCESSOR_ARCHITECTURE" ) );
-      wl( "PROCESSOR_ARCHITEW6432 " + System.getenv( "PROCESSOR_ARCHITEW6432" ) );
-      wl( "NUMBER_OF_PROCESSORS   " + System.getenv( "NUMBER_OF_PROCESSORS" ) );
-
       wl( FkString.getSystemInfo() );
 
+      /*
+       * Log-Datei erstellen
+       */
       String home_dir = "/home/ea234";
       
       schreibeDatei( home_dir + "/log_test_validate_email.txt", getStringBuffer().toString() );
@@ -1274,12 +1334,24 @@ class TestValidateEMailAdresse
   {
     try
     {
-      array_test_daten_aktuell = array_test_daten_a;
+      /*
+       * Arbeitsarray auf den 1000 Testdatenarray stellen
+       */
+      array_test_daten_aktuell = array_test_daten_1000;
 
+      /*
+       * Ermittlung der Anzahl der Elemente im Arbeitsarray
+       */
       test_daten_array_length = array_test_daten_aktuell.length;
 
+      /*
+       * Durchlaufanzahl berechnen
+       */
       durchlauf_anzahl = test_daten_array_length * FAKTOR_ANZAHL_ARRAY_A;
 
+      /*
+       * Die Durchlaufanzahl kann auch auf eine feste Grenze gesetzt werden
+       */
       // durchlauf_anzahl = 3000000;
 
       stellen_anzahl = 9;
@@ -1288,6 +1360,9 @@ class TestValidateEMailAdresse
 
       String test_daten_akt_string = null;
 
+      /*
+       * Im erstem Durchlauf werden die Pruefergebnisse ins Log geschrieben
+       */
       if ( knz_ausgabe_test_daten )
       {
         wl( "" );
@@ -1329,6 +1404,9 @@ class TestValidateEMailAdresse
         }
       }
 
+      /*
+       * Alle hinterlegten Validierungsfunktionen aufrufen
+       */
       wl( "" );
       wl( "--------------------------------------------------------------------------------------------------------------------------------" );
       wl( "" );
@@ -1346,6 +1424,10 @@ class TestValidateEMailAdresse
 
       startTestNr( 4, "REGEXP 3" );
 
+      /*
+       * Diese sind nicht implementiert und muessten selber eingebaut werden.
+       */
+      
       //startTestNr( 1, "HCBval" );
 
       //startTestNr( 6, "EV4J" );
@@ -1360,13 +1442,13 @@ class TestValidateEMailAdresse
   {
     try
     {
-      String test_daten_akt_string = null;
+      String test_daten_akt_string = null; // aktuelle eMail-Testadresse aus dem Arbeitsarray
 
       boolean knz_is_valid = false;
 
-      int anzahl_korrekt = 0;
-      int anzahl_falsch = 0;
-      int anzahl_fehler = 0;
+      int anzahl_korrekt = 0; // Anzahl der von der Routine als korrekt gemeldeten eMail-Adressen
+      int anzahl_falsch = 0; // Anzahl der von der Testroutine als falsch gemeldeten eMail-Adressen
+      int anzahl_fehler = 0; // Anzahl der aufgetretenen Exceptions waehrend der Pruefung
 
       int stellen_ms = 6;
 
@@ -1374,10 +1456,25 @@ class TestValidateEMailAdresse
 
       int test_daten_akt_index = 0;
 
+      /*
+       * Die Startzeit merken
+       */
       long millisekunden_start = System.currentTimeMillis();
 
+      /*
+       * While-Schleife 1:
+       * Diese While-Schleife laeuft solange, bis die Durchlaufanzahl erreicht ist.
+       */
       while ( durchlauf_zaehler < durchlauf_anzahl )
       {
+        /*
+         * Innere While-Schleife 
+         * 
+         * In einer inneren While-Schleife werden die Testdaten aus dem 
+         * Arbeitsarray durchlaufen. Diese While-Schleife laeuft solange, 
+         * bis die Elementanzahl des aktuellen Arbeitsarrays erreicht ist, 
+         * oder bis die Durchlaufanzahl erreicht ist.
+         */
         test_daten_akt_index = 0;
 
         while ( ( test_daten_akt_index < test_daten_array_length ) && ( durchlauf_zaehler < durchlauf_anzahl ) )
@@ -1386,6 +1483,9 @@ class TestValidateEMailAdresse
 
           try
           {
+            /*
+             * Die auszufuehrende Testfunktion wird ueber eine Testnummer identifiziert und ausgefuehrt.
+             */
             if ( pTestNummer == 1 )
             {
               //knz_is_valid = EmailAddressValidator.isValid( test_daten_akt_string );
@@ -1423,6 +1523,12 @@ class TestValidateEMailAdresse
               return;
             }
 
+            /*
+             * Auswertung des Pruefergebnisses.
+             * Ist die eMail-Adresse von der Funktion als korrekt erkannt worden, wird 
+             * der Zaehler fuer die korrekten eMail-Adressen hochgezaehlt. Andernfalls 
+             * wird der Zaehler fuer die falschen eMail-Adressen hochgezaehlt. 
+             */
             if ( knz_is_valid )
             {
               anzahl_korrekt++;
@@ -1434,19 +1540,37 @@ class TestValidateEMailAdresse
           }
           catch ( Exception err_inst )
           {
+            /*
+             * Kam es zu einer Exception, wird der Zaehler fuer die Fehler hochgezaehlet.
+             */
             anzahl_fehler++;
           }
           
+          /*
+           * Index fuer den naechsten Index innerhalb des Testarrays hochzaehlen.
+           */
           test_daten_akt_index++;
 
+          /*
+           * Zahler fuer die insgesamt durchlaufenen Testfaelle hochzaehlen
+           */
           durchlauf_zaehler++;
         }
       }
 
+      /*
+       * Millisekunden Test-Ende ermitteln
+       */
       long millisekunden_ende = System.currentTimeMillis();
 
+      /*
+       * Zeitdifferenz zwischen Start und Ende berechnen
+       */
       long millisekunden_zeit_differenz = millisekunden_ende - millisekunden_start;
 
+      /*
+       * Ausgabe der Testdurchlaufwerte im Log
+       */
       wl( "" );
       wl( FkString.getFeldLinksMin( pTestBezeichnung, 10 ) + " anzahl_korrekt = " +  FkString.right(  "          " + anzahl_korrekt, stellen_anzahl ) + " - anzahl_falsch = " +  FkString.right(  "          " + anzahl_falsch, stellen_anzahl ) + " - anzahl_fehler = " +  FkString.right(  "          " + anzahl_fehler, stellen_anzahl ) + "  | MS " +  FkString.right(  "          " + millisekunden_zeit_differenz, stellen_ms ) + " = " + FkString.getFeldLinksMin( number_format.format( ( (double) millisekunden_zeit_differenz ) / durchlauf_anzahl ), 25 ) + "  = " + getStringLaufzeitAusMillisekunden( millisekunden_zeit_differenz ) );
     }
@@ -1523,6 +1647,9 @@ class TestValidateEMailAdresse
   {
     /*
      * matt.writes.code
+     * https://stackoverflow.com/questions/624581/what-is-the-best-java-email-address-validation-method
+     * 
+     * Pattern wird immer neu erstellt.
      */
     Pattern p = Pattern.compile( m_static_laxString );
 
@@ -1535,6 +1662,7 @@ class TestValidateEMailAdresse
   {
     /*
      * matt.writes.code
+     * Pattern wird nur einmal erstellt und dann wiederverwendet.
      */
     if ( m_pattern == null )
     {
@@ -1548,6 +1676,7 @@ class TestValidateEMailAdresse
   {
     /*
      * Pujan Srivastava
+     * https://stackoverflow.com/questions/624581/what-is-the-best-java-email-address-validation-method
      */
     String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
 
@@ -1668,25 +1797,25 @@ class TestValidateEMailAdresse
 
   private static final String EMAIL_ALL       = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ012345678.-%&*+-/=?_";
 
-  private static boolean checkEmail( String s )
+  private static boolean checkEmail( String pEMail )
   {
-    int len_eingabe = s.length();
+    int len_eingabe = pEMail.length();
     int akt_position = 0;
     String teil_str;
 
-    if ( ( s.indexOf( "@" ) == -1 ) || ( s.indexOf( "." ) == -1 ) || ( s.indexOf( " " ) != -1 ) || ( s.endsWith( "." ) ) || ( s.startsWith( "." ) ) )
+    if ( ( pEMail.indexOf( "@" ) == -1 ) || ( pEMail.indexOf( "." ) == -1 ) || ( pEMail.indexOf( " " ) != -1 ) || ( pEMail.endsWith( "." ) ) || ( pEMail.startsWith( "." ) ) )
     {
       return false;
     }
 
-    if ( s.indexOf( ".." ) > 0 )
+    if ( pEMail.indexOf( ".." ) > 0 )
     {
       return false;
     }
 
-    akt_position = s.indexOf( "@" );
+    akt_position = pEMail.indexOf( "@" );
 
-    teil_str = s.substring( 0, akt_position );
+    teil_str = pEMail.substring( 0, akt_position );
 
     len_eingabe = teil_str.length();
 
@@ -1724,9 +1853,9 @@ class TestValidateEMailAdresse
       }
     }
 
-    akt_position = s.indexOf( "@" );
+    akt_position = pEMail.indexOf( "@" );
 
-    teil_str = s.substring( akt_position + 1 );
+    teil_str = pEMail.substring( akt_position + 1 );
 
     len_eingabe = teil_str.length();
 
@@ -1751,6 +1880,7 @@ class TestValidateEMailAdresse
   private static boolean JavaMail_InternetAddress_checkAddress( String pEMailInput )
   {
     int akt_index = 0;
+    
     if ( pEMailInput.indexOf( 34 ) < 0 )
     {
       int pos_at_zeichen;
