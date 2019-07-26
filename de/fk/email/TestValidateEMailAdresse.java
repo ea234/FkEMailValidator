@@ -462,7 +462,7 @@ class TestValidateEMailAdresse
    *   435 "{{-^-}{-=-}{-^-}}@GHI.JKL"                                                           Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    JAVA 1 false   ea234 true     =  0 = eMail-Adresse korrekt
    *   436 "#!$%&'*+-/=?^_`{}|~@eksample.org"                                                    Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    JAVA 1 false   ea234 true     =  0 = eMail-Adresse korrekt
    *   437 "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}"                                     Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   JAVA 1 false   ea234 false    = 51 = IP-Adressteil: IP-Adresse vor AT-Zeichen
-   *   438 "\"\\" + \\"select * from user\\" + \\"\"@test.einzugsermaechtigung.de"               Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *   438 "\"\\" + \\"select * from user\\" + \\"\"@example.de"                                 Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
    *   439 "\"()<>[]:,;@\\\\"!#$%&'*+-/=?^_`{}| ~.a\"@example.org"                               Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   JAVA 1 false   ea234 false    = 89 = String: Ungueltiges Zeichen innerhalb Anfuehrungszeichen
    *   440 "person@registry.organization"                                                        Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    JAVA 1 true    ea234 false    = 15 = Laenge: Top-Level-Domain darf nicht mehr als X-Stellen lang sein. (X ist hier 10)
    *   441 "foo.bar.\"bux\".bar.com@baz.com"                                                     Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
@@ -478,7 +478,7 @@ class TestValidateEMailAdresse
    *   451 "0=1+e^(i*pi)@Gleich.Zahl.Phi.Goldener.Schnitt.ab"                                    Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   JAVA 1 false   ea234 true     =  6 = eMail-Adresse korrekt (Kommentar)
    *   452 "john.\"M@c\".\"Smith!\"(coolguy)@(thefantastic)[1.2.3.4]"                            Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   JAVA 1 false   ea234 false    = 94 = Kommentar: kein Kommentar nach dem AT-Zeichen
    *   453 "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@aol.com"              Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    JAVA 1 false   ea234 true     =  0 = eMail-Adresse korrekt
-   *   454 "VGhpcyBpcyBCYXNlNjQgZW5jb2RlZC4gV2hvIHRob3VnaHQgb2YgdGhhdA==@C64.de"                 Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *   454 "VGhpcyBpcyBCYXNlNjQgZW5jb2RlZC4gV2hvIHRob3VnaHQgb2YgdGhhdA==@base.com"               Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
    *   455 "1234567890123456789012345678901234567890123456789012345678901234+x@example.com"      Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    JAVA 1 false   ea234 false    = 13 = Laenge: RFC 5321 = SMTP-Protokoll = maximale Laenge des Local-Parts sind 64 Bytes
    *   456 "ZZZZZZZZZXZZZZZZZZZZXZZZZ.ZZZZZXZZZZZZZZZZXZZZZZZZZZZXZZZZZZZZZX@ZZZZZZZZZX.ZL"      Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
    *   457 "ZZZZZZZZZXZZZZZZZZZZXZZZZ.ZZZZZXZZZZZZZZZZXZZZZZZZZZZXZZZZZZZZZXT@ZZZZZZZZZX.ZL"     Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    JAVA 1 true    ea234 false    = 13 = Laenge: RFC 5321 = SMTP-Protokoll = maximale Laenge des Local-Parts sind 64 Bytes
@@ -743,7 +743,7 @@ class TestValidateEMailAdresse
    */
   private static boolean              knz_ausgabe_test_daten   = true;
 
-  private static int                  FAKTOR_ANZAHL_ARRAY_A    = 40000;
+  private static int                  FAKTOR_ANZAHL_ARRAY_A    =40000 ;
 
   /*
    * Array, mit welchem die Tests ausgefuehrt werden.
@@ -1198,7 +1198,7 @@ class TestValidateEMailAdresse
      "{{-^-}{-=-}{-^-}}@GHI.JKL",
      "#!$%&'*+-/=?^_`{}|~@eksample.org",
      "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}",
-     "\"\\\" + \\\"select * from user\\\" + \\\"\"@test.einzugsermaechtigung.de",
+     "\"\\\" + \\\"select * from user\\\" + \\\"\"@example.de",
      "\"()<>[]:,;@\\\\\\\"!#$%&'*+-/=?^_`{}| ~.a\"@example.org",
      "person@registry.organization",
      "foo.bar.\"bux\".bar.com@baz.com",
@@ -1211,10 +1211,10 @@ class TestValidateEMailAdresse
      "\"very.unusual.@.unusual.com\"@example.com",
      "foo\\@bar@machine.subdomain.example.museum",
      "disposable.style.email.with+symbol@example.com",
-     "0=1+e^(i*pi)@Gleich.Zahl.Phi.Goldener.Schnitt.ab",
+     "0=1+e^(i*pi)@Gleich.Zahl.Phi.Goldener.Schnitt.aua",
      "john.\"M@c\".\"Smith!\"(coolguy)@(thefantastic)[1.2.3.4]",
      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@aol.com",
-     "VGhpcyBpcyBCYXNlNjQgZW5jb2RlZC4gV2hvIHRob3VnaHQgb2YgdGhhdA==@C64.de",
+     "VGhpcyBpcyBCYXNlNjQgZW5jb2RlZC4gV2hvIHRob3VnaHQgb2YgdGhhdA==@base.com",
      "1234567890123456789012345678901234567890123456789012345678901234+x@example.com",
      "ZZZZZZZZZXZZZZZZZZZZXZZZZ.ZZZZZXZZZZZZZZZZXZZZZZZZZZZXZZZZZZZZZX@ZZZZZZZZZX.ZL",
      "ZZZZZZZZZXZZZZZZZZZZXZZZZ.ZZZZZXZZZZZZZZZZXZZZZZZZZZZXZZZZZZZZZXT@ZZZZZZZZZX.ZL",
@@ -1374,32 +1374,59 @@ class TestValidateEMailAdresse
         int breite_x_feld = 7;
 
         String akt_dbg_string = "";
+        
+        /*
+         * Kennzeichen fuer die Testdatenausgabe auf FALSE stellen, 
+         * damit die Ausgabe nur einmal kommt.
+         */
 
         knz_ausgabe_test_daten = false;
-
+        
+        /*
+         * Index fuer die Ausgabe der Testdaten auf Index 0 setzen 
+         */
         test_daten_akt_index = 0;
 
+        /*
+         * While-Schleife ueber die Testdaten fuer die Ausgabe der 
+         * Ergebnisse der Prueffunktionen. 
+         */
         while ( test_daten_akt_index < test_daten_array_length )
         {
           test_daten_akt_string = array_test_daten_aktuell[ test_daten_akt_index ];
 
           akt_dbg_string = " ";
 
+          /*
+           * Ausgabe des Indexes und der aktuellen Teststrings
+           */
           akt_dbg_string += FkString.right(  "          " + test_daten_akt_index, 4 ) + " " + FkString.getFeldLinksMin( FkString.getJavaString( test_daten_akt_string ), 85 ) + " ";
 
-          //akt_dbg_string += "EV4J " + FkString.getFeldLinksMin( getStringIsValid( 6, test_daten_akt_string ), breite_x_feld ) + " ";
+          /*
+           * Jede Testfunktion wird einmal aufgerufen und die Ergebnisse zusammengestringt.
+           */
+          //akt_dbg_string += "EV4J "   + FkString.getFeldLinksMin( getStringIsValid( 6, test_daten_akt_string ), breite_x_feld ) + " ";
           //akt_dbg_string += "HCBval " + FkString.getFeldLinksMin( getStringIsValid( 1, test_daten_akt_string ), breite_x_feld ) + " ";
-          akt_dbg_string += "Jmail " + FkString.getFeldLinksMin( getStringIsValid( 8, test_daten_akt_string ), breite_x_feld ) + " ";
+          akt_dbg_string += "Jmail "    + FkString.getFeldLinksMin( getStringIsValid( 8, test_daten_akt_string ), breite_x_feld ) + " ";
           akt_dbg_string += "REGEXP 1 " + FkString.getFeldLinksMin( getStringIsValid( 2, test_daten_akt_string ), breite_x_feld ) + " ";
           akt_dbg_string += "REGEXP 2 " + FkString.getFeldLinksMin( getStringIsValid( 3, test_daten_akt_string ), breite_x_feld ) + " ";
           akt_dbg_string += "REGEXP 3 " + FkString.getFeldLinksMin( getStringIsValid( 4, test_daten_akt_string ), breite_x_feld ) + " ";
-          akt_dbg_string += "JAVA 1 " + FkString.getFeldLinksMin( getStringIsValid( 5, test_daten_akt_string ), breite_x_feld ) + " ";
-          akt_dbg_string += "ea234 " + FkString.getFeldLinksMin( getStringIsValid( 7, test_daten_akt_string ), breite_x_feld ) + " ";
+          akt_dbg_string += "JAVA 1 "   + FkString.getFeldLinksMin( getStringIsValid( 5, test_daten_akt_string ), breite_x_feld ) + " ";
+          akt_dbg_string += "ea234 "    + FkString.getFeldLinksMin( getStringIsValid( 7, test_daten_akt_string ), breite_x_feld ) + " ";
 
+          /*
+           * Am Ende wird noch der String hinzugefuegt, warum die eMail-Adresse korrekt oder falsch ist. 
+           */
           akt_dbg_string += " = " + FkEMail.checkEMailAdresseX( test_daten_akt_string );
 
+          /*
+           * Die so aufgebaute Zeile wird in das Log geschrieben
+           */
           wl( akt_dbg_string );
 
+          /*
+           * Der Index wird erhoeht und mit der naechsten eMail-Adresse aus dem Array weitergemacht.
+           */          
           test_daten_akt_index++;
         }
       }
@@ -1447,8 +1474,8 @@ class TestValidateEMailAdresse
       boolean knz_is_valid = false;
 
       int anzahl_korrekt = 0; // Anzahl der von der Routine als korrekt gemeldeten eMail-Adressen
-      int anzahl_falsch = 0; // Anzahl der von der Testroutine als falsch gemeldeten eMail-Adressen
-      int anzahl_fehler = 0; // Anzahl der aufgetretenen Exceptions waehrend der Pruefung
+      int anzahl_falsch  = 0; // Anzahl der von der Testroutine als falsch gemeldeten eMail-Adressen
+      int anzahl_fehler  = 0; // Anzahl der aufgetretenen Exceptions waehrend der Pruefung
 
       int stellen_ms = 6;
 
