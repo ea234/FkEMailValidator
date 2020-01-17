@@ -637,7 +637,6 @@ public class FkEMail
 
     aktuelles_zeichen = pEingabe.charAt( laenge_eingabe_string - 1 );
 
-
     /*
      * Pruefung: Ende mit einer schliessenden eckigen Klammer ?
      */
@@ -955,6 +954,23 @@ public class FkEMail
           if ( ( akt_index + 1 ) == laenge_eingabe_string )
           {
             return 24; // Zeichen: Kein Sonderzeichen am Ende der eMail-Adresse
+          }
+          else 
+          {
+            /*
+             * https://en.wikipedia.org/wiki/Email_address
+             * 
+             * Domain-Part:
+             * hyphen -, provided that it is not the first or last character.
+             */
+            if ( pEingabe.charAt( akt_index + 1 ) == '.' )
+            {
+              return 20; // Trennzeichen: ungueltige Zeichenkombination "-."
+            }
+            //else if ( pEingabe.charAt( akt_index - 1 ) == '.' )
+            //{
+            //  return 20; // Trennzeichen: ungueltige Zeichenkombination ".-"
+            //}
           }
         }
       }
@@ -1668,7 +1684,7 @@ public class FkEMail
 
               /*
                * Pruefung: 2 Doppelpunkte hintereinander ?
-               * Liegt die letzte Position eines Trennzeichenst vor der aktuellen 
+               * Liegt die letzte Position eines Trennzeichens vor der aktuellen 
                * Lesepostion, wird der Zaehler fuer aufeinanderfolgende Trennzeichen 
                * um 1 erhoeht. Dieser Zaehler wird anschliessend auf den Wert 2 
                * geprueft. Ist der Wert 2, wird der Fehler 50 zurueckgegeben. 
@@ -2415,7 +2431,7 @@ public class FkEMail
 
     boolean is_true = return_code < 10;
 
-    System.out.println( "assertIsTrue  " + FkString.getFeldLinksMin( ( pString == null ? "null" : pString ), 50 ) + " = " + ( return_code < 10 ? " " : "" ) + return_code + " = " + ( knz_soll_wert ? "TRUE " : "FALSE" ) + "  " + ( is_true == knz_soll_wert ? " OK " : " #### FEHLER ####    " + getFehlerText( return_code ) ) );
+    System.out.println( "assertIsTrue  " + FkString.getFeldLinksMin( ( pString == null ? "null" : pString ), 50 ) + " = " + ( return_code < 10 ? " " : "" ) + return_code + " = "  + ( is_true == knz_soll_wert ? " OK " : " #### FEHLER ####    " + getFehlerText( return_code ) ) );
   }
 
   public static void assertIsFalse( String pString )
@@ -2426,14 +2442,14 @@ public class FkEMail
 
     boolean is_true = return_code < 10;
 
-    System.out.println( "assertIsFalse " + FkString.getFeldLinksMin( ( pString == null ? "null" : pString ), 50 ) + " = " + ( return_code < 10 ? " " : "" ) + return_code + " = " + ( knz_soll_wert ? "TRUE " : "FALSE" ) + "  " + ( is_true == knz_soll_wert ? " OK " : " #### FEHLER #### " ) + "   " + getFehlerText( return_code ) );
+    System.out.println( "assertIsFalse " + FkString.getFeldLinksMin( ( pString == null ? "null" : pString ), 50 ) + " = " + ( return_code < 10 ? " " : "" ) + return_code + " = " + ( is_true == knz_soll_wert ? " OK " : " #### FEHLER #### " ) + "   " + getFehlerText( return_code ) );
   }
 
   public static void main( String[] args )
   {
     try
     {
-      assertIsTrue( "ABC.DEF@GHI.JKL" );
+      FkEMail.assertIsTrue( "ABC.DEF@GHI.JKL" );
       assertIsTrue( "A@B.CD" );
       assertIsTrue( "\"ABC.DEF\"@GHI.DE" );
       assertIsTrue( "\"ABC DEF\"@GHI.DE" );

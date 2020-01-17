@@ -922,6 +922,24 @@ public class FkEMail_EXTRACTION
           {
             return 24; // Zeichen: Kein Sonderzeichen am Ende der eMail-Adresse
           }
+          else 
+          {
+            /*
+             * https://en.wikipedia.org/wiki/Email_address
+             * 
+             * Domain-Part:
+             * hyphen -, provided that it is not the first or last character.
+             */
+            if ( pEingabe.charAt( akt_index + 1 ) == '.' )
+            {
+              return 20; // Trennzeichen: ungueltige Zeichenkombination "-."
+            }
+            //else if ( pEingabe.charAt( current_index - 1 ) == '.' )
+            //{
+            //  return 20; // Trennzeichen: ungueltige Zeichenkombination ".-"
+            //}
+          }
+          
         }
       }
       /*

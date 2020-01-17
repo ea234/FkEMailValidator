@@ -705,6 +705,23 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
           {
             return 24; // character: No special character at the end of the eMail address
           }
+          else 
+          {
+            /*
+             * https://en.wikipedia.org/wiki/Email_address
+             * 
+             * Domain-Part:
+             * hyphen -, provided that it is not the first or last character.
+             */
+            if ( pInput.charAt( current_index + 1 ) == '.' )
+            {
+              return 20; // Trennzeichen: ungueltige Zeichenkombination "-."
+            }
+            //else if ( pEingabe.charAt( current_index - 1 ) == '.' )
+            //{
+            //  return 20; // Trennzeichen: ungueltige Zeichenkombination ".-"
+            //}
+          }
         }
       }
       /*
