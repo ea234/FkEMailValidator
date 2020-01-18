@@ -1487,7 +1487,7 @@ public class FkEMail_EXTRACTION
                * Die Kennzeichenvariable wird auf 1 gestellt.
                */
               knz_ipv6 = 1;
-
+ 
               /*
                * Es wurde 1 Trennzeichen gelesen.
                * (Trennzeichen zaehlt?)
@@ -1499,6 +1499,29 @@ public class FkEMail_EXTRACTION
               return 40; // IP6-Adressteil: String "IPv6:" erwartet
             }
           }
+          else if ( ( pEingabe.charAt( akt_index + 1 ) == ':' ) ||
+                    ( pEingabe.charAt( akt_index + 2 ) == ':' ) ||
+                    ( pEingabe.charAt( akt_index + 3 ) == ':' ) ||
+                    ( pEingabe.charAt( akt_index + 4 ) == ':' ) ||
+                    ( pEingabe.charAt( akt_index + 5 ) == ':' ) )
+            {
+              /*
+               * Einbettung IP-V6-Adresse ohne Praefix "IPv6"
+               * 
+               * Wird der Praefix "IPv6" nicht gefunden, wird auf das vorhandensein 
+               * eines Doppelpunktes innerhalb der naechsten 5 Zeichen geprueft.
+               * Wird ein Doppelpunkt gefunden, ist dieses das Kennzeichen, dass 
+               * eine IP-V6 Adresse vorhanden ist. 
+               * 
+               * Das erste Zeichen wird auch mit geprueft, da die IP-V6-Adresse mit "::" starten koennte.
+               */
+            
+              /*
+               * Der Leseprozess befindet sich in einer IPv6 Adresse.
+               * Die Kennzeichenvariable wird auf 1 gestellt.
+               */
+              knz_ipv6 = 1;
+            }
         }
 
         /*

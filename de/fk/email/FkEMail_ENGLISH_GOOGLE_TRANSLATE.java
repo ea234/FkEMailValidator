@@ -1278,8 +1278,31 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
             else
             {
               return 40; // IP6 address part: string "IPv6:" expected
-            }
+            } 
           }
+          else if ( ( pInput.charAt( current_index  + 1 ) == ':' ) ||
+                    ( pInput.charAt( current_index  + 2 ) == ':' ) ||
+                    ( pInput.charAt( current_index  + 3 ) == ':' ) ||
+                    ( pInput.charAt( current_index  + 4 ) == ':' ) ||
+                    ( pInput.charAt( current_index  + 5 ) == ':' ) )
+            {
+              /*
+               * Embedding IP-V6 address without prefix "IPv6"
+               *
+               * If the prefix "IPv6" is not found, it is checked 
+               * for a colon within the next 5 characters.
+               * If a colon is found, this is the indicator that
+               * an IP-V6 address is available.
+               *
+               * The first character is also checked, since the IP-V6 address could start with "::".
+               */
+            
+              /*
+               * The reading process is in an IPv6 address.
+               * The tag variable is set to 1.
+               */
+              knz_ipv6 = 1;
+            }
         }
 
         /*

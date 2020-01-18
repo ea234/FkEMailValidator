@@ -94,7 +94,7 @@ class TestValidateEMailAdresse1
      *    82 - assertIsTrue  ab@88.120.150.01                                   = 23 =  #### FEHLER ####    Zeichen: Top-Level-Domain darf nicht mit Zahl beginnen
      *    83 - assertIsTrue  ab@[120.254.254.120]                               =  2 =  OK 
      *    84 - assertIsTrue  local@2001:0db8:85a3:0000:0000:8a2e:0370:7334      = 22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *    85 - assertIsTrue  local@[2001:0db8:85a3:0000:0000:8a2e:0370:7334]    = 53 =  #### FEHLER ####    IP4-Adressteil: zu viele Ziffern, maximal 3 Ziffern
+     *    85 - assertIsTrue  local@[2001:0db8:85a3:0000:0000:8a2e:0370:7334]    =  4 =  OK 
      *    86 - assertIsTrue  local@[IPv6:2001:0db8:85a3:0000:0000:8a2e:0370:7334] =  4 =  OK 
      *    87 - assertIsTrue  2@bde.cc                                           =  0 =  OK 
      *    88 - assertIsTrue  -@bde.cc                                           =  0 =  OK 
@@ -209,7 +209,7 @@ class TestValidateEMailAdresse1
       assertIsFalse( "email..email@domain.com" );
       assertIsFalse( "email@-domain.com" );
       assertIsFalse( "email@domain-.com" );
-      assertIsFalse( "email@domain.com-" );
+      assertIsFalse( "email@domain.com-" ); 
       assertIsFalse( "email@.domain.com" );
       assertIsFalse( "email@domain.com." );
       assertIsFalse( "email@domain..com" );
