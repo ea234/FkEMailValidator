@@ -235,11 +235,6 @@ class TestValidateEMailAdresse1
       assertIsFalse( "mailto:mailto:email@domain.com" );
       assertIsFalse( "Display Name <email@plus.com> (after name with display)" );
       assertIsFalse( "ReDoSaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" );
-
-      System.out.println( "" );
-      System.out.println( "----------------------------------------------------------------------------------------------------" );
-      System.out.println( "" );
-      
       assertIsTrue( "w@com" );
       assertIsTrue( "w.b.f@test.com" );
       assertIsTrue( "w.b.f@test.museum" );
@@ -308,15 +303,15 @@ class TestValidateEMailAdresse1
       assertIsTrue( "(comment)john.smith@example.com" );
       assertIsTrue( "john.smith(comment)@example.com" );
       assertIsTrue( "john.smith@(comment)example.com" );
+      assertIsFalse( "john.smith@exampl(comment)e.com" );
+      assertIsFalse( "john.s(comment)mith@example.com" );
       assertIsTrue( "john.smith@example.com(comment)" );
       assertIsTrue( "domain.starts.with.digit@2domain.com" );
       assertIsTrue( "domain.ends.with.digit@domain2.com" );
       assertIsTrue( "domain.label.with.63.characters@123456789012345678901234567890123456789012345678901234567890123.com" );
       assertIsFalse( "domain.label.with.64.characters@1234567890123456789012345678901234567890123456789012345678901234.com" );
-
       assertIsTrue( "domain.label.with.63.characters@123456789012345678901234567890123456789012345678901234567890123.123456789012345678901234567890123456789012345678901234567890123.com" );
       assertIsFalse( "domain.label.with.63.and.64.characters@123456789012345678901234567890123456789012345678901234567890123.1234567890123456789012345678901234567890123456789012345678901234.com" );
-
       assertIsTrue( "email@domain.com (joe Smith)" );
       assertIsTrue( "\"Joe Smith\" email@domain.com" );
       assertIsTrue( "\"Joe\\tSmith\" email@domain.com" );

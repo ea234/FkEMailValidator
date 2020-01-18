@@ -649,6 +649,8 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
      * with IP address or string parts after rejection.
      */
     int fkt_result_email_ok = 0;
+    
+    boolean knz_kommentar_abschluss_am_stringende = false;
 
     /*
      * While Loop 1
@@ -1784,6 +1786,27 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
           knz_must_end_with_at_character = false;
         }
 
+
+        if ( position_at_character > 0 )
+        {
+          /*
+           * If an AT character has already been read, the comment does not have to end with an AT character. 
+           */
+          knz_must_end_with_at_character = false;
+          
+          /*
+           * If characters have already been read after the AT symbol, the
+           * Comment ends at the end of the string.
+           *
+           * If the comment ends before the end of the string, the comment is in the middle
+           * in the email string and is therefore incorrect.           
+           */
+          if ( ( current_index - position_at_character ) > 1 )
+          {
+            knz_kommentar_abschluss_am_stringende = true;
+          }
+        }
+
         current_index++;
 
         current_character = 'A';
@@ -1929,6 +1952,11 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
           {
             return 97; // Comment: After the comment an AT-Character must come
           }
+        }
+        
+        if ( knz_kommentar_abschluss_am_stringende ) 
+        {
+          return 100; // Kommentar: Kommentar muss am Strinende enden
         }
         }
         /*
@@ -2206,6 +2234,8 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
     if ( pErrorNumber == 97 ) return "Comment: After the comment the AT-Character is expected";
     if ( pErrorNumber == 98 ) return "Comment: No local part exists";
     if ( pErrorNumber == 99 ) return "comment: no second comment valid";
+
+    if ( pErrorNumber == 100 ) return "Comment: Comment must end at String-end";
 
     return "Unknown error number" + pErrorNumber;
   }

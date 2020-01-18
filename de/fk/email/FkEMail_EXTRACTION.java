@@ -866,6 +866,8 @@ public class FkEMail_EXTRACTION
      * mit IP-Adresse oder String-Teilen im Nachgang noch abweisen.  
      */
     int fkt_ergebnis_email_ok = 0;
+    
+    boolean knz_kommentar_abschluss_am_stringende = false;
 
     /*
      * While-Schleife 1
@@ -2019,6 +2021,27 @@ public class FkEMail_EXTRACTION
 
         knz_abschluss_mit_at_zeichen = ( akt_index == email_local_part_gesamt_start ) == false;
 
+
+        if ( position_at_zeichen > 0 )
+        {
+          /*
+           * Wurde schon ein AT-Zeichen gelesen, muss der Kommentar nicht auch einem AT-Zeichen enden. 
+           */
+          knz_abschluss_mit_at_zeichen = false;
+          
+          /*
+           * Sind schon Zeichen nach dem AT-Zeichen gelesen worden, muss der 
+           * Kommentar am Stringende enden.
+           * 
+           * Endet der Kommentar vor dem Stringende, steht der Kommentar mitten 
+           * im eMail-String und ist somit falsch.
+           */
+          if ( ( akt_index - position_at_zeichen ) > 1 )
+          {
+            knz_kommentar_abschluss_am_stringende = true;
+          }
+        }
+
         kommentar_start = akt_index;
 
         akt_index++;
@@ -2166,6 +2189,11 @@ public class FkEMail_EXTRACTION
             {
               return 97; // Kommentar: Nach dem Kommentar muss ein AT-Zeichen kommen
             }
+          }
+          
+          if ( knz_kommentar_abschluss_am_stringende ) 
+          {
+            return 100; // Kommentar: Kommentar muss am Strinende enden
           }
         }
 
@@ -2566,6 +2594,9 @@ public class FkEMail_EXTRACTION
     if ( pFehlerNr == 97 ) return "Kommentar: Nach dem Kommentar muss ein AT-Zeichen kommen";
     if ( pFehlerNr == 98 ) return "Kommentar: Kein lokaler Part vorhanden";
     if ( pFehlerNr == 99 ) return "Kommentar: kein zweiter Kommentar gueltig";
+ 
+    if ( pFehlerNr == 100 ) return "Kommentar: Kommentar muss am Strinende enden";
+
 
     return "Unbekannte Fehlernummer " + pFehlerNr;
   }
