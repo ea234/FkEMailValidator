@@ -2251,7 +2251,7 @@ public class FkEMail_EXTRACTION
      * Bei einer IP6-Adressangabe wird die Variable "position_letzter_punkt" fuer 
      * die Doppelpunkte ":" in der Adressangabe benutzt. 
      */
-    if ( position_letzter_punkt == -1 )
+    if ( ( position_letzter_punkt == -1 )|| ( position_letzter_punkt == position_at_zeichen ))
     {
       return 34; // Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
     }

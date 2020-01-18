@@ -2027,7 +2027,7 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
      * For an IP6 address specification, the variable "position_last_point" becomes
      * uses the colon ":" in the address information.
      */
-    if ( position_last_point == -1 )
+    if ( ( position_last_point == -1 )|| ( position_last_point == position_at_character ))
     {
       return 34; // Separator: no point found (there must be at least one point for the domain separator)
     }
