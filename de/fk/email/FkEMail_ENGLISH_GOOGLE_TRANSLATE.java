@@ -766,6 +766,27 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
           }
         }
 
+        
+        if (position_at_character> 0)
+        {
+          /*
+           * Domain part label length
+           * https://de.wikipedia.org/wiki/Hostname
+           * https://en.wikipedia.org/wiki/Hostname
+           *
+           * A domain label must have 1 characters and can be a maximum of 63 characters.
+           * 64 characters are checked in the calculation, since the subtraction is not
+           * must be complicated (the position of the last point is counted).
+           *
+           * If the current domain label is too long, error 63 is returned.
+           */
+          if ((current_index - position_last_point)> 64)
+          {
+            // System.out.println ("" + (akt_index - position_letzt_punkt));
+           
+            return 63; // Domain part: Domain label too long (maximum 63 characters)
+          }
+        }
         /*
          * Save index of the last point
          */
@@ -814,7 +835,7 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
 
         if ( current_index - position_last_point == 1 )
         {
-          return 32; // Separator: invalid character combination ". @"
+          return 32; // Separator: invalid character combination ".@"
         }
 
         /*
@@ -839,6 +860,20 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
          * Set the character error after the AT-Character to 0
          */
         character_counter = 0;
+        
+        /*
+        * Position of last point
+        *
+        * The AT symbol separates the local and domain part.
+        * The position of the last point must be zeroed out
+        * Side effects in the length calculation of the individual
+        * Avoid domain parts.
+        *
+        * The domain part starts at the AT symbol and on its index
+        * the position of the last point is also set.
+        */
+       position_last_point = current_index;
+        
       }
       else if ( current_character == '\\' )
       {
@@ -1715,7 +1750,7 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
          */
         if ( position_at_character > 0 )
         {
-          return 94; // comment: no comment after the AT sign
+          //return 94; // comment: no comment after the AT sign
         }
 
         /*
@@ -1743,6 +1778,11 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
         boolean knz_must_end_with_at_character = ( current_index > 0 );
         
         knz_must_end_with_at_character = ( current_index ==  email_local_part_gesamt_start ) == false;
+
+        if ( position_at_character > 0 )
+        {
+          knz_must_end_with_at_character = false;
+        }
 
         current_index++;
 
@@ -1860,9 +1900,19 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
          */
         if ( current_index + 1 >= length_input_string )
         {
-          return 95; // Comment: The comment ends at the end of the string (premature end of input)
+          if ( position_at_character > 0 )
+          {
+            /*
+             * Im Domain-Part darf der Kommentar am Stringende aufhoeren
+             */
+          }
+          else
+          {
+            return 95; // Comment: The comment ends at the end of the string (premature end of input)
+          }
         }
-
+        else
+        {
         /*
          * Check: next character equal to AT-Character?
          */
@@ -1880,7 +1930,7 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
             return 97; // Comment: After the comment an AT-Character must come
           }
         }
-
+        }
         /*
          * The position of the final bracket is saved.
          */
@@ -2103,8 +2153,8 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
 
     if ( pErrorNumber == 30 ) return "Separator: no beginning with a period";
     if ( pErrorNumber == 31 ) return "Separator: no two consecutive points";
-    if ( pErrorNumber == 32 ) return "Separator: invalid character combination \". @ \"";
-    if ( pErrorNumber == 33 ) return "Separator: invalid combination of characters \" @. \"";
+    if ( pErrorNumber == 32 ) return "Separator: invalid character combination \".@\"";
+    if ( pErrorNumber == 33 ) return "Separator: invalid combination of characters \"@.\"";
     if ( pErrorNumber == 34 ) return "Separator: no point found (at least one point must exist for the domain separator)";
     if ( pErrorNumber == 35 ) return "Separator: the last dot must be after the AT character";
     if ( pErrorNumber == 36 ) return "Separator: the last point must not be at the end";
@@ -2132,6 +2182,8 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
     if ( pErrorNumber == 60 ) return "IP4 address part: terminator \"] \" must end";
     if ( pErrorNumber == 61 ) return "IP address part: No IP address completed on ']'";
     if ( pErrorNumber == 62 ) return "IP6 address part: IPv4 in IPv6 - wrong specification of the IP4 embedding (string 'ffff' expected)";
+    
+    if ( pErrorNumber == 63 ) return "Domain part: Domain label too long (maximum 63 characters)";
 
     if ( pErrorNumber == 80 ) return "String: A starting quotation mark must come at the beginning, the character error must not be greater than 0";
     if ( pErrorNumber == 81 ) return "String: A starting leading character must come immediately after a period";

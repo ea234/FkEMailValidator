@@ -984,6 +984,27 @@ public class FkEMail_EXTRACTION
           }
         }
 
+        if ( position_at_zeichen > 0 ) 
+        {
+          /*
+           * Domain-Part-Labellaenge
+           * https://de.wikipedia.org/wiki/Hostname
+           * https://en.wikipedia.org/wiki/Hostname
+           * 
+           * Ein Domain-Label muss 1 Zeichen umfassen und darf maximal 63 Zeichen lang sein. 
+           * Bei der Berechnung wird auf 64 Zeichen geprueft, da so die Subtraktion nicht 
+           * verkompliziert werden muss (es wird die Position des letzten Punktes mitgezaehlt).
+           * 
+           * Ist der aktuelle Domain-Label zu lang, wird der Fehler 63 zurueckgegeben.
+           */
+          if ( ( akt_index - position_letzter_punkt ) > 64 )
+          {
+            // System.out.println( " " + ( akt_index - position_letzter_punkt ));
+            
+            return 63; // Domain-Part: Domain-Label zu lang (maximal 63 Zeichen)
+          }          
+        }
+
         /*
          * Index des letzten Punktes speichern
          */
@@ -1057,6 +1078,19 @@ public class FkEMail_EXTRACTION
          * Zeichenzaehler nach dem AT-Zeichen auf 0 stellen
          */
         zeichen_zaehler = 0;
+
+        /*
+         * Position letzer Punkt
+         * 
+         * Das AT-Zeichen trennt den Local- und Domain-Part. 
+         * Die Position des letzen Punkts muss ausgenullt werden, um 
+         * Seiteneffekte bei der Laengenberechnung der einzelnen 
+         * Domain-Parts zu vermeiden.
+         * 
+         * Der Domain-Part startet am AT-Zeichen und auf dessen Index 
+         * wird auch die Position des letzten Punktes gesetzt.
+         */
+        position_letzter_punkt = akt_index;
       }
       else if ( aktuelles_zeichen == '\\' )
       {
@@ -1956,7 +1990,7 @@ public class FkEMail_EXTRACTION
          */
         if ( position_at_zeichen > 0 )
         {
-          return 94; // Kommentar: kein Kommentar nach dem AT-Zeichen
+          //return 94; // Kommentar: kein Kommentar nach dem AT-Zeichen
         }
 
         /*
@@ -2103,24 +2137,35 @@ public class FkEMail_EXTRACTION
          */
         if ( akt_index + 1 >= laenge_eingabe_string )
         {
-          return 95; // Kommentar: Der Kommentar endet am Stringende (Vorzeitiges Ende der Eingabe)
-        }
-
-        /*
-         * Pruefung: naechstes Zeichen gleich AT-Zeichen ?
-         */
-        if ( pEingabe.charAt( akt_index + 1 ) == '@' )
-        {
-          if ( knz_abschluss_mit_at_zeichen == false )
+          if ( position_at_zeichen > 0 )
           {
-            return 98; // Kommentar: Kein lokaler Part vorhanden
+            /*
+             * Im Domain-Part darf der Kommentar am Stringende aufhoeren
+             */
+          }
+          else
+          {
+            return 95; // Kommentar: Der Kommentar endet am Stringende (Vorzeitiges Ende der Eingabe)
           }
         }
         else
         {
-          if ( knz_abschluss_mit_at_zeichen )
+          /*
+           * Pruefung: naechstes Zeichen gleich AT-Zeichen ?
+           */
+          if ( pEingabe.charAt( akt_index + 1 ) == '@' )
           {
-            return 97; // Kommentar: Nach dem Kommentar muss ein AT-Zeichen kommen
+            if ( knz_abschluss_mit_at_zeichen == false )
+            {
+              return 98; // Kommentar: Kein lokaler Part vorhanden
+            }
+          }
+          else
+          {
+            if ( knz_abschluss_mit_at_zeichen )
+            {
+              return 97; // Kommentar: Nach dem Kommentar muss ein AT-Zeichen kommen
+            }
           }
         }
 
@@ -2498,6 +2543,8 @@ public class FkEMail_EXTRACTION
     if ( pFehlerNr == 60 ) return "IP4-Adressteil: Abschlusszeichen \"]\" muss am Ende stehen";
     if ( pFehlerNr == 61 ) return "IP-Adressteil: Kein Abschluss der IP-Adresse auf ']'";
     if ( pFehlerNr == 62 ) return "IP6-Adressteil: IPv4 in IPv6 - falsche Angabe der IP4-Einbettung (Zeichenfolge 'ffff' erwartet)";
+    
+    if ( pFehlerNr == 63 ) return "Domain-Part: Domain-Label zu lang (maximal 63 Zeichen)";
 
     if ( pFehlerNr == 80 ) return "String: Ein startendes Anfuehrungszeichen muss am Anfang kommen, der Zeichenzaehler darf nicht groesser als 0 sein";
     if ( pFehlerNr == 81 ) return "String: Ein startendes Anfuehrungezeichen muss direkt nach einem Punkt kommen";

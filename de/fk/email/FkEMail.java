@@ -1,7 +1,7 @@
 package de.fk.email;
 
 public class FkEMail
-{ 
+{
   /**
    * <pre>
    * Validierung einer eMail-Adresse.
@@ -780,7 +780,7 @@ public class FkEMail
       //{
       //  return 19; // Struktur: es gibt keinen "nicht eMail-String" 
       //}
-      
+
       /*
        * Ueber eine While-Schleife werden die Zeichen im "nicht eMail-Adress-String" geprueft.
        * Wird ein ungueltiges Zeichen erkannt, wir der Fehler 18 zurueckgegeben.
@@ -789,9 +789,7 @@ public class FkEMail
       {
         aktuelles_zeichen = pEingabe.charAt( position_letzter_punkt );
 
-        if ( ( ( aktuelles_zeichen >= 'a' ) && ( aktuelles_zeichen <= 'z' ) ) || 
-             ( ( aktuelles_zeichen >= 'A' ) && ( aktuelles_zeichen <= 'Z' ) ) || 
-             ( ( aktuelles_zeichen >= '0' ) && ( aktuelles_zeichen <= '9' ) )    )
+        if ( ( ( aktuelles_zeichen >= 'a' ) && ( aktuelles_zeichen <= 'z' ) ) || ( ( aktuelles_zeichen >= 'A' ) && ( aktuelles_zeichen <= 'Z' ) ) || ( ( aktuelles_zeichen >= '0' ) && ( aktuelles_zeichen <= '9' ) ) )
         {
           // OK
         }
@@ -920,9 +918,7 @@ public class FkEMail
       /*
        * Bedingungen Zeichen A-Z, a-z und Zahlen
        */
-      if ( ( ( aktuelles_zeichen >= 'a' ) && ( aktuelles_zeichen <= 'z' ) ) || 
-           ( ( aktuelles_zeichen >= 'A' ) && ( aktuelles_zeichen <= 'Z' ) ) || 
-           ( ( aktuelles_zeichen >= '0' ) && ( aktuelles_zeichen <= '9' ) )    )
+      if ( ( ( aktuelles_zeichen >= 'a' ) && ( aktuelles_zeichen <= 'z' ) ) || ( ( aktuelles_zeichen >= 'A' ) && ( aktuelles_zeichen <= 'Z' ) ) || ( ( aktuelles_zeichen >= '0' ) && ( aktuelles_zeichen <= '9' ) ) )
       {
         /*
          * Buchstaben ("A" bis "Z" und "a" bis "z") und Zahlen duerfen an jeder Stelle der eMail-Adresse vorkommen.
@@ -955,7 +951,7 @@ public class FkEMail
           {
             return 24; // Zeichen: Kein Sonderzeichen am Ende der eMail-Adresse
           }
-          else 
+          else
           {
             /*
              * https://en.wikipedia.org/wiki/Email_address
@@ -1013,6 +1009,27 @@ public class FkEMail
           if ( ( akt_index - position_letzter_punkt ) == 1 )
           {
             return 31; // Trennzeichen: keine zwei Punkte hintereinander
+          }
+        }
+
+        if ( position_at_zeichen > 0 )
+        {
+          /*
+           * Domain-Part-Labellaenge
+           * https://de.wikipedia.org/wiki/Hostname
+           * https://en.wikipedia.org/wiki/Hostname
+           * 
+           * Ein Domain-Label muss 1 Zeichen umfassen und darf maximal 63 Zeichen lang sein. 
+           * Bei der Berechnung wird auf 64 Zeichen geprueft, da so die Subtraktion nicht 
+           * verkompliziert werden muss (es wird die Position des letzten Punktes mitgezaehlt).
+           * 
+           * Ist der aktuelle Domain-Label zu lang, wird der Fehler 63 zurueckgegeben.
+           */
+          if ( ( akt_index - position_letzter_punkt ) > 64 )
+          {
+            // System.out.println( " " + ( akt_index - position_letzter_punkt ));
+
+            return 63; // Domain-Part: Domain-Label zu lang (maximal 63 Zeichen)
           }
         }
 
@@ -1089,6 +1106,19 @@ public class FkEMail
          * Zeichenzaehler nach dem AT-Zeichen auf 0 stellen
          */
         zeichen_zaehler = 0;
+
+        /*
+         * Position letzer Punkt
+         * 
+         * Das AT-Zeichen trennt den Local- und Domain-Part. 
+         * Die Position des letzen Punkts muss ausgenullt werden, um 
+         * Seiteneffekte bei der Laengenberechnung der einzelnen 
+         * Domain-Parts zu vermeiden.
+         * 
+         * Der Domain-Part startet am AT-Zeichen und auf dessen Index 
+         * wird auch die Position des letzten Punktes gesetzt.
+         */
+        position_letzter_punkt = akt_index;
       }
       else if ( aktuelles_zeichen == '\\' )
       {
@@ -1133,11 +1163,7 @@ public class FkEMail
           return 84; // String: Ungueltige Escape-Sequenz im String
         }
       }
-      else if ( ( aktuelles_zeichen == '!' ) || ( aktuelles_zeichen == '#' )  || ( aktuelles_zeichen == '$' ) || ( aktuelles_zeichen == '%' ) || 
-                ( aktuelles_zeichen == '&' ) || ( aktuelles_zeichen == '\'' ) || ( aktuelles_zeichen == '*' ) || ( aktuelles_zeichen == '+' ) || 
-                ( aktuelles_zeichen == '-' ) || ( aktuelles_zeichen == '/' )  || ( aktuelles_zeichen == '=' ) || ( aktuelles_zeichen == '?' ) ||
-                ( aktuelles_zeichen == '^' ) || ( aktuelles_zeichen == '`' )  || ( aktuelles_zeichen == '{' ) || ( aktuelles_zeichen == '|' ) || 
-                ( aktuelles_zeichen == '}' ) || ( aktuelles_zeichen == '~' ) )
+      else if ( ( aktuelles_zeichen == '!' ) || ( aktuelles_zeichen == '#' ) || ( aktuelles_zeichen == '$' ) || ( aktuelles_zeichen == '%' ) || ( aktuelles_zeichen == '&' ) || ( aktuelles_zeichen == '\'' ) || ( aktuelles_zeichen == '*' ) || ( aktuelles_zeichen == '+' ) || ( aktuelles_zeichen == '-' ) || ( aktuelles_zeichen == '/' ) || ( aktuelles_zeichen == '=' ) || ( aktuelles_zeichen == '?' ) || ( aktuelles_zeichen == '^' ) || ( aktuelles_zeichen == '`' ) || ( aktuelles_zeichen == '{' ) || ( aktuelles_zeichen == '|' ) || ( aktuelles_zeichen == '}' ) || ( aktuelles_zeichen == '~' ) )
       {
         /*
          *   asc("!") = 033   asc("*") = 042 
@@ -1264,12 +1290,7 @@ public class FkEMail
           {
             // OK - Zahlen
           }
-          else if ( ( aktuelles_zeichen == '_' ) || ( aktuelles_zeichen == '-' ) || ( aktuelles_zeichen == '@' )  || ( aktuelles_zeichen == '.' ) || 
-                    ( aktuelles_zeichen == ' ' ) || ( aktuelles_zeichen == '!' ) || ( aktuelles_zeichen == '#' )  || ( aktuelles_zeichen == '$' ) ||
-                    ( aktuelles_zeichen == '%' ) || ( aktuelles_zeichen == '&' ) || ( aktuelles_zeichen == '\'' ) || ( aktuelles_zeichen == '*' ) ||
-                    ( aktuelles_zeichen == '+' ) || ( aktuelles_zeichen == '-' ) || ( aktuelles_zeichen == '/' )  || ( aktuelles_zeichen == '=' ) ||
-                    ( aktuelles_zeichen == '?' ) || ( aktuelles_zeichen == '^' ) || ( aktuelles_zeichen == '`' )  || ( aktuelles_zeichen == '{' ) ||
-                    ( aktuelles_zeichen == '|' ) || ( aktuelles_zeichen == '}' ) || ( aktuelles_zeichen == '~' ) )
+          else if ( ( aktuelles_zeichen == '_' ) || ( aktuelles_zeichen == '-' ) || ( aktuelles_zeichen == '@' ) || ( aktuelles_zeichen == '.' ) || ( aktuelles_zeichen == ' ' ) || ( aktuelles_zeichen == '!' ) || ( aktuelles_zeichen == '#' ) || ( aktuelles_zeichen == '$' ) || ( aktuelles_zeichen == '%' ) || ( aktuelles_zeichen == '&' ) || ( aktuelles_zeichen == '\'' ) || ( aktuelles_zeichen == '*' ) || ( aktuelles_zeichen == '+' ) || ( aktuelles_zeichen == '-' ) || ( aktuelles_zeichen == '/' ) || ( aktuelles_zeichen == '=' ) || ( aktuelles_zeichen == '?' ) || ( aktuelles_zeichen == '^' ) || ( aktuelles_zeichen == '`' ) || ( aktuelles_zeichen == '{' ) || ( aktuelles_zeichen == '|' ) || ( aktuelles_zeichen == '}' ) || ( aktuelles_zeichen == '~' ) )
           {
             // OK - Sonderzeichen
           }
@@ -1975,7 +1996,7 @@ public class FkEMail
          */
         if ( position_at_zeichen > 0 )
         {
-          return 94; // Kommentar: kein Kommentar nach dem AT-Zeichen
+          //return 94; // Kommentar: kein Kommentar nach dem AT-Zeichen
         }
 
         /*
@@ -2003,7 +2024,15 @@ public class FkEMail
         boolean knz_abschluss_mit_at_zeichen = ( akt_index > 0 );
 
         knz_abschluss_mit_at_zeichen = ( akt_index == email_local_part_gesamt_start ) == false;
-        
+
+        if ( position_at_zeichen > 0 )
+        {
+          /*
+           * Wurde schon ein AT-Zeichen gelesen, muss der Kommentar nicht auch einem AT-Zeichen enden. 
+           */
+          knz_abschluss_mit_at_zeichen = false;
+        }
+
         akt_index++;
 
         aktuelles_zeichen = 'A';
@@ -2029,12 +2058,7 @@ public class FkEMail
           {
             // OK - Zahlen
           }
-          else if ( ( aktuelles_zeichen == '_' ) || ( aktuelles_zeichen == '-' ) || ( aktuelles_zeichen == '@' )  || ( aktuelles_zeichen == '.' ) || 
-                    ( aktuelles_zeichen == ' ' ) || ( aktuelles_zeichen == '!' ) || ( aktuelles_zeichen == '#' )  || ( aktuelles_zeichen == '$' ) || 
-                    ( aktuelles_zeichen == '%' ) || ( aktuelles_zeichen == '&' ) || ( aktuelles_zeichen == '\'' ) || ( aktuelles_zeichen == '*' ) || 
-                    ( aktuelles_zeichen == '+' ) || ( aktuelles_zeichen == '-' ) || ( aktuelles_zeichen == '/' )  || ( aktuelles_zeichen == '=' ) || 
-                    ( aktuelles_zeichen == '?' ) || ( aktuelles_zeichen == '^' ) || ( aktuelles_zeichen == '`' )  || ( aktuelles_zeichen == '{' ) || 
-                    ( aktuelles_zeichen == '|' ) || ( aktuelles_zeichen == '}' ) || ( aktuelles_zeichen == '~' ) )
+          else if ( ( aktuelles_zeichen == '_' ) || ( aktuelles_zeichen == '-' ) || ( aktuelles_zeichen == '@' ) || ( aktuelles_zeichen == '.' ) || ( aktuelles_zeichen == ' ' ) || ( aktuelles_zeichen == '!' ) || ( aktuelles_zeichen == '#' ) || ( aktuelles_zeichen == '$' ) || ( aktuelles_zeichen == '%' ) || ( aktuelles_zeichen == '&' ) || ( aktuelles_zeichen == '\'' ) || ( aktuelles_zeichen == '*' ) || ( aktuelles_zeichen == '+' ) || ( aktuelles_zeichen == '-' ) || ( aktuelles_zeichen == '/' ) || ( aktuelles_zeichen == '=' ) || ( aktuelles_zeichen == '?' ) || ( aktuelles_zeichen == '^' ) || ( aktuelles_zeichen == '`' ) || ( aktuelles_zeichen == '{' ) || ( aktuelles_zeichen == '|' ) || ( aktuelles_zeichen == '}' ) || ( aktuelles_zeichen == '~' ) )
           {
             // OK - Sonderzeichen
           }
@@ -2125,24 +2149,35 @@ public class FkEMail
          */
         if ( akt_index + 1 >= laenge_eingabe_string )
         {
-          return 95; // Kommentar: Der Kommentar endet am Stringende (Vorzeitiges Ende der Eingabe)
-        }
-
-        /*
-         * Pruefung: naechstes Zeichen gleich AT-Zeichen ?
-         */
-        if ( pEingabe.charAt( akt_index + 1 ) == '@' )
-        {
-          if ( knz_abschluss_mit_at_zeichen == false )
+          if ( position_at_zeichen > 0 )
           {
-            return 98; // Kommentar: Kein lokaler Part vorhanden
+            /*
+             * Im Domain-Part darf der Kommentar am Stringende aufhoeren
+             */
+          }
+          else
+          {
+            return 95; // Kommentar: Der Kommentar endet am Stringende (Vorzeitiges Ende der Eingabe)
           }
         }
         else
         {
-          if ( knz_abschluss_mit_at_zeichen )
+          /*
+           * Pruefung: naechstes Zeichen gleich AT-Zeichen ?
+           */
+          if ( pEingabe.charAt( akt_index + 1 ) == '@' )
           {
-            return 97; // Kommentar: Nach dem Kommentar muss ein AT-Zeichen kommen
+            if ( knz_abschluss_mit_at_zeichen == false )
+            {
+              return 98; // Kommentar: Kein lokaler Part vorhanden
+            }
+          }
+          else
+          {
+            if ( knz_abschluss_mit_at_zeichen )
+            {
+              return 97; // Kommentar: Nach dem Kommentar muss ein AT-Zeichen kommen
+            }
           }
         }
 
@@ -2153,7 +2188,7 @@ public class FkEMail
       }
       else
       {
-        
+
         /*
          * Hier koennen noch die Zeichen fuer internationale eMail-Adressen hinterlegt werden,
          * welche durchgelassen werden sollen. 
@@ -2166,9 +2201,9 @@ public class FkEMail
         //}
         //else
         //{
-        
+
         return 22; // Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-        
+
         //}
       }
 
@@ -2333,17 +2368,17 @@ public class FkEMail
    */
   public static String getFehlerText( int pFehlerNr )
   {
-    if ( pFehlerNr ==  0 ) return "eMail-Adresse korrekt";
-    if ( pFehlerNr ==  1 ) return "eMail-Adresse korrekt (Local Part mit String)";
-    if ( pFehlerNr ==  2 ) return "eMail-Adresse korrekt (IP4-Adresse)";
-    if ( pFehlerNr ==  3 ) return "eMail-Adresse korrekt (Local Part mit String und IP4-Adresse)";
-    if ( pFehlerNr ==  4 ) return "eMail-Adresse korrekt (IP6-Adresse)";
-    if ( pFehlerNr ==  5 ) return "eMail-Adresse korrekt (Local Part mit String und IP6-Adresse)";
+    if ( pFehlerNr == 0 ) return "eMail-Adresse korrekt";
+    if ( pFehlerNr == 1 ) return "eMail-Adresse korrekt (Local Part mit String)";
+    if ( pFehlerNr == 2 ) return "eMail-Adresse korrekt (IP4-Adresse)";
+    if ( pFehlerNr == 3 ) return "eMail-Adresse korrekt (Local Part mit String und IP4-Adresse)";
+    if ( pFehlerNr == 4 ) return "eMail-Adresse korrekt (IP6-Adresse)";
+    if ( pFehlerNr == 5 ) return "eMail-Adresse korrekt (Local Part mit String und IP6-Adresse)";
 
-    if ( pFehlerNr ==  6 ) return "eMail-Adresse korrekt (Kommentar)";
-    if ( pFehlerNr ==  7 ) return "eMail-Adresse korrekt (Kommentar, String)";
-    if ( pFehlerNr ==  8 ) return "eMail-Adresse korrekt (Kommentar, String, IP4-Adresse)";
-    if ( pFehlerNr ==  9 ) return "eMail-Adresse korrekt (Kommentar, String, IP6-Adresse)";
+    if ( pFehlerNr == 6 ) return "eMail-Adresse korrekt (Kommentar)";
+    if ( pFehlerNr == 7 ) return "eMail-Adresse korrekt (Kommentar, String)";
+    if ( pFehlerNr == 8 ) return "eMail-Adresse korrekt (Kommentar, String, IP4-Adresse)";
+    if ( pFehlerNr == 9 ) return "eMail-Adresse korrekt (Kommentar, String, IP6-Adresse)";
 
     if ( pFehlerNr == 10 ) return "Laenge: Eingabe ist null";
     if ( pFehlerNr == 11 ) return "Laenge: Eingabe ist Leerstring";
@@ -2399,6 +2434,8 @@ public class FkEMail
     if ( pFehlerNr == 61 ) return "IP-Adressteil: Kein Abschluss der IP-Adresse auf ']'";
     if ( pFehlerNr == 62 ) return "IP6-Adressteil: IPv4 in IPv6 - falsche Angabe der IP4-Einbettung (Zeichenfolge 'ffff' erwartet)";
 
+    if ( pFehlerNr == 63 ) return "Domain-Part: Domain-Label zu lang (maximal 63 Zeichen)";
+
     if ( pFehlerNr == 80 ) return "String: Ein startendes Anfuehrungszeichen muss am Anfang kommen, der Zeichenzaehler darf nicht groesser als 0 sein";
     if ( pFehlerNr == 81 ) return "String: Ein startendes Anfuehrungezeichen muss direkt nach einem Punkt kommen";
     if ( pFehlerNr == 82 ) return "String: kein Anfuehrungszeichen nach dem AT-Zeichen";
@@ -2431,7 +2468,7 @@ public class FkEMail
 
     boolean is_true = return_code < 10;
 
-    System.out.println( "assertIsTrue  " + FkString.getFeldLinksMin( ( pString == null ? "null" : pString ), 50 ) + " = " + ( return_code < 10 ? " " : "" ) + return_code + " = "  + ( is_true == knz_soll_wert ? " OK " : " #### FEHLER ####    " + getFehlerText( return_code ) ) );
+    System.out.println( "assertIsTrue  " + FkString.getFeldLinksMin( ( pString == null ? "null" : pString ), 50 ) + " = " + ( return_code < 10 ? " " : "" ) + return_code + " = " + ( is_true == knz_soll_wert ? " OK " : " #### FEHLER ####    " + getFehlerText( return_code ) ) );
   }
 
   public static void assertIsFalse( String pString )
@@ -2639,7 +2676,7 @@ public class FkEMail
 
       assertIsTrue( "()DEF@GHI.JKL" );
       assertIsTrue( "DEF()@GHI.JKL" );
-      
+
     }
     catch ( Exception err_inst )
     {
@@ -2651,4 +2688,3 @@ public class FkEMail
     System.exit( 0 );
   }
 }
-
