@@ -96,82 +96,84 @@ class TestValidateEMailAdresse1
      *    84 - assertIsTrue  local@2001:0db8:85a3:0000:0000:8a2e:0370:7334      = 22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
      *    85 - assertIsTrue  local@[2001:0db8:85a3:0000:0000:8a2e:0370:7334]    =  4 =  OK 
      *    86 - assertIsTrue  local@[IPv6:2001:0db8:85a3:0000:0000:8a2e:0370:7334] =  4 =  OK 
-     *    87 - assertIsTrue  2@bde.cc                                           =  0 =  OK 
-     *    88 - assertIsTrue  -@bde.cc                                           =  0 =  OK 
-     *    89 - assertIsTrue  a2@bde.cc                                          =  0 =  OK 
-     *    90 - assertIsTrue  a-b@bde.cc                                         =  0 =  OK 
-     *    91 - assertIsTrue  ab@b-de.cc                                         =  0 =  OK 
-     *    92 - assertIsTrue  a+b@bde.cc                                         =  0 =  OK 
-     *    93 - assertIsTrue  f.f.f@bde.cc                                       =  0 =  OK 
-     *    94 - assertIsTrue  ab_c@bde.cc                                        =  0 =  OK 
-     *    95 - assertIsTrue  _-_@bde.cc                                         =  0 =  OK 
-     *    96 - assertIsTrue  k.haak@12move.nl                                   =  0 =  OK 
-     *    97 - assertIsTrue  K.HAAK@12MOVE.NL                                   =  0 =  OK 
-     *    98 - assertIsTrue  email@domain.com                                   =  0 =  OK 
-     *    99 - assertIsTrue  email@domain                                       =  0 =  OK 
-     *   100 - assertIsTrue  ?????@domain.com                                   =  0 =  OK 
-     *   101 - assertIsTrue  local@?????.com                                    = 21 =  #### FEHLER ####    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-     *   102 - assertIsTrue  firstname.lastname@domain.com                      =  0 =  OK 
-     *   103 - assertIsTrue  email@subdomain.domain.com                         =  0 =  OK 
-     *   104 - assertIsTrue  firstname+lastname@domain.com                      =  0 =  OK 
-     *   105 - assertIsTrue  email@123.123.123.123                              = 23 =  #### FEHLER ####    Zeichen: Top-Level-Domain darf nicht mit Zahl beginnen
-     *   106 - assertIsTrue  email@[123.123.123.123]                            =  2 =  OK 
-     *   107 - assertIsTrue  1234567890@domain.com                              =  0 =  OK 
-     *   108 - assertIsTrue  a@domain.com                                       =  0 =  OK 
-     *   109 - assertIsTrue  a.b.c.d@domain.com                                 =  0 =  OK 
-     *   110 - assertIsTrue  aap.123.noot.mies@domain.com                       =  0 =  OK 
-     *   111 - assertIsTrue  1@domain.com                                       =  0 =  OK 
-     *   112 - assertIsTrue  email@domain-one.com                               =  0 =  OK 
-     *   113 - assertIsTrue  _______@domain.com                                 =  0 =  OK 
-     *   114 - assertIsTrue  email@domain.topleveldomain                        = 15 =  #### FEHLER ####    Laenge: Top-Level-Domain darf nicht mehr als X-Stellen lang sein. (X ist hier 10)
-     *   115 - assertIsTrue  email@domain.co.jp                                 =  0 =  OK 
-     *   116 - assertIsTrue  firstname-lastname@domain.com                      =  0 =  OK 
-     *   117 - assertIsTrue  firstname-lastname@d.com                           =  0 =  OK 
-     *   118 - assertIsTrue  FIRSTNAME-LASTNAME@d--n.com                        =  0 =  OK 
-     *   119 - assertIsTrue  first-name-last-name@d-a-n.com                     =  0 =  OK 
-     *   120 - assertIsTrue  {local{name{{with{@leftbracket.com                 =  0 =  OK 
-     *   121 - assertIsTrue  }local}name}}with{@rightbracket.com                =  0 =  OK 
-     *   122 - assertIsTrue  |local||name|with|@pipe.com                        =  0 =  OK 
-     *   123 - assertIsTrue  %local%%name%with%@percentage.com                  =  0 =  OK 
-     *   124 - assertIsTrue  $local$$name$with$@dollar.com                      =  0 =  OK 
-     *   125 - assertIsTrue  &local&&name&with&$@amp.com                        =  0 =  OK 
-     *   126 - assertIsTrue  #local##name#with#@hash.com                        =  0 =  OK 
-     *   127 - assertIsTrue  ~local~~name~with~@tilde.com                       =  0 =  OK 
-     *   128 - assertIsTrue  !local!!name!with!@exclamation.com                 =  0 =  OK 
-     *   129 - assertIsTrue  ?local??name?with?@question.com                    =  0 =  OK 
-     *   130 - assertIsTrue  *local**name*with*@asterisk.com                    =  0 =  OK 
-     *   131 - assertIsTrue  `local``name`with`@grave-accent.com                =  0 =  OK 
-     *   132 - assertIsTrue  ^local^^name^with^@xor.com                         =  0 =  OK 
-     *   133 - assertIsTrue  =local==name=with=@equality.com                    =  0 =  OK 
-     *   134 - assertIsTrue  +local++name+with+@equality.com                    =  0 =  OK 
-     *   135 - assertIsTrue  Joe Smith <email@domain.com>                       =  0 =  OK 
-     *   136 - assertIsTrue  john.smith@example.com                             =  0 =  OK 
-     *   137 - assertIsTrue  (comment)john.smith@example.com                    =  6 =  OK 
-     *   138 - assertIsTrue  john.smith(comment)@example.com                    =  6 =  OK 
-     *   139 - assertIsTrue  john.smith@(comment)example.com                    =  6 =  OK 
-     *   140 - assertIsFalse john.smith@exampl(comment)e.com                    = 100 =  OK    Kommentar: Kommentar muss am Strinende enden
-     *   141 - assertIsFalse john.s(comment)mith@example.com                    = 97 =  OK    Kommentar: Nach dem Kommentar muss ein AT-Zeichen kommen
-     *   142 - assertIsFalse john.smith(comment)@(comment)example.com           = 99 =  OK    Kommentar: kein zweiter Kommentar gueltig
-     *   143 - assertIsFalse john.smith(com@ment)example.com                    = 97 =  OK    Kommentar: Nach dem Kommentar muss ein AT-Zeichen kommen
-     *   144 - assertIsTrue  john.smith@example.com(comment)                    = 15 =  #### FEHLER ####    Laenge: Top-Level-Domain darf nicht mehr als X-Stellen lang sein. (X ist hier 10)
-     *   145 - assertIsTrue  domain.starts.with.digit@2domain.com               =  0 =  OK 
-     *   146 - assertIsTrue  domain.ends.with.digit@domain2.com                 =  0 =  OK 
-     *   147 - assertIsTrue  domain.label.with.63.characters@123456789012345678901234567890123456789012345678901234567890123.com =  0 =  OK 
-     *   148 - assertIsFalse domain.label.with.64.characters@1234567890123456789012345678901234567890123456789012345678901234.com = 63 =  OK    Domain-Part: Domain-Label zu lang (maximal 63 Zeichen)
-     *   149 - assertIsTrue  domain.label.with.63.characters@123456789012345678901234567890123456789012345678901234567890123.123456789012345678901234567890123456789012345678901234567890123.com =  0 =  OK 
-     *   150 - assertIsFalse domain.label.with.63.and.64.characters@123456789012345678901234567890123456789012345678901234567890123.1234567890123456789012345678901234567890123456789012345678901234.com = 63 =  OK    Domain-Part: Domain-Label zu lang (maximal 63 Zeichen)
-     *   151 - assertIsTrue  email@domain.com (joe Smith)                       = 22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *   152 - assertIsTrue  "Joe Smith" email@domain.com                       = 87 =  #### FEHLER ####    String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
-     *   153 - assertIsTrue  "Joe\tSmith" email@domain.com                      = 84 =  #### FEHLER ####    String: Ungueltige Escape-Sequenz im String
-     *   154 - assertIsTrue  "Joe"Smith" email@domain.com                       = 87 =  #### FEHLER ####    String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
-     *   155 - assertIsTrue  Test |<gaaf <email@domain.com>                     = 18 =  #### FEHLER ####    Struktur: Fehler in Adress-String-X
-     *   156 - assertIsTrue  MailTo:casesensitve@domain.com                     = 22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *   157 - assertIsTrue  mailto:email@domain.com                            = 22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *   158 - assertIsTrue  Joe Smith <mailto:email@domain.com>                = 22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *   159 - assertIsTrue  Joe Smith <mailto:email(with comment)@domain.com>  = 22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *   160 - assertIsTrue  "With extra < within quotes" Display Name<email@domain.com> = 18 =  #### FEHLER ####    Struktur: Fehler in Adress-String-X
-     *   161 - assertIsTrue  aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa = 13 =  #### FEHLER ####    Laenge: RFC 5321 = SMTP-Protokoll = maximale Laenge des Local-Parts sind 64 Bytes
-     * 
+     *    87 - assertIsTrue  local@[IPA6:2001:0db8:85a3:0000:0000:8a2e:0370:7334] = 40 =  #### FEHLER ####    IP6-Adressteil: String "IPv6:" erwartet
+     *    88 - assertIsTrue  local@[APv6:2001:0db8:85a3:0000:0000:8a2e:0370:7334] = 49 =  #### FEHLER ####    IP6-Adressteil: Falsches Zeichen in der IP-Adresse
+     *    89 - assertIsTrue  local@[aaa6:2001:0db8:85a3:0000:0000:8a2e:0370:7334] =  4 =  OK 
+     *    90 - assertIsTrue  2@bde.cc                                           =  0 =  OK 
+     *    91 - assertIsTrue  -@bde.cc                                           =  0 =  OK 
+     *    92 - assertIsTrue  a2@bde.cc                                          =  0 =  OK 
+     *    93 - assertIsTrue  a-b@bde.cc                                         =  0 =  OK 
+     *    94 - assertIsTrue  ab@b-de.cc                                         =  0 =  OK 
+     *    95 - assertIsTrue  a+b@bde.cc                                         =  0 =  OK 
+     *    96 - assertIsTrue  f.f.f@bde.cc                                       =  0 =  OK 
+     *    97 - assertIsTrue  ab_c@bde.cc                                        =  0 =  OK 
+     *    98 - assertIsTrue  _-_@bde.cc                                         =  0 =  OK 
+     *    99 - assertIsTrue  k.haak@12move.nl                                   =  0 =  OK 
+     *   100 - assertIsTrue  K.HAAK@12MOVE.NL                                   =  0 =  OK 
+     *   101 - assertIsTrue  email@domain.com                                   =  0 =  OK 
+     *   102 - assertIsTrue  email@domain                                       =  0 =  OK 
+     *   103 - assertIsTrue  ?????@domain.com                                   =  0 =  OK 
+     *   104 - assertIsTrue  local@?????.com                                    = 21 =  #### FEHLER ####    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+     *   105 - assertIsTrue  firstname.lastname@domain.com                      =  0 =  OK 
+     *   106 - assertIsTrue  email@subdomain.domain.com                         =  0 =  OK 
+     *   107 - assertIsTrue  firstname+lastname@domain.com                      =  0 =  OK 
+     *   108 - assertIsTrue  email@123.123.123.123                              = 23 =  #### FEHLER ####    Zeichen: Top-Level-Domain darf nicht mit Zahl beginnen
+     *   109 - assertIsTrue  email@[123.123.123.123]                            =  2 =  OK 
+     *   110 - assertIsTrue  1234567890@domain.com                              =  0 =  OK 
+     *   111 - assertIsTrue  a@domain.com                                       =  0 =  OK 
+     *   112 - assertIsTrue  a.b.c.d@domain.com                                 =  0 =  OK 
+     *   113 - assertIsTrue  aap.123.noot.mies@domain.com                       =  0 =  OK 
+     *   114 - assertIsTrue  1@domain.com                                       =  0 =  OK 
+     *   115 - assertIsTrue  email@domain-one.com                               =  0 =  OK 
+     *   116 - assertIsTrue  _______@domain.com                                 =  0 =  OK 
+     *   117 - assertIsTrue  email@domain.topleveldomain                        = 15 =  #### FEHLER ####    Laenge: Top-Level-Domain darf nicht mehr als X-Stellen lang sein. (X ist hier 10)
+     *   118 - assertIsTrue  email@domain.co.jp                                 =  0 =  OK 
+     *   119 - assertIsTrue  firstname-lastname@domain.com                      =  0 =  OK 
+     *   120 - assertIsTrue  firstname-lastname@d.com                           =  0 =  OK 
+     *   121 - assertIsTrue  FIRSTNAME-LASTNAME@d--n.com                        =  0 =  OK 
+     *   122 - assertIsTrue  first-name-last-name@d-a-n.com                     =  0 =  OK 
+     *   123 - assertIsTrue  {local{name{{with{@leftbracket.com                 =  0 =  OK 
+     *   124 - assertIsTrue  }local}name}}with{@rightbracket.com                =  0 =  OK 
+     *   125 - assertIsTrue  |local||name|with|@pipe.com                        =  0 =  OK 
+     *   126 - assertIsTrue  %local%%name%with%@percentage.com                  =  0 =  OK 
+     *   127 - assertIsTrue  $local$$name$with$@dollar.com                      =  0 =  OK 
+     *   128 - assertIsTrue  &local&&name&with&$@amp.com                        =  0 =  OK 
+     *   129 - assertIsTrue  #local##name#with#@hash.com                        =  0 =  OK 
+     *   130 - assertIsTrue  ~local~~name~with~@tilde.com                       =  0 =  OK 
+     *   131 - assertIsTrue  !local!!name!with!@exclamation.com                 =  0 =  OK 
+     *   132 - assertIsTrue  ?local??name?with?@question.com                    =  0 =  OK 
+     *   133 - assertIsTrue  *local**name*with*@asterisk.com                    =  0 =  OK 
+     *   134 - assertIsTrue  `local``name`with`@grave-accent.com                =  0 =  OK 
+     *   135 - assertIsTrue  ^local^^name^with^@xor.com                         =  0 =  OK 
+     *   136 - assertIsTrue  =local==name=with=@equality.com                    =  0 =  OK 
+     *   137 - assertIsTrue  +local++name+with+@equality.com                    =  0 =  OK 
+     *   138 - assertIsTrue  Joe Smith <email@domain.com>                       =  0 =  OK 
+     *   139 - assertIsTrue  john.smith@example.com                             =  0 =  OK 
+     *   140 - assertIsTrue  (comment)john.smith@example.com                    =  6 =  OK 
+     *   141 - assertIsTrue  john.smith(comment)@example.com                    =  6 =  OK 
+     *   142 - assertIsTrue  john.smith@(comment)example.com                    =  6 =  OK 
+     *   143 - assertIsFalse john.smith@exampl(comment)e.com                    = 100 =  OK    Kommentar: Kommentar muss am Strinende enden
+     *   144 - assertIsFalse john.s(comment)mith@example.com                    = 97 =  OK    Kommentar: Nach dem Kommentar muss ein AT-Zeichen kommen
+     *   145 - assertIsFalse john.smith(comment)@(comment)example.com           = 99 =  OK    Kommentar: kein zweiter Kommentar gueltig
+     *   146 - assertIsFalse john.smith(com@ment)example.com                    = 97 =  OK    Kommentar: Nach dem Kommentar muss ein AT-Zeichen kommen
+     *   147 - assertIsTrue  john.smith@example.com(comment)                    = 15 =  #### FEHLER ####    Laenge: Top-Level-Domain darf nicht mehr als X-Stellen lang sein. (X ist hier 10)
+     *   148 - assertIsTrue  domain.starts.with.digit@2domain.com               =  0 =  OK 
+     *   149 - assertIsTrue  domain.ends.with.digit@domain2.com                 =  0 =  OK 
+     *   150 - assertIsTrue  domain.label.with.63.characters@123456789012345678901234567890123456789012345678901234567890123.com =  0 =  OK 
+     *   151 - assertIsFalse domain.label.with.64.characters@1234567890123456789012345678901234567890123456789012345678901234.com = 63 =  OK    Domain-Part: Domain-Label zu lang (maximal 63 Zeichen)
+     *   152 - assertIsTrue  domain.label.with.63.characters@123456789012345678901234567890123456789012345678901234567890123.123456789012345678901234567890123456789012345678901234567890123.com =  0 =  OK 
+     *   153 - assertIsFalse domain.label.with.63.and.64.characters@123456789012345678901234567890123456789012345678901234567890123.1234567890123456789012345678901234567890123456789012345678901234.com = 63 =  OK    Domain-Part: Domain-Label zu lang (maximal 63 Zeichen)
+     *   154 - assertIsTrue  email@domain.com (joe Smith)                       = 22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *   155 - assertIsTrue  "Joe Smith" email@domain.com                       = 87 =  #### FEHLER ####    String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
+     *   156 - assertIsTrue  "Joe\tSmith" email@domain.com                      = 84 =  #### FEHLER ####    String: Ungueltige Escape-Sequenz im String
+     *   157 - assertIsTrue  "Joe"Smith" email@domain.com                       = 87 =  #### FEHLER ####    String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
+     *   158 - assertIsTrue  Test |<gaaf <email@domain.com>                     = 18 =  #### FEHLER ####    Struktur: Fehler in Adress-String-X
+     *   159 - assertIsTrue  MailTo:casesensitve@domain.com                     = 22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *   160 - assertIsTrue  mailto:email@domain.com                            = 22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *   161 - assertIsTrue  Joe Smith <mailto:email@domain.com>                = 22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *   162 - assertIsTrue  Joe Smith <mailto:email(with comment)@domain.com>  = 22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *   163 - assertIsTrue  "With extra < within quotes" Display Name<email@domain.com> = 18 =  #### FEHLER ####    Struktur: Fehler in Adress-String-X
+     *   164 - assertIsTrue  aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa = 13 =  #### FEHLER ####    Laenge: RFC 5321 = SMTP-Protokoll = maximale Laenge des Local-Parts sind 64 Bytes
      */
 
     try
@@ -262,6 +264,9 @@ class TestValidateEMailAdresse1
       assertIsTrue( "local@2001:0db8:85a3:0000:0000:8a2e:0370:7334" );
       assertIsTrue( "local@[2001:0db8:85a3:0000:0000:8a2e:0370:7334]" );
       assertIsTrue( "local@[IPv6:2001:0db8:85a3:0000:0000:8a2e:0370:7334]" );
+      assertIsTrue( "local@[IPA6:2001:0db8:85a3:0000:0000:8a2e:0370:7334]" );
+      assertIsTrue( "local@[APv6:2001:0db8:85a3:0000:0000:8a2e:0370:7334]" );
+      assertIsTrue( "local@[aaa6:2001:0db8:85a3:0000:0000:8a2e:0370:7334]" );
       assertIsTrue( "2@bde.cc" );
       assertIsTrue( "-@bde.cc" );
       assertIsTrue( "a2@bde.cc" );
