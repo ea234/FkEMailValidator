@@ -81,9 +81,6 @@ class TestValidateEMailAdresse1
      *    69 - assertIsFalse mailto:mailto:email@domain.com                     = 22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
      *    70 - assertIsFalse Display Name <email@plus.com> (after name with display) = 22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
      *    71 - assertIsFalse ReDoSaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa = 12 =  OK    Laenge: Laengenbegrenzungen stimmen nicht
-     * 
-     * ----------------------------------------------------------------------------------------------------
-     * 
      *    72 - assertIsTrue  w@com                                              = 12 =  #### FEHLER ####    Laenge: Laengenbegrenzungen stimmen nicht
      *    73 - assertIsTrue  w.b.f@test.com                                     =  0 =  OK 
      *    74 - assertIsTrue  w.b.f@test.museum                                  =  0 =  OK 
@@ -111,7 +108,7 @@ class TestValidateEMailAdresse1
      *    96 - assertIsTrue  k.haak@12move.nl                                   =  0 =  OK 
      *    97 - assertIsTrue  K.HAAK@12MOVE.NL                                   =  0 =  OK 
      *    98 - assertIsTrue  email@domain.com                                   =  0 =  OK 
-     *    99 - assertIsTrue  email@domain                                       = 34 =  #### FEHLER ####    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
+     *    99 - assertIsTrue  email@domain                                       =  0 =  OK 
      *   100 - assertIsTrue  ?????@domain.com                                   =  0 =  OK 
      *   101 - assertIsTrue  local@?????.com                                    = 21 =  #### FEHLER ####    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
      *   102 - assertIsTrue  firstname.lastname@domain.com                      =  0 =  OK 
@@ -148,17 +145,30 @@ class TestValidateEMailAdresse1
      *   133 - assertIsTrue  =local==name=with=@equality.com                    =  0 =  OK 
      *   134 - assertIsTrue  +local++name+with+@equality.com                    =  0 =  OK 
      *   135 - assertIsTrue  Joe Smith <email@domain.com>                       =  0 =  OK 
-     *   136 - assertIsTrue  email@domain.com (joe Smith)                       = 22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *   137 - assertIsTrue  "Joe Smith" email@domain.com                       = 87 =  #### FEHLER ####    String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
-     *   138 - assertIsTrue  "Joe\tSmith" email@domain.com                      = 84 =  #### FEHLER ####    String: Ungueltige Escape-Sequenz im String
-     *   139 - assertIsTrue  "Joe"Smith" email@domain.com                       = 87 =  #### FEHLER ####    String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
-     *   140 - assertIsTrue  Test |<gaaf <email@domain.com>                     = 18 =  #### FEHLER ####    Struktur: Fehler in Adress-String-X
-     *   141 - assertIsTrue  MailTo:casesensitve@domain.com                     = 22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *   142 - assertIsTrue  mailto:email@domain.com                            = 22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *   143 - assertIsTrue  Joe Smith <mailto:email@domain.com>                = 22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *   144 - assertIsTrue  Joe Smith <mailto:email(with comment)@domain.com>  = 22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *   145 - assertIsTrue  "With extra < within quotes" Display Name<email@domain.com> = 18 =  #### FEHLER ####    Struktur: Fehler in Adress-String-X
-     *   146 - assertIsTrue  aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa = 13 =  #### FEHLER ####    Laenge: RFC 5321 = SMTP-Protokoll = maximale Laenge des Local-Parts sind 64 Bytes
+     *   136 - assertIsTrue  john.smith@example.com                             =  0 =  OK 
+     *   137 - assertIsTrue  (comment)john.smith@example.com                    =  6 =  OK 
+     *   138 - assertIsTrue  john.smith(comment)@example.com                    =  6 =  OK 
+     *   139 - assertIsTrue  john.smith@(comment)example.com                    =  6 =  OK 
+     *   140 - assertIsFalse john.smith@exampl(comment)e.com                    = 100 =  OK    Kommentar: Kommentar muss am Strinende enden
+     *   141 - assertIsFalse john.s(comment)mith@example.com                    = 97 =  OK    Kommentar: Nach dem Kommentar muss ein AT-Zeichen kommen
+     *   142 - assertIsTrue  john.smith@example.com(comment)                    = 15 =  #### FEHLER ####    Laenge: Top-Level-Domain darf nicht mehr als X-Stellen lang sein. (X ist hier 10)
+     *   143 - assertIsTrue  domain.starts.with.digit@2domain.com               =  0 =  OK 
+     *   144 - assertIsTrue  domain.ends.with.digit@domain2.com                 =  0 =  OK 
+     *   145 - assertIsTrue  domain.label.with.63.characters@123456789012345678901234567890123456789012345678901234567890123.com =  0 =  OK 
+     *   146 - assertIsFalse domain.label.with.64.characters@1234567890123456789012345678901234567890123456789012345678901234.com = 63 =  OK    Domain-Part: Domain-Label zu lang (maximal 63 Zeichen)
+     *   147 - assertIsTrue  domain.label.with.63.characters@123456789012345678901234567890123456789012345678901234567890123.123456789012345678901234567890123456789012345678901234567890123.com =  0 =  OK 
+     *   148 - assertIsFalse domain.label.with.63.and.64.characters@123456789012345678901234567890123456789012345678901234567890123.1234567890123456789012345678901234567890123456789012345678901234.com = 63 =  OK    Domain-Part: Domain-Label zu lang (maximal 63 Zeichen)
+     *   149 - assertIsTrue  email@domain.com (joe Smith)                       = 22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *   150 - assertIsTrue  "Joe Smith" email@domain.com                       = 87 =  #### FEHLER ####    String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
+     *   151 - assertIsTrue  "Joe\tSmith" email@domain.com                      = 84 =  #### FEHLER ####    String: Ungueltige Escape-Sequenz im String
+     *   152 - assertIsTrue  "Joe"Smith" email@domain.com                       = 87 =  #### FEHLER ####    String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
+     *   153 - assertIsTrue  Test |<gaaf <email@domain.com>                     = 18 =  #### FEHLER ####    Struktur: Fehler in Adress-String-X
+     *   154 - assertIsTrue  MailTo:casesensitve@domain.com                     = 22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *   155 - assertIsTrue  mailto:email@domain.com                            = 22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *   156 - assertIsTrue  Joe Smith <mailto:email@domain.com>                = 22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *   157 - assertIsTrue  Joe Smith <mailto:email(with comment)@domain.com>  = 22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *   158 - assertIsTrue  "With extra < within quotes" Display Name<email@domain.com> = 18 =  #### FEHLER ####    Struktur: Fehler in Adress-String-X
+     *   159 - assertIsTrue  aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa = 13 =  #### FEHLER ####    Laenge: RFC 5321 = SMTP-Protokoll = maximale Laenge des Local-Parts sind 64 Bytes
      * 
      */
 
