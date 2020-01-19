@@ -784,7 +784,7 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
            */
           if ((current_index - position_last_point)> 64)
           {
-            // System.out.println ("" + (akt_index - position_letzt_punkt));
+            // System.out.println ("" + (current_index - position_letzt_punkt));
            
             return 63; // Domain part: Domain label too long (maximum 63 characters)
           }
@@ -1769,13 +1769,34 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
          * While Loop 4 - Comments
          */
 
-        /*
-         * Comments are allowed at the beginning or at the end of the local part.
-         * No comments are allowed in the domain part
-         */
         if ( position_at_character > 0 )
         {
-          //return 94; // comment: no comment after the AT sign
+          /*
+           * Kombination ".(" pruefen Domain-Part.
+           */
+          if ( (position_last_point > position_at_character )  && (( current_index - position_last_point ) == 1 ))
+          {
+            return 102; // Kommentar: Falsche Zeichenkombination ".(" im Domain Part
+          }
+        }
+        else
+        {
+          /*
+           * Character-Kombination ". (" Check Local Part
+           *
+           * If an introductory bracket is found, the last point must not
+           * are in front of the bracket.
+           *
+           * The position of the last point must be greater than 0. At omit
+           * this test, there is a side effect with the initial value
+           * from -1 of the variables for the last point.
+           *
+           * If there is an incorrect combination of characters, error 101 is returned.           
+           */
+          if ( (position_last_point > 0 )  && (( current_index - position_last_point ) == 1 ))
+          {
+            return 101; // Kommentar: Falsche Zeichenkombination ".(" im Local Part
+          }
         }
 
         /*
@@ -1968,6 +1989,10 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
           {
             return 98; // Comment: No local part exists
           }
+        }
+        else if ( pInput.charAt( current_index + 1 ) == '.' )
+        {
+          return 103; // Kommentar: Wron Charactercombination ")."
         }
         else
         {
@@ -2260,6 +2285,11 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
 
     if ( pErrorNumber == 100 ) return "Comment: Comment must end at String-end";
 
+    if ( pErrorNumber == 101 ) return "Comment: Wrong combination of characters \".(\" in Local Part";;
+    if ( pErrorNumber == 102 ) return "Comment: Wrong combination of characters \".(\" in Domain Part";
+
+    if ( pErrorNumber == 103 ) return "Comment: Kommentar: Wron Charactercombination \").\"";
+     
     return "Unknown error number" + pErrorNumber;
   }
 

@@ -2021,8 +2021,34 @@ public class FkEMail
          */
         if ( position_at_zeichen > 0 )
         {
-          //return 94; // Kommentar: kein Kommentar nach dem AT-Zeichen
+          /*
+           * Kombination ".(" pruefen Domain-Part.
+           */
+          if ( (position_letzter_punkt > position_at_zeichen )  && (( akt_index - position_letzter_punkt ) == 1 ))
+          {
+            return 102; // Kommentar: Falsche Zeichenkombination ".(" im Domain Part
+          }
         }
+        else
+        {
+          /*
+           * Kombination ".(" pruefen Local Part
+           * 
+           * Wird eine einleitende Klammer gefunden, darf der letzte Punkt nicht 
+           * vor der Klammer liegen. 
+           * 
+           * Die Position des letzten Punktes muss groesser als 0 sein. Bei weglassen 
+           * dieser Pruefung, kommt es zu einem Seiteneffekt mit dem Initialwert 
+           * von -1 der Variablen fuer den letzten Punkt. 
+           * 
+           * Liegt eine falsche Zeichenkombination vor, wird der Fehler 101 zurueckgegeben.
+           */
+          if ( (position_letzter_punkt > 0 )  && (( akt_index - position_letzter_punkt ) == 1 ))
+          {
+            return 101; // Kommentar: Falsche Zeichenkombination ".(" im Local Part
+          }
+        }
+
 
         /*
          * Wurde schon ein Kommentar gelesen, darf kein zweiter Kommentar
@@ -2210,6 +2236,10 @@ public class FkEMail
               return 98; // Kommentar: Kein lokaler Part vorhanden
             }
           }
+          else if ( pEingabe.charAt( akt_index + 1 ) == '.' )
+          {
+            return 103; // Kommentar: Falsche Zeichenkombination ")."
+          }
           else
           {
             if ( knz_abschluss_mit_at_zeichen )
@@ -2221,6 +2251,10 @@ public class FkEMail
           if ( knz_kommentar_abschluss_am_stringende ) 
           {
             return 100; // Kommentar: Kommentar muss am Strinende enden
+          }
+          else 
+          {
+            
           }
         }
 
@@ -2500,7 +2534,12 @@ public class FkEMail
     if ( pFehlerNr == 98 ) return "Kommentar: Kein lokaler Part vorhanden";
     if ( pFehlerNr == 99 ) return "Kommentar: kein zweiter Kommentar gueltig";
 
-    if ( pFehlerNr == 100 ) return "Kommentar: Kommentar muss am Strinende enden";
+    if ( pFehlerNr == 100 ) return "Kommentar: Kommentar muss am Stringende enden";
+    
+    if ( pFehlerNr == 101 ) return "Kommentar: Falsche Zeichenkombination \".(\" im Domain Part";
+    if ( pFehlerNr == 102 ) return "Kommentar: Falsche Zeichenkombination \".(\" im Local Part";
+
+    if ( pFehlerNr == 103 ) return "Kommentar: Falsche Zeichenkombination \").\"";
 
     return "Unbekannte Fehlernummer " + pFehlerNr;
   }
