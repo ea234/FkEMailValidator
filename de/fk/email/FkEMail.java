@@ -585,6 +585,8 @@ public class FkEMail
      */
     int position_kommentar_ende = -1;
 
+    int position_kommentar_start = -1;
+
     /*
      * Zaehler fuer Zeichen zwischen zwei Trennzeichen.
      * Die Trennzeichen sind Punkt und AT-Zeichen
@@ -1983,7 +1985,7 @@ public class FkEMail
         {
           return 61; // IP-Adressteil: Kein Abschluss der IP-Adresse auf ']'
         }
-
+ 
         /*
          * Es wurde eine IP-Adresse erkannt, der Wert in der 
          * Variablen "fkt_ergebnis_email_ok" wird um 2 erhoeht.
@@ -2091,6 +2093,8 @@ public class FkEMail
           }
         }
 
+        position_kommentar_start = akt_index;
+        
         akt_index++;
 
         aktuelles_zeichen = 'A';
@@ -2406,13 +2410,24 @@ public class FkEMail
       {
         return 36; // Trennzeichen: der letzte Punkt darf nicht am Ende liegen
       }
+      
+      int laenge_tld = 0;
+      
+      if (( position_letzter_punkt > position_at_zeichen ) && ( position_kommentar_start > position_letzter_punkt ))
+      {
+        laenge_tld = position_kommentar_start - position_letzter_punkt;
+      }
+      else
+      {
+        laenge_tld = laenge_eingabe_string - position_letzter_punkt;
+      }
 
-      if ( ( position_letzter_punkt + 1 ) > ( laenge_eingabe_string - 2 ) )
+      if ( laenge_tld < 2 )
       {
         return 14; // Laenge: Top-Level-Domain muss mindestens 2 Stellen lang sein.
       }
 
-      if ( ( laenge_eingabe_string - position_letzter_punkt ) > 10 )
+      if ( laenge_tld > 10 )
       {
         return 15; // Laenge: Top-Level-Domain darf nicht mehr als X-Stellen lang sein. (X ist hier 10)
       }

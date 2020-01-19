@@ -340,7 +340,9 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
      * Saves the position of the last closed parenthesis ')' of a valid comment.
      */
     int position_commentar_end = -1;
-
+    
+    int position_kommentar_start = -1;
+ 
     /*
      * Counter for characters between two separators.
      * The separators are dot and AT character
@@ -2154,12 +2156,23 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
         return 36; // Separator: the last point must not be at the end
       }
 
-      if ( ( position_last_point + 1 ) > ( length_input_string - 2 ) )
+      int laenge_tld = 0;
+      
+      if (( position_last_point > position_at_character ) && ( position_kommentar_start > position_last_point ))
+      {
+        laenge_tld = position_kommentar_start - position_last_point;
+      }
+      else
+      {
+        laenge_tld = length_input_string - position_last_point;
+      }
+
+      if ( laenge_tld < 2 )
       {
         return 14;// Length: top-level domain must be at least 2 digits long.
       }
 
-      if ( ( length_input_string - position_last_point ) > 10 )
+      if ( laenge_tld > 10 )
       {
         return 15;// Length: top-level domain can not be more than X-places long. (X is 10 here)
       }
@@ -2324,7 +2337,7 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
     if ( pErrorNumber == 91 ) return "Comment: Invalid escape sequence in comment";
     if ( pErrorNumber == 92 ) return "Comment: Invalid character in the comment";
 
-    if ( pErrorNumber == 93 ) return "Comment: no concluding sign found for the commentary.\")\" expected";
+    if ( pErrorNumber == 93 ) return "Comment: no concluding sign found for the commentary. \")\" expected";
     if ( pErrorNumber == 94 ) return "comment: no comment after the AT-Character";
     if ( pErrorNumber == 95 ) return "Comment: The comment ends at the end of the string (premature end of input)";
     if ( pErrorNumber == 96 ) return "comment: escape character not at the end of the input";
@@ -2337,7 +2350,7 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
     if ( pErrorNumber == 101 ) return "Comment: Wrong combination of characters \".(\" in Local Part";;
     if ( pErrorNumber == 102 ) return "Comment: Wrong combination of characters \".(\" in Domain Part";
 
-    if ( pErrorNumber == 103 ) return "Comment: Kommentar: Wron Charactercombination \").\"";
+    if ( pErrorNumber == 103 ) return "Comment: Kommentar: Wrong Charactercombination \").\"";
 
     if ( pErrorNumber == 105 ) return "Comment: space separation in the domain part. Opening bracket expected";
 
