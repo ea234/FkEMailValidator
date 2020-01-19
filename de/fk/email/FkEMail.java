@@ -895,7 +895,7 @@ public class FkEMail
      * mit IP-Adresse oder String-Teilen im Nachgang noch abweisen.  
      */
     int fkt_ergebnis_email_ok = 0;
-    
+
     boolean knz_kommentar_abschluss_am_stringende = false;
 
     /*
@@ -1527,29 +1527,25 @@ public class FkEMail
               return 40; // IP6-Adressteil: String "IPv6:" erwartet
             }
           }
-          else if ( ( pEingabe.charAt( akt_index + 1 ) == ':' ) ||
-                    ( pEingabe.charAt( akt_index + 2 ) == ':' ) ||
-                    ( pEingabe.charAt( akt_index + 3 ) == ':' ) ||
-                    ( pEingabe.charAt( akt_index + 4 ) == ':' ) || 
-                    ( pEingabe.charAt( akt_index + 5 ) == ':' ) )
-            {
-              /*
-               * Einbettung IP-V6-Adresse ohne Praefix "IPv6"
-               * 
-               * Wird der Praefix "IPv6" nicht gefunden, wird auf das vorhandensein 
-               * eines Doppelpunktes innerhalb der naechsten 5 Zeichen geprueft.
-               * Wird ein Doppelpunkt gefunden, ist dieses das Kennzeichen, dass 
-               * eine IP-V6 Adresse vorhanden ist. 
-               * 
-               * Das erste Zeichen wird auch mit geprueft, da die IP-V6-Adresse mit "::" starten koennte.
-               */
-            
-              /*
-               * Der Leseprozess befindet sich in einer IPv6 Adresse.
-               * Die Kennzeichenvariable wird auf 1 gestellt.
-               */
-              knz_ipv6 = 1;
-            }
+          else if ( ( pEingabe.charAt( akt_index + 1 ) == ':' ) || ( pEingabe.charAt( akt_index + 2 ) == ':' ) || ( pEingabe.charAt( akt_index + 3 ) == ':' ) || ( pEingabe.charAt( akt_index + 4 ) == ':' ) || ( pEingabe.charAt( akt_index + 5 ) == ':' ) )
+          {
+            /*
+             * Einbettung IP-V6-Adresse ohne Praefix "IPv6"
+             * 
+             * Wird der Praefix "IPv6" nicht gefunden, wird auf das vorhandensein 
+             * eines Doppelpunktes innerhalb der naechsten 5 Zeichen geprueft.
+             * Wird ein Doppelpunkt gefunden, ist dieses das Kennzeichen, dass 
+             * eine IP-V6 Adresse vorhanden ist. 
+             * 
+             * Das erste Zeichen wird auch mit geprueft, da die IP-V6-Adresse mit "::" starten koennte.
+             */
+
+            /*
+             * Der Leseprozess befindet sich in einer IPv6 Adresse.
+             * Die Kennzeichenvariable wird auf 1 gestellt.
+             */
+            knz_ipv6 = 1;
+          }
         }
 
         /*
@@ -2024,7 +2020,7 @@ public class FkEMail
           /*
            * Kombination ".(" pruefen Domain-Part.
            */
-          if ( (position_letzter_punkt > position_at_zeichen )  && (( akt_index - position_letzter_punkt ) == 1 ))
+          if ( ( position_letzter_punkt > position_at_zeichen ) && ( ( akt_index - position_letzter_punkt ) == 1 ) )
           {
             return 102; // Kommentar: Falsche Zeichenkombination ".(" im Domain Part
           }
@@ -2043,12 +2039,11 @@ public class FkEMail
            * 
            * Liegt eine falsche Zeichenkombination vor, wird der Fehler 101 zurueckgegeben.
            */
-          if ( (position_letzter_punkt > 0 )  && (( akt_index - position_letzter_punkt ) == 1 ))
+          if ( ( position_letzter_punkt > 0 ) && ( ( akt_index - position_letzter_punkt ) == 1 ) )
           {
             return 101; // Kommentar: Falsche Zeichenkombination ".(" im Local Part
           }
         }
-
 
         /*
          * Wurde schon ein Kommentar gelesen, darf kein zweiter Kommentar
@@ -2073,7 +2068,6 @@ public class FkEMail
          * Kommentart innerhalb des lokalen Parts sind nicht erlaubt. 
          */
         boolean knz_abschluss_mit_at_zeichen = ( akt_index > 0 );
-        
 
         knz_abschluss_mit_at_zeichen = ( akt_index == email_local_part_gesamt_start ) == false;
 
@@ -2083,7 +2077,7 @@ public class FkEMail
            * Wurde schon ein AT-Zeichen gelesen, muss der Kommentar nicht auch einem AT-Zeichen enden. 
            */
           knz_abschluss_mit_at_zeichen = false;
-          
+
           /*
            * Sind schon Zeichen nach dem AT-Zeichen gelesen worden, muss der 
            * Kommentar am Stringende enden.
@@ -2247,14 +2241,14 @@ public class FkEMail
               return 97; // Kommentar: Nach dem Kommentar muss ein AT-Zeichen kommen
             }
           }
-          
-          if ( knz_kommentar_abschluss_am_stringende ) 
+
+          if ( knz_kommentar_abschluss_am_stringende )
           {
             return 100; // Kommentar: Kommentar muss am Strinende enden
           }
-          else 
+          else
           {
-            
+
           }
         }
 
@@ -2265,23 +2259,80 @@ public class FkEMail
       }
       else
       {
-
         /*
-         * Hier koennen noch die Zeichen fuer internationale eMail-Adressen hinterlegt werden,
-         * welche durchgelassen werden sollen. 
+         * Sonderbedingung: Leerzeichentrennung bis Kommentar im Domain-Part
          * 
-         * Die If-Abfrage waere denn einzukommentieren. 
+         * "email@domain.com (joe Smith)"
+         * 
+         * Ist das aktuelle Zeichen ein Leerzeichen und der Leseprozess befindet 
+         * sich im Domainpart (position_at_zeichen > 0), dann muss geprueft werden, 
+         * ob nach den Leerzeichen eine oeffnende Klammer kommt.
          */
-        //if ( ( aktuelles_zeichen == 'ä' ) || ( aktuelles_zeichen == 'ö' ) ) 
-        //{
-        //  OK 
-        //}
-        //else
-        //{
+        if ( ( aktuelles_zeichen == ' ' ) && ( position_at_zeichen > 0 ) )
+        {
+          /*
+           * aktuelles Zeichen konsumieren, bzw. Lespositon 1 weiterstellen
+           */
+          akt_index++;
+          
+          /*
+           * Ueberlese alle Leerzeichen in einer While-Schleife. 
+           */
+          while ( ( akt_index < laenge_eingabe_string ) && ( pEingabe.charAt( akt_index ) == ' ' ) )
+          {
+            akt_index++;
+          }
 
-        return 22; // Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+          /*
+           * Wurde in der While-Schleife bis zum Eingabeende gelesen, 
+           * wird der Fehler 22 zurueckgegeben, da das Leerzeichen 
+           * falsch ist.
+           */
+          if ( akt_index == laenge_eingabe_string )
+          {
+            return 22;
+          }
 
-        //}
+          /*
+           * Nach der While-Schleife muss das Zeichen an der aktuellen 
+           * Leseposition eine oeffnende Klammer sein. Alle anderen 
+           * Zeichen fuehren zu einem Fehler, da das einleitende
+           * Leerzeichen ein falsches Zeichen war. Es wird in diesem 
+           * Fall der Fehler 105 zurueckgegeben. 
+           */
+          if ( pEingabe.charAt( akt_index ) != '(' )
+          {
+            return 105; // Kommentar: Leerzeichentrennung im Domain-Part. Oeffnende Klammer erwartet
+          }
+          else 
+          {
+            /*
+             * In der While-Schleife wurde die Leseposition einmal zu viel erhoeht.
+             * Die Leseposition wird um eine Position verringert.
+             * Da sich der Leseprozess im Domain-Part befindet gibt es ein vorhergehendes Zeichen.
+             */
+            akt_index--; 
+          }
+        }
+        else
+        {
+          /*
+           * Hier koennen noch die Zeichen fuer internationale eMail-Adressen hinterlegt werden,
+           * welche durchgelassen werden sollen. 
+           * 
+           * Die If-Abfrage waere denn einzukommentieren. 
+           */
+          //if ( ( aktuelles_zeichen == 'ä' ) || ( aktuelles_zeichen == 'ö' ) ) 
+          //{
+          //  OK 
+          //}
+          //else
+          //{
+
+          return 22; // Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+
+          //}
+        }
       }
 
       /*
@@ -2303,7 +2354,7 @@ public class FkEMail
      * Bei einer IP6-Adressangabe wird die Variable "position_letzter_punkt" fuer 
      * die Doppelpunkte ":" in der Adressangabe benutzt. 
      */
-    if ( ( position_letzter_punkt == -1 )|| ( position_letzter_punkt == position_at_zeichen )) 
+    if ( ( position_letzter_punkt == -1 ) || ( position_letzter_punkt == position_at_zeichen ) )
     {
       return 34; // Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
     }
@@ -2535,11 +2586,13 @@ public class FkEMail
     if ( pFehlerNr == 99 ) return "Kommentar: kein zweiter Kommentar gueltig";
 
     if ( pFehlerNr == 100 ) return "Kommentar: Kommentar muss am Stringende enden";
-    
+
     if ( pFehlerNr == 101 ) return "Kommentar: Falsche Zeichenkombination \".(\" im Domain Part";
     if ( pFehlerNr == 102 ) return "Kommentar: Falsche Zeichenkombination \".(\" im Local Part";
 
     if ( pFehlerNr == 103 ) return "Kommentar: Falsche Zeichenkombination \").\"";
+
+    if ( pFehlerNr == 105 ) return "Kommentar: Leerzeichentrennung im Domain-Part. Oeffnende Klammer erwartet";
 
     return "Unbekannte Fehlernummer " + pFehlerNr;
   }

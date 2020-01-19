@@ -2259,7 +2259,65 @@ public class FkEMail_EXTRACTION
       }
       else
       {
-        return 22; // Zeichen: ungueltiges Zeichen in der Eingabe gefunden 
+        /*
+         * Sonderbedingung: Leerzeichentrennung bis Kommentar im Domain-Part
+         * 
+         * "email@domain.com (joe Smith)"
+         * 
+         * Ist das aktuelle Zeichen ein Leerzeichen und der Leseprozess befindet 
+         * sich im Domainpart (position_at_zeichen > 0), dann muss geprueft werden, 
+         * ob nach den Leerzeichen eine oeffnende Klammer kommt.
+         */
+        if ( ( aktuelles_zeichen == ' ' ) && ( position_at_zeichen > 0 ) )
+        {
+          /*
+           * aktuelles Zeichen konsumieren, bzw. Lespositon 1 weiterstellen
+           */
+          akt_index++;
+          
+          /*
+           * Ueberlese alle Leerzeichen in einer While-Schleife. 
+           */
+          while ( ( akt_index < laenge_eingabe_string ) && ( pEingabe.charAt( akt_index ) == ' ' ) )
+          {
+            akt_index++;
+          }
+
+          /*
+           * Wurde in der While-Schleife bis zum Eingabeende gelesen, 
+           * wird der Fehler 22 zurueckgegeben, da das Leerzeichen 
+           * falsch ist.
+           */
+          if ( akt_index == laenge_eingabe_string )
+          {
+            return 22;
+          }
+
+          /*
+           * Nach der While-Schleife muss das Zeichen an der aktuellen 
+           * Leseposition eine oeffnende Klammer sein. Alle anderen 
+           * Zeichen fuehren zu einem Fehler, da das einleitende
+           * Leerzeichen ein falsches Zeichen war. Es wird in diesem 
+           * Fall der Fehler 105 zurueckgegeben. 
+           */
+          if ( pEingabe.charAt( akt_index ) != '(' )
+          {
+            return 105; // Kommentar: Leerzeichentrennung im Domain-Part. Oeffnende Klammer erwartet
+          }
+          else 
+          {
+            /*
+             * In der While-Schleife wurde die Leseposition einmal zu viel erhoeht.
+             * Die Leseposition wird um eine Position verringert.
+             * Da sich der Leseprozess im Domain-Part befindet gibt es ein vorhergehendes Zeichen.
+             */
+            akt_index--; 
+          }
+        }
+        else
+        {
+          return 22; // Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+        }
       }
 
       /*
@@ -2654,6 +2712,8 @@ public class FkEMail_EXTRACTION
     if ( pFehlerNr == 102 ) return "Kommentar: Falsche Zeichenkombination \".(\" im Local Part";
 
     if ( pFehlerNr == 103 ) return "Kommentar: Falsche Zeichenkombination \").\"";
+
+    if ( pFehlerNr == 105 ) return "Kommentar: Leerzeichentrennung im Domain-Part. Oeffnende Klammer erwartet";
 
     return "Unbekannte Fehlernummer " + pFehlerNr;
   }

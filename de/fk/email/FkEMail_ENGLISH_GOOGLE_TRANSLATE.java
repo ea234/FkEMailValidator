@@ -189,7 +189,7 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
    * https://tools.ietf.org/id/draft-ietf-behave-address-format-10.html
    * </pre>
    * 
-   * @param pEingabe die auf eine eMail-Adresse zu pruefende Eingabe
+   * @param pInput die auf eine eMail-Adresse zu pruefende Eingabe
    * @return wenn die Eingabe nach der Struktur her eine eMail-Adresse ergeben kann einen Wert kleiner 10, ansonsten einen der oben genannten Rueckgabewerte 
    */
   public static int checkEMailAddress( String pInput )
@@ -510,7 +510,7 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
         current_index = 1;
       }
     }
-    
+
     int email_local_part_gesamt_start = current_index;
 
     /*
@@ -649,7 +649,7 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
      * with IP address or string parts after rejection.
      */
     int fkt_result_email_ok = 0;
-    
+
     boolean knz_kommentar_abschluss_am_stringende = false;
 
     /*
@@ -707,7 +707,7 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
           {
             return 24; // character: No special character at the end of the eMail address
           }
-          else 
+          else
           {
             /*
              * https://en.wikipedia.org/wiki/Email_address
@@ -719,7 +719,7 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
             {
               return 20; // Trennzeichen: ungueltige Zeichenkombination "-."
             }
-            //else if ( pEingabe.charAt( current_index - 1 ) == '.' )
+            //else if ( pInput.charAt( current_index - 1 ) == '.' )
             //{
             //  return 20; // Trennzeichen: ungueltige Zeichenkombination ".-"
             //}
@@ -768,8 +768,7 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
           }
         }
 
-        
-        if (position_at_character> 0)
+        if ( position_at_character > 0 )
         {
           /*
            * Domain part label length
@@ -782,10 +781,10 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
            *
            * If the current domain label is too long, error 63 is returned.
            */
-          if ((current_index - position_last_point)> 64)
+          if ( ( current_index - position_last_point ) > 64 )
           {
             // System.out.println ("" + (current_index - position_letzt_punkt));
-           
+
             return 63; // Domain part: Domain label too long (maximum 63 characters)
           }
         }
@@ -862,7 +861,7 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
          * Set the character error after the AT-Character to 0
          */
         character_counter = 0;
-        
+
         /*
         * Position of last point
         *
@@ -874,8 +873,8 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
         * The domain part starts at the AT symbol and on its index
         * the position of the last point is also set.
         */
-       position_last_point = current_index;
-        
+        position_last_point = current_index;
+
       }
       else if ( current_character == '\\' )
       {
@@ -1278,31 +1277,27 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
             else
             {
               return 40; // IP6 address part: string "IPv6:" expected
-            } 
-          }
-          else if ( ( pInput.charAt( current_index  + 1 ) == ':' ) ||
-                    ( pInput.charAt( current_index  + 2 ) == ':' ) ||
-                    ( pInput.charAt( current_index  + 3 ) == ':' ) ||
-                    ( pInput.charAt( current_index  + 4 ) == ':' ) ||
-                    ( pInput.charAt( current_index  + 5 ) == ':' ) )
-            {
-              /*
-               * Embedding IP-V6 address without prefix "IPv6"
-               *
-               * If the prefix "IPv6" is not found, it is checked 
-               * for a colon within the next 5 characters.
-               * If a colon is found, this is the indicator that
-               * an IP-V6 address is available.
-               *
-               * The first character is also checked, since the IP-V6 address could start with "::".
-               */
-            
-              /*
-               * The reading process is in an IPv6 address.
-               * The tag variable is set to 1.
-               */
-              knz_ipv6 = 1;
             }
+          }
+          else if ( ( pInput.charAt( current_index + 1 ) == ':' ) || ( pInput.charAt( current_index + 2 ) == ':' ) || ( pInput.charAt( current_index + 3 ) == ':' ) || ( pInput.charAt( current_index + 4 ) == ':' ) || ( pInput.charAt( current_index + 5 ) == ':' ) )
+          {
+            /*
+             * Embedding IP-V6 address without prefix "IPv6"
+             *
+             * If the prefix "IPv6" is not found, it is checked 
+             * for a colon within the next 5 characters.
+             * If a colon is found, this is the indicator that
+             * an IP-V6 address is available.
+             *
+             * The first character is also checked, since the IP-V6 address could start with "::".
+             */
+
+            /*
+             * The reading process is in an IPv6 address.
+             * The tag variable is set to 1.
+             */
+            knz_ipv6 = 1;
+          }
         }
 
         /*
@@ -1774,7 +1769,7 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
           /*
            * Kombination ".(" pruefen Domain-Part.
            */
-          if ( (position_last_point > position_at_character )  && (( current_index - position_last_point ) == 1 ))
+          if ( ( position_last_point > position_at_character ) && ( ( current_index - position_last_point ) == 1 ) )
           {
             return 102; // Kommentar: Falsche Zeichenkombination ".(" im Domain Part
           }
@@ -1793,7 +1788,7 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
            *
            * If there is an incorrect combination of characters, error 101 is returned.           
            */
-          if ( (position_last_point > 0 )  && (( current_index - position_last_point ) == 1 ))
+          if ( ( position_last_point > 0 ) && ( ( current_index - position_last_point ) == 1 ) )
           {
             return 101; // Kommentar: Falsche Zeichenkombination ".(" im Local Part
           }
@@ -1822,14 +1817,13 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
          * Commenting within the local part is not allowed.
          */
         boolean knz_must_end_with_at_character = ( current_index > 0 );
-        
-        knz_must_end_with_at_character = ( current_index ==  email_local_part_gesamt_start ) == false;
+
+        knz_must_end_with_at_character = ( current_index == email_local_part_gesamt_start ) == false;
 
         if ( position_at_character > 0 )
         {
           knz_must_end_with_at_character = false;
         }
-
 
         if ( position_at_character > 0 )
         {
@@ -1837,7 +1831,7 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
            * If an AT character has already been read, the comment does not have to end with an AT character. 
            */
           knz_must_end_with_at_character = false;
-          
+
           /*
            * If characters have already been read after the AT symbol, the
            * Comment ends at the end of the string.
@@ -1980,32 +1974,32 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
         }
         else
         {
-        /*
-         * Check: next character equal to AT-Character?
-         */
-        if ( pInput.charAt( current_index + 1 ) == '@' )
-        {
-          if ( knz_must_end_with_at_character == false )
+          /*
+           * Check: next character equal to AT-Character?
+           */
+          if ( pInput.charAt( current_index + 1 ) == '@' )
           {
-            return 98; // Comment: No local part exists
+            if ( knz_must_end_with_at_character == false )
+            {
+              return 98; // Comment: No local part exists
+            }
           }
-        }
-        else if ( pInput.charAt( current_index + 1 ) == '.' )
-        {
-          return 103; // Kommentar: Wron Charactercombination ")."
-        }
-        else
-        {
-          if ( knz_must_end_with_at_character )
+          else if ( pInput.charAt( current_index + 1 ) == '.' )
           {
-            return 97; // Comment: After the comment an AT-Character must come
+            return 103; // Kommentar: Wron Charactercombination ")."
           }
-        }
-        
-        if ( knz_kommentar_abschluss_am_stringende ) 
-        {
-          return 100; // Kommentar: Kommentar muss am Strinende enden
-        }
+          else
+          {
+            if ( knz_must_end_with_at_character )
+            {
+              return 97; // Comment: After the comment an AT-Character must come
+            }
+          }
+
+          if ( knz_kommentar_abschluss_am_stringende )
+          {
+            return 100; // Kommentar: Kommentar muss am Strinende enden
+          }
         }
         /*
          * The position of the final bracket is saved.
@@ -2014,23 +2008,78 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
       }
       else
       {
-
         /*
-         * Here you can save the characters for international eMail addresses,
-         * which should be passed through.
-         *
-         * The If query would be commented.
-         */
-        // if ((current_character == 'ä') || (current_character == 'ö'))
-        // {
-        //  OK
-        //}
-        // else
-        // {
+        * Special condition: space separation until comment in the domain part
+        *
+        * "email@domain.com (joe Smith)"
+        *
+        * The current character is a space and the reading process is located
+        * yourself in the domain part (position_at_zeichen> 0), then must be checked,
+        * whether there is an opening bracket after the spaces.
+        */
+        if ( ( current_character == ' ' ) && ( position_at_character > 0 ) )
+        {
+          /*
+          * Consume the current character or continue reading 1
+          */
+          current_index++;
 
-        return 22; // character: invalid character found in the input
+          /*
+          * Read over all spaces in a while loop.
+          */
+          while ( ( current_index < length_input_string ) && ( pInput.charAt( current_index ) == ' ' ) )
+          {
+            current_index++;
+          }
 
-        //}
+          /*
+          * Was read in the while loop until the end of input,
+          * error 22 is returned because the space
+          * wrong is.
+          */
+          if ( current_index == length_input_string )
+          {
+            return 22;
+          }
+
+          /*
+          * After the while loop, the character must be at the current one
+          * Reading position should be an opening bracket. All other
+          * Characters lead to an error because the introductory
+          * Space was a wrong character. It will be in this
+          * In case of error 105 returned.
+          */
+          if ( pInput.charAt( current_index ) != '(' )
+          {
+            return 105; // Comment: space separation in the domain part. Opening bracket expected
+          }
+          else
+          {
+            /*
+            * The reading position was increased too much in the while loop.
+            * The reading position is reduced by one position.
+            * Since the reading process is in the domain part, there is a preceding character.
+            */
+            current_index--;
+          }
+        }
+        else
+        {
+          /*
+           * Here you can put the characters for international eMail addresses,
+           * which should be passed through.
+           */
+          // if ((current_character == 'ä') || (current_character == 'ö'))
+          // {
+          //  OK
+          //}
+          // else
+          // {
+
+          return 22; // character: invalid character found in the input
+
+          //}
+        }
       }
 
       /*
@@ -2052,7 +2101,7 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
      * For an IP6 address specification, the variable "position_last_point" becomes
      * uses the colon ":" in the address information.
      */
-    if ( ( position_last_point == -1 )|| ( position_last_point == position_at_character ))
+    if ( ( position_last_point == -1 ) || ( position_last_point == position_at_character ) )
     {
       return 34; // Separator: no point found (there must be at least one point for the domain separator)
     }
@@ -2258,7 +2307,7 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
     if ( pErrorNumber == 60 ) return "IP4 address part: terminator \"] \" must end";
     if ( pErrorNumber == 61 ) return "IP address part: No IP address completed on ']'";
     if ( pErrorNumber == 62 ) return "IP6 address part: IPv4 in IPv6 - wrong specification of the IP4 embedding (string 'ffff' expected)";
-    
+
     if ( pErrorNumber == 63 ) return "Domain part: Domain label too long (maximum 63 characters)";
 
     if ( pErrorNumber == 80 ) return "String: A starting quotation mark must come at the beginning, the character error must not be greater than 0";
@@ -2289,7 +2338,9 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
     if ( pErrorNumber == 102 ) return "Comment: Wrong combination of characters \".(\" in Domain Part";
 
     if ( pErrorNumber == 103 ) return "Comment: Kommentar: Wron Charactercombination \").\"";
-     
+
+    if ( pErrorNumber == 105 ) return "Comment: space separation in the domain part. Opening bracket expected";
+
     return "Unknown error number" + pErrorNumber;
   }
 
