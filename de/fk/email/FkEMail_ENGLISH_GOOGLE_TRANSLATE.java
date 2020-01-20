@@ -339,10 +339,10 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
     /*
      * Saves the position of the last closed parenthesis ')' of a valid comment.
      */
-    int position_commentar_end = -1;
-    
+    int position_comment_end = -1;
+
     int position_kommentar_start = -1;
- 
+
     /*
      * Counter for characters between two separators.
      * The separators are dot and AT character
@@ -442,7 +442,7 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
        * Determining the positions of the "non-email address string" to be checked separately
        */
       position_last_point = 0;
-      position_commentar_end = current_index;
+      position_comment_end = current_index;
 
       /*
        * The current index is now in the position of the opening square bracket.
@@ -497,7 +497,7 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
          * The string ends at the index of the last character.
          */
         position_last_point = current_index + 1;
-        position_commentar_end = length_input_string;
+        position_comment_end = length_input_string;
 
         /*
          * The reading process must end one character before the found closing square bracket.
@@ -532,7 +532,7 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
        * Is this a mistake or not?
        * At the moment, such an input will be passed through as the correct eMail address.
        */
-      // if (position_last_point == position_commentar_end)
+      // if (position_last_point == position_comment_end)
       // {
       // return 19; // structure: there is no "non-email string"
       //}
@@ -541,7 +541,7 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
        * The characters in the "non-email address string" are checked via a while loop.
        * If an invalid character is detected, error 18 is returned.
        */
-      while ( position_last_point < position_commentar_end )
+      while ( position_last_point < position_comment_end )
       {
         current_character = pInput.charAt( position_last_point );
 
@@ -569,7 +569,7 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
        * Default values ​​of -1 are set so that the actual check routine works correctly.
        */
       position_last_point = -1;
-      position_commentar_end = -1;
+      position_comment_end = -1;
     }
 
     current_character = ' ';
@@ -750,7 +750,7 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
            * Local part can also be a string. There is the sign error
            * not increased.
            */
-          if ( current_index == ( position_commentar_end + 1 ) )
+          if ( current_index == ( position_comment_end + 1 ) )
           {
             return 30; // Separator: no beginning with a dot
           }
@@ -1198,19 +1198,40 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
           return 51; // IP address part: IP address before AT sign
         }
 
-        /*
-         * Check: Start character directly after AT-Character?
-         *
-         * The start character "[" must come directly after the AT-symbol.
-         * The current reading position must be exactly 1 character after the position
-         * of the AT sign. If that is not the case, will
-         * 52 returned as error.
-         */
-        if ( ( current_index - position_at_character ) != 1 )
+        if ( ( position_comment_end > position_at_character ) )
         {
-          return 52; // IP address part: IP address must come directly after the AT sign (correct combination "@ [")
+          /*
+           * 
+           * Check: Domain part with commentary after AT characters
+           *
+           * ABC.DEF @ (comment) [1.2.3.4]
+           *
+           * If there is a comment immediately after the AT symbol, the introductory
+           * square brackets must come directly after the closing comment bracket.
+           *
+           * The distance between the current reading position and the position of the comment bracket must be 1.
+           * If the difference is larger, error 106 is returned.           
+           */
+          if ( ( current_index - position_comment_end ) != 1 )
+          {
+            return 106; // Kommentar: Domain-Part mit Kommentar nach AT-Zeichen. Erwartete Zeichenkombination ")[".
+          }
         }
-
+        else
+        {
+          /*
+           * Check: Start character directly after AT-Character?
+           *
+           * The start character "[" must come directly after the AT-symbol.
+           * The current reading position must be exactly 1 character after the position
+           * of the AT sign. If that is not the case, will
+           * 52 returned as error.
+           */
+          if ( ( current_index - position_at_character ) != 1 )
+          {
+            return 52; // IP address part: IP address must come directly after the AT sign (correct combination "@ [")
+          }
+        }
         /*
          * License plate field IPv6
          *
@@ -1545,7 +1566,23 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
                */
               if ( ( current_index + 1 ) != length_input_string )
               {
-                return 45; // IP6 address part: Terminator "]" must be at the end
+                /*
+                 * A comment can follow the IP address.
+                 * Currently the comment must come immediately after the final character.
+                 * 
+                 * ABC.DEF@[IPv6:1:2:3::5:6:7:8](comment)
+                 */
+                if ( pInput.charAt( current_index + 1 ) == '(' )
+                {
+                  /*
+                   * Korrektur des Leseindexes
+                   */
+                  current_index--;
+                }
+                else
+                {
+                  return 45; // IP6 address part: Terminator "]" must be at the end
+                }
               }
 
               /*
@@ -1704,7 +1741,23 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
                */
               if ( ( current_index + 1 ) != length_input_string )
               {
-                return 60; // IP4 address part: Terminator "]" must be at the end
+                /*
+                 * A comment can follow the IP address.
+                 * Currently the comment must come immediately after the final character.
+                 * 
+                 * ABC.DEF@[IPv6:1:2:3::5:6:7:8](comment)
+                 */
+                if ( pInput.charAt( current_index + 1 ) == '(' )
+                {
+                  /*
+                   * Korrektur des Leseindexes
+                   */
+                  current_index--;
+                }
+                else
+                {
+                  return 60; // IP4 address part: Terminator "]" must be at the end
+                } 
               }
 
               /*
@@ -1800,7 +1853,7 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
          * If a comment has already been read, no second comment is allowed
          * be allowed. It is the Feler 99 returned.
          */
-        if ( position_commentar_end > 0 )
+        if ( position_comment_end > 0 )
         {
           return 99; // Comment: no second comment valid
         }
@@ -2006,7 +2059,7 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
         /*
          * The position of the final bracket is saved.
          */
-        position_commentar_end = current_index;
+        position_comment_end = current_index;
       }
       else
       {
@@ -2051,7 +2104,11 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
           * Space was a wrong character. It will be in this
           * In case of error 105 returned.
           */
-          if ( pInput.charAt( current_index ) != '(' )
+          if ( pInput.charAt( current_index ) == '[' )
+          {
+            current_index--;
+          }
+          else if ( pInput.charAt( current_index ) != '(' )
           {
             return 105; // Comment: space separation in the domain part. Opening bracket expected
           }
@@ -2157,8 +2214,8 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
       }
 
       int laenge_tld = 0;
-      
-      if (( position_last_point > position_at_character ) && ( position_kommentar_start > position_last_point ))
+
+      if ( ( position_last_point > position_at_character ) && ( position_kommentar_start > position_last_point ) )
       {
         laenge_tld = position_kommentar_start - position_last_point;
       }
@@ -2199,7 +2256,7 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
      * If the eMail address contains a comment, the result value will be adjusted.
      * This adaptation is done via an if construction.
      */
-    if ( position_commentar_end > 0 )
+    if ( position_comment_end > 0 )
     {
       if ( fkt_result_email_ok == 0 )
       {
