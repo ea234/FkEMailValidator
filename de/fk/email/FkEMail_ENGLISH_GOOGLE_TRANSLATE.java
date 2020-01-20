@@ -1573,9 +1573,32 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
                  * ABC.DEF@[IPv6:1:2:3::5:6:7:8](comment)
                  */
                 if ( pInput.charAt( current_index + 1 ) == '(' )
+                { 
+                  /*
+                    * If the next character after "]" is the opening bracket,
+                    * is the sign OK. It becomes the reading index by one position
+                    * decreased.
+                    *
+                    * The reading process is then immediately in the reading process for the
+                    * Comments go.
+                    *
+                    * ABC.DEF@[IPv6:1:2:3::5:6:7:8](comment)
+                    */
+                  current_index--;
+                }
+                else if ( pInput.charAt( current_index + 1 ) == ' ' )
                 {
                   /*
-                   * Korrektur des Leseindexes
+                   * If the next character after "]" is a space, then that is
+                   * Comment separated from the end of the IP address by spaces.
+                   * The space is OK, the reading is reduced.
+                   *
+                   * The reading process will be the space in the next pass
+                   * recognize and be led into the last else branch. There
+                   * it is recognized that the reading process is and will be in the domain part
+                   * skip the spaces.
+                   *
+                   * ABC.DEF@[IPv6:1:2:3::5:6:7:8]    (comment)                   
                    */
                   current_index--;
                 }
@@ -1748,6 +1771,13 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
                  * ABC.DEF@[IPv6:1:2:3::5:6:7:8](comment)
                  */
                 if ( pInput.charAt( current_index + 1 ) == '(' )
+                {
+                  /*
+                   * Korrektur des Leseindexes
+                   */
+                  current_index--;
+                }
+                else if ( pInput.charAt( current_index + 1 ) == ' ' )
                 {
                   /*
                    * Korrektur des Leseindexes

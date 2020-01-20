@@ -1802,13 +1802,34 @@ public class FkEMail_EXTRACTION
                 /*
                  * Nach der IP-Adresse kann noch ein Kommentar kommen. 
                  * Aktuell muss der Kommentar sofort nach dem Abschlusszeichen kommen.
-                 * 
-                 * ABC.DEF@[IPv6:1:2:3::5:6:7:8](comment)
                  */
                 if ( pEingabe.charAt( akt_index + 1 ) == '(' )
                 {
                   /*
-                   * Korrektur des Leseindexes
+                   * Ist das naechste Zeichen nach "]" gleich die oeffnende Klammer,
+                   * ist das zeichen OK. Es wird der Leseindex um eine Positon 
+                   * verringert.
+                   * 
+                   * Der Leseprozess wird danach sofort in den Lesevorgang fuer die 
+                   * Kommentare gehen.
+                   * 
+                   * ABC.DEF@[IPv6:1:2:3::5:6:7:8](comment)
+                   */
+                  akt_index--;
+                }
+                else if ( pEingabe.charAt( akt_index + 1 ) == ' ' )
+                {
+                  /*
+                   * Ist das naechste Zeichen nach "]" ein Leerzeichen, dann ist der 
+                   * Kommentar vom Ende der IP-Adresse durch Leerzeichen getrennt. 
+                   * Das Leerzeichen ist OK, der Leseindes wird verringert. 
+                   * 
+                   * Der Leseprozess wird im naechsten Durchgang das Leerzeichen 
+                   * erkennen und in den letzten else-Zweig gefuehrt werden. Dort 
+                   * wird erkannt, dass der Leseprozess im Domain-Part ist und wird 
+                   * die Leerzeichen ueberspringen.
+                   * 
+                   * ABC.DEF@[IPv6:1:2:3::5:6:7:8]    (comment)
                    */
                   akt_index--;
                 }
@@ -1987,8 +2008,12 @@ public class FkEMail_EXTRACTION
                    */
                   akt_index--;
                 }
-                else
+                else if ( pEingabe.charAt( akt_index + 1 ) == ' ' )
                 {
+                  akt_index--;
+                }
+                else
+                { 
                   return 60; // IP4-Adressteil: Abschlusszeichen "]" muss am Ende stehen
                 }
               }

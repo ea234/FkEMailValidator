@@ -1,13 +1,14 @@
 package de.fk.email;
 
 class TestValidateEMailAdresse1
-{
+{ 
   public static void main( String[] args )
   {
     /*
      * https://stackoverflow.com/questions/1365407/c-sharp-code-to-validate-email-address?page=2&tab=votes#tab-top
      * 
      * NR      Fkt.          Input                                                Result
+     * 
      * 
      * ---- General Correct ----------------------------------------------------------------------------------------------------
      * 
@@ -332,11 +333,11 @@ class TestValidateEMailAdresse1
      *   292 - assertIsTrue  ABC.DEF@(comment)[1.2.3.4]                         =   2 =  OK 
      *   293 - assertIsFalse ABC.DEF@(comment) [1.2.3.4]                        = 106 =  OK    Kommentar: Domain-Part mit Kommentar nach AT-Zeichen. Erwartete Zeichenkombination ")[".
      *   294 - assertIsTrue  ABC.DEF@[1.2.3.4](comment)                         =   2 =  OK 
-     *   295 - assertIsTrue  ABC.DEF@[1.2.3.4]    (comment)                     =  60 =  #### FEHLER ####    IP4-Adressteil: Abschlusszeichen "]" muss am Ende stehen
+     *   295 - assertIsTrue  ABC.DEF@[1.2.3.4]    (comment)                     =   2 =  OK 
      *   296 - assertIsFalse ABC.DEF@[1.2.3(comment).4]                         =  59 =  OK    IP4-Adressteil: Falsches Zeichen in der IP-Adresse
      *   297 - assertIsTrue  ABC.DEF@(comment)[IPv6:1:2:3::5:6:7:8]             =   4 =  OK 
      *   298 - assertIsTrue  ABC.DEF@[IPv6:1:2:3::5:6:7:8](comment)             =   4 =  OK 
-     *   299 - assertIsTrue  ABC.DEF@[IPv6:1:2:3::5:6:7:8]    (comment)         =  45 =  #### FEHLER ####    IP6-Adressteil: Abschlusszeichen "]" muss am Ende stehen
+     *   299 - assertIsTrue  ABC.DEF@[IPv6:1:2:3::5:6:7:8]    (comment)         =   4 =  OK 
      *   300 - assertIsTrue  (comment)john.smith@example.com                    =   6 =  OK 
      *   301 - assertIsTrue  john.smith(comment)@example.com                    =   6 =  OK 
      *   302 - assertIsTrue  john.smith@(comment)example.com                    =   6 =  OK 
@@ -472,7 +473,7 @@ class TestValidateEMailAdresse1
      *   412 - assertIsFalse "Joe Smith"email@domain.com                        =  87 =  OK    String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
      *   413 - assertIsFalse Display Name <email@plus.com> (after name with display) =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
      *   414 - assertIsTrue  domain.starts.with.digit@2domain.com               =   0 =  OK 
-     *   415 - assertIsTrue  domain.ends.with.digit@domain2.com                 =   0 =  OK
+     *   415 - assertIsTrue  domain.ends.with.digit@domain2.com                 =   0 =  OK 
      * 
      */
 
