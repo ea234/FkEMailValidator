@@ -1,14 +1,11 @@
 package de.fk.email;
 
 class TestValidateEMailAdresse1
-{ 
+{
   public static void main( String[] args )
   {
     /*
-     * https://stackoverflow.com/questions/1365407/c-sharp-code-to-validate-email-address?page=2&tab=votes#tab-top
-     * 
      * NR      Fkt.          Input                                                Result
-     * 
      * 
      * ---- General Correct ----------------------------------------------------------------------------------------------------
      * 
@@ -297,124 +294,128 @@ class TestValidateEMailAdresse1
      *   256 - assertIsTrue  (ABC) DEF@GHI.JKL                                  =  22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
      *   257 - assertIsTrue  ABC(DEF)@GHI.JKL                                   =   6 =  OK 
      *   258 - assertIsTrue  ABC.DEF@GHI.JKL(MNO)                               =   6 =  OK 
-     *   259 - assertIsTrue  ABC.DEF@GHI.JKL       (MNO)                        =   6 =  OK 
-     *   260 - assertIsFalse ABC.DEF@GHI.JKL       MNO                          = 105 =  OK    Kommentar: Leerzeichentrennung im Domain-Part. Oeffnende Klammer erwartet
-     *   261 - assertIsFalse ABC.DEF@GHI.JKL                                    =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *   262 - assertIsFalse ABC.DEF@GHI.JKL       .                            = 105 =  OK    Kommentar: Leerzeichentrennung im Domain-Part. Oeffnende Klammer erwartet
-     *   263 - assertIsTrue  ABC.DEF@GHI.JKL ()                                 =   6 =  OK 
-     *   264 - assertIsTrue  ABC.DEF@GHI.JKL()                                  =   6 =  OK 
-     *   265 - assertIsTrue  ABC.DEF@()GHI.JKL                                  =   6 =  OK 
-     *   266 - assertIsTrue  ABC.DEF()@GHI.JKL                                  =   6 =  OK 
-     *   267 - assertIsTrue  ()ABC.DEF@GHI.JKL                                  =   6 =  OK 
-     *   268 - assertIsFalse (ABC).DEF@GHI.JKL                                  = 103 =  OK    Kommentar: Falsche Zeichenkombination ")."
-     *   269 - assertIsFalse ABC.(DEF)@GHI.JKL                                  = 101 =  OK    Kommentar: Falsche Zeichenkombination ".(" im Domain Part
-     *   270 - assertIsFalse ABC.DEF@(GHI).JKL                                  = 103 =  OK    Kommentar: Falsche Zeichenkombination ")."
-     *   271 - assertIsFalse ABC.DEF@GHI.(JKL).MNO                              = 102 =  OK    Kommentar: Falsche Zeichenkombination ".(" im Local Part
-     *   272 - assertIsFalse ABC.DEF@GHI.JK(L.M)NO                              = 100 =  OK    Kommentar: Kommentar muss am Stringende enden
-     *   273 - assertIsFalse AB(CD)EF@GHI.JKL                                   =  97 =  OK    Kommentar: Nach dem Kommentar muss ein AT-Zeichen kommen
-     *   274 - assertIsFalse AB.(CD).EF@GHI.JKL                                 = 101 =  OK    Kommentar: Falsche Zeichenkombination ".(" im Domain Part
-     *   275 - assertIsFalse AB."(CD)".EF@GHI.JKL                               =  89 =  OK    String: Ungueltiges Zeichen innerhalb Anfuehrungszeichen
-     *   276 - assertIsFalse (ABCDEF)@GHI.JKL                                   =  98 =  OK    Kommentar: Kein lokaler Part vorhanden
-     *   277 - assertIsFalse (ABCDEF).@GHI.JKL                                  = 103 =  OK    Kommentar: Falsche Zeichenkombination ")."
-     *   278 - assertIsFalse (AB"C)DEF@GHI.JKL                                  =  92 =  OK    Kommentar: Ungueltiges Zeichen im Kommentar
-     *   279 - assertIsFalse (AB\C)DEF@GHI.JKL                                  =  91 =  OK    Kommentar: Ungueltige Escape-Sequenz im Kommentar
-     *   280 - assertIsFalse (AB\@C)DEF@GHI.JKL                                 =  91 =  OK    Kommentar: Ungueltige Escape-Sequenz im Kommentar
-     *   281 - assertIsFalse ABC(DEF@GHI.JKL                                    =  93 =  OK    Kommentar: kein abschliessendes Zeichen fuer den Komentar gefunden. ')' erwartet
-     *   282 - assertIsFalse ABC.DEF@GHI)JKL                                    =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *   283 - assertIsFalse )ABC.DEF@GHI.JKL                                   =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *   284 - assertIsFalse ABC(DEF@GHI).JKL                                   = 103 =  OK    Kommentar: Falsche Zeichenkombination ")."
-     *   285 - assertIsFalse ABC(DEF.GHI).JKL                                   = 103 =  OK    Kommentar: Falsche Zeichenkombination ")."
-     *   286 - assertIsFalse (ABC.DEF@GHI.JKL)                                  =  95 =  OK    Kommentar: Der Kommentar endet am Stringende (Vorzeitiges Ende der Eingabe)
-     *   287 - assertIsFalse (A(B(C)DEF@GHI.JKL                                 =  92 =  OK    Kommentar: Ungueltiges Zeichen im Kommentar
-     *   288 - assertIsFalse (A)B)C)DEF@GHI.JKL                                 =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *   289 - assertIsFalse (A)BCDE(F)@GHI.JKL                                 =  99 =  OK    Kommentar: kein zweiter Kommentar gueltig
-     *   290 - assertIsFalse ABC.DEF@(GH)I.JK(LM)                               =  99 =  OK    Kommentar: kein zweiter Kommentar gueltig
-     *   291 - assertIsFalse ABC.DEF@(GH(I.JK)L)M                               =  92 =  OK    Kommentar: Ungueltiges Zeichen im Kommentar
-     *   292 - assertIsTrue  ABC.DEF@(comment)[1.2.3.4]                         =   2 =  OK 
-     *   293 - assertIsFalse ABC.DEF@(comment) [1.2.3.4]                        = 106 =  OK    Kommentar: Domain-Part mit Kommentar nach AT-Zeichen. Erwartete Zeichenkombination ")[".
-     *   294 - assertIsTrue  ABC.DEF@[1.2.3.4](comment)                         =   2 =  OK 
-     *   295 - assertIsTrue  ABC.DEF@[1.2.3.4]    (comment)                     =   2 =  OK 
-     *   296 - assertIsFalse ABC.DEF@[1.2.3(comment).4]                         =  59 =  OK    IP4-Adressteil: Falsches Zeichen in der IP-Adresse
-     *   297 - assertIsTrue  ABC.DEF@(comment)[IPv6:1:2:3::5:6:7:8]             =   4 =  OK 
-     *   298 - assertIsTrue  ABC.DEF@[IPv6:1:2:3::5:6:7:8](comment)             =   4 =  OK 
-     *   299 - assertIsTrue  ABC.DEF@[IPv6:1:2:3::5:6:7:8]    (comment)         =   4 =  OK 
-     *   300 - assertIsTrue  (comment)john.smith@example.com                    =   6 =  OK 
-     *   301 - assertIsTrue  john.smith(comment)@example.com                    =   6 =  OK 
-     *   302 - assertIsTrue  john.smith@(comment)example.com                    =   6 =  OK 
-     *   303 - assertIsTrue  john.smith@example.com(comment)                    =   6 =  OK 
-     *   304 - assertIsFalse john.smith@exampl(comment)e.com                    = 100 =  OK    Kommentar: Kommentar muss am Stringende enden
-     *   305 - assertIsFalse john.s(comment)mith@example.com                    =  97 =  OK    Kommentar: Nach dem Kommentar muss ein AT-Zeichen kommen
-     *   306 - assertIsFalse john.smith(comment)@(comment)example.com           =  99 =  OK    Kommentar: kein zweiter Kommentar gueltig
-     *   307 - assertIsFalse john.smith(com@ment)example.com                    =  97 =  OK    Kommentar: Nach dem Kommentar muss ein AT-Zeichen kommen
-     *   308 - assertIsFalse email( (nested) )@plus.com                         =  92 =  OK    Kommentar: Ungueltiges Zeichen im Kommentar
-     *   309 - assertIsFalse email)mirror(@plus.com                             =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *   310 - assertIsFalse email@plus.com (not closed comment                 =  93 =  OK    Kommentar: kein abschliessendes Zeichen fuer den Komentar gefunden. ')' erwartet
-     *   311 - assertIsFalse email(with @ in comment)plus.com                   =  97 =  OK    Kommentar: Nach dem Kommentar muss ein AT-Zeichen kommen
-     *   312 - assertIsTrue  email@domain.com (joe Smith)                       =   6 =  OK 
+     *   259 - assertIsTrue  ABC.DEF@GHI.JKL      (MNO)                         =   6 =  OK 
+     *   260 - assertIsFalse ABC.DEF@             (MNO)                         =  34 =  OK    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
+     *   261 - assertIsFalse ABC.DEF@   .         (MNO)                         = 105 =  OK    Kommentar: Leerzeichentrennung im Domain-Part. Oeffnende Klammer erwartet
+     *   262 - assertIsFalse ABC.DEF              (MNO)                         =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *   263 - assertIsFalse ABC.DEF@GHI.         (MNO)                         =  14 =  OK    Laenge: Top-Level-Domain muss mindestens 2 Stellen lang sein.
+     *   264 - assertIsFalse ABC.DEF@GHI.JKL       MNO                          = 105 =  OK    Kommentar: Leerzeichentrennung im Domain-Part. Oeffnende Klammer erwartet
+     *   265 - assertIsFalse ABC.DEF@GHI.JKL                                    =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *   266 - assertIsFalse ABC.DEF@GHI.JKL       .                            = 105 =  OK    Kommentar: Leerzeichentrennung im Domain-Part. Oeffnende Klammer erwartet
+     *   267 - assertIsTrue  ABC.DEF@GHI.JKL ()                                 =   6 =  OK 
+     *   268 - assertIsTrue  ABC.DEF@GHI.JKL()                                  =   6 =  OK 
+     *   269 - assertIsTrue  ABC.DEF@()GHI.JKL                                  =   6 =  OK 
+     *   270 - assertIsTrue  ABC.DEF()@GHI.JKL                                  =   6 =  OK 
+     *   271 - assertIsTrue  ()ABC.DEF@GHI.JKL                                  =   6 =  OK 
+     *   272 - assertIsFalse (ABC).DEF@GHI.JKL                                  = 103 =  OK    Kommentar: Falsche Zeichenkombination ")."
+     *   273 - assertIsFalse ABC.(DEF)@GHI.JKL                                  = 101 =  OK    Kommentar: Falsche Zeichenkombination ".(" im Domain Part
+     *   274 - assertIsFalse ABC.DEF@(GHI).JKL                                  = 103 =  OK    Kommentar: Falsche Zeichenkombination ")."
+     *   275 - assertIsFalse ABC.DEF@GHI.(JKL).MNO                              = 102 =  OK    Kommentar: Falsche Zeichenkombination ".(" im Local Part
+     *   276 - assertIsFalse ABC.DEF@GHI.JK(L.M)NO                              = 100 =  OK    Kommentar: Kommentar muss am Stringende enden
+     *   277 - assertIsFalse AB(CD)EF@GHI.JKL                                   =  97 =  OK    Kommentar: Nach dem Kommentar muss ein AT-Zeichen kommen
+     *   278 - assertIsFalse AB.(CD).EF@GHI.JKL                                 = 101 =  OK    Kommentar: Falsche Zeichenkombination ".(" im Domain Part
+     *   279 - assertIsFalse AB."(CD)".EF@GHI.JKL                               =  89 =  OK    String: Ungueltiges Zeichen innerhalb Anfuehrungszeichen
+     *   280 - assertIsFalse (ABCDEF)@GHI.JKL                                   =  98 =  OK    Kommentar: Kein lokaler Part vorhanden
+     *   281 - assertIsFalse (ABCDEF).@GHI.JKL                                  = 103 =  OK    Kommentar: Falsche Zeichenkombination ")."
+     *   282 - assertIsFalse (AB"C)DEF@GHI.JKL                                  =  92 =  OK    Kommentar: Ungueltiges Zeichen im Kommentar
+     *   283 - assertIsFalse (AB\C)DEF@GHI.JKL                                  =  91 =  OK    Kommentar: Ungueltige Escape-Sequenz im Kommentar
+     *   284 - assertIsFalse (AB\@C)DEF@GHI.JKL                                 =  91 =  OK    Kommentar: Ungueltige Escape-Sequenz im Kommentar
+     *   285 - assertIsFalse ABC(DEF@GHI.JKL                                    =  93 =  OK    Kommentar: kein abschliessendes Zeichen fuer den Komentar gefunden. ')' erwartet
+     *   286 - assertIsFalse ABC.DEF@GHI)JKL                                    =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *   287 - assertIsFalse )ABC.DEF@GHI.JKL                                   =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *   288 - assertIsFalse ABC(DEF@GHI).JKL                                   = 103 =  OK    Kommentar: Falsche Zeichenkombination ")."
+     *   289 - assertIsFalse ABC(DEF.GHI).JKL                                   = 103 =  OK    Kommentar: Falsche Zeichenkombination ")."
+     *   290 - assertIsFalse (ABC.DEF@GHI.JKL)                                  =  95 =  OK    Kommentar: Der Kommentar endet am Stringende (Vorzeitiges Ende der Eingabe)
+     *   291 - assertIsFalse (A(B(C)DEF@GHI.JKL                                 =  92 =  OK    Kommentar: Ungueltiges Zeichen im Kommentar
+     *   292 - assertIsFalse (A)B)C)DEF@GHI.JKL                                 =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *   293 - assertIsFalse (A)BCDE(F)@GHI.JKL                                 =  99 =  OK    Kommentar: kein zweiter Kommentar gueltig
+     *   294 - assertIsFalse ABC.DEF@(GH)I.JK(LM)                               =  99 =  OK    Kommentar: kein zweiter Kommentar gueltig
+     *   295 - assertIsFalse ABC.DEF@(GH(I.JK)L)M                               =  92 =  OK    Kommentar: Ungueltiges Zeichen im Kommentar
+     *   296 - assertIsTrue  ABC.DEF@(comment)[1.2.3.4]                         =   2 =  OK 
+     *   297 - assertIsFalse ABC.DEF@(comment) [1.2.3.4]                        = 106 =  OK    Kommentar: Domain-Part mit Kommentar nach AT-Zeichen. Erwartete Zeichenkombination ")[".
+     *   298 - assertIsTrue  ABC.DEF@[1.2.3.4](comment)                         =   2 =  OK 
+     *   299 - assertIsTrue  ABC.DEF@[1.2.3.4]    (comment)                     =   2 =  OK 
+     *   300 - assertIsFalse ABC.DEF@[1.2.3(comment).4]                         =  59 =  OK    IP4-Adressteil: Falsches Zeichen in der IP-Adresse
+     *   301 - assertIsTrue  ABC.DEF@(comment)[IPv6:1:2:3::5:6:7:8]             =   4 =  OK 
+     *   302 - assertIsTrue  ABC.DEF@[IPv6:1:2:3::5:6:7:8](comment)             =   4 =  OK 
+     *   303 - assertIsTrue  ABC.DEF@[IPv6:1:2:3::5:6:7:8]    (comment)         =   4 =  OK 
+     *   304 - assertIsTrue  (comment)john.smith@example.com                    =   6 =  OK 
+     *   305 - assertIsTrue  john.smith(comment)@example.com                    =   6 =  OK 
+     *   306 - assertIsTrue  john.smith@(comment)example.com                    =   6 =  OK 
+     *   307 - assertIsTrue  john.smith@example.com(comment)                    =   6 =  OK 
+     *   308 - assertIsFalse john.smith@exampl(comment)e.com                    = 100 =  OK    Kommentar: Kommentar muss am Stringende enden
+     *   309 - assertIsFalse john.s(comment)mith@example.com                    =  97 =  OK    Kommentar: Nach dem Kommentar muss ein AT-Zeichen kommen
+     *   310 - assertIsFalse john.smith(comment)@(comment)example.com           =  99 =  OK    Kommentar: kein zweiter Kommentar gueltig
+     *   311 - assertIsFalse john.smith(com@ment)example.com                    =  97 =  OK    Kommentar: Nach dem Kommentar muss ein AT-Zeichen kommen
+     *   312 - assertIsFalse email( (nested) )@plus.com                         =  92 =  OK    Kommentar: Ungueltiges Zeichen im Kommentar
+     *   313 - assertIsFalse email)mirror(@plus.com                             =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *   314 - assertIsFalse email@plus.com (not closed comment                 =  93 =  OK    Kommentar: kein abschliessendes Zeichen fuer den Komentar gefunden. ')' erwartet
+     *   315 - assertIsFalse email(with @ in comment)plus.com                   =  97 =  OK    Kommentar: Nach dem Kommentar muss ein AT-Zeichen kommen
+     *   316 - assertIsTrue  email@domain.com (joe Smith)                       =   6 =  OK 
      * 
      * ---- Pointy Brackets ----------------------------------------------------------------------------------------------------
      * 
-     *   313 - assertIsTrue  ABC DEF <ABC.DEF@GHI.JKL>                          =   0 =  OK 
-     *   314 - assertIsTrue  <ABC.DEF@GHI.JKL> ABC DEF                          =   0 =  OK 
-     *   315 - assertIsFalse ABC DEF ABC.DEF@GHI.JKL>                           =  16 =  OK    Struktur: keine oeffnende eckige Klammer gefunden.
-     *   316 - assertIsFalse <ABC.DEF@GHI.JKL ABC DEF                           =  17 =  OK    Struktur: keine schliessende eckige Klammer gefunden.
-     *   317 - assertIsTrue  "ABC DEF "<ABC.DEF@GHI.JKL>                        =   0 =  OK 
-     *   318 - assertIsFalse "ABC<DEF>"@JKL.DE                                  =  89 =  OK    String: Ungueltiges Zeichen innerhalb Anfuehrungszeichen
-     *   319 - assertIsFalse >                                                  =  16 =  OK    Struktur: keine oeffnende eckige Klammer gefunden.
-     *   320 - assertIsFalse "ABC<DEF@GHI.COM>"@JKL.DE                          =  89 =  OK    String: Ungueltiges Zeichen innerhalb Anfuehrungszeichen
-     *   321 - assertIsFalse ABC DEF <ABC.<DEF@GHI.JKL>                         =  18 =  OK    Struktur: Fehler in Adress-String-X
-     *   322 - assertIsFalse <ABC.DEF@GHI.JKL> MNO <PQR.STU@VW.XYZ>             =  18 =  OK    Struktur: Fehler in Adress-String-X
-     *   323 - assertIsFalse ABC DEF <ABC.DEF@GHI.JKL                           =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *   324 - assertIsFalse ABC.DEF@GHI.JKL> ABC DEF                           =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *   325 - assertIsFalse ABC DEF >ABC.DEF@GHI.JKL<                          =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *   326 - assertIsFalse >ABC.DEF@GHI.JKL< ABC DEF                          =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *   327 - assertIsFalse ABC DEF <A@A>                                      =  12 =  OK    Laenge: Laengenbegrenzungen stimmen nicht
-     *   328 - assertIsFalse <A@A> ABC DEF                                      =  12 =  OK    Laenge: Laengenbegrenzungen stimmen nicht
-     *   329 - assertIsFalse ABC DEF <>                                         =  12 =  OK    Laenge: Laengenbegrenzungen stimmen nicht
-     *   330 - assertIsFalse <> ABC DEF                                         =  12 =  OK    Laenge: Laengenbegrenzungen stimmen nicht
-     *   331 - assertIsTrue  Non EMail part <(comment)Local."Part"@[IPv6::ffff:127.0.0.1]> =   9 =  OK 
-     *   332 - assertIsTrue  Non EMail part <Local."Part"(comment)@[IPv6::ffff:127.0.0.1]> =   9 =  OK 
-     *   333 - assertIsTrue  <(comment)Local."Part"@[IPv6::ffff:127.0.0.1]> Non EMail part =   9 =  OK 
-     *   334 - assertIsTrue  <Local."Part"(comment)@[IPv6::ffff:127.0.0.1]> Non EMail part  =   9 =  OK 
-     *   335 - assertIsFalse Non EMail part < (comment)Local."Part"@[IPv6::ffff:127.0.0.1]> =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *   336 - assertIsFalse Non EMail part <Local."Part"(comment)B@[IPv6::ffff:127.0.0.1]> =  97 =  OK    Kommentar: Nach dem Kommentar muss ein AT-Zeichen kommen
-     *   337 - assertIsFalse < (comment)Local."Part"@[IPv6::ffff:127.0.0.1]> Non EMail part =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *   338 - assertIsFalse <Local."Part"(comment)B@[IPv6::ffff:127.0.0.1]> Non EMail part  =  97 =  OK    Kommentar: Nach dem Kommentar muss ein AT-Zeichen kommen
-     *   339 - assertIsTrue  Joe Smith <email@domain.com>                       =   0 =  OK 
-     *   340 - assertIsFalse Joe Smith <mailto:email@domain.com>                =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *   341 - assertIsFalse Test |<gaaf <email@domain.com>                     =  18 =  OK    Struktur: Fehler in Adress-String-X
-     *   342 - assertIsFalse "With extra < within quotes" Display Name<email@domain.com> =  18 =  OK    Struktur: Fehler in Adress-String-X
+     *   317 - assertIsTrue  ABC DEF <ABC.DEF@GHI.JKL>                          =   0 =  OK 
+     *   318 - assertIsTrue  <ABC.DEF@GHI.JKL> ABC DEF                          =   0 =  OK 
+     *   319 - assertIsFalse ABC DEF ABC.DEF@GHI.JKL>                           =  16 =  OK    Struktur: keine oeffnende eckige Klammer gefunden.
+     *   320 - assertIsFalse <ABC.DEF@GHI.JKL ABC DEF                           =  17 =  OK    Struktur: keine schliessende eckige Klammer gefunden.
+     *   321 - assertIsTrue  "ABC DEF "<ABC.DEF@GHI.JKL>                        =   0 =  OK 
+     *   322 - assertIsFalse "ABC<DEF>"@JKL.DE                                  =  89 =  OK    String: Ungueltiges Zeichen innerhalb Anfuehrungszeichen
+     *   323 - assertIsFalse >                                                  =  16 =  OK    Struktur: keine oeffnende eckige Klammer gefunden.
+     *   324 - assertIsFalse "ABC<DEF@GHI.COM>"@JKL.DE                          =  89 =  OK    String: Ungueltiges Zeichen innerhalb Anfuehrungszeichen
+     *   325 - assertIsFalse ABC DEF <ABC.<DEF@GHI.JKL>                         =  18 =  OK    Struktur: Fehler in Adress-String-X
+     *   326 - assertIsFalse <ABC.DEF@GHI.JKL> MNO <PQR.STU@VW.XYZ>             =  18 =  OK    Struktur: Fehler in Adress-String-X
+     *   327 - assertIsFalse ABC DEF <ABC.DEF@GHI.JKL                           =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *   328 - assertIsFalse ABC.DEF@GHI.JKL> ABC DEF                           =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *   329 - assertIsFalse ABC DEF >ABC.DEF@GHI.JKL<                          =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *   330 - assertIsFalse >ABC.DEF@GHI.JKL< ABC DEF                          =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *   331 - assertIsFalse ABC DEF <A@A>                                      =  12 =  OK    Laenge: Laengenbegrenzungen stimmen nicht
+     *   332 - assertIsFalse <A@A> ABC DEF                                      =  12 =  OK    Laenge: Laengenbegrenzungen stimmen nicht
+     *   333 - assertIsFalse ABC DEF <>                                         =  12 =  OK    Laenge: Laengenbegrenzungen stimmen nicht
+     *   334 - assertIsFalse <> ABC DEF                                         =  12 =  OK    Laenge: Laengenbegrenzungen stimmen nicht
+     *   335 - assertIsTrue  Non EMail part <(comment)Local."Part"@[IPv6::ffff:127.0.0.1]> =   9 =  OK 
+     *   336 - assertIsTrue  Non EMail part <Local."Part"(comment)@[IPv6::ffff:127.0.0.1]> =   9 =  OK 
+     *   337 - assertIsTrue  <(comment)Local."Part"@[IPv6::ffff:127.0.0.1]> Non EMail part =   9 =  OK 
+     *   338 - assertIsTrue  <Local."Part"(comment)@[IPv6::ffff:127.0.0.1]> Non EMail part  =   9 =  OK 
+     *   339 - assertIsFalse Non EMail part < (comment)Local."Part"@[IPv6::ffff:127.0.0.1]> =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *   340 - assertIsFalse Non EMail part <Local."Part"(comment)B@[IPv6::ffff:127.0.0.1]> =  97 =  OK    Kommentar: Nach dem Kommentar muss ein AT-Zeichen kommen
+     *   341 - assertIsFalse < (comment)Local."Part"@[IPv6::ffff:127.0.0.1]> Non EMail part =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *   342 - assertIsFalse <Local."Part"(comment)B@[IPv6::ffff:127.0.0.1]> Non EMail part  =  97 =  OK    Kommentar: Nach dem Kommentar muss ein AT-Zeichen kommen
+     *   343 - assertIsTrue  Joe Smith <email@domain.com>                       =   0 =  OK 
+     *   344 - assertIsFalse Joe Smith <mailto:email@domain.com>                =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *   345 - assertIsFalse Test |<gaaf <email@domain.com>                     =  18 =  OK    Struktur: Fehler in Adress-String-X
+     *   346 - assertIsFalse "With extra < within quotes" Display Name<email@domain.com> =  18 =  OK    Struktur: Fehler in Adress-String-X
      * 
      * ---- Length ----------------------------------------------------------------------------------------------------
      * 
-     *   343 - assertIsTrue  A@B.CD                                             =   0 =  OK 
-     *   344 - assertIsFalse A@B.C                                              =  12 =  OK    Laenge: Laengenbegrenzungen stimmen nicht
-     *   345 - assertIsFalse A@COM                                              =  12 =  OK    Laenge: Laengenbegrenzungen stimmen nicht
-     *   346 - assertIsTrue  ABC.DEF@GHI.JKL                                    =   0 =  OK 
-     *   347 - assertIsTrue  ABC.DEF@GHI.J                                      =  14 =  #### FEHLER ####    Laenge: Top-Level-Domain muss mindestens 2 Stellen lang sein.
-     *   348 - assertIsTrue  ABC.DEF@GHI.A23456789012345678901234567890123456789012345678901234567890123 =   0 =  OK 
-     *   349 - assertIsFalse ABC.DEF@GHI.A23456789012345678901234567890123456789012345678901234567890123A =  15 =  OK    Laenge: Top-Level-Domain darf nicht mehr als 63-Stellen lang sein.
-     *   350 - assertIsTrue  A@B.CD                                             =   0 =  OK 
-     *   351 - assertIsTrue  ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@OK.com =   0 =  OK 
-     *   352 - assertIsTrue  abcdefghijklmnopqrstuvwxy.ABCDEFGHIJKLMNOPQRSTUVWXYZ@ABCDEFGHIJKLMNOPQRSTUVWXYZ12.de =   0 =  OK 
-     *   353 - assertIsTrue  ZZZZZZZZZXZZZZZZZZZZXZZZZ.ZZZZZXZZZZZZZZZZXZZZZZZZZZZXZZZZZZZZZX@ZZZZZZZZZX.ZL =   0 =  OK 
-     *   354 - assertIsFalse ZZZZZZZZZXZZZZZZZZZZXZZZZ.ZZZZZXZZZZZZZZZZXZZZZZZZZZZXZZZZZZZZZXT@ZZZZZZZZZX.ZL =  13 =  OK    Laenge: RFC 5321 = SMTP-Protokoll = maximale Laenge des Local-Parts sind 64 Bytes
-     *   355 - assertIsFalse 1234567890123456789012345678901234567890123456789012345678901234+x@example.com =  13 =  OK    Laenge: RFC 5321 = SMTP-Protokoll = maximale Laenge des Local-Parts sind 64 Bytes
-     *   356 - assertIsTrue  domain.label.with.63.characters@A23456789012345678901234567890123456789012345678901234567890123.com =   0 =  OK 
-     *   357 - assertIsFalse domain.label.with.64.characters@A23456789012345678901234567890123456789012345678901234567890123A.com =  63 =  OK    Domain-Part: Domain-Label zu lang (maximal 63 Zeichen)
-     *   358 - assertIsTrue  two.domain.labels.with.63.characters@A23456789012345678901234567890123456789012345678901234567890123.A23456789012345678901234567890123456789012345678901234567890123.com =   0 =  OK 
-     *   359 - assertIsFalse domain.label.with.63.and.64.characters@A23456789012345678901234567890123456789012345678901234567890123.A23456789012345678901234567890123456789012345678901234567890123A.com =  63 =  OK    Domain-Part: Domain-Label zu lang (maximal 63 Zeichen)
-     *   360 - assertIsTrue  63.character.domain.label@A23456789012345678901234567890123456789012345678901234567890123.com =   0 =  OK 
-     *   361 - assertIsTrue  63.character.domain.label@A23456789012345678901234567890123456789012345678901234567890123.A23456789012345678901234567890123456789012345678901234567890123.A23456789012345678901234567890123456789012345678901234567890123.com =   0 =  OK 
-     *   362 - assertIsTrue  12345678901234567890123456789012345678901234567890.1234567@A23456789012345678901234567890123456789012345678901234567890123.A23456789012345678901234567890123456789012345678901234567890123.A23456789012345678901234567890123456789012345678901234567890123.com =   0 =  OK 
-     *   363 - assertIsFalse 12345678901234567890123456789012345678901234567890.12345678@A23456789012345678901234567890123456789012345678901234567890123.A23456789012345678901234567890123456789012345678901234567890123.A23456789012345678901234567890123456789012345678901234567890123.com =  12 =  OK    Laenge: Laengenbegrenzungen stimmen nicht
-     *   364 - assertIsFalse "very.(z),:;<>[]\".VERY.\"very@\\ \"very\".unusual"@strange.example.com =  89 =  OK    String: Ungueltiges Zeichen innerhalb Anfuehrungszeichen
-     *   365 - assertIsFalse too_long_localpart_too_long_localpart_too_long_localpart_too_long_localpart@test.local.part =  13 =  OK    Laenge: RFC 5321 = SMTP-Protokoll = maximale Laenge des Local-Parts sind 64 Bytes
-     *   366 - assertIsFalse Dieser_local_Part_ist_zu_lang.Nach_RFC_5321_sind_maximal_64_Zeichen_erlaubt@Das_sind_hier_75_Zeichen_und_daher_zu_lang_und_falsch.de =  13 =  OK    Laenge: RFC 5321 = SMTP-Protokoll = maximale Laenge des Local-Parts sind 64 Bytes
-     *   367 - assertIsFalse 3.141592653589793238462643383279502884197169399375105820974944@3.14159265358979323846264338327950288419716939937510582097494459266616C736368.eu =  63 =  OK    Domain-Part: Domain-Label zu lang (maximal 63 Zeichen)
-     *   368 - assertIsTrue  aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa =  13 =  #### FEHLER ####    Laenge: RFC 5321 = SMTP-Protokoll = maximale Laenge des Local-Parts sind 64 Bytes
-     *   369 - assertIsFalse ReDoSaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa =  12 =  OK    Laenge: Laengenbegrenzungen stimmen nicht
-     *   370 - assertIsTrue  email@domain.topleveldomain                        =   0 =  OK 
+     *   347 - assertIsTrue  A@B.CD                                             =   0 =  OK 
+     *   348 - assertIsFalse A@B.C                                              =  12 =  OK    Laenge: Laengenbegrenzungen stimmen nicht
+     *   349 - assertIsFalse A@COM                                              =  12 =  OK    Laenge: Laengenbegrenzungen stimmen nicht
+     *   350 - assertIsTrue  ABC.DEF@GHI.JKL                                    =   0 =  OK 
+     *   351 - assertIsTrue  ABC.DEF@GHI.J                                      =  14 =  #### FEHLER ####    Laenge: Top-Level-Domain muss mindestens 2 Stellen lang sein.
+     *   352 - assertIsTrue  ABC.DEF@GHI.A23456789012345678901234567890123456789012345678901234567890123 =   0 =  OK 
+     *   353 - assertIsFalse ABC.DEF@GHI.A23456789012345678901234567890123456789012345678901234567890123A =  15 =  OK    Laenge: Top-Level-Domain darf nicht mehr als 63-Stellen lang sein.
+     *   354 - assertIsTrue  A@B.CD                                             =   0 =  OK 
+     *   355 - assertIsTrue  ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@OK.com =   0 =  OK 
+     *   356 - assertIsTrue  abcdefghijklmnopqrstuvwxy.ABCDEFGHIJKLMNOPQRSTUVWXYZ@ABCDEFGHIJKLMNOPQRSTUVWXYZ12.de =   0 =  OK 
+     *   357 - assertIsTrue  ZZZZZZZZZXZZZZZZZZZZXZZZZ.ZZZZZXZZZZZZZZZZXZZZZZZZZZZXZZZZZZZZZX@ZZZZZZZZZX.ZL =   0 =  OK 
+     *   358 - assertIsFalse ZZZZZZZZZXZZZZZZZZZZXZZZZ.ZZZZZXZZZZZZZZZZXZZZZZZZZZZXZZZZZZZZZXT@ZZZZZZZZZX.ZL =  13 =  OK    Laenge: RFC 5321 = SMTP-Protokoll = maximale Laenge des Local-Parts sind 64 Bytes
+     *   359 - assertIsFalse 1234567890123456789012345678901234567890123456789012345678901234+x@example.com =  13 =  OK    Laenge: RFC 5321 = SMTP-Protokoll = maximale Laenge des Local-Parts sind 64 Bytes
+     *   360 - assertIsTrue  domain.label.with.63.characters@A23456789012345678901234567890123456789012345678901234567890123.com =   0 =  OK 
+     *   361 - assertIsFalse domain.label.with.64.characters@A23456789012345678901234567890123456789012345678901234567890123A.com =  63 =  OK    Domain-Part: Domain-Label zu lang (maximal 63 Zeichen)
+     *   362 - assertIsTrue  two.domain.labels.with.63.characters@A23456789012345678901234567890123456789012345678901234567890123.A23456789012345678901234567890123456789012345678901234567890123.com =   0 =  OK 
+     *   363 - assertIsFalse domain.label.with.63.and.64.characters@A23456789012345678901234567890123456789012345678901234567890123.A23456789012345678901234567890123456789012345678901234567890123A.com =  63 =  OK    Domain-Part: Domain-Label zu lang (maximal 63 Zeichen)
+     *   364 - assertIsTrue  63.character.domain.label@A23456789012345678901234567890123456789012345678901234567890123.com =   0 =  OK 
+     *   365 - assertIsTrue  63.character.domain.label@A23456789012345678901234567890123456789012345678901234567890123.A23456789012345678901234567890123456789012345678901234567890123.A23456789012345678901234567890123456789012345678901234567890123.com =   0 =  OK 
+     *   366 - assertIsTrue  12345678901234567890123456789012345678901234567890.1234567@A23456789012345678901234567890123456789012345678901234567890123.A23456789012345678901234567890123456789012345678901234567890123.A23456789012345678901234567890123456789012345678901234567890123.com =   0 =  OK 
+     *   367 - assertIsFalse 12345678901234567890123456789012345678901234567890.12345678@A23456789012345678901234567890123456789012345678901234567890123.A23456789012345678901234567890123456789012345678901234567890123.A23456789012345678901234567890123456789012345678901234567890123.com =  12 =  OK    Laenge: Laengenbegrenzungen stimmen nicht
+     *   368 - assertIsFalse "very.(z),:;<>[]\".VERY.\"very@\\ \"very\".unusual"@strange.example.com =  89 =  OK    String: Ungueltiges Zeichen innerhalb Anfuehrungszeichen
+     *   369 - assertIsFalse too_long_localpart_too_long_localpart_too_long_localpart_too_long_localpart@test.local.part =  13 =  OK    Laenge: RFC 5321 = SMTP-Protokoll = maximale Laenge des Local-Parts sind 64 Bytes
+     *   370 - assertIsFalse Dieser_local_Part_ist_zu_lang.Nach_RFC_5321_sind_maximal_64_Zeichen_erlaubt@Das_sind_hier_75_Zeichen_und_daher_zu_lang_und_falsch.de =  13 =  OK    Laenge: RFC 5321 = SMTP-Protokoll = maximale Laenge des Local-Parts sind 64 Bytes
+     *   371 - assertIsFalse 3.141592653589793238462643383279502884197169399375105820974944@3.14159265358979323846264338327950288419716939937510582097494459266616C736368.eu =  63 =  OK    Domain-Part: Domain-Label zu lang (maximal 63 Zeichen)
+     *   372 - assertIsTrue  aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa =  13 =  #### FEHLER ####    Laenge: RFC 5321 = SMTP-Protokoll = maximale Laenge des Local-Parts sind 64 Bytes
+     *   373 - assertIsFalse ReDoSaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa =  12 =  OK    Laenge: Laengenbegrenzungen stimmen nicht
+     *   374 - assertIsTrue  email@domain.topleveldomain                        =   0 =  OK 
      * 
      * 
      * ---- unknown errors ----------------------------------------------------------------------------------------------------
@@ -424,56 +425,56 @@ class TestValidateEMailAdresse1
      * 
      * https://stackoverflow.com/questions/1365407/c-sharp-code-to-validate-email-address?page=2&tab=votes#tab-top
      * 
-     *   371 - assertIsTrue  local@2001:0db8:85a3:0000:0000:8a2e:0370:7334      =  22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *   372 - assertIsFalse a@bde.c-c                                          =   0 =  #### FEHLER ####    eMail-Adresse korrekt
-     *   373 - assertIsTrue  "Joe Smith" email@domain.com                       =  87 =  #### FEHLER ####    String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
-     *   374 - assertIsTrue  "Joe\tSmith" email@domain.com                      =  84 =  #### FEHLER ####    String: Ungueltige Escape-Sequenz im String
-     *   375 - assertIsTrue  "Joe"Smith" email@domain.com                       =  87 =  #### FEHLER ####    String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
-     *   376 - assertIsTrue  MailTo:casesensitve@domain.com                     =  22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *   377 - assertIsTrue  mailto:email@domain.com                            =  22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *   378 - assertIsTrue  ab@188.120.150.10                                  =  23 =  #### FEHLER ####    Zeichen: Top-Level-Domain darf nicht mit Zahl beginnen
-     *   379 - assertIsTrue  ab@1.0.0.10                                        =  23 =  #### FEHLER ####    Zeichen: Top-Level-Domain darf nicht mit Zahl beginnen
-     *   380 - assertIsTrue  ab@120.25.254.120                                  =  23 =  #### FEHLER ####    Zeichen: Top-Level-Domain darf nicht mit Zahl beginnen
-     *   381 - assertIsTrue  ab@01.120.150.1                                    =  14 =  #### FEHLER ####    Laenge: Top-Level-Domain muss mindestens 2 Stellen lang sein.
-     *   382 - assertIsTrue  ab@88.120.150.021                                  =  23 =  #### FEHLER ####    Zeichen: Top-Level-Domain darf nicht mit Zahl beginnen
-     *   383 - assertIsTrue  ab@88.120.150.01                                   =  23 =  #### FEHLER ####    Zeichen: Top-Level-Domain darf nicht mit Zahl beginnen
-     *   384 - assertIsTrue  email@123.123.123.123                              =  23 =  #### FEHLER ####    Zeichen: Top-Level-Domain darf nicht mit Zahl beginnen
-     *   385 - assertIsTrue  email@domain                                       =  34 =  #### FEHLER ####    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
-     *   386 - assertIsTrue  Test |<gaaf <email@domain.com>                     =  18 =  #### FEHLER ####    Struktur: Fehler in Adress-String-X
-     *   387 - assertIsTrue  Joe Smith <mailto:email@domain.com>                =  22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *   388 - assertIsTrue  Joe Smith <mailto:email(with comment)@domain.com>  =  22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *   389 - assertIsTrue  "With extra < within quotes" Display Name<email@domain.com> =  18 =  #### FEHLER ####    Struktur: Fehler in Adress-String-X
+     *   375 - assertIsTrue  local@2001:0db8:85a3:0000:0000:8a2e:0370:7334      =  22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *   376 - assertIsFalse a@bde.c-c                                          =   0 =  #### FEHLER ####    eMail-Adresse korrekt
+     *   377 - assertIsTrue  "Joe Smith" email@domain.com                       =  87 =  #### FEHLER ####    String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
+     *   378 - assertIsTrue  "Joe\tSmith" email@domain.com                      =  84 =  #### FEHLER ####    String: Ungueltige Escape-Sequenz im String
+     *   379 - assertIsTrue  "Joe"Smith" email@domain.com                       =  87 =  #### FEHLER ####    String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
+     *   380 - assertIsTrue  MailTo:casesensitve@domain.com                     =  22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *   381 - assertIsTrue  mailto:email@domain.com                            =  22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *   382 - assertIsTrue  ab@188.120.150.10                                  =  23 =  #### FEHLER ####    Zeichen: Top-Level-Domain darf nicht mit Zahl beginnen
+     *   383 - assertIsTrue  ab@1.0.0.10                                        =  23 =  #### FEHLER ####    Zeichen: Top-Level-Domain darf nicht mit Zahl beginnen
+     *   384 - assertIsTrue  ab@120.25.254.120                                  =  23 =  #### FEHLER ####    Zeichen: Top-Level-Domain darf nicht mit Zahl beginnen
+     *   385 - assertIsTrue  ab@01.120.150.1                                    =  14 =  #### FEHLER ####    Laenge: Top-Level-Domain muss mindestens 2 Stellen lang sein.
+     *   386 - assertIsTrue  ab@88.120.150.021                                  =  23 =  #### FEHLER ####    Zeichen: Top-Level-Domain darf nicht mit Zahl beginnen
+     *   387 - assertIsTrue  ab@88.120.150.01                                   =  23 =  #### FEHLER ####    Zeichen: Top-Level-Domain darf nicht mit Zahl beginnen
+     *   388 - assertIsTrue  email@123.123.123.123                              =  23 =  #### FEHLER ####    Zeichen: Top-Level-Domain darf nicht mit Zahl beginnen
+     *   389 - assertIsTrue  email@domain                                       =  34 =  #### FEHLER ####    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
+     *   390 - assertIsTrue  Test |<gaaf <email@domain.com>                     =  18 =  #### FEHLER ####    Struktur: Fehler in Adress-String-X
+     *   391 - assertIsTrue  Joe Smith <mailto:email@domain.com>                =  22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *   392 - assertIsTrue  Joe Smith <mailto:email(with comment)@domain.com>  =  22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *   393 - assertIsTrue  "With extra < within quotes" Display Name<email@domain.com> =  18 =  #### FEHLER ####    Struktur: Fehler in Adress-String-X
      * 
      * 
      * ---- unsorted ----------------------------------------------------------------------------------------------------
      * 
      * 
-     *   390 - assertIsFalse ..@test.com                                        =  30 =  OK    Trennzeichen: kein Beginn mit einem Punkt
-     *   391 - assertIsFalse .a@test.com                                        =  30 =  OK    Trennzeichen: kein Beginn mit einem Punkt
-     *   392 - assertIsFalse ab@sd@dd                                           =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
-     *   393 - assertIsFalse .@s.dd                                             =  30 =  OK    Trennzeichen: kein Beginn mit einem Punkt
-     *   394 - assertIsFalse a@b.-de.cc                                         =  20 =  OK    Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
-     *   395 - assertIsFalse a@bde-.cc                                          =  20 =  OK    Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
-     *   396 - assertIsFalse a@b._de.cc                                         =  20 =  OK    Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
-     *   397 - assertIsFalse a@bde_.cc                                          =  20 =  OK    Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
-     *   398 - assertIsFalse a@bde.cc.                                          =  36 =  OK    Trennzeichen: der letzte Punkt darf nicht am Ende liegen
-     *   399 - assertIsFalse ab@b+de.cc                                         =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-     *   400 - assertIsFalse a..b@bde.cc                                        =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
-     *   401 - assertIsFalse _@bde.cc,                                          =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *   402 - assertIsFalse plainaddress                                       =  34 =  OK    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
-     *   403 - assertIsFalse plain.address                                      =  28 =  OK    AT-Zeichen: kein AT-Zeichen gefunden
-     *   404 - assertIsFalse .email@domain.com                                  =  30 =  OK    Trennzeichen: kein Beginn mit einem Punkt
-     *   405 - assertIsFalse email.@domain.com                                  =  32 =  OK    Trennzeichen: ungueltige Zeichenkombination ".@"
-     *   406 - assertIsFalse email..email@domain.com                            =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
-     *   407 - assertIsFalse email@.domain.com                                  =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
-     *   408 - assertIsFalse email@domain.com.                                  =  36 =  OK    Trennzeichen: der letzte Punkt darf nicht am Ende liegen
-     *   409 - assertIsFalse email@domain..com                                  =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
-     *   410 - assertIsFalse "Joe Smith email@domain.com                        =  86 =  OK    String: kein abschliessendes Anfuehrungszeichen gefunden.
-     *   411 - assertIsFalse "Joe Smith' email@domain.com                       =  86 =  OK    String: kein abschliessendes Anfuehrungszeichen gefunden.
-     *   412 - assertIsFalse "Joe Smith"email@domain.com                        =  87 =  OK    String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
-     *   413 - assertIsFalse Display Name <email@plus.com> (after name with display) =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *   414 - assertIsTrue  domain.starts.with.digit@2domain.com               =   0 =  OK 
-     *   415 - assertIsTrue  domain.ends.with.digit@domain2.com                 =   0 =  OK 
+     *   394 - assertIsFalse ..@test.com                                        =  30 =  OK    Trennzeichen: kein Beginn mit einem Punkt
+     *   395 - assertIsFalse .a@test.com                                        =  30 =  OK    Trennzeichen: kein Beginn mit einem Punkt
+     *   396 - assertIsFalse ab@sd@dd                                           =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
+     *   397 - assertIsFalse .@s.dd                                             =  30 =  OK    Trennzeichen: kein Beginn mit einem Punkt
+     *   398 - assertIsFalse a@b.-de.cc                                         =  20 =  OK    Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
+     *   399 - assertIsFalse a@bde-.cc                                          =  20 =  OK    Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
+     *   400 - assertIsFalse a@b._de.cc                                         =  20 =  OK    Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
+     *   401 - assertIsFalse a@bde_.cc                                          =  20 =  OK    Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
+     *   402 - assertIsFalse a@bde.cc.                                          =  36 =  OK    Trennzeichen: der letzte Punkt darf nicht am Ende liegen
+     *   403 - assertIsFalse ab@b+de.cc                                         =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+     *   404 - assertIsFalse a..b@bde.cc                                        =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
+     *   405 - assertIsFalse _@bde.cc,                                          =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *   406 - assertIsFalse plainaddress                                       =  34 =  OK    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
+     *   407 - assertIsFalse plain.address                                      =  28 =  OK    AT-Zeichen: kein AT-Zeichen gefunden
+     *   408 - assertIsFalse .email@domain.com                                  =  30 =  OK    Trennzeichen: kein Beginn mit einem Punkt
+     *   409 - assertIsFalse email.@domain.com                                  =  32 =  OK    Trennzeichen: ungueltige Zeichenkombination ".@"
+     *   410 - assertIsFalse email..email@domain.com                            =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
+     *   411 - assertIsFalse email@.domain.com                                  =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
+     *   412 - assertIsFalse email@domain.com.                                  =  36 =  OK    Trennzeichen: der letzte Punkt darf nicht am Ende liegen
+     *   413 - assertIsFalse email@domain..com                                  =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
+     *   414 - assertIsFalse "Joe Smith email@domain.com                        =  86 =  OK    String: kein abschliessendes Anfuehrungszeichen gefunden.
+     *   415 - assertIsFalse "Joe Smith' email@domain.com                       =  86 =  OK    String: kein abschliessendes Anfuehrungszeichen gefunden.
+     *   416 - assertIsFalse "Joe Smith"email@domain.com                        =  87 =  OK    String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
+     *   417 - assertIsFalse Display Name <email@plus.com> (after name with display) =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *   418 - assertIsTrue  domain.starts.with.digit@2domain.com               =   0 =  OK 
+     *   419 - assertIsTrue  domain.ends.with.digit@domain2.com                 =   0 =  OK 
      * 
      */
 
@@ -780,7 +781,11 @@ class TestValidateEMailAdresse1
       assertIsTrue( "(ABC) DEF@GHI.JKL" );
       assertIsTrue( "ABC(DEF)@GHI.JKL" );
       assertIsTrue( "ABC.DEF@GHI.JKL(MNO)" );
-      assertIsTrue( "ABC.DEF@GHI.JKL       (MNO)" );
+      assertIsTrue( "ABC.DEF@GHI.JKL      (MNO)" );
+      assertIsFalse( "ABC.DEF@             (MNO)" );
+      assertIsFalse( "ABC.DEF@   .         (MNO)" );
+      assertIsFalse( "ABC.DEF              (MNO)" );
+      assertIsFalse( "ABC.DEF@GHI.         (MNO)" );
       assertIsFalse( "ABC.DEF@GHI.JKL       MNO" );
       assertIsFalse( "ABC.DEF@GHI.JKL          " );
       assertIsFalse( "ABC.DEF@GHI.JKL       .  " );
