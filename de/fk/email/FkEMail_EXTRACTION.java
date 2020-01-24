@@ -1134,7 +1134,7 @@ public class FkEMail_EXTRACTION
          */
         aktuelles_zeichen = pEingabe.charAt( akt_index );
 
-        if ( ( aktuelles_zeichen != '\\' ) && ( aktuelles_zeichen != '@' ) && ( aktuelles_zeichen != ' ' ) )
+        if ( ( aktuelles_zeichen != '\\' ) && ( aktuelles_zeichen != '@' ) && ( aktuelles_zeichen != ' ' ) && ( aktuelles_zeichen != '\'' ) )
         {
           return 84; // String: Ungueltige Escape-Sequenz im String
         }
@@ -1310,7 +1310,7 @@ public class FkEMail_EXTRACTION
              */
             aktuelles_zeichen = pEingabe.charAt( akt_index );
 
-            if ( ( aktuelles_zeichen != '\\' ) && ( aktuelles_zeichen != '"' ) )
+            if ( ( aktuelles_zeichen != '\\' ) && ( aktuelles_zeichen != '@' ) && ( aktuelles_zeichen != ' ' ) && ( aktuelles_zeichen != '\'' ) && ( aktuelles_zeichen != '"' ))
             {
               return 84; // String: Ungueltige Escape-Sequenz im String
             }
@@ -2224,7 +2224,7 @@ public class FkEMail_EXTRACTION
              * Der Leseprozess muss nach naechste Zeichen pruefen. 
              * Der Leseprozessindex wird um ein Zeichen weiter gestellt.
              */
-            akt_index++;
+            akt_index++; 
 
             /*
              * Pruefung: Stringende ?

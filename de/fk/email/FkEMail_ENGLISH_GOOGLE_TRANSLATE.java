@@ -916,7 +916,7 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
          */
         current_character = pInput.charAt( current_index );
 
-        if ( ( current_character != '\\' ) && ( current_character != '@' ) && ( current_character != ' ' ) )
+        if ( ( current_character != '\\' ) && ( current_character != '@' ) && ( current_character != ' ' ) && ( current_character != '\'' ) )
         {
           return 84; // String: Invalid escape sequence in the string
         }
@@ -1077,7 +1077,7 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
             current_index++;
 
             /*
-             * Check: String end?
+             * Check: String end? 
              */
             if ( current_index == length_input_string )
             {
@@ -1091,7 +1091,7 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
              */
             current_character = pInput.charAt( current_index );
 
-            if ( ( current_character != '\\' ) && ( current_character != '"' ) )
+            if ( ( current_character != '\\' ) && ( current_character != '@' ) && ( current_character != ' ' ) && ( current_character != '\'' ) && ( current_character != '"' ))
             {
               return 84; // String: Invalid escape sequence in the string
             }

@@ -426,12 +426,21 @@ public class FkEMail
    * - But really what you want is a lexer that properly parses a string and breaks it up into the component structure according to the RFC grammar. 
    *   EmailValidator4J seems promising in that regard, but is still young and limited.
    *
+   * https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript?rq=1
+   * - Technically some emails can include quotes in the section before the @ symbol with escape characters inside the quotes.
+   *    NOBODY DOES THIS EVER! It's obsolete. But, it IS included in the true RFC 2822 standard, and omitted here.
+   * 
+   * 
+   * 
    * https://docs.microsoft.com/en-us/dotnet/standard/base-types/how-to-verify-that-strings-are-in-valid-email-format
    *
    * https://www.regular-expressions.info/email.html
    * https://de.wikipedia.org/wiki/Top-Level-Domain
    * https://stackoverflow.com/questions/2049502/what-characters-are-allowed-in-an-email-address?rq=1
    * https://tools.ietf.org/id/draft-ietf-behave-address-format-10.html
+   * https://www.cocoanetics.com/2014/06/e-mail-validation/
+   * https://stackoverflow.com/questions/800123/what-are-best-practices-for-validating-email-addresses-on-ios-2-0
+   * https://stackoverflow.com/questions/1365407/c-sharp-code-to-validate-email-address?rq=1
    * </pre>
    * 
    * @param pEingabe die auf eine eMail-Adresse zu pruefende Eingabe
@@ -1135,7 +1144,7 @@ public class FkEMail
          * der Leseprozess im Domain-Part der eMail-Adresse. Dort sind diese 
          * Zeichen nicht erlaubt und es wird 21 zurueckgegeben.
          */
-        if ( position_at_zeichen > 0 )
+        if ( position_at_zeichen > 0 ) 
         {
           return 21; // Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
         }
@@ -1162,7 +1171,7 @@ public class FkEMail
          */
         aktuelles_zeichen = pEingabe.charAt( akt_index );
 
-        if ( ( aktuelles_zeichen != '\\' ) && ( aktuelles_zeichen != '@' ) && ( aktuelles_zeichen != ' ' ) )
+        if ( ( aktuelles_zeichen != '\\' ) && ( aktuelles_zeichen != '@' ) && ( aktuelles_zeichen != ' ' ) && ( aktuelles_zeichen != '\'' ) )
         {
           return 84; // String: Ungueltige Escape-Sequenz im String
         }
@@ -1338,7 +1347,7 @@ public class FkEMail
              */
             aktuelles_zeichen = pEingabe.charAt( akt_index );
 
-            if ( ( aktuelles_zeichen != '\\' ) && ( aktuelles_zeichen != '"' ) )
+            if ( ( aktuelles_zeichen != '\\' ) && ( aktuelles_zeichen != '@' ) && ( aktuelles_zeichen != ' ' ) && ( aktuelles_zeichen != '\'' ) && ( aktuelles_zeichen != '"' ) )
             {
               return 84; // String: Ungueltige Escape-Sequenz im String
             }
@@ -1615,7 +1624,7 @@ public class FkEMail
 
         akt_index++;
 
-        while (( akt_index < laenge_eingabe_string ) && ( aktuelles_zeichen != ']' ))
+        while ( ( akt_index < laenge_eingabe_string ) && ( aktuelles_zeichen != ']' ) )
         {
           /*
            * Aktuelles Pruefzeichen
@@ -1846,7 +1855,7 @@ public class FkEMail
                    * 
                    * ABC.DEF@[IPv6:1:2:3::5:6:7:8]    (comment)
                    */
-                  akt_index--; 
+                  akt_index--;
                 }
                 else
                 {
@@ -2009,7 +2018,7 @@ public class FkEMail
                * 60 als Fehler zurueckgegeben.
                */
               if ( ( akt_index + 1 ) != laenge_eingabe_string )
-              { 
+              {
                 /*
                  * Nach der IP-Adresse kann noch ein Kommentar kommen. 
                  * Aktuell muss der Kommentar sofort nach dem Abschlusszeichen kommen.
