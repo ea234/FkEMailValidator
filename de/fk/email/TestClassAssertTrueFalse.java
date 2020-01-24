@@ -591,7 +591,7 @@ class TestClassAssertTrueFalse
      *   524 - assertIsFalse  check@this.com                                    =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
      *   525 - assertIsTrue  check@this.com                                     =   0 =  OK 
      *   526 - assertIsTrue  Abc@example.com                                    =   0 =  OK 
-     *   527 - assertIsTrue  Abc@example.com.                                   =  36 =  #### FEHLER ####    Trennzeichen: der letzte Punkt darf nicht am Ende liegen
+     *   527 - assertIsFalse Abc@example.com.                                   =  36 =  OK    Trennzeichen: der letzte Punkt darf nicht am Ende liegen
      *   528 - assertIsTrue  Abc@10.42.0.1                                      =  14 =  #### FEHLER ####    Laenge: Top-Level-Domain muss mindestens 2 Stellen lang sein.
      *   529 - assertIsTrue  user@localserver                                   =  34 =  #### FEHLER ####    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
      *   530 - assertIsTrue  Abc.123@example.com                                =   0 =  OK 
@@ -1303,7 +1303,7 @@ class TestClassAssertTrueFalse
       assertIsTrue( "check@this.com" );
 
       assertIsTrue( "Abc@example.com" );
-      assertIsTrue( "Abc@example.com." );
+      assertIsFalse( "Abc@example.com." );
       assertIsTrue( "Abc@10.42.0.1" );
       assertIsTrue( "user@localserver" );
       assertIsTrue( "Abc.123@example.com" );
