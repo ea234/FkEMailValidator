@@ -2734,6 +2734,10 @@ class TestClassSpeed
       {
         knz_is_valid = FkEMail.checkEMailAdresse( test_daten_akt_string ) < 10;
       }
+      else if ( pTestNummer == 9 )
+      {
+        knz_is_valid = isValidEmailAddresseRegExComplicated2( test_daten_akt_string );
+      }
       else
       {
         ergebnis = "----";
