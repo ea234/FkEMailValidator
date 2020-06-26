@@ -23,27 +23,24 @@ import java.util.regex.Pattern;
 class TestClassSpeed
 {
   /*
-   * Testdaten
-   * Testdaten
-   * 
    *     0 "A.B@C.DE"                                                                            Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 false   JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
-   *     1 "A."B"@C.DE"                                                                          Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *     1 "A.\"B\"@C.DE"                                                                        Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
    *     2 "A.B@[1.2.3.4]"                                                                       Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 true    REGEXP 4 false   JAVA 1 false   ea234 true     =  2 = eMail-Adresse korrekt (IP4-Adresse)
-   *     3 "A."B"@[1.2.3.4]"                                                                     Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  3 = eMail-Adresse korrekt (Local Part mit String und IP4-Adresse)
+   *     3 "A.\"B\"@[1.2.3.4]"                                                                   Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  3 = eMail-Adresse korrekt (Local Part mit String und IP4-Adresse)
    *     4 "A.B@[IPv6:1:2:3:4:5:6:7:8]"                                                          Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  4 = eMail-Adresse korrekt (IP6-Adresse)
-   *     5 "A."B"@[IPv6:1:2:3:4:5:6:7:8]"                                                        Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  5 = eMail-Adresse korrekt (Local Part mit String und IP6-Adresse)
+   *     5 "A.\"B\"@[IPv6:1:2:3:4:5:6:7:8]"                                                      Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  5 = eMail-Adresse korrekt (Local Part mit String und IP6-Adresse)
    *     6 "(A)B@C.DE"                                                                           Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  6 = eMail-Adresse korrekt (Kommentar)
    *     7 "A(B)@C.DE"                                                                           Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  6 = eMail-Adresse korrekt (Kommentar)
-   *     8 "(A)"B"@C.DE"                                                                         Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  7 = eMail-Adresse korrekt (Kommentar, String)
-   *     9 ""A"(B)@C.DE"                                                                         Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  7 = eMail-Adresse korrekt (Kommentar, String)
+   *     8 "(A)\"B\"@C.DE"                                                                       Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  7 = eMail-Adresse korrekt (Kommentar, String)
+   *     9 "\"A\"(B)@C.DE"                                                                       Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  7 = eMail-Adresse korrekt (Kommentar, String)
    *    10 "(A)B@[1.2.3.4]"                                                                      Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  2 = eMail-Adresse korrekt (IP4-Adresse)
    *    11 "A(B)@[1.2.3.4]"                                                                      Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  2 = eMail-Adresse korrekt (IP4-Adresse)
-   *    12 "(A)"B"@[1.2.3.4]"                                                                    Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  8 = eMail-Adresse korrekt (Kommentar, String, IP4-Adresse)
-   *    13 ""A"(B)@[1.2.3.4]"                                                                    Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  8 = eMail-Adresse korrekt (Kommentar, String, IP4-Adresse)
+   *    12 "(A)\"B\"@[1.2.3.4]"                                                                  Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  8 = eMail-Adresse korrekt (Kommentar, String, IP4-Adresse)
+   *    13 "\"A\"(B)@[1.2.3.4]"                                                                  Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  8 = eMail-Adresse korrekt (Kommentar, String, IP4-Adresse)
    *    14 "(A)B@[IPv6:1:2:3:4:5:6:7:8]"                                                         Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  4 = eMail-Adresse korrekt (IP6-Adresse)
    *    15 "A(B)@[IPv6:1:2:3:4:5:6:7:8]"                                                         Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  4 = eMail-Adresse korrekt (IP6-Adresse)
-   *    16 "(A)"B"@[IPv6:1:2:3:4:5:6:7:8]"                                                       Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  9 = eMail-Adresse korrekt (Kommentar, String, IP6-Adresse)
-   *    17 ""A"(B)@[IPv6:1:2:3:4:5:6:7:8]"                                                       Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  9 = eMail-Adresse korrekt (Kommentar, String, IP6-Adresse)
+   *    16 "(A)\"B\"@[IPv6:1:2:3:4:5:6:7:8]"                                                     Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  9 = eMail-Adresse korrekt (Kommentar, String, IP6-Adresse)
+   *    17 "\"A\"(B)@[IPv6:1:2:3:4:5:6:7:8]"                                                     Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  9 = eMail-Adresse korrekt (Kommentar, String, IP6-Adresse)
    *    18 "firstname.lastname@domain.com"                                                       Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
    *    19 "firstname+lastname@domain.com"                                                       Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
    *    20 "firstname-lastname@domain.com"                                                       Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
@@ -190,30 +187,30 @@ class TestClassSpeed
    *   161 "email@domain.domain.domain.domain.com.com"                                           Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
    *   162 "email@domain.domain.domain.domain.domain.com.com"                                    Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
    *   163 "unescaped white space@fake$com"                                                      Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 22 = Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-   *   164 ""Joe Smith email@domain.com"                                                         Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 86 = String: kein abschliessendes Anfuehrungszeichen gefunden.
-   *   165 ""Joe Smith' email@domain.com"                                                        Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 86 = String: kein abschliessendes Anfuehrungszeichen gefunden.
-   *   166 ""Joe Smith"email@domain.com"                                                         Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 87 = String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
+   *   164 "\"Joe Smith email@domain.com"                                                        Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 86 = String: kein abschliessendes Anfuehrungszeichen gefunden.
+   *   165 "\"Joe Smith' email@domain.com"                                                       Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 86 = String: kein abschliessendes Anfuehrungszeichen gefunden.
+   *   166 "\"Joe Smith\"email@domain.com"                                                       Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 87 = String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
    *   167 "Joe Smith &lt;email@domain.com&gt;"                                                  Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 22 = Zeichen: ungueltiges Zeichen in der Eingabe gefunden
    *   168 "{john'doe}@my.server"                                                                Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 false   ea234 true     =  0 = eMail-Adresse korrekt
    *   169 "email@domain-one.com"                                                                Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
    *   170 "_______@domain.com"                                                                  Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
    *   171 "?????@domain.com"                                                                    Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
    *   172 "local@?????.com"                                                                     Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 21 = Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-   *   173 ""B3V3RLY H1LL$"@example.com"                                                         Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
-   *   174 ""-- --- .. -."@sh.de"                                                                Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *   173 "\"B3V3RLY H1LL$\"@example.com"                                                       Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *   174 "\"-- --- .. -.\"@sh.de"                                                              Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
    *   175 "{{-^-}{-=-}{-^-}}@GHI.JKL"                                                           Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 false   JAVA 1 false   ea234 true     =  0 = eMail-Adresse korrekt
-   *   176 ""\" + \"select * from user\" + \""@example.de"                                       Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *   176 "\"\\" + \\"select * from user\\" + \\"\"@example.de"                                 Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
    *   177 "#!$%&'*+-/=?^_`{}|~@eksample.org"                                                    Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 false   ea234 true     =  0 = eMail-Adresse korrekt
    *   178 "eksample@#!$%&'*+-/=?^_`{}|~.org"                                                    Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 21 = Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
    *   179 "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}"                                     Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 51 = IP-Adressteil: IP-Adresse vor AT-Zeichen
-   *   180 ""()<>[]:,;@\\\"!#$%&'*+-/=?^_`{}| ~.a"@example.org"                                  Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 89 = String: Ungueltiges Zeichen innerhalb Anfuehrungszeichen
+   *   180 "\"()<>[]:,;@\\\\"!#$%&'*+-/=?^_`{}| ~.a\"@example.org"                               Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
    *   181 "ABC.DEF@[1.2.3.4]"                                                                   Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 true    REGEXP 4 false   JAVA 1 false   ea234 true     =  2 = eMail-Adresse korrekt (IP4-Adresse)
    *   182 "ABC.DEF@[001.002.003.004]"                                                           Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 true    REGEXP 4 false   JAVA 1 false   ea234 true     =  2 = eMail-Adresse korrekt (IP4-Adresse)
-   *   183 ""ABC.DEF"@[127.0.0.1]"                                                               Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  3 = eMail-Adresse korrekt (Local Part mit String und IP4-Adresse)
+   *   183 "\"ABC.DEF\"@[127.0.0.1]"                                                             Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  3 = eMail-Adresse korrekt (Local Part mit String und IP4-Adresse)
    *   184 "ABC.DEF[1.2.3.4]"                                                                    Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 51 = IP-Adressteil: IP-Adresse vor AT-Zeichen
    *   185 "[1.2.3.4]@[5.6.7.8]"                                                                 Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 51 = IP-Adressteil: IP-Adresse vor AT-Zeichen
    *   186 "ABC.DEF[@1.2.3.4]"                                                                   Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 51 = IP-Adressteil: IP-Adresse vor AT-Zeichen
-   *   187 ""[1.2.3.4]"@[5.6.7.8]"                                                               Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 false    = 89 = String: Ungueltiges Zeichen innerhalb Anfuehrungszeichen
+   *   187 "\"[1.2.3.4]\"@[5.6.7.8]"                                                             Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  3 = eMail-Adresse korrekt (Local Part mit String und IP4-Adresse)
    *   188 "ABC.DEF@MyDomain[1.2.3.4]"                                                           Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 52 = IP-Adressteil: IP-Adresse muss direkt nach dem AT-Zeichen kommen (korrekte Kombination "@[")
    *   189 "ABC.DEF@[1.00002.3.4]"                                                               Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 53 = IP4-Adressteil: zu viele Ziffern, maximal 3 Ziffern
    *   190 "ABC.DEF@[1.2.3.456]"                                                                 Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 true    REGEXP 4 false   JAVA 1 false   ea234 false    = 54 = IP4-Adressteil: Byte-Overflow
@@ -265,7 +262,7 @@ class TestClassSpeed
    *   236 "ABC.DEF@[IPv6:1:2]"                                                                  Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 43 = IP6-Adressteil: Zu wenig Trennzeichen
    *   237 "ABC.DEF@[IPv6:1:2:3]"                                                                Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  4 = eMail-Adresse korrekt (IP6-Adresse)
    *   238 "ABC.DEF@[IPv6:1:2:3:4]"                                                              Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  4 = eMail-Adresse korrekt (IP6-Adresse)
-   *   239 "ABC.DEF@[IPv6:1:2:3:4:5:]"                                                           Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 44 = IP6-Adressteil: ungueltige Kombination ":]"
+   *   239 "ABC.DEF@[IPv6:1:2:3:4:5:]"                                                           Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  4 = eMail-Adresse korrekt (IP6-Adresse)
    *   240 "ABC.DEF@[IPv6:1:2:3:4:5:6]"                                                          Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  4 = eMail-Adresse korrekt (IP6-Adresse)
    *   241 "ABC.DEF@[IPv6:1:2:3:4:5:6:7]"                                                        Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  4 = eMail-Adresse korrekt (IP6-Adresse)
    *   242 "ABC.DEF@[IPv6:1:2:3:4:5:6:7:8]"                                                      Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  4 = eMail-Adresse korrekt (IP6-Adresse)
@@ -302,38 +299,38 @@ class TestClassSpeed
    *   273 "ABC.DEF@[IPv6::1234:127.0.0.1]"                                                      Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 62 = IP6-Adressteil: IPv4 in IPv6 - falsche Angabe der IP4-Einbettung (Zeichenfolge 'ffff' erwartet)
    *   274 "ABC.DEF@[IPv6:127.0.0.1]"                                                            Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 47 = IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
    *   275 "ABC.DEF@[IPv6:::127.0.0.1]"                                                          Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 62 = IP6-Adressteil: IPv4 in IPv6 - falsche Angabe der IP4-Einbettung (Zeichenfolge 'ffff' erwartet)
-   *   276 ""ABC.DEF"@GHI.DE"                                                                    Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
-   *   277 ""ABC DEF"@GHI.DE"                                                                    Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
-   *   278 ""ABC@DEF"@GHI.DE"                                                                    Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
-   *   279 ""ABC DEF@G"HI.DE"                                                                    Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 87 = String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
-   *   280 """@GHI.DE"                                                                           Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 85 = String: Leerstring in Anfuehrungszeichen
-   *   281 ""ABC.DEF@G"HI.DE"                                                                    Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 87 = String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
-   *   282 "A@G"HI.DE"                                                                           Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 82 = String: kein Anfuehrungszeichen nach dem AT-Zeichen
-   *   283 ""@GHI.DE"                                                                            Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 86 = String: kein abschliessendes Anfuehrungszeichen gefunden.
-   *   284 "ABC.DEF.""                                                                           Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 85 = String: Leerstring in Anfuehrungszeichen
-   *   285 "ABC.DEF@"""                                                                          Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 82 = String: kein Anfuehrungszeichen nach dem AT-Zeichen
-   *   286 "ABC.DEF@G"HI.DE"                                                                     Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 82 = String: kein Anfuehrungszeichen nach dem AT-Zeichen
-   *   287 "ABC.DEF@GHI.DE""                                                                     Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 82 = String: kein Anfuehrungszeichen nach dem AT-Zeichen
-   *   288 "ABC.DEF@"GHI.DE"                                                                     Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 82 = String: kein Anfuehrungszeichen nach dem AT-Zeichen
-   *   289 ""Escape.Sequenz.Ende""                                                               Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 88 = String: Der String endet am Stringende (Vorzeitiges Ende der Eingabe)
-   *   290 "ABC.DEF"GHI.DE"                                                                      Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 81 = String: Ein startendes Anfuehrungezeichen muss direkt nach einem Punkt kommen
-   *   291 "ABC.DEF"@GHI.DE"                                                                     Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 81 = String: Ein startendes Anfuehrungezeichen muss direkt nach einem Punkt kommen
-   *   292 "ABC.DE"F@GHI.DE"                                                                     Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 81 = String: Ein startendes Anfuehrungezeichen muss direkt nach einem Punkt kommen
-   *   293 ""ABC.DEF@GHI.DE"                                                                     Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 86 = String: kein abschliessendes Anfuehrungszeichen gefunden.
-   *   294 ""ABC.DEF@GHI.DE""                                                                    Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 88 = String: Der String endet am Stringende (Vorzeitiges Ende der Eingabe)
-   *   295 "".ABC.DEF"@GHI.DE"                                                                   Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
-   *   296 ""ABC.DEF."@GHI.DE"                                                                   Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
-   *   297 ""ABC".DEF."GHI"@JKL.de"                                                              Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
-   *   298 "A"BC".DEF."GHI"@JKL.de"                                                              Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 80 = String: Ein startendes Anfuehrungszeichen muss am Anfang kommen, der Zeichenzaehler darf nicht groesser als 0 sein
-   *   299 ""ABC".DEF.G"HI"@JKL.de"                                                              Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 81 = String: Ein startendes Anfuehrungezeichen muss direkt nach einem Punkt kommen
-   *   300 ""AB"C.DEF."GHI"@JKL.de"                                                              Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 87 = String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
-   *   301 ""ABC".DEF."GHI"J@KL.de"                                                              Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 87 = String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
-   *   302 ""AB"C.D"EF"@GHI.DE"                                                                  Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 87 = String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
-   *   303 ""Ende.am.Eingabeende""                                                               Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 88 = String: Der String endet am Stringende (Vorzeitiges Ende der Eingabe)
-   *   304 "0"00.000"@GHI.JKL"                                                                   Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 80 = String: Ein startendes Anfuehrungszeichen muss am Anfang kommen, der Zeichenzaehler darf nicht groesser als 0 sein
-   *   305 ""Joe Smith" email@domain.com"                                                        Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 87 = String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
-   *   306 ""Joe\tSmith" email@domain.com"                                                       Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 84 = String: Ungueltige Escape-Sequenz im String
-   *   307 ""Joe"Smith" email@domain.com"                                                        Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 87 = String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
+   *   276 "\"ABC.DEF\"@GHI.DE"                                                                  Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *   277 "\"ABC DEF\"@GHI.DE"                                                                  Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *   278 "\"ABC@DEF\"@GHI.DE"                                                                  Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *   279 "\"ABC DEF@G\"HI.DE"                                                                  Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 87 = String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
+   *   280 "\"\"@GHI.DE"                                                                         Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 85 = String: Leerstring in Anfuehrungszeichen
+   *   281 "\"ABC.DEF@G\"HI.DE"                                                                  Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 87 = String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
+   *   282 "A@G\"HI.DE"                                                                          Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 82 = String: kein Anfuehrungszeichen nach dem AT-Zeichen
+   *   283 "\"@GHI.DE"                                                                           Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 86 = String: kein abschliessendes Anfuehrungszeichen gefunden.
+   *   284 "ABC.DEF.\""                                                                          Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 85 = String: Leerstring in Anfuehrungszeichen
+   *   285 "ABC.DEF@\"\""                                                                        Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 82 = String: kein Anfuehrungszeichen nach dem AT-Zeichen
+   *   286 "ABC.DEF@G\"HI.DE"                                                                    Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 82 = String: kein Anfuehrungszeichen nach dem AT-Zeichen
+   *   287 "ABC.DEF@GHI.DE\""                                                                    Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 82 = String: kein Anfuehrungszeichen nach dem AT-Zeichen
+   *   288 "ABC.DEF@\"GHI.DE"                                                                    Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 82 = String: kein Anfuehrungszeichen nach dem AT-Zeichen
+   *   289 "\"Escape.Sequenz.Ende\""                                                             Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 88 = String: Der String endet am Stringende (Vorzeitiges Ende der Eingabe)
+   *   290 "ABC.DEF\"GHI.DE"                                                                     Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 81 = String: Ein startendes Anfuehrungezeichen muss direkt nach einem Punkt kommen
+   *   291 "ABC.DEF\"@GHI.DE"                                                                    Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 81 = String: Ein startendes Anfuehrungezeichen muss direkt nach einem Punkt kommen
+   *   292 "ABC.DE\"F@GHI.DE"                                                                    Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 81 = String: Ein startendes Anfuehrungezeichen muss direkt nach einem Punkt kommen
+   *   293 "\"ABC.DEF@GHI.DE"                                                                    Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 86 = String: kein abschliessendes Anfuehrungszeichen gefunden.
+   *   294 "\"ABC.DEF@GHI.DE\""                                                                  Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 88 = String: Der String endet am Stringende (Vorzeitiges Ende der Eingabe)
+   *   295 "\".ABC.DEF\"@GHI.DE"                                                                 Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *   296 "\"ABC.DEF.\"@GHI.DE"                                                                 Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *   297 "\"ABC\".DEF.\"GHI\"@JKL.de"                                                          Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *   298 "A\"BC\".DEF.\"GHI\"@JKL.de"                                                          Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 80 = String: Ein startendes Anfuehrungszeichen muss am Anfang kommen, der Zeichenzaehler darf nicht groesser als 0 sein
+   *   299 "\"ABC\".DEF.G\"HI\"@JKL.de"                                                          Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 81 = String: Ein startendes Anfuehrungezeichen muss direkt nach einem Punkt kommen
+   *   300 "\"AB\"C.DEF.\"GHI\"@JKL.de"                                                          Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 87 = String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
+   *   301 "\"ABC\".DEF.\"GHI\"J@KL.de"                                                          Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 87 = String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
+   *   302 "\"AB\"C.D\"EF\"@GHI.DE"                                                              Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 87 = String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
+   *   303 "\"Ende.am.Eingabeende\""                                                             Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 88 = String: Der String endet am Stringende (Vorzeitiges Ende der Eingabe)
+   *   304 "0\"00.000\"@GHI.JKL"                                                                 Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 80 = String: Ein startendes Anfuehrungszeichen muss am Anfang kommen, der Zeichenzaehler darf nicht groesser als 0 sein
+   *   305 "\"Joe Smith\" email@domain.com"                                                      Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 87 = String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
+   *   306 "\"Joe\tSmith\" email@domain.com"                                                     Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 84 = String: Ungueltige Escape-Sequenz im String
+   *   307 "\"Joe\"Smith\" email@domain.com"                                                     Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 87 = String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
    *   308 "(ABC)DEF@GHI.JKL"                                                                    Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  6 = eMail-Adresse korrekt (Kommentar)
    *   309 "(ABC) DEF@GHI.JKL"                                                                   Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 22 = Zeichen: ungueltiges Zeichen in der Eingabe gefunden
    *   310 "ABC(DEF)@GHI.JKL"                                                                    Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  6 = eMail-Adresse korrekt (Kommentar)
@@ -358,10 +355,10 @@ class TestClassSpeed
    *   329 "ABC.DEF@GHI.JK(L.M)NO"                                                               Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 100 = Kommentar: Kommentar muss am Stringende enden
    *   330 "AB(CD)EF@GHI.JKL"                                                                    Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 97 = Kommentar: Nach dem Kommentar muss ein AT-Zeichen kommen
    *   331 "AB.(CD).EF@GHI.JKL"                                                                  Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 101 = Kommentar: Falsche Zeichenkombination ".(" im Domain Part
-   *   332 "AB."(CD)".EF@GHI.JKL"                                                                Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 89 = String: Ungueltiges Zeichen innerhalb Anfuehrungszeichen
+   *   332 "AB.\"(CD)\".EF@GHI.JKL"                                                              Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
    *   333 "(ABCDEF)@GHI.JKL"                                                                    Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 98 = Kommentar: Kein lokaler Part vorhanden
    *   334 "(ABCDEF).@GHI.JKL"                                                                   Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 103 = Kommentar: Falsche Zeichenkombination ")."
-   *   335 "(AB"C)DEF@GHI.JKL"                                                                   Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 92 = Kommentar: Ungueltiges Zeichen im Kommentar
+   *   335 "(AB\"C)DEF@GHI.JKL"                                                                  Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 92 = Kommentar: Ungueltiges Zeichen im Kommentar
    *   336 "(AB\C)DEF@GHI.JKL"                                                                   Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 91 = Kommentar: Ungueltige Escape-Sequenz im Kommentar
    *   337 "(AB\@C)DEF@GHI.JKL"                                                                  Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 91 = Kommentar: Ungueltige Escape-Sequenz im Kommentar
    *   338 "ABC(DEF@GHI.JKL"                                                                     Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 93 = Kommentar: kein abschliessendes Zeichen fuer den Komentar gefunden. ')' erwartet
@@ -400,10 +397,10 @@ class TestClassSpeed
    *   371 "<ABC.DEF@GHI.JKL> ABC DEF"                                                           Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  0 = eMail-Adresse korrekt
    *   372 "ABC DEF ABC.DEF@GHI.JKL>"                                                            Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 16 = Struktur: keine oeffnende eckige Klammer gefunden.
    *   373 "<ABC.DEF@GHI.JKL ABC DEF"                                                            Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 17 = Struktur: keine schliessende eckige Klammer gefunden.
-   *   374 ""ABC DEF "<ABC.DEF@GHI.JKL>"                                                         Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  0 = eMail-Adresse korrekt
-   *   375 ""ABC<DEF>"@JKL.DE"                                                                   Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 89 = String: Ungueltiges Zeichen innerhalb Anfuehrungszeichen
+   *   374 "\"ABC DEF \"<ABC.DEF@GHI.JKL>"                                                       Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  0 = eMail-Adresse korrekt
+   *   375 "\"ABC<DEF>\"@JKL.DE"                                                                 Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
    *   376 ">"                                                                                   Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 16 = Struktur: keine oeffnende eckige Klammer gefunden.
-   *   377 ""ABC<DEF@GHI.COM>"@JKL.DE"                                                           Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 89 = String: Ungueltiges Zeichen innerhalb Anfuehrungszeichen
+   *   377 "\"ABC<DEF@GHI.COM>\"@JKL.DE"                                                         Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
    *   378 "ABC DEF <ABC.<DEF@GHI.JKL>"                                                          Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 18 = Struktur: Fehler in Adress-String-X
    *   379 "<ABC.DEF@GHI.JKL> MNO <PQR.STU@VW.XYZ>"                                              Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 18 = Struktur: Fehler in Adress-String-X
    *   380 "ABC DEF <ABC.DEF@GHI.JKL"                                                            Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 22 = Zeichen: ungueltiges Zeichen in der Eingabe gefunden
@@ -415,18 +412,18 @@ class TestClassSpeed
    *   386 "ABC DEF <>"                                                                          Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 12 = Laenge: Laengenbegrenzungen stimmen nicht
    *   387 "<> ABC DEF"                                                                          Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 12 = Laenge: Laengenbegrenzungen stimmen nicht
    *   388 "<ABC.DEF@GHI.JKL>"                                                                   Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  0 = eMail-Adresse korrekt
-   *   389 "Non EMail part <(comment)Local."Part"@[IPv6::ffff:127.0.0.1]>"                       Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  9 = eMail-Adresse korrekt (Kommentar, String, IP6-Adresse)
-   *   390 "Non EMail part <Local."Part"(comment)@[IPv6::ffff:127.0.0.1]>"                       Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  9 = eMail-Adresse korrekt (Kommentar, String, IP6-Adresse)
-   *   391 "<(comment)Local."Part"@[IPv6::ffff:127.0.0.1]> Non EMail part"                       Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  9 = eMail-Adresse korrekt (Kommentar, String, IP6-Adresse)
-   *   392 "<Local."Part"(comment)@[IPv6::ffff:127.0.0.1]> Non EMail part "                      Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  9 = eMail-Adresse korrekt (Kommentar, String, IP6-Adresse)
-   *   393 "Non EMail part < (comment)Local."Part"@[IPv6::ffff:127.0.0.1]>"                      Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 22 = Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-   *   394 "Non EMail part <Local."Part"(comment)B@[IPv6::ffff:127.0.0.1]>"                      Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 97 = Kommentar: Nach dem Kommentar muss ein AT-Zeichen kommen
-   *   395 "< (comment)Local."Part"@[IPv6::ffff:127.0.0.1]> Non EMail part"                      Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 22 = Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-   *   396 "<Local."Part"(comment)B@[IPv6::ffff:127.0.0.1]> Non EMail part "                     Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 97 = Kommentar: Nach dem Kommentar muss ein AT-Zeichen kommen
+   *   389 "Non EMail part <(comment)Local.\"Part\"@[IPv6::ffff:127.0.0.1]>"                     Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  9 = eMail-Adresse korrekt (Kommentar, String, IP6-Adresse)
+   *   390 "Non EMail part <Local.\"Part\"(comment)@[IPv6::ffff:127.0.0.1]>"                     Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  9 = eMail-Adresse korrekt (Kommentar, String, IP6-Adresse)
+   *   391 "<(comment)Local.\"Part\"@[IPv6::ffff:127.0.0.1]> Non EMail part"                     Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  9 = eMail-Adresse korrekt (Kommentar, String, IP6-Adresse)
+   *   392 "<Local.\"Part\"(comment)@[IPv6::ffff:127.0.0.1]> Non EMail part "                    Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  9 = eMail-Adresse korrekt (Kommentar, String, IP6-Adresse)
+   *   393 "Non EMail part < (comment)Local.\"Part\"@[IPv6::ffff:127.0.0.1]>"                    Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 22 = Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+   *   394 "Non EMail part <Local.\"Part\"(comment)B@[IPv6::ffff:127.0.0.1]>"                    Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 97 = Kommentar: Nach dem Kommentar muss ein AT-Zeichen kommen
+   *   395 "< (comment)Local.\"Part\"@[IPv6::ffff:127.0.0.1]> Non EMail part"                    Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 22 = Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+   *   396 "<Local.\"Part\"(comment)B@[IPv6::ffff:127.0.0.1]> Non EMail part "                   Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 97 = Kommentar: Nach dem Kommentar muss ein AT-Zeichen kommen
    *   397 "Joe Smith <email@domain.com>"                                                        Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  0 = eMail-Adresse korrekt
    *   398 "Joe Smith <mailto:email@domain.com>"                                                 Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 22 = Zeichen: ungueltiges Zeichen in der Eingabe gefunden
    *   399 "Test |<gaaf <email@domain.com>"                                                      Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 18 = Struktur: Fehler in Adress-String-X
-   *   400 ""With extra < within quotes" Display Name<email@domain.com>"                         Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 18 = Struktur: Fehler in Adress-String-X
+   *   400 "\"With extra < within quotes\" Display Name<email@domain.com>"                       Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 18 = Struktur: Fehler in Adress-String-X
    *   401 "A@B.CD"                                                                              Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 false   JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
    *   402 "A@B.C"                                                                               Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 true    ea234 false    = 12 = Laenge: Laengenbegrenzungen stimmen nicht
    *   403 "A@COM"                                                                               Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 12 = Laenge: Laengenbegrenzungen stimmen nicht
@@ -519,7 +516,7 @@ class TestClassSpeed
    *   490 "ABC.DEF@[IPv6:1:2:(3::5:6:7:8]"                                                      Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 49 = IP6-Adressteil: Falsches Zeichen in der IP-Adresse
    *   491 "ABC.DEF@[IPv6:1:2:3:4:5:6:7:8 ]"                                                     Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 49 = IP6-Adressteil: Falsches Zeichen in der IP-Adresse
    *   492 "ABC.DEF@[IPv6:1:2:3:4:5:6:7:8"                                                       Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 61 = IP-Adressteil: Kein Abschluss der IP-Adresse auf ']'
-   *   493 "ABC.DEF@[IPv6:1:2:3:4:5:6:7:]"                                                       Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 44 = IP6-Adressteil: ungueltige Kombination ":]"
+   *   493 "ABC.DEF@[IPv6:1:2:3:4:5:6:7:]"                                                       Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  4 = eMail-Adresse korrekt (IP6-Adresse)
    *   494 "ABC.DEF@[IPv6:1:2:3:4:5:6] "                                                         Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 22 = Zeichen: ungueltiges Zeichen in der Eingabe gefunden
    *   495 "ABC.DEF@[IPv6:1:2:3:4:5]"                                                            Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  4 = eMail-Adresse korrekt (IP6-Adresse)
    *   496 "ABC.DEF@[IPv6:1:2:3::5:8].de"                                                        Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 45 = IP6-Adressteil: Abschlusszeichen "]" muss am Ende stehen
@@ -549,17 +546,17 @@ class TestClassSpeed
    *   520 "Test.IPv6@[IPv6:2001:0db8:85a3:0000:0000:8a2e:0370:7334::]"                          Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 42 = IP6-Adressteil: zu viele Trennzeichen, maximal 8 Trennzeichen
    *   521 "Test.IPv6@[IPv6:2001:0db8:85a3:0000:0000:8a2e:0370:7334]"                            Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  4 = eMail-Adresse korrekt (IP6-Adresse)
    *   522 "Test.IPv6@[IPv6:2001:0db8:85a3:0000:0000:8a2e:0370::]"                               Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 42 = IP6-Adressteil: zu viele Trennzeichen, maximal 8 Trennzeichen
-   *   523 "Test.IPv6@[IPv6:2001:0db8:85a3:0000:0000:8a2e:0370:]"                                Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 44 = IP6-Adressteil: ungueltige Kombination ":]"
+   *   523 "Test.IPv6@[IPv6:2001:0db8:85a3:0000:0000:8a2e:0370:]"                                Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  4 = eMail-Adresse korrekt (IP6-Adresse)
    *   524 "Test.IPv6@[IPv6::2001:0db8:85a3:0000:0000:8a2e:0370:7334]"                           Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 42 = IP6-Adressteil: zu viele Trennzeichen, maximal 8 Trennzeichen
    *   525 "Test.IPv6@[IPv6:z001:0db8:85a3:0000:0000:8a2e:0370:7334]"                            Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 49 = IP6-Adressteil: Falsches Zeichen in der IP-Adresse
    *   526 "Test.IPv6@[[127.0.0.1]"                                                              Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 59 = IP4-Adressteil: Falsches Zeichen in der IP-Adresse
    *   527 "Test.IPv6@[\n]"                                                                      Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 59 = IP4-Adressteil: Falsches Zeichen in der IP-Adresse
-   *   528 ""ABC"@[IPv4:1:2:3:4]"                                                                Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 40 = IP6-Adressteil: String "IPv6:" erwartet
-   *   529 ""ABC"@[IPv6:1234:5678]"                                                              Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 43 = IP6-Adressteil: Zu wenig Trennzeichen
-   *   530 ""ABC"@[IPv6:1234]"                                                                   Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 43 = IP6-Adressteil: Zu wenig Trennzeichen
-   *   531 ""ABC"@[IPv6:1:2:3:4:5:6:7:8]"                                                        Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  5 = eMail-Adresse korrekt (Local Part mit String und IP6-Adresse)
-   *   532 """@[]"                                                                               Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 12 = Laenge: Laengenbegrenzungen stimmen nicht
-   *   533 "a"b(c)d,e:f;g<h>i[j\k]l@example.com"                                                 Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 80 = String: Ein startendes Anfuehrungszeichen muss am Anfang kommen, der Zeichenzaehler darf nicht groesser als 0 sein
+   *   528 "\"ABC\"@[IPv4:1:2:3:4]"                                                              Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 40 = IP6-Adressteil: String "IPv6:" erwartet
+   *   529 "\"ABC\"@[IPv6:1234:5678]"                                                            Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 43 = IP6-Adressteil: Zu wenig Trennzeichen
+   *   530 "\"ABC\"@[IPv6:1234]"                                                                 Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 43 = IP6-Adressteil: Zu wenig Trennzeichen
+   *   531 "\"ABC\"@[IPv6:1:2:3:4:5:6:7:8]"                                                      Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  5 = eMail-Adresse korrekt (Local Part mit String und IP6-Adresse)
+   *   532 "\"\"@[]"                                                                             Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 12 = Laenge: Laengenbegrenzungen stimmen nicht
+   *   533 "a\"b(c)d,e:f;g<h>i[j\k]l@example.com"                                                Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 80 = String: Ein startendes Anfuehrungszeichen muss am Anfang kommen, der Zeichenzaehler darf nicht groesser als 0 sein
    *   534 "jsmith@[IPv6:2001:db8::1]"                                                           Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  4 = eMail-Adresse korrekt (IP6-Adresse)
    *   535 "user@[192.168.2.1]"                                                                  Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 true    REGEXP 4 true    JAVA 1 false   ea234 true     =  2 = eMail-Adresse korrekt (IP4-Adresse)
    *   536 "user@[IPv6:2001:db8::1]"                                                             Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  4 = eMail-Adresse korrekt (IP6-Adresse)
@@ -569,53 +566,53 @@ class TestClassSpeed
    *   540 "ABC(DEF).@GHI.JKL"                                                                   Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 103 = Kommentar: Falsche Zeichenkombination ")."
    *   541 "ABC.DEF@(GHI).JKL.MNO"                                                               Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 103 = Kommentar: Falsche Zeichenkombination ")."
    *   542 "ABC.DEF@(GHI)JKL.MNO"                                                                Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  6 = eMail-Adresse korrekt (Kommentar)
-   *   543 ""@".A(@)@a.aa"                                                                       Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  7 = eMail-Adresse korrekt (Kommentar, String)
+   *   543 "\"@\".A(@)@a.aa"                                                                     Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  7 = eMail-Adresse korrekt (Kommentar, String)
    *   544 "ABC+DEF) <ABC.DEF@GHI.JKL>"                                                          Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 18 = Struktur: Fehler in Adress-String-X
-   *   545 ""ABC<DEF>"@GHI.JKL"                                                                  Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 89 = String: Ungueltiges Zeichen innerhalb Anfuehrungszeichen
-   *   546 ""ABC<DEF@GHI.COM>"@GHI.JKL"                                                          Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 89 = String: Ungueltiges Zeichen innerhalb Anfuehrungszeichen
+   *   545 "\"ABC<DEF>\"@GHI.JKL"                                                                Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *   546 "\"ABC<DEF@GHI.COM>\"@GHI.JKL"                                                        Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
    *   547 "<ABC.DEF@GHI.JKL>"                                                                   Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  0 = eMail-Adresse korrekt
    *   548 "ABC DEF < >"                                                                         Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 12 = Laenge: Laengenbegrenzungen stimmen nicht
    *   549 "ABC DEF < @ >"                                                                       Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 12 = Laenge: Laengenbegrenzungen stimmen nicht
    *   550 "ABC DEF <ABC<DEF@GHI.JKL>"                                                           Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 18 = Struktur: Fehler in Adress-String-X
-   *   551 "0"00.000"@wc.de"                                                                     Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 80 = String: Ein startendes Anfuehrungszeichen muss am Anfang kommen, der Zeichenzaehler darf nicht groesser als 0 sein
-   *   552 "@G"HI.DE"                                                                            Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 26 = AT-Zeichen: kein AT-Zeichen am Anfang
-   *   553 "ABC.DEF@GHI.JKL""                                                                    Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 82 = String: kein Anfuehrungszeichen nach dem AT-Zeichen
-   *   554 "ABC.DEF@"GHI.JKL"                                                                    Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 82 = String: kein Anfuehrungszeichen nach dem AT-Zeichen
-   *   555 "ABC.DEF"@GHI.JKL"                                                                    Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 81 = String: Ein startendes Anfuehrungezeichen muss direkt nach einem Punkt kommen
-   *   556 "ABC.DEF"GHI.JKL"                                                                     Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 81 = String: Ein startendes Anfuehrungezeichen muss direkt nach einem Punkt kommen
-   *   557 "ABC.DE"F@GHI.JKL"                                                                    Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 81 = String: Ein startendes Anfuehrungezeichen muss direkt nach einem Punkt kommen
-   *   558 "A"BC".DEF."GHI"@GHI.JKL"                                                             Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 80 = String: Ein startendes Anfuehrungszeichen muss am Anfang kommen, der Zeichenzaehler darf nicht groesser als 0 sein
+   *   551 "0\"00.000\"@wc.de"                                                                   Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 80 = String: Ein startendes Anfuehrungszeichen muss am Anfang kommen, der Zeichenzaehler darf nicht groesser als 0 sein
+   *   552 "@G\"HI.DE"                                                                           Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 26 = AT-Zeichen: kein AT-Zeichen am Anfang
+   *   553 "ABC.DEF@GHI.JKL\""                                                                   Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 82 = String: kein Anfuehrungszeichen nach dem AT-Zeichen
+   *   554 "ABC.DEF@\"GHI.JKL"                                                                   Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 82 = String: kein Anfuehrungszeichen nach dem AT-Zeichen
+   *   555 "ABC.DEF\"@GHI.JKL"                                                                   Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 81 = String: Ein startendes Anfuehrungezeichen muss direkt nach einem Punkt kommen
+   *   556 "ABC.DEF\"GHI.JKL"                                                                    Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 81 = String: Ein startendes Anfuehrungezeichen muss direkt nach einem Punkt kommen
+   *   557 "ABC.DE\"F@GHI.JKL"                                                                   Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 81 = String: Ein startendes Anfuehrungezeichen muss direkt nach einem Punkt kommen
+   *   558 "A\"BC\".DEF.\"GHI\"@GHI.JKL"                                                         Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 80 = String: Ein startendes Anfuehrungszeichen muss am Anfang kommen, der Zeichenzaehler darf nicht groesser als 0 sein
    *   559 "DomainNotAllowedCharacter@example\"                                                  Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 21 = Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-   *   560 "" "@GHI.JKL"                                                                         Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
-   *   561 "" "@example.org"                                                                     Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
-   *   562 ""%2"@gmail.com"                                                                      Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
-   *   563 "".ABC.DEF"@GHI.JKL"                                                                  Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
-   *   564 ""@GHI.JKL"                                                                           Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 86 = String: kein abschliessendes Anfuehrungszeichen gefunden.
-   *   565 ""ABC DEF"@GHI.JKL"                                                                   Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
-   *   566 ""ABC.DEF."@GHI.JKL"                                                                  Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
-   *   567 ""ABC.DEF@GHI.JKL"                                                                    Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 86 = String: kein abschliessendes Anfuehrungszeichen gefunden.
-   *   568 ""ABC.DEF"@GHI.JKL"                                                                   Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
-   *   569 ""ABC.D"EF@GHI.JKL"                                                                   Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 87 = String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
-   *   570 ""ABC@DEF"@GHI.JKL"                                                                   Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
-   *   571 ""ABC".DEF."GHI"@GHI.JKL"                                                             Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
-   *   572 ""ABC"".DEF."GHI"@GHI.JKL"                                                            Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 87 = String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
-   *   573 ""AB"C.DEF."GHI"@GHI.JKL"                                                             Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 87 = String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
-   *   574 ""AB"C.D"EF@GHI.JKL"                                                                  Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 87 = String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
-   *   575 ""AB"C.D"EF"@GHI.JKL"                                                                 Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 87 = String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
-   *   576 ""Falsch.da.Escape.Zeichen.am.Ende.steht\"                                            Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 83 = String: Escape-Zeichen nicht am Ende der Eingabe
-   *   577 ""Falsche\#Escape\GSequenz"@falsch.de"                                                Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 false    = 84 = String: Ungueltige Escape-Sequenz im String
-   *   578 ""Gueltige\"Escape\\Sequenz"@korrekt.de"                                              Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
-   *   579 """@GHI.JKL"                                                                          Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 85 = String: Leerstring in Anfuehrungszeichen
-   *   580 ""a..b"@gmail.com"                                                                    Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
-   *   581 ""a_b"@gmail.com"                                                                     Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
-   *   582 ""abcdefghixyz"@example.com"                                                          Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
-   *   583 "abc."defghi".xyz@example.com"                                                        Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
-   *   584 "abc"defghi"xyz@example.com"                                                          Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 80 = String: Ein startendes Anfuehrungszeichen muss am Anfang kommen, der Zeichenzaehler darf nicht groesser als 0 sein
-   *   585 "abc\"def\"ghi@eggsample.com"                                                         Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 84 = String: Ungueltige Escape-Sequenz im String
-   *   586 "at"start"test@test.local.part"                                                       Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 80 = String: Ein startendes Anfuehrungszeichen muss am Anfang kommen, der Zeichenzaehler darf nicht groesser als 0 sein
-   *   587 "just"not"right@example.com"                                                          Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 80 = String: Ein startendes Anfuehrungszeichen muss am Anfang kommen, der Zeichenzaehler darf nicht groesser als 0 sein
-   *   588 "this is"not\allowed@example.com"                                                     Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 22 = Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-   *   589 "this\ still\"not\\allowed@example.com"                                               Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 84 = String: Ungueltige Escape-Sequenz im String
+   *   560 "\" \"@GHI.JKL"                                                                       Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *   561 "\" \"@example.org"                                                                   Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *   562 "\"%2\"@gmail.com"                                                                    Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *   563 "\".ABC.DEF\"@GHI.JKL"                                                                Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *   564 "\"@GHI.JKL"                                                                          Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 86 = String: kein abschliessendes Anfuehrungszeichen gefunden.
+   *   565 "\"ABC DEF\"@GHI.JKL"                                                                 Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *   566 "\"ABC.DEF.\"@GHI.JKL"                                                                Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *   567 "\"ABC.DEF@GHI.JKL"                                                                   Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 86 = String: kein abschliessendes Anfuehrungszeichen gefunden.
+   *   568 "\"ABC.DEF\"@GHI.JKL"                                                                 Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *   569 "\"ABC.D\"EF@GHI.JKL"                                                                 Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 87 = String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
+   *   570 "\"ABC@DEF\"@GHI.JKL"                                                                 Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *   571 "\"ABC\".DEF.\"GHI\"@GHI.JKL"                                                         Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *   572 "\"ABC\"\".DEF.\"GHI\"@GHI.JKL"                                                       Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 87 = String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
+   *   573 "\"AB\"C.DEF.\"GHI\"@GHI.JKL"                                                         Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 87 = String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
+   *   574 "\"AB\"C.D\"EF@GHI.JKL"                                                               Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 87 = String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
+   *   575 "\"AB\"C.D\"EF\"@GHI.JKL"                                                             Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 87 = String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
+   *   576 "\"Falsch.da.Escape.Zeichen.am.Ende.steht\"                                           Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 83 = String: Escape-Zeichen nicht am Ende der Eingabe
+   *   577 "\"Falsche\#Escape\GSequenz\"@falsch.de"                                              Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 false    = 84 = String: Ungueltige Escape-Sequenz im String
+   *   578 "\"Gueltige\\"Escape\\Sequenz\"@korrekt.de"                                           Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *   579 "\"\"@GHI.JKL"                                                                        Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 85 = String: Leerstring in Anfuehrungszeichen
+   *   580 "\"a..b\"@gmail.com"                                                                  Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *   581 "\"a_b\"@gmail.com"                                                                   Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *   582 "\"abcdefghixyz\"@example.com"                                                        Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *   583 "abc.\"defghi\".xyz@example.com"                                                      Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *   584 "abc\"defghi\"xyz@example.com"                                                        Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 80 = String: Ein startendes Anfuehrungszeichen muss am Anfang kommen, der Zeichenzaehler darf nicht groesser als 0 sein
+   *   585 "abc\\"def\\"ghi@eggsample.com"                                                       Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 84 = String: Ungueltige Escape-Sequenz im String
+   *   586 "at\"start\"test@test.local.part"                                                     Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 80 = String: Ein startendes Anfuehrungszeichen muss am Anfang kommen, der Zeichenzaehler darf nicht groesser als 0 sein
+   *   587 "just\"not\"right@example.com"                                                        Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 80 = String: Ein startendes Anfuehrungszeichen muss am Anfang kommen, der Zeichenzaehler darf nicht groesser als 0 sein
+   *   588 "this is\"not\allowed@example.com"                                                    Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 22 = Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+   *   589 "this\ still\\"not\\allowed@example.com"                                              Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 84 = String: Ungueltige Escape-Sequenz im String
    *   590 "               "                                                                     Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 22 = Zeichen: ungueltiges Zeichen in der Eingabe gefunden
    *   591 "..@test.com"                                                                         Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 false   JAVA 1 false   ea234 false    = 30 = Trennzeichen: kein Beginn mit einem Punkt
    *   592 ".a@test.com"                                                                         Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 false   JAVA 1 false   ea234 false    = 30 = Trennzeichen: kein Beginn mit einem Punkt
@@ -661,9 +658,9 @@ class TestClassSpeed
    *   632 "js@proseware..com"                                                                   Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 31 = Trennzeichen: keine zwei Punkte hintereinander
    *   633 "js@proseware.com9"                                                                   Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  0 = eMail-Adresse korrekt
    *   634 "j.s@server1.proseware.com"                                                           Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
-   *   635 ""j\"s"@proseware.com"                                                                Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *   635 "\"j\\"s\"@proseware.com"                                                             Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
    *   636 "cog@wheel.com"                                                                       Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
-   *   637 ""cogwheel the orange"@example.com"                                                   Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *   637 "\"cogwheel the orange\"@example.com"                                                 Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
    *   638 "123@$.xyz"                                                                           Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 21 = Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
    *   639 "dasddas-@.com"                                                                       Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 33 = Trennzeichen: ungueltige Zeichenkombination "@."
    *   640 "-asd@das.com"                                                                        Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
@@ -720,7 +717,7 @@ class TestClassSpeed
    *   691 "user@[IPv6:2001:DB8::1]"                                                             Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  4 = eMail-Adresse korrekt (IP6-Adresse)
    *   692 "Abc.example.com"                                                                     Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 28 = AT-Zeichen: kein AT-Zeichen gefunden
    *   693 "A@b@c@example.com"                                                                   Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 29 = AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
-   *   694 "this\ still\"not\allowed@example.com"                                                Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 84 = String: Ungueltige Escape-Sequenz im String
+   *   694 "this\ still\\"not\allowed@example.com"                                               Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 84 = String: Ungueltige Escape-Sequenz im String
    *   695 "john..doe@example.com"                                                               Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 false   JAVA 1 false   ea234 false    = 31 = Trennzeichen: keine zwei Punkte hintereinander
    *   696 "john.doe@example..com"                                                               Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 31 = Trennzeichen: keine zwei Punkte hintereinander
    *   697 "email@example.com"                                                                   Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
@@ -768,18 +765,18 @@ class TestClassSpeed
    *   739 "pio_pio@factory.c#om"                                                                Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 21 = Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
    *   740 "pio_pio@factory.c*om"                                                                Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 21 = Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
    *   741 "pio^_pio@factory.com"                                                                Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 false   ea234 true     =  0 = eMail-Adresse korrekt
-   *   742 ""Abc\@def"@example.com"                                                              Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
-   *   743 ""Fred Bloggs"@example.com"                                                           Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
-   *   744 ""Fred\ Bloggs"@example.com"                                                          Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *   742 "\"Abc\@def\"@example.com"                                                            Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *   743 "\"Fred Bloggs\"@example.com"                                                         Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *   744 "\"Fred\ Bloggs\"@example.com"                                                        Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
    *   745 "Fred\ Bloggs@example.com"                                                            Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  0 = eMail-Adresse korrekt
-   *   746 ""Joe\Blow"@example.com"                                                              Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 false    = 84 = String: Ungueltige Escape-Sequenz im String
-   *   747 ""Joe\\Blow"@example.com"                                                             Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
-   *   748 ""Abc@def"@example.com"                                                               Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *   746 "\"Joe\Blow\"@example.com"                                                            Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 false    = 84 = String: Ungueltige Escape-Sequenz im String
+   *   747 "\"Joe\\Blow\"@example.com"                                                           Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *   748 "\"Abc@def\"@example.com"                                                             Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
    *   749 "customer/department=shipping@example.com"                                            Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
    *   750 "\$A12345@example.com"                                                                Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 84 = String: Ungueltige Escape-Sequenz im String
    *   751 "!def!xyz%abc@example.com"                                                            Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 false   ea234 true     =  0 = eMail-Adresse korrekt
    *   752 "_somename@example.com"                                                               Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
-   *   753 "abc\"def\"ghi@example.com"                                                           Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 84 = String: Ungueltige Escape-Sequenz im String
+   *   753 "abc\\"def\\"ghi@example.com"                                                         Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 84 = String: Ungueltige Escape-Sequenz im String
    *   754 " joe@gmail.com"                                                                      Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 22 = Zeichen: ungueltiges Zeichen in der Eingabe gefunden
    *   755 "$ABCDEF@GHI.JKL"                                                                     Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 false   JAVA 1 false   ea234 true     =  0 = eMail-Adresse korrekt
    *   756 ".ann..other.@example.com"                                                            Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 false   JAVA 1 false   ea234 false    = 30 = Trennzeichen: kein Beginn mit einem Punkt
@@ -907,13 +904,13 @@ class TestClassSpeed
    *   878 "username@example,com"                                                                Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 22 = Zeichen: ungueltiges Zeichen in der Eingabe gefunden
    *   879 "usern,ame@example.com"                                                               Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 22 = Zeichen: ungueltiges Zeichen in der Eingabe gefunden
    *   880 "user[na]me@example.com"                                                              Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 51 = IP-Adressteil: IP-Adresse vor AT-Zeichen
-   *   881 """"@iana.org"                                                                        Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 85 = String: Leerstring in Anfuehrungszeichen
-   *   882 ""\"@iana.org"                                                                        Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 86 = String: kein abschliessendes Anfuehrungszeichen gefunden.
-   *   883 ""test"test@iana.org"                                                                 Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 87 = String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
-   *   884 ""test""test"@iana.org"                                                               Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 87 = String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
-   *   885 ""test"."test"@iana.org"                                                              Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
-   *   886 ""test".test@iana.org"                                                                Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
-   *   887 ""test\"@iana.org"                                                                    Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 86 = String: kein abschliessendes Anfuehrungszeichen gefunden.
+   *   881 "\"\"\"@iana.org"                                                                     Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 85 = String: Leerstring in Anfuehrungszeichen
+   *   882 "\"\\"@iana.org"                                                                      Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 86 = String: kein abschliessendes Anfuehrungszeichen gefunden.
+   *   883 "\"test\"test@iana.org"                                                               Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 87 = String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
+   *   884 "\"test\"\"test\"@iana.org"                                                           Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 87 = String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
+   *   885 "\"test\".\"test\"@iana.org"                                                          Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *   886 "\"test\".test@iana.org"                                                              Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *   887 "\"test\\"@iana.org"                                                                  Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 86 = String: kein abschliessendes Anfuehrungszeichen gefunden.
    *   888 "\r\ntest@iana.org"                                                                   Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 22 = Zeichen: ungueltiges Zeichen in der Eingabe gefunden
    *   889 "\r\n test@iana.org"                                                                  Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 22 = Zeichen: ungueltiges Zeichen in der Eingabe gefunden
    *   890 "\r\n \r\ntest@iana.org"                                                              Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 22 = Zeichen: ungueltiges Zeichen in der Eingabe gefunden
@@ -949,15 +946,15 @@ class TestClassSpeed
    *   920 "example@1leadingnum.example.com"                                                     Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
    *   921 "1leadingnum@example.com"                                                             Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
    *   922 "????@??????.??"                                                                      Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 21 = Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-   *   923 ""username"@example.com"                                                              Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
-   *   924 ""user,name"@example.com"                                                             Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 false    = 89 = String: Ungueltiges Zeichen innerhalb Anfuehrungszeichen
-   *   925 ""user name"@example.com"                                                             Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
-   *   926 ""user@name"@example.com"                                                             Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
-   *   927 ""\a"@iana.org"                                                                       Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 false    = 84 = String: Ungueltige Escape-Sequenz im String
-   *   928 ""test\ test"@iana.org"                                                               Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
-   *   929 """@iana.org"                                                                         Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 false    = 85 = String: Leerstring in Anfuehrungszeichen
-   *   930 """@[]"                                                                               Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 12 = Laenge: Laengenbegrenzungen stimmen nicht
-   *   931 ""\""@iana.org"                                                                       Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *   923 "\"username\"@example.com"                                                            Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *   924 "\"user,name\"@example.com"                                                           Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *   925 "\"user name\"@example.com"                                                           Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *   926 "\"user@name\"@example.com"                                                           Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *   927 "\"\a\"@iana.org"                                                                     Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 false    = 84 = String: Ungueltige Escape-Sequenz im String
+   *   928 "\"test\ test\"@iana.org"                                                             Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *   929 "\"\"@iana.org"                                                                       Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 false    = 85 = String: Leerstring in Anfuehrungszeichen
+   *   930 "\"\"@[]"                                                                             Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 12 = Laenge: Laengenbegrenzungen stimmen nicht
+   *   931 "\"\\"\"@iana.org"                                                                    Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
    *   932 "Ärger.Öde@Übel.de"                                                                   Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 22 = Zeichen: ungueltiges Zeichen in der Eingabe gefunden
    *   933 "Smørrebrød@danmark.dk"                                                               Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 22 = Zeichen: ungueltiges Zeichen in der Eingabe gefunden
    *   934 "ip.without.brackets@1.2.3.4"                                                         Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 true    JAVA 1 true    ea234 false    = 14 = Laenge: Top-Level-Domain muss mindestens 2 Stellen lang sein.
@@ -965,7 +962,7 @@ class TestClassSpeed
    *   936 "(space after comment) john.smith@example.com"                                        Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 22 = Zeichen: ungueltiges Zeichen in der Eingabe gefunden
    *   937 "email.address.without@topleveldomain"                                                Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 34 = Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
    *   938 "EmailAddressWithout@PointSeperator"                                                  Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 34 = Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
-   *   939 ""use of komma, in double qoutes"@RFC2822.com"                                        Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 89 = String: Ungueltiges Zeichen innerhalb Anfuehrungszeichen
+   *   939 "\"use of komma, in double qoutes\"@RFC2822.com"                                      Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
    *   940 "ABC.DEF[1.2.3.4]    ABC.DEF[1.2.3.4]"                                                Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 51 = IP-Adressteil: IP-Adresse vor AT-Zeichen
    *   941 "ABC.DEF@[1.2.3.4][5.6.7.8]"                                                          Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 60 = IP4-Adressteil: Abschlusszeichen "]" muss am Ende stehen
    *   942 "ABC.DEF@[][][][]"                                                                    Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 57 = IP4-Adressteil: IP-Adresse Trennzeichenanzahl muss 3 sein
@@ -996,8 +993,8 @@ class TestClassSpeed
    *   967 "domain.starts.with.digit@2domain.com"                                                Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
    *   968 "domain.ends.with.digit@domain2.com"                                                  Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
    *   969 "aHZs...Ym8iZXJn@YWRtAW4g.au"                                                         Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 false   JAVA 1 false   ea234 false    = 31 = Trennzeichen: keine zwei Punkte hintereinander
-   *   970 ""RmF0aGlh"@SXp6YXRp.id"                                                              Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
-   *   971 ""hor\ror"@nes.si"                                                                    Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 false    = 84 = String: Ungueltige Escape-Sequenz im String
+   *   970 "\"RmF0aGlh\"@SXp6YXRp.id"                                                            Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *   971 "\"hor\ror\"@nes.si"                                                                  Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 false    = 84 = String: Ungueltige Escape-Sequenz im String
    *   972 "!yoora@an.yang.ha.se.yo"                                                             Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 false   ea234 true     =  0 = eMail-Adresse korrekt
    *   973 "084105111046077097110105107@hello.again.id"                                          Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 false   ea234 true     =  0 = eMail-Adresse korrekt
    *   974 "@@@@@@gmail.com"                                                                     Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 26 = AT-Zeichen: kein AT-Zeichen am Anfang
@@ -1007,18 +1004,18 @@ class TestClassSpeed
    *   978 "something@domain.com"                                                                Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
    *   979 "emailString@email.com"                                                               Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 false   JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
    *   980 "person@registry.organization"                                                        Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
-   *   981 "foo.bar."bux".bar.com@baz.com"                                                       Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *   981 "foo.bar.\"bux\".bar.com@baz.com"                                                     Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
    *   982 "someStringThatMightBe@email.com"                                                     Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 false   JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
    *   983 "100$-30%=130$-(x*3pi)@MATH.MAGIC"                                                    Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  6 = eMail-Adresse korrekt (Kommentar)
-   *   984 ""much.more unusual"@example.com"                                                     Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *   984 "\"much.more unusual\"@example.com"                                                   Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
    *   985 "other.email-with-dash@eksample.com"                                                  Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
    *   986 "Find#Me@NotesDocumentCollection.de"                                                  Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 false   JAVA 1 false   ea234 true     =  0 = eMail-Adresse korrekt
    *   987 "InvalidEmail@notreallyemailbecausenosuffix"                                          Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 34 = Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
-   *   988 ""very.unusual.@.unusual.com"@example.com"                                            Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *   988 "\"very.unusual.@.unusual.com\"@example.com"                                          Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
    *   989 "foo\@bar@machine.subdomain.example.museum"                                           Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  0 = eMail-Adresse korrekt
    *   990 "disposable.style.email.with+symbol@example.com"                                      Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
    *   991 "0=1+e^(i*pi)@Gleich.Zahl.Phi.Goldener.Schnitt.aua"                                   Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  6 = eMail-Adresse korrekt (Kommentar)
-   *   992 "john."M@c"."Smith!"(coolguy)@(thefantastic)[1.2.3.4]"                                Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 99 = Kommentar: kein zweiter Kommentar gueltig
+   *   992 "john.\"M@c\".\"Smith!\"(coolguy)@(thefantastic)[1.2.3.4]"                            Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 99 = Kommentar: kein zweiter Kommentar gueltig
    *   993 "ABC.DEF@GHI.A23456789012345678901234567890123456789012345678901234567890123"         Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  0 = eMail-Adresse korrekt
    *   994 "ABC.DEF@GHI.A23456789012345678901234567890123456789012345678901234567890123A"        Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 15 = Laenge: Top-Level-Domain darf nicht mehr als 63-Stellen lang sein.
    *   995 "domain.label.with.63.characters@A23456789012345678901234567890123456789012345678901234567890123.com" Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 false   JAVA 1 false   ea234 true     =  0 = eMail-Adresse korrekt
@@ -1034,119 +1031,375 @@ class TestClassSpeed
    *  1005 "ZZZZZZZZZXZZZZZZZZZZXZZZZ.ZZZZZXZZZZZZZZZZXZZZZZZZZZZXZZZZZZZZZX@ZZZZZZZZZX.ZL"      Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 false   JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
    *  1006 "ZZZZZZZZZXZZZZZZZZZZXZZZZ.ZZZZZXZZZZZZZZZZXZZZZZZZZZZXZZZZZZZZZXT@ZZZZZZZZZX.ZL"     Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 false   JAVA 1 true    ea234 false    = 13 = Laenge: RFC 5321 = SMTP-Protokoll = maximale Laenge des Local-Parts sind 64 Bytes
    *  1007 "1234567890123456789012345678901234567890123456789012345678901234+x@example.com"      Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 false   ea234 false    = 13 = Laenge: RFC 5321 = SMTP-Protokoll = maximale Laenge des Local-Parts sind 64 Bytes
-   *  1008 ""very.(z),:;<>[]\".VERY.\"very@\\ \"very\".unusual"@strange.example.com"             Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 89 = String: Ungueltiges Zeichen innerhalb Anfuehrungszeichen
+   *  1008 "\"very.(z),:;<>[]\\".VERY.\\"very@\\ \\"very\\".unusual\"@strange.example.com"       Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
    *  1009 "too_long_localpart_too_long_localpart_too_long_localpart_too_long_localpart@test.local.part" Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 false    = 13 = Laenge: RFC 5321 = SMTP-Protokoll = maximale Laenge des Local-Parts sind 64 Bytes
    *  1010 "Dieser_local_Part_ist_zu_lang.Nach_RFC_5321_sind_maximal_64_Zeichen_erlaubt@Das_sind_hier_75_Zeichen_und_daher_zu_lang_und_falsch.de" Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 13 = Laenge: RFC 5321 = SMTP-Protokoll = maximale Laenge des Local-Parts sind 64 Bytes
    *  1011 "3.141592653589793238462643383279502884197169399375105820974944@3.14159265358979323846264338327950288419716939937510582097494459266616C736368.eu" Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 false   JAVA 1 false   ea234 false    = 63 = Domain-Part: Domain-Label zu lang (maximal 63 Zeichen)
    *  1012 "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 false    = 13 = Laenge: RFC 5321 = SMTP-Protokoll = maximale Laenge des Local-Parts sind 64 Bytes
    *  1013 "ReDoSaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 false   JAVA 1 true    ea234 false    = 12 = Laenge: Laengenbegrenzungen stimmen nicht
    *  1014 "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@aol.com"              Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 false   JAVA 1 false   ea234 true     =  0 = eMail-Adresse korrekt
-   *  1015 "ZZZZ.ZZZZZZ@ZZZZZZZZZZ.ZZ"                                                           Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 false   JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
-   *  1016 "zzzz.zzzzzz@zzzzzzzzzz.zz"                                                           Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
-   *  1017 "AAAA.AAAAAA@AAAAAAAAAA.AA"                                                           Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 false   JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
-   *  1018 "aaaa.aaaaaa@aaaaaaaaaa.aa"                                                           Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
-   *  1019 "Vorname.Nachname@web.de"                                                             Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 false   JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
-   *  1020 "michi.fanin@fc-wohlenegg.at"                                                         Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
-   *  1021 "old.email@test.com"                                                                  Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
-   *  1022 "new.email@test.com"                                                                  Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
-   *  1023 "test1group@test1.com"                                                                Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
-   *  1024 "test2group@test2.com"                                                                Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
-   *  1025 "test1@test1.com"                                                                     Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
-   *  1026 "test2@test2.com"                                                                     Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
-   *  1027 "junit.testEmailChange@example.com"                                                   Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 false   JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
-   *  1028 "at@at.at"                                                                            Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
-   *  1029 "easy@isnt.it"                                                                        Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
-   *  1030 "yes@it.is"                                                                           Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
-   *  
+   *  1015 "first.last@iana.org"                                                                 Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1016 "1234567890123456789012345678901234567890123456789012345678901234@iana.org"           Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 false   ea234 true     =  0 = eMail-Adresse korrekt
+   *  1017 "\"first\\"last\"@iana.org"                                                           Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *  1018 "\"first@last\"@iana.org"                                                             Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *  1019 "\"first\\last\"@iana.org"                                                            Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *  1020 "x@x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23" Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  0 = eMail-Adresse korrekt
+   *  1021 "1234567890123456789012345678901234567890123456789012345678@1234567890123456789012345678901234567890123456.de" Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 false   ea234 true     =  0 = eMail-Adresse korrekt
+   *  1022 "first.last@[12.34.56.78]"                                                            Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 true    REGEXP 4 true    JAVA 1 false   ea234 true     =  2 = eMail-Adresse korrekt (IP4-Adresse)
+   *  1023 "first.last@[IPv6:::1111:2222:3333:4444:5555:6666]"                                   Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  4 = eMail-Adresse korrekt (IP6-Adresse)
+   *  1024 "first.last@[IPv6:1111:2222:3333::4444:5555:6666]"                                    Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  4 = eMail-Adresse korrekt (IP6-Adresse)
+   *  1025 "first.last@[IPv6:1111:2222:3333::4444:5555:6666:]"                                   Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  4 = eMail-Adresse korrekt (IP6-Adresse)
+   *  1026 "first.last@[IPv6:1111:2222:3333:4444:5555:6666::]"                                   Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  4 = eMail-Adresse korrekt (IP6-Adresse)
+   *  1027 "first.last@[IPv6:1111:2222:3333:4444:5555:6666:7777:8888]"                           Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  4 = eMail-Adresse korrekt (IP6-Adresse)
+   *  1028 "first.last@x23456789012345678901234567890123456789012345678901234567890123.iana.org" Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 false   ea234 true     =  0 = eMail-Adresse korrekt
+   *  1029 "first.last@3com.com"                                                                 Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1030 "first.last@123.iana.org"                                                             Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1031 "\"first\\last\"@iana.org"                                                            Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *  1032 "first.last@[IPv6:1111:2222:3333::4444:5555:12.34.56.78]"                             Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 47 = IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
+   *  1033 "first.last@[IPv6:1111:2222:3333::4444:5555:6666:7777]"                               Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  4 = eMail-Adresse korrekt (IP6-Adresse)
+   *  1034 "\"Abc\@def\"@iana.org"                                                               Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *  1035 "\"Fred\ Bloggs\"@iana.org"                                                           Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *  1036 "\"Joe.\\Blow\"@iana.org"                                                             Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *  1037 "\"Abc@def\"@iana.org"                                                                Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *  1038 "\"Fred Bloggs\"@iana.orgin"                                                          Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *  1039 "\"Abc\@def\"@iana.org"                                                               Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *  1040 "user+mailbox@iana.org"                                                               Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1041 "$A12345@iana.org"                                                                    Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 false   JAVA 1 false   ea234 true     =  0 = eMail-Adresse korrekt
+   *  1042 "!def!xyz%abc@iana.org"                                                               Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 false   ea234 true     =  0 = eMail-Adresse korrekt
+   *  1043 "_somename@iana.org"                                                                  Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1044 "dclo@us.ibm.com"                                                                     Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1045 "peter.piper@iana.org"                                                                Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1046 "test@iana.org"                                                                       Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1047 "TEST@iana.org"                                                                       Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 false   JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1048 "1234567890@iana.org"                                                                 Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 false   ea234 true     =  0 = eMail-Adresse korrekt
+   *  1049 "test+test@iana.org"                                                                  Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1050 "test-test@iana.org"                                                                  Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1051 "t*est@iana.org"                                                                      Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1052 "+1~1+@iana.org"                                                                      Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 false   ea234 true     =  0 = eMail-Adresse korrekt
+   *  1053 "{_test_}@iana.org"                                                                   Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 false   ea234 true     =  0 = eMail-Adresse korrekt
+   *  1054 "test.test@iana.org"                                                                  Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1055 "\"test.test\"@iana.org"                                                              Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *  1056 "test.\"test\"@iana.org"                                                              Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *  1057 "\"test@test\"@iana.org"                                                              Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *  1058 "test@123.123.123.x123"                                                               Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1059 "test@123.123.123.123"                                                                Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 true    JAVA 1 true    ea234 false    = 23 = Zeichen: Top-Level-Domain darf nicht mit Zahl beginnen
+   *  1060 "test@[123.123.123.123]"                                                              Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 true    REGEXP 4 true    JAVA 1 false   ea234 true     =  2 = eMail-Adresse korrekt (IP4-Adresse)
+   *  1061 "test@example.iana.org"                                                               Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1062 "test@example.example.iana.org"                                                       Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1063 "customer/department@iana.org"                                                        Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1064 "_Yosemite.Sam@iana.org"                                                              Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 false   JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1065 "~@iana.org"                                                                          Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 false   ea234 true     =  0 = eMail-Adresse korrekt
+   *  1066 "\"Austin@Powers\"@iana.org"                                                          Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *  1067 "Ima.Fool@iana.org"                                                                   Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 false   JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1068 "\"Ima.Fool\"@iana.org"                                                               Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *  1069 "\"Ima Fool\"@iana.orgin"                                                             Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *  1070 "\"first\".\"last\"@iana.org"                                                         Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *  1071 "\"first\".middle.\"last\"@iana.org"                                                  Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *  1072 "\"first\".last@iana.org"                                                             Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *  1073 "first.\"last\"@iana.org"                                                             Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *  1074 "\"first\".\"middle\".\"last\"@iana.org"                                              Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *  1075 "\"first.middle\".\"last\"@iana.org"                                                  Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *  1076 "\"first.middle.last\"@iana.org"                                                      Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *  1077 "\"first..last\"@iana.org"                                                            Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *  1078 "\"first\\"last\"@iana.org"                                                           Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *  1079 "first.\"middle\".\"last\"@iana.org"                                                  Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *  1080 "first.last @iana.orgin"                                                              Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 22 = Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+   *  1081 "\"test blah\"@iana.orgin"                                                            Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *  1082 "name.lastname@domain.com"                                                            Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1083 "a@bar.com"                                                                           Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1084 "aaa@[123.123.123.123]"                                                               Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 true    REGEXP 4 true    JAVA 1 false   ea234 true     =  2 = eMail-Adresse korrekt (IP4-Adresse)
+   *  1085 "a-b@bar.com"                                                                         Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1086 "+@b.c"                                                                               Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 true    JAVA 1 true    ea234 false    = 12 = Laenge: Laengenbegrenzungen stimmen nicht
+   *  1087 "+@b.com"                                                                             Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1088 "a@b.co-foo.uk"                                                                       Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1089 "\"hello my name is\"@stutter.comin"                                                  Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *  1090 "\"Test \\"Fail\\" Ing\"@iana.orgin"                                                  Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *  1091 "shaitan@my-domain.thisisminekthx"                                                    Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1092 "foobar@192.168.0.1"                                                                  Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 false    = 14 = Laenge: Top-Level-Domain muss mindestens 2 Stellen lang sein.
+   *  1093 "HM2Kinsists@(that comments are allowed)this.is.ok"                                   Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  6 = eMail-Adresse korrekt (Kommentar)
+   *  1094 "HM2Kinsists@(that comments are allowed)this.is.ok"                                   Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  6 = eMail-Adresse korrekt (Kommentar)
+   *  1095 "user%uucp!path@berkeley.edu"                                                         Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 false   ea234 true     =  0 = eMail-Adresse korrekt
+   *  1096 "cdburgess+!#$%&'*-/=?+_{}|~test@gmail.com"                                           Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 false   ea234 true     =  0 = eMail-Adresse korrekt
+   *  1097 "test@test.com"                                                                       Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1098 "test@xn--example.com"                                                                Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1099 "test@example.com"                                                                    Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1100 "{^c\@**Dog^}@cartoon.com"                                                            Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  0 = eMail-Adresse korrekt
+   *  1101 "first\@last@iana.org"                                                                Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  0 = eMail-Adresse korrekt
+   *  1102 "phil.h\@\@ck@haacked.com"                                                            Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  0 = eMail-Adresse korrekt
+   *  1103 "first.last@example.123"                                                              Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 true    JAVA 1 true    ea234 false    = 23 = Zeichen: Top-Level-Domain darf nicht mit Zahl beginnen
+   *  1104 "first.last@comin"                                                                    Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 34 = Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
+   *  1105 "\"[[ test ]]\"@iana.orgin"                                                           Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *  1106 "Abc\@def@iana.org"                                                                   Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  0 = eMail-Adresse korrekt
+   *  1107 "Fred\ Bloggs@iana.org"                                                               Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  0 = eMail-Adresse korrekt
+   *  1108 "Joe.\Blow@iana.org"                                                                  Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 84 = String: Ungueltige Escape-Sequenz im String
+   *  1109 "first.last@sub.do,com"                                                               Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 22 = Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+   *  1110 "first.last"                                                                          Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 28 = AT-Zeichen: kein AT-Zeichen gefunden
+   *  1111 "c@(Chris's host.)public.examplein"                                                   Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  6 = eMail-Adresse korrekt (Kommentar)
+   *  1112 "(foo)cal(bar)@(baz)iamcal.com(quux)"                                                 Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 99 = Kommentar: kein zweiter Kommentar gueltig
+   *  1113 "cal@iamcal(woo).(yay)comin"                                                          Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 103 = Kommentar: Falsche Zeichenkombination ")."
+   *  1114 "cal(woo(yay)hoopla)@iamcal.comin"                                                    Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 92 = Kommentar: Ungueltiges Zeichen im Kommentar
+   *  1115 "cal(foo\@bar)@iamcal.comin"                                                          Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 91 = Kommentar: Ungueltige Escape-Sequenz im Kommentar
+   *  1116 "cal(foo\)bar)@iamcal.comin"                                                          Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 91 = Kommentar: Ungueltige Escape-Sequenz im Kommentar
+   *  1117 "first().last@iana.orgin"                                                             Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 103 = Kommentar: Falsche Zeichenkombination ")."
+   *  1118 "pete(his account)@silly.test(his host)"                                              Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 99 = Kommentar: kein zweiter Kommentar gueltig
+   *  1119 "jdoe@machine(comment). examplein"                                                    Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 103 = Kommentar: Falsche Zeichenkombination ")."
+   *  1120 "first(abc.def).last@iana.orgin"                                                      Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 103 = Kommentar: Falsche Zeichenkombination ")."
+   *  1121 "first(a\"bc.def).last@iana.orgin"                                                    Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 92 = Kommentar: Ungueltiges Zeichen im Kommentar
+   *  1122 "first.(\")middle.last(\")@iana.orgin"                                                Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 101 = Kommentar: Falsche Zeichenkombination ".(" im Domain Part
+   *  1123 "first(abc\(def)@iana.orgin"                                                          Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 91 = Kommentar: Ungueltige Escape-Sequenz im Kommentar
+   *  1124 "first.last@x(1234567890123456789012345678901234567890123456789012345678901234567890).comin" Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 103 = Kommentar: Falsche Zeichenkombination ")."
+   *  1125 "a(a(b(c)d(e(f))g)h(i)j)@iana.orgin"                                                  Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 92 = Kommentar: Ungueltiges Zeichen im Kommentar
+   *  1126 "1234 @ local(blah) .machine .examplein"                                              Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 22 = Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+   *  1127 "a@bin"                                                                               Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 12 = Laenge: Laengenbegrenzungen stimmen nicht
+   *  1128 "a@barin"                                                                             Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 34 = Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
+   *  1129 "@about.museum"                                                                       Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 true    ea234 false    = 26 = AT-Zeichen: kein AT-Zeichen am Anfang
+   *  1130 "12345678901234567890123456789012345678901234567890123456789012345@iana.org"          Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 false   ea234 false    = 13 = Laenge: RFC 5321 = SMTP-Protokoll = maximale Laenge des Local-Parts sind 64 Bytes
+   *  1131 ".first.last@iana.org"                                                                Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 false   JAVA 1 false   ea234 false    = 30 = Trennzeichen: kein Beginn mit einem Punkt
+   *  1132 "first.last.@iana.org"                                                                Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 false   JAVA 1 false   ea234 false    = 32 = Trennzeichen: ungueltige Zeichenkombination ".@"
+   *  1133 "first..last@iana.org"                                                                Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 false   JAVA 1 false   ea234 false    = 31 = Trennzeichen: keine zwei Punkte hintereinander
+   *  1134 "\"first\"last\"@iana.org"                                                            Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 87 = String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
+   *  1135 "\"\"\"@iana.org"                                                                     Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 85 = String: Leerstring in Anfuehrungszeichen
+   *  1136 "\"\\"@iana.org"                                                                      Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 86 = String: kein abschliessendes Anfuehrungszeichen gefunden.
+   *  1137 "\"\"@iana.org"                                                                       Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 false    = 85 = String: Leerstring in Anfuehrungszeichen
+   *  1138 "first.last@"                                                                         Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 27 = AT-Zeichen: kein AT-Zeichen am Ende
+   *  1139 "first.last@-xample.com"                                                              Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 false   JAVA 1 true    ea234 false    = 20 = Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
+   *  1140 "first.last@exampl-.com"                                                              Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 false   JAVA 1 true    ea234 false    = 20 = Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
+   *  1141 "first.last@x234567890123456789012345678901234567890123456789012345678901234.iana.org" Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 false   ea234 false    = 63 = Domain-Part: Domain-Label zu lang (maximal 63 Zeichen)
+   *  1142 "abc\@iana.org"                                                                       Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 28 = AT-Zeichen: kein AT-Zeichen gefunden
+   *  1143 "Doug\ \\"Ace\\"\ Lovell@iana.org"                                                    Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 84 = String: Ungueltige Escape-Sequenz im String
+   *  1144 "abc@def@iana.org"                                                                    Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 29 = AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
+   *  1145 "@iana.org"                                                                           Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 true    ea234 false    = 26 = AT-Zeichen: kein AT-Zeichen am Anfang
+   *  1146 "doug@"                                                                               Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 12 = Laenge: Laengenbegrenzungen stimmen nicht
+   *  1147 "\"qu@iana.org"                                                                       Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 86 = String: kein abschliessendes Anfuehrungszeichen gefunden.
+   *  1148 "ote\"@iana.org"                                                                      Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 80 = String: Ein startendes Anfuehrungszeichen muss am Anfang kommen, der Zeichenzaehler darf nicht groesser als 0 sein
+   *  1149 ".dot@iana.org"                                                                       Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 false   JAVA 1 false   ea234 false    = 30 = Trennzeichen: kein Beginn mit einem Punkt
+   *  1150 "dot.@iana.org"                                                                       Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 false   JAVA 1 false   ea234 false    = 32 = Trennzeichen: ungueltige Zeichenkombination ".@"
+   *  1151 "two..dot@iana.org"                                                                   Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 false   JAVA 1 false   ea234 false    = 31 = Trennzeichen: keine zwei Punkte hintereinander
+   *  1152 "\"Doug \"Ace\" L.\"@iana.org"                                                        Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 87 = String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
+   *  1153 "Doug\ \\"Ace\\"\ L\.@iana.org"                                                       Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 84 = String: Ungueltige Escape-Sequenz im String
+   *  1154 "hello world@iana.org"                                                                Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 22 = Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+   *  1155 "gatsby@f.sc.ot.t.f.i.tzg.era.l.d."                                                   Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 36 = Trennzeichen: der letzte Punkt darf nicht am Ende liegen
+   *  1156 "test.iana.org"                                                                       Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 28 = AT-Zeichen: kein AT-Zeichen gefunden
+   *  1157 "test.@iana.org"                                                                      Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 false   JAVA 1 false   ea234 false    = 32 = Trennzeichen: ungueltige Zeichenkombination ".@"
+   *  1158 "test..test@iana.org"                                                                 Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 false   JAVA 1 false   ea234 false    = 31 = Trennzeichen: keine zwei Punkte hintereinander
+   *  1159 ".test@iana.org"                                                                      Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 false   JAVA 1 false   ea234 false    = 30 = Trennzeichen: kein Beginn mit einem Punkt
+   *  1160 "test@test@iana.org"                                                                  Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 29 = AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
+   *  1161 "test@@iana.org"                                                                      Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 29 = AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
+   *  1162 "-- test --@iana.org"                                                                 Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 22 = Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+   *  1163 "[test]@iana.org"                                                                     Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 51 = IP-Adressteil: IP-Adresse vor AT-Zeichen
+   *  1164 "\"test\"test\"@iana.org"                                                             Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 87 = String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
+   *  1165 "()[]\;:,><@iana.org"                                                                 Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 51 = IP-Adressteil: IP-Adresse vor AT-Zeichen
+   *  1166 "test@."                                                                              Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 33 = Trennzeichen: ungueltige Zeichenkombination "@."
+   *  1167 "test@example."                                                                       Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 36 = Trennzeichen: der letzte Punkt darf nicht am Ende liegen
+   *  1168 "test@.org"                                                                           Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 33 = Trennzeichen: ungueltige Zeichenkombination "@."
+   *  1169 "test@[123.123.123.123"                                                               Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 61 = IP-Adressteil: Kein Abschluss der IP-Adresse auf ']'
+   *  1170 "test@123.123.123.123]"                                                               Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 22 = Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+   *  1171 "NotAnEmail"                                                                          Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 34 = Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
+   *  1172 "@NotAnEmail"                                                                         Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 26 = AT-Zeichen: kein AT-Zeichen am Anfang
+   *  1173 "\"test\"blah\"@iana.org"                                                             Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 87 = String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
+   *  1174 ".wooly@iana.org"                                                                     Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 false   JAVA 1 false   ea234 false    = 30 = Trennzeichen: kein Beginn mit einem Punkt
+   *  1175 "wo..oly@iana.org"                                                                    Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 false   JAVA 1 false   ea234 false    = 31 = Trennzeichen: keine zwei Punkte hintereinander
+   *  1176 "pootietang.@iana.org"                                                                Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 false   JAVA 1 false   ea234 false    = 32 = Trennzeichen: ungueltige Zeichenkombination ".@"
+   *  1177 ".@iana.org"                                                                          Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 false   JAVA 1 false   ea234 false    = 30 = Trennzeichen: kein Beginn mit einem Punkt
+   *  1178 "Ima Fool@iana.org"                                                                   Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 22 = Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+   *  1179 "foo@[\1.2.3.4]"                                                                      Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 59 = IP4-Adressteil: Falsches Zeichen in der IP-Adresse
+   *  1180 "first.\"\".last@iana.org"                                                            Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 85 = String: Leerstring in Anfuehrungszeichen
+   *  1181 "first\last@iana.org"                                                                 Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 84 = String: Ungueltige Escape-Sequenz im String
+   *  1182 "first.last@[IPv6:1111:2222:3333:4444:5555:6666:12.34.567.89]"                        Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 47 = IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
+   *  1183 "\"foo\"(yay)@(hoopla)[1.2.3.4]"                                                      Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 99 = Kommentar: kein zweiter Kommentar gueltig
+   *  1184 "cal(foo(bar)@iamcal.com"                                                             Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 92 = Kommentar: Ungueltiges Zeichen im Kommentar
+   *  1185 "cal(foo)bar)@iamcal.com"                                                             Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 97 = Kommentar: Nach dem Kommentar muss ein AT-Zeichen kommen
+   *  1186 "cal(foo\)@iamcal.com"                                                                Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 91 = Kommentar: Ungueltige Escape-Sequenz im Kommentar
+   *  1187 "first(middle)last@iana.org"                                                          Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 97 = Kommentar: Nach dem Kommentar muss ein AT-Zeichen kommen
+   *  1188 "first(abc(\"def\".ghi).mno)middle(abc(\"def\".ghi).mno).last@(abc(\"def\".ghi).mno)example(abc(\"def\".ghi).mno).com" Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 92 = Kommentar: Ungueltiges Zeichen im Kommentar
+   *  1189 "a(a(b(c)d(e(f))g)(h(i)j)@iana.org"                                                   Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 92 = Kommentar: Ungueltiges Zeichen im Kommentar
+   *  1190 ".@"                                                                                  Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 12 = Laenge: Laengenbegrenzungen stimmen nicht
+   *  1191 "@bar.com"                                                                            Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 true    ea234 false    = 26 = AT-Zeichen: kein AT-Zeichen am Anfang
+   *  1192 "@@bar.com"                                                                           Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 26 = AT-Zeichen: kein AT-Zeichen am Anfang
+   *  1193 "aaa.com"                                                                             Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 28 = AT-Zeichen: kein AT-Zeichen gefunden
+   *  1194 "aaa@.com"                                                                            Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 33 = Trennzeichen: ungueltige Zeichenkombination "@."
+   *  1195 "aaa@.123"                                                                            Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 33 = Trennzeichen: ungueltige Zeichenkombination "@."
+   *  1196 "aaa@[123.123.123.123]a"                                                              Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 60 = IP4-Adressteil: Abschlusszeichen "]" muss am Ende stehen
+   *  1197 "aaa@[123.123.123.333]"                                                               Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 true    REGEXP 4 false   JAVA 1 false   ea234 false    = 54 = IP4-Adressteil: Byte-Overflow
+   *  1198 "a@bar.com."                                                                          Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 36 = Trennzeichen: der letzte Punkt darf nicht am Ende liegen
+   *  1199 "a@-b.com"                                                                            Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 false   JAVA 1 true    ea234 false    = 20 = Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
+   *  1200 "a@b-.com"                                                                            Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 false   JAVA 1 true    ea234 false    = 20 = Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
+   *  1201 "-@..com"                                                                             Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 33 = Trennzeichen: ungueltige Zeichenkombination "@."
+   *  1202 "-@a..com"                                                                            Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 31 = Trennzeichen: keine zwei Punkte hintereinander
+   *  1203 "@about.museum-"                                                                      Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 true    ea234 false    = 26 = AT-Zeichen: kein AT-Zeichen am Anfang
+   *  1204 "test@...........com"                                                                 Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 33 = Trennzeichen: ungueltige Zeichenkombination "@."
+   *  1205 "first.last@[IPv6::]"                                                                 Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 43 = IP6-Adressteil: Zu wenig Trennzeichen
+   *  1206 "first.last@[IPv6::::]"                                                               Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 50 = IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
+   *  1207 "first.last@[IPv6::b4]"                                                               Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 43 = IP6-Adressteil: Zu wenig Trennzeichen
+   *  1208 "first.last@[IPv6::::b4]"                                                             Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 50 = IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
+   *  1209 "first.last@[IPv6::b3:b4]"                                                            Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  4 = eMail-Adresse korrekt (IP6-Adresse)
+   *  1210 "first.last@[IPv6::::b3:b4]"                                                          Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 50 = IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
+   *  1211 "first.last@[IPv6:a1:::b4]"                                                           Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 50 = IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
+   *  1212 "first.last@[IPv6:a1:]"                                                               Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 43 = IP6-Adressteil: Zu wenig Trennzeichen
+   *  1213 "first.last@[IPv6:a1:::]"                                                             Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 50 = IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
+   *  1214 "first.last@[IPv6:a1:a2:]"                                                            Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  4 = eMail-Adresse korrekt (IP6-Adresse)
+   *  1215 "first.last@[IPv6:a1:a2:::]"                                                          Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 50 = IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
+   *  1216 "first.last@[IPv6::11.22.33.44]"                                                      Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 47 = IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
+   *  1217 "first.last@[IPv6::::11.22.33.44]"                                                    Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 50 = IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
+   *  1218 "first.last@[IPv6:a1:11.22.33.44]"                                                    Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 47 = IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
+   *  1219 "first.last@[IPv6:a1:::11.22.33.44]"                                                  Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 50 = IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
+   *  1220 "first.last@[IPv6:a1:a2:::11.22.33.44]"                                               Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 50 = IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
+   *  1221 "first.last@[IPv6:0123:4567:89ab:cdef::11.22.33.xx]"                                  Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 47 = IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
+   *  1222 "first.last@[IPv6:0123:4567:89ab:CDEFF::11.22.33.44]"                                 Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 46 = IP6-Adressteil: zu viele Ziffern, maximal 4 Ziffern
+   *  1223 "first.last@[IPv6:a1::a4:b1::b4:11.22.33.44]"                                         Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 50 = IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
+   *  1224 "first.last@[IPv6:a1::11.22.33]"                                                      Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 62 = IP6-Adressteil: IPv4 in IPv6 - falsche Angabe der IP4-Einbettung (Zeichenfolge 'ffff' erwartet)
+   *  1225 "first.last@[IPv6:a1::11.22.33.44.55]"                                                Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 62 = IP6-Adressteil: IPv4 in IPv6 - falsche Angabe der IP4-Einbettung (Zeichenfolge 'ffff' erwartet)
+   *  1226 "first.last@[IPv6:a1::b211.22.33.44]"                                                 Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 48 = IP6-Adressteil: IPv4 in IPv6 - zu viele Zeichen im ersten IP4-Block
+   *  1227 "first.last@[IPv6:a1::b2::11.22.33.44]"                                               Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 50 = IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
+   *  1228 "first.last@[IPv6:a1::b3:]"                                                           Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  4 = eMail-Adresse korrekt (IP6-Adresse)
+   *  1229 "first.last@[IPv6::a2::b4]"                                                           Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  4 = eMail-Adresse korrekt (IP6-Adresse)
+   *  1230 "first.last@[IPv6:a1:a2:a3:a4:b1:b2:b3:]"                                             Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  4 = eMail-Adresse korrekt (IP6-Adresse)
+   *  1231 "first.last@[IPv6::a2:a3:a4:b1:b2:b3:b4]"                                             Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  4 = eMail-Adresse korrekt (IP6-Adresse)
+   *  1232 "first.last@[IPv6:a1:a2:a3:a4::b1:b2:b3:b4]"                                          Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 42 = IP6-Adressteil: zu viele Trennzeichen, maximal 8 Trennzeichen
+   *  1233 "first.last@[.12.34.56.78]"                                                           Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 55 = IP4-Adressteil: keine Ziffern vorhanden
+   *  1234 "first.last@[12.34.56.789]"                                                           Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 true    REGEXP 4 false   JAVA 1 false   ea234 false    = 54 = IP4-Adressteil: Byte-Overflow
+   *  1235 "first.last@[::12.34.56.78]"                                                          Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 47 = IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
+   *  1236 "first.last@[IPv6:::12.34.56.78]"                                                     Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 62 = IP6-Adressteil: IPv4 in IPv6 - falsche Angabe der IP4-Einbettung (Zeichenfolge 'ffff' erwartet)
+   *  1237 "first.last@[IPv5:::12.34.56.78]"                                                     Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 40 = IP6-Adressteil: String "IPv6:" erwartet
+   *  1238 "first.last@[IPv6:1111:2222:3333:4444:5555:12.34.56.78]"                              Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 47 = IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
+   *  1239 "first.last@[IPv6:1111:2222:3333:4444:5555:6666:7777:12.34.56.78]"                    Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 47 = IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
+   *  1240 "first.last@[IPv6:1111:2222:3333:4444:5555:6666:7777:8888:9999]"                      Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 42 = IP6-Adressteil: zu viele Trennzeichen, maximal 8 Trennzeichen
+   *  1241 "first.last@[IPv6:1111:2222::3333::4444:5555:6666]"                                   Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 50 = IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
+   *  1242 "first.last@[IPv6:1111:2222:333x::4444:5555]"                                         Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 49 = IP6-Adressteil: Falsches Zeichen in der IP-Adresse
+   *  1243 "first.last@[IPv6:1111:2222:33333::4444:5555]"                                        Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 46 = IP6-Adressteil: zu viele Ziffern, maximal 4 Ziffern
+   *  1244 "first.last@[IPv6:1111:2222:3333:4444:5555:::]"                                       Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 50 = IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
+   *  1245 "first.last@[IPv6:1111:2222:3333::5555:6666::]"                                       Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 50 = IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
+   *  1246 "first.last@[IPv6:1111:2222:3333::4444:12.34.56.78]"                                  Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 47 = IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
+   *  1247 "first.last@[IPv6:1111:2222:3333:4444:5555:6666:12.34.56.78]"                         Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 47 = IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
+   *  1248 "MaxMuster(Kommentar)@example.com"                                                    Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  6 = eMail-Adresse korrekt (Kommentar)
+   *  1249 "\"MaxMustermann\"@example.com"                                                       Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *  1250 "Max.\"Musterjunge\".Mustermann@example.com"                                          Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *  1251 "\".John.Doe\"@example.com"                                                           Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *  1252 "\"John.Doe.\"@example.com"                                                           Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *  1253 "\"John..Doe\"@example.com"                                                           Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *  1254 "john.smith(comment)@example.com"                                                     Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  6 = eMail-Adresse korrekt (Kommentar)
+   *  1255 "(comment)john.smith@example.com"                                                     Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  6 = eMail-Adresse korrekt (Kommentar)
+   *  1256 "john.smith@(comment)example.com"                                                     Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  6 = eMail-Adresse korrekt (Kommentar)
+   *  1257 "john.smith@example.com(comment)"                                                     Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  6 = eMail-Adresse korrekt (Kommentar)
+   *  1258 "john.smith@example.com"                                                              Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1259 "jsmith@[192.168.2.1]"                                                                Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 true    REGEXP 4 true    JAVA 1 false   ea234 true     =  2 = eMail-Adresse korrekt (IP4-Adresse)
+   *  1260 "jsmith@[IPv6:2001:db8::1]"                                                           Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  4 = eMail-Adresse korrekt (IP6-Adresse)
+   *  1261 "surelsaya@surabaya.vibriel.net.id"                                                   Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1262 "Marc Dupont <md118@example.com>"                                                     Jmail false   REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  0 = eMail-Adresse korrekt
+   *  1263 "simple@example.com"                                                                  Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1264 "very.common@example.com"                                                             Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1265 "disposable.style.email.with+symbol@example.com"                                      Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1266 "other.email-with-hyphen@example.com"                                                 Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1267 "fully-qualified-domain@example.com"                                                  Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1268 "user.name+tag+sorting@example.com"                                                   Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1269 "user+mailbox/department=shipping@example.com"                                        Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1270 "!#$%&'*+-/=?^_`.{|}~@example.com"                                                    Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 false   ea234 true     =  0 = eMail-Adresse korrekt
+   *  1271 "x@example.com"                                                                       Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1272 "info@firma.org"                                                                      Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1273 "example-indeed@strange-example.com"                                                  Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1274 "admin@mailserver1"                                                                   Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 34 = Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
+   *  1275 "example@s.example"                                                                   Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1276 "\" \"@example.org"                                                                   Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *  1277 "\"john..doe\"@example.org"                                                           Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 true    JAVA 1 false   ea234 true     =  1 = eMail-Adresse korrekt (Local Part mit String)
+   *  1278 "mailhost!username@example.org"                                                       Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 false   ea234 true     =  0 = eMail-Adresse korrekt
+   *  1279 "user%example.com@example.org"                                                        Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1280 "joe25317@NOSPAMexample.com"                                                          Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 false   JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1281 "Abc.example.com"                                                                     Jmail true    REGEXP 1 false   REGEXP 2 false   REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 28 = AT-Zeichen: kein AT-Zeichen gefunden
+   *  1282 "Abc..123@example.com"                                                                Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 false   JAVA 1 false   ea234 false    = 31 = Trennzeichen: keine zwei Punkte hintereinander
+   *  1283 "A@b@c@example.com"                                                                   Jmail false   REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 29 = AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
+   *  1284 "a\"b(c)d,e:f;g<h>i[j\k]l@example.com"                                                Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 80 = String: Ein startendes Anfuehrungszeichen muss am Anfang kommen, der Zeichenzaehler darf nicht groesser als 0 sein
+   *  1285 "just\"not\"right@example.com"                                                        Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 80 = String: Ein startendes Anfuehrungszeichen muss am Anfang kommen, der Zeichenzaehler darf nicht groesser als 0 sein
+   *  1286 "this is\"not\allowed@example.com"                                                    Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 22 = Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+   *  1287 "this\ still\\"not\\allowed@example.com"                                              Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 false    = 84 = String: Ungueltige Escape-Sequenz im String
+   *  1288 "1234567890123456789012345678901234567890123456789012345678901234+x@example.com"      Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 false   ea234 false    = 13 = Laenge: RFC 5321 = SMTP-Protokoll = maximale Laenge des Local-Parts sind 64 Bytes
+   *  1289 "i_like_underscore@but_Underscore_is_not_allowed_in_domain_part.com"                  Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 false   REGEXP 4 false   JAVA 1 false   ea234 true     =  0 = eMail-Adresse korrekt
+   *  1290 "ZZZZ.ZZZZZZ@ZZZZZZZZZZ.ZZ"                                                           Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 false   JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1291 "zzzz.zzzzzz@zzzzzzzzzz.zz"                                                           Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1292 "AAAA.AAAAAA@AAAAAAAAAA.AA"                                                           Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 false   JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1293 "aaaa.aaaaaa@aaaaaaaaaa.aa"                                                           Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1294 "Vorname.Nachname@web.de"                                                             Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 false   JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1295 "michi.fanin@fc-wohlenegg.at"                                                         Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1296 "old.email@test.com"                                                                  Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1297 "new.email@test.com"                                                                  Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1298 "test1group@test1.com"                                                                Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1299 "test2group@test2.com"                                                                Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1300 "test1@test1.com"                                                                     Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1301 "test2@test2.com"                                                                     Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1302 "junit.testEmailChange@example.com"                                                   Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 false   JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1303 "at@at.at"                                                                            Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1304 "easy@isnt.it"                                                                        Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *  1305 "yes@it.is"                                                                           Jmail true    REGEXP 1 true    REGEXP 2 true    REGEXP 3 true    REGEXP 4 true    JAVA 1 true    ea234 true     =  0 = eMail-Adresse korrekt
+   *
+   * 
+   * Testlauf 1 Anzahl Testfaelle  22830000
+   * 
+   * ea234      anzahl_korrekt =  15080000 - anzahl_falsch =   7750000 - anzahl_fehler =         0  | MS   2262 = 0.00009908015768725362     = 00:00:02:262
+   * 
+   * Jmail      anzahl_korrekt =  19580000 - anzahl_falsch =   3230000 - anzahl_fehler =     20000  | MS   4003 = 0.00017533946561541831     = 00:00:04:003
+   * 
+   * JAVA 1     anzahl_korrekt =  12870000 - anzahl_falsch =   9940000 - anzahl_fehler =     20000  | MS   6925 = 0.0003033289531318441      = 00:00:06:925
+   * 
+   * REGEXP 1   anzahl_korrekt =  17440000 - anzahl_falsch =   5370000 - anzahl_fehler =     20000  | MS  22825 = 0.0009997809899255365      = 00:00:22:825
+   * 
+   * REGEXP 2   anzahl_korrekt =  17440000 - anzahl_falsch =   5370000 - anzahl_fehler =     20000  | MS  13799 = 0.0006044240035041612      = 00:00:13:799
+   * 
+   * REGEXP 3   anzahl_korrekt =  13580000 - anzahl_falsch =   9230000 - anzahl_fehler =     20000  | MS  51848 = 0.0022710468681559353      = 00:00:51:848
+   * 
+   * REGEXP 4   anzahl_korrekt =   5470000 - anzahl_falsch =  17360000 - anzahl_fehler =         0  | MS  14103 = 0.0006177398160315374      = 00:00:14:103
+   * 
    * --------------------------------------------------------------------------------------------------------------------------------
    * 
-   * Testlauf 1 Anzahl Testfaelle  20080000
+   * Testlauf 2 Anzahl Testfaelle  22830000
    * 
-   * ea234      anzahl_korrekt =  13690000 - anzahl_falsch =   6390000 - anzahl_fehler =         0  | MS   2672 = 0.00013306772908366533     = 00:00:02:672
+   * ea234      anzahl_korrekt =  15080000 - anzahl_falsch =   7750000 - anzahl_fehler =         0  | MS   2272 = 0.00009951817783618047     = 00:00:02:272
    * 
-   * Jmail      anzahl_korrekt =  17390000 - anzahl_falsch =   2670000 - anzahl_fehler =     20000  | MS   3643 = 0.00018142430278884463     = 00:00:03:643
+   * Jmail      anzahl_korrekt =  19580000 - anzahl_falsch =   3230000 - anzahl_fehler =     20000  | MS   3904 = 0.0001710030661410425      = 00:00:03:904
    * 
-   * JAVA 1     anzahl_korrekt =  12330000 - anzahl_falsch =   7730000 - anzahl_fehler =     20000  | MS   5926 = 0.0002951195219123506      = 00:00:05:926
+   * JAVA 1     anzahl_korrekt =  12870000 - anzahl_falsch =   9940000 - anzahl_fehler =     20000  | MS   6929 = 0.00030350416119141483     = 00:00:06:929
    * 
-   * REGEXP 1   anzahl_korrekt =  15680000 - anzahl_falsch =   4380000 - anzahl_fehler =     20000  | MS  13768 = 0.0006856573705179283      = 00:00:13:768
+   * REGEXP 1   anzahl_korrekt =  17440000 - anzahl_falsch =   5370000 - anzahl_fehler =     20000  | MS  23011 = 0.001007928164695576       = 00:00:23:011
    * 
-   * REGEXP 2   anzahl_korrekt =  15680000 - anzahl_falsch =   4380000 - anzahl_fehler =     20000  | MS   5986 = 0.00029810756972111554     = 00:00:05:986
+   * REGEXP 2   anzahl_korrekt =  17440000 - anzahl_falsch =   5370000 - anzahl_fehler =     20000  | MS  13899 = 0.0006088042049934297      = 00:00:13:899
    * 
-   * REGEXP 3   anzahl_korrekt =  12760000 - anzahl_falsch =   7300000 - anzahl_fehler =     20000  | MS  33965 = 0.00169148406374502        = 00:00:33:965
+   * REGEXP 3   anzahl_korrekt =  13580000 - anzahl_falsch =   9230000 - anzahl_fehler =     20000  | MS  52778 = 0.0023117827420061324      = 00:00:52:778
    * 
-   * REGEXP 4   anzahl_korrekt =   4620000 - anzahl_falsch =  15460000 - anzahl_fehler =         0  | MS   6343 = 0.00031588645418326693     = 00:00:06:343
-   * 
-   * --------------------------------------------------------------------------------------------------------------------------------
-   * 
-   * Testlauf 2 Anzahl Testfaelle  20080000
-   * 
-   * ea234      anzahl_korrekt =  13690000 - anzahl_falsch =   6390000 - anzahl_fehler =         0  | MS   2439 = 0.00012146414342629482     = 00:00:02:439
-   * 
-   * Jmail      anzahl_korrekt =  17390000 - anzahl_falsch =   2670000 - anzahl_fehler =     20000  | MS   3494 = 0.000174003984063745       = 00:00:03:494
-   * 
-   * JAVA 1     anzahl_korrekt =  12330000 - anzahl_falsch =   7730000 - anzahl_fehler =     20000  | MS   5791 = 0.0002883964143426295      = 00:00:05:791
-   * 
-   * REGEXP 1   anzahl_korrekt =  15680000 - anzahl_falsch =   4380000 - anzahl_fehler =     20000  | MS  13475 = 0.0006710657370517928      = 00:00:13:475
-   * 
-   * REGEXP 2   anzahl_korrekt =  15680000 - anzahl_falsch =   4380000 - anzahl_fehler =     20000  | MS   5893 = 0.0002934760956175299      = 00:00:05:893
-   * 
-   * REGEXP 3   anzahl_korrekt =  12760000 - anzahl_falsch =   7300000 - anzahl_fehler =     20000  | MS  33856 = 0.0016860557768924303      = 00:00:33:856
-   * 
-   * REGEXP 4   anzahl_korrekt =   4620000 - anzahl_falsch =  15460000 - anzahl_fehler =         0  | MS   6263 = 0.000311902390438247       = 00:00:06:263
+   * REGEXP 4   anzahl_korrekt =   5470000 - anzahl_falsch =  17360000 - anzahl_fehler =         0  | MS  14079 = 0.000616688567674113       = 00:00:14:079
    * 
    * --------------------------------------------------------------------------------------------------------------------------------
    * 
-   * Testlauf 3 Anzahl Testfaelle  20080000
+   * Testlauf 3 Anzahl Testfaelle  22830000
    * 
-   * ea234      anzahl_korrekt =  13690000 - anzahl_falsch =   6390000 - anzahl_fehler =         0  | MS   2415 = 0.00012026892430278884     = 00:00:02:415
+   * ea234      anzahl_korrekt =  15080000 - anzahl_falsch =   7750000 - anzahl_fehler =         0  | MS   2279 = 0.00009982479194042926     = 00:00:02:279
    * 
-   * Jmail      anzahl_korrekt =  17390000 - anzahl_falsch =   2670000 - anzahl_fehler =     20000  | MS   3517 = 0.00017514940239043826     = 00:00:03:517
+   * Jmail      anzahl_korrekt =  19580000 - anzahl_falsch =   3230000 - anzahl_fehler =     20000  | MS   3958 = 0.00017336837494524748     = 00:00:03:958
    * 
-   * JAVA 1     anzahl_korrekt =  12330000 - anzahl_falsch =   7730000 - anzahl_fehler =     20000  | MS   5795 = 0.00028859561752988047     = 00:00:05:795
+   * JAVA 1     anzahl_korrekt =  12870000 - anzahl_falsch =   9940000 - anzahl_fehler =     20000  | MS   6903 = 0.000302365308804205       = 00:00:06:903
    * 
-   * REGEXP 1   anzahl_korrekt =  15680000 - anzahl_falsch =   4380000 - anzahl_fehler =     20000  | MS  13308 = 0.0006627490039840638      = 00:00:13:308
+   * REGEXP 1   anzahl_korrekt =  17440000 - anzahl_falsch =   5370000 - anzahl_fehler =     20000  | MS  22702 = 0.0009943933420937363      = 00:00:22:702
    * 
-   * REGEXP 2   anzahl_korrekt =  15680000 - anzahl_falsch =   4380000 - anzahl_fehler =     20000  | MS   5954 = 0.00029651394422310756     = 00:00:05:954
+   * REGEXP 2   anzahl_korrekt =  17440000 - anzahl_falsch =   5370000 - anzahl_fehler =     20000  | MS  13802 = 0.0006045554095488393      = 00:00:13:802
    * 
-   * REGEXP 3   anzahl_korrekt =  12760000 - anzahl_falsch =   7300000 - anzahl_fehler =     20000  | MS  33897 = 0.001688097609561753       = 00:00:33:897
+   * REGEXP 3   anzahl_korrekt =  13580000 - anzahl_falsch =   9230000 - anzahl_fehler =     20000  | MS  52270 = 0.0022895313184406484      = 00:00:52:270
    * 
-   * REGEXP 4   anzahl_korrekt =   4620000 - anzahl_falsch =  15460000 - anzahl_fehler =         0  | MS   6279 = 0.000312699203187251       = 00:00:06:279
-   * 
-   * --------------------------------------------------------------------------------------------------------------------------------
-   * 
-   * Testlauf 4 Anzahl Testfaelle  20080000
-   * 
-   * ea234      anzahl_korrekt =  13690000 - anzahl_falsch =   6390000 - anzahl_fehler =         0  | MS   2449 = 0.00012196215139442232     = 00:00:02:449
-   * 
-   * Jmail      anzahl_korrekt =  17390000 - anzahl_falsch =   2670000 - anzahl_fehler =     20000  | MS   3503 = 0.00017445219123505976     = 00:00:03:503
-   * 
-   * JAVA 1     anzahl_korrekt =  12330000 - anzahl_falsch =   7730000 - anzahl_fehler =     20000  | MS   5783 = 0.0002879980079681275      = 00:00:05:783
-   * 
-   * REGEXP 1   anzahl_korrekt =  15680000 - anzahl_falsch =   4380000 - anzahl_fehler =     20000  | MS  13358 = 0.0006652390438247012      = 00:00:13:358
-   * 
-   * REGEXP 2   anzahl_korrekt =  15680000 - anzahl_falsch =   4380000 - anzahl_fehler =     20000  | MS   5934 = 0.0002955179282868526      = 00:00:05:934
-   * 
-   * REGEXP 3   anzahl_korrekt =  12760000 - anzahl_falsch =   7300000 - anzahl_fehler =     20000  | MS  33905 = 0.001688496015936255       = 00:00:33:905
-   * 
-   * REGEXP 4   anzahl_korrekt =   4620000 - anzahl_falsch =  15460000 - anzahl_fehler =         0  | MS   6208 = 0.0003091633466135458      = 00:00:06:208
+   * REGEXP 4   anzahl_korrekt =   5470000 - anzahl_falsch =  17360000 - anzahl_fehler =         0  | MS  14069 = 0.0006162505475251861      = 00:00:14:069
    * 
    * --------------------------------------------------------------------------------------------------------------------------------
    * 
-   * Testlauf 9 Anzahl Testfaelle  20080000
+   * Testlauf 4 Anzahl Testfaelle  22830000
    * 
-   * ea234      anzahl_korrekt =  13690000 - anzahl_falsch =   6390000 - anzahl_fehler =         0  | MS   2406 = 0.0001198207171314741      = 00:00:02:406
+   * ea234      anzahl_korrekt =  15080000 - anzahl_falsch =   7750000 - anzahl_fehler =         0  | MS   2273 = 0.00009956197985107315     = 00:00:02:273
    * 
-   * Jmail      anzahl_korrekt =  17390000 - anzahl_falsch =   2670000 - anzahl_fehler =     20000  | MS   3526 = 0.00017559760956175298     = 00:00:03:526
+   * Jmail      anzahl_korrekt =  19580000 - anzahl_falsch =   3230000 - anzahl_fehler =     20000  | MS   3905 = 0.00017104686815593516     = 00:00:03:905
    * 
-   * JAVA 1     anzahl_korrekt =  12330000 - anzahl_falsch =   7730000 - anzahl_fehler =     20000  | MS   5790 = 0.0002883466135458167      = 00:00:05:790
+   * JAVA 1     anzahl_korrekt =  12870000 - anzahl_falsch =   9940000 - anzahl_fehler =     20000  | MS   6926 = 0.00030337275514673675     = 00:00:06:926
    * 
-   * REGEXP 1   anzahl_korrekt =  15680000 - anzahl_falsch =   4380000 - anzahl_fehler =     20000  | MS  13282 = 0.0006614541832669322      = 00:00:13:282
+   * REGEXP 1   anzahl_korrekt =  17440000 - anzahl_falsch =   5370000 - anzahl_fehler =     20000  | MS  22722 = 0.00099526938239159        = 00:00:22:722
    * 
-   * REGEXP 2   anzahl_korrekt =  15680000 - anzahl_falsch =   4380000 - anzahl_fehler =     20000  | MS   5947 = 0.00029616533864541833     = 00:00:05:947
+   * REGEXP 2   anzahl_korrekt =  17440000 - anzahl_falsch =   5370000 - anzahl_fehler =     20000  | MS  13951 = 0.0006110819097678494      = 00:00:13:951
    * 
-   * REGEXP 3   anzahl_korrekt =  12760000 - anzahl_falsch =   7300000 - anzahl_fehler =     20000  | MS  33941 = 0.0016902888446215139      = 00:00:33:941
+   * REGEXP 3   anzahl_korrekt =  13580000 - anzahl_falsch =   9230000 - anzahl_fehler =     20000  | MS  52067 = 0.0022806395094174333      = 00:00:52:067
    * 
-   * REGEXP 4   anzahl_korrekt =   4620000 - anzahl_falsch =  15460000 - anzahl_fehler =         0  | MS   6268 = 0.00031215139442231077     = 00:00:06:268
+   * REGEXP 4   anzahl_korrekt =   5470000 - anzahl_falsch =  17360000 - anzahl_fehler =         0  | MS  14163 = 0.0006203679369250985      = 00:00:14:163
    * 
    */
 
@@ -2214,6 +2467,290 @@ class TestClassSpeed
     "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
     "ReDoSaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@aol.com",
+    
+    "first.last@iana.org",
+    "1234567890123456789012345678901234567890123456789012345678901234@iana.org",
+    "\"first\\\"last\"@iana.org",
+    "\"first@last\"@iana.org",
+    "\"first\\\\last\"@iana.org",
+    "x@x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23",
+    "1234567890123456789012345678901234567890123456789012345678@1234567890123456789012345678901234567890123456.de",
+    "first.last@[12.34.56.78]",
+    "first.last@[IPv6:::1111:2222:3333:4444:5555:6666]",
+    "first.last@[IPv6:1111:2222:3333::4444:5555:6666]",
+    "first.last@[IPv6:1111:2222:3333::4444:5555:6666:]",
+    "first.last@[IPv6:1111:2222:3333:4444:5555:6666::]",
+    "first.last@[IPv6:1111:2222:3333:4444:5555:6666:7777:8888]",
+    "first.last@x23456789012345678901234567890123456789012345678901234567890123.iana.org",
+    "first.last@3com.com",
+    "first.last@123.iana.org",
+    "\"first\\\\last\"@iana.org",
+    "first.last@[IPv6:1111:2222:3333::4444:5555:12.34.56.78]",
+    "first.last@[IPv6:1111:2222:3333::4444:5555:6666:7777]",
+    "\"Abc\\@def\"@iana.org",
+    "\"Fred\\ Bloggs\"@iana.org",
+    "\"Joe.\\\\Blow\"@iana.org",
+    "\"Abc@def\"@iana.org",
+    "\"Fred Bloggs\"@iana.orgin",
+    "\"Abc\\@def\"@iana.org",
+    "user+mailbox@iana.org",
+    "$A12345@iana.org",
+    "!def!xyz%abc@iana.org",
+    "_somename@iana.org",
+    "dclo@us.ibm.com",
+    "peter.piper@iana.org",
+    "test@iana.org",
+    "TEST@iana.org",
+    "1234567890@iana.org",
+    "test+test@iana.org",
+    "test-test@iana.org",
+    "t*est@iana.org",
+    "+1~1+@iana.org",
+    "{_test_}@iana.org",
+    "test.test@iana.org",
+    "\"test.test\"@iana.org",
+    "test.\"test\"@iana.org",
+    "\"test@test\"@iana.org",
+    "test@123.123.123.x123",
+    "test@123.123.123.123",
+    "test@[123.123.123.123]",
+    "test@example.iana.org",
+    "test@example.example.iana.org",
+    "customer/department@iana.org",
+    "_Yosemite.Sam@iana.org",
+    "~@iana.org",
+    "\"Austin@Powers\"@iana.org",
+    "Ima.Fool@iana.org",
+    "\"Ima.Fool\"@iana.org",
+    "\"Ima Fool\"@iana.orgin",
+    "\"first\".\"last\"@iana.org",
+    "\"first\".middle.\"last\"@iana.org",
+    "\"first\".last@iana.org",
+    "first.\"last\"@iana.org",
+    "\"first\".\"middle\".\"last\"@iana.org",
+    "\"first.middle\".\"last\"@iana.org",
+    "\"first.middle.last\"@iana.org",
+    "\"first..last\"@iana.org",
+    "\"first\\\"last\"@iana.org",
+    "first.\"middle\".\"last\"@iana.org",
+    "first.last @iana.orgin",
+
+    "\"test blah\"@iana.orgin",
+    "name.lastname@domain.com",
+    "a@bar.com",
+    "aaa@[123.123.123.123]",
+    "a-b@bar.com",
+    "+@b.c",
+    "+@b.com",
+    "a@b.co-foo.uk",
+    "\"hello my name is\"@stutter.comin",
+    "\"Test \\\"Fail\\\" Ing\"@iana.orgin",
+    "shaitan@my-domain.thisisminekthx",
+    "foobar@192.168.0.1",
+    "HM2Kinsists@(that comments are allowed)this.is.ok",
+    "HM2Kinsists@(that comments are allowed)this.is.ok",
+    "user%uucp!path@berkeley.edu",
+    "cdburgess+!#$%&'*-/=?+_{}|~test@gmail.com",
+    "test@test.com",
+    "test@xn--example.com",
+    "test@example.com",
+    "{^c\\@**Dog^}@cartoon.com",
+    "first\\@last@iana.org",
+    "phil.h\\@\\@ck@haacked.com",
+    "first.last@example.123",
+    "first.last@comin",
+    "\"[[ test ]]\"@iana.orgin",
+    "Abc\\@def@iana.org",
+    "Fred\\ Bloggs@iana.org",
+    "Joe.\\Blow@iana.org",
+    "first.last@sub.do,com",
+    "first.last",
+    "c@(Chris's host.)public.examplein",
+    "(foo)cal(bar)@(baz)iamcal.com(quux)",
+    "cal@iamcal(woo).(yay)comin",
+    "cal(woo(yay)hoopla)@iamcal.comin",
+    "cal(foo\\@bar)@iamcal.comin",
+    "cal(foo\\)bar)@iamcal.comin",
+    "first().last@iana.orgin",
+    "pete(his account)@silly.test(his host)",
+    "jdoe@machine(comment). examplein",
+    "first(abc.def).last@iana.orgin",
+    "first(a\"bc.def).last@iana.orgin",
+    "first.(\")middle.last(\")@iana.orgin",
+    "first(abc\\(def)@iana.orgin",
+    "first.last@x(1234567890123456789012345678901234567890123456789012345678901234567890).comin",
+    "a(a(b(c)d(e(f))g)h(i)j)@iana.orgin",
+    "1234 @ local(blah) .machine .examplein",
+
+    "a@bin",
+    "a@barin",
+    "@about.museum",
+    "12345678901234567890123456789012345678901234567890123456789012345@iana.org",
+    ".first.last@iana.org",
+    "first.last.@iana.org",
+    "first..last@iana.org",
+    "\"first\"last\"@iana.org",
+    "\"\"\"@iana.org",
+    "\"\\\"@iana.org",
+    "\"\"@iana.org",
+    "first.last@",
+    "first.last@-xample.com",
+    "first.last@exampl-.com",
+    "first.last@x234567890123456789012345678901234567890123456789012345678901234.iana.org",
+    "abc\\@iana.org",
+    "Doug\\ \\\"Ace\\\"\\ Lovell@iana.org",
+    "abc@def@iana.org",
+    "@iana.org",
+    "doug@",
+    "\"qu@iana.org",
+    "ote\"@iana.org",
+    ".dot@iana.org",
+    "dot.@iana.org",
+    "two..dot@iana.org",
+    "\"Doug \"Ace\" L.\"@iana.org",
+    "Doug\\ \\\"Ace\\\"\\ L\\.@iana.org",
+    "hello world@iana.org",
+    "gatsby@f.sc.ot.t.f.i.tzg.era.l.d.",
+    "test.iana.org",
+    "test.@iana.org",
+    "test..test@iana.org",
+    ".test@iana.org",
+    "test@test@iana.org",
+    "test@@iana.org",
+    "-- test --@iana.org",
+    "[test]@iana.org",
+    "\"test\"test\"@iana.org",
+    "()[]\\;:,><@iana.org",
+    "test@.",
+    "test@example.",
+    "test@.org",
+    "test@[123.123.123.123",
+    "test@123.123.123.123]",
+    "NotAnEmail",
+    "@NotAnEmail",
+    "\"test\"blah\"@iana.org",
+    ".wooly@iana.org",
+    "wo..oly@iana.org",
+    "pootietang.@iana.org",
+    ".@iana.org",
+    "Ima Fool@iana.org",
+    "foo@[\\1.2.3.4]",
+    "first.\"\".last@iana.org",
+    "first\\last@iana.org",
+    "first.last@[IPv6:1111:2222:3333:4444:5555:6666:12.34.567.89]",
+    "\"foo\"(yay)@(hoopla)[1.2.3.4]",
+    "cal(foo(bar)@iamcal.com",
+    "cal(foo)bar)@iamcal.com",
+    "cal(foo\\)@iamcal.com",
+    "first(middle)last@iana.org",
+    "first(abc(\"def\".ghi).mno)middle(abc(\"def\".ghi).mno).last@(abc(\"def\".ghi).mno)example(abc(\"def\".ghi).mno).com",
+    "a(a(b(c)d(e(f))g)(h(i)j)@iana.org",
+    ".@",
+    "@bar.com",
+    "@@bar.com",
+    "aaa.com",
+    "aaa@.com",
+    "aaa@.123",
+    "aaa@[123.123.123.123]a",
+    "aaa@[123.123.123.333]",
+    "a@bar.com.",
+    "a@-b.com",
+    "a@b-.com",
+    "-@..com",
+    "-@a..com",
+    "@about.museum-",
+    "test@...........com",
+    "first.last@[IPv6::]",
+    "first.last@[IPv6::::]",
+    "first.last@[IPv6::b4]",
+    "first.last@[IPv6::::b4]",
+    "first.last@[IPv6::b3:b4]",
+    "first.last@[IPv6::::b3:b4]",
+    "first.last@[IPv6:a1:::b4]",
+    "first.last@[IPv6:a1:]",
+    "first.last@[IPv6:a1:::]",
+    "first.last@[IPv6:a1:a2:]",
+    "first.last@[IPv6:a1:a2:::]",
+    "first.last@[IPv6::11.22.33.44]",
+    "first.last@[IPv6::::11.22.33.44]",
+    "first.last@[IPv6:a1:11.22.33.44]",
+    "first.last@[IPv6:a1:::11.22.33.44]",
+    "first.last@[IPv6:a1:a2:::11.22.33.44]",
+    "first.last@[IPv6:0123:4567:89ab:cdef::11.22.33.xx]",
+    "first.last@[IPv6:0123:4567:89ab:CDEFF::11.22.33.44]",
+    "first.last@[IPv6:a1::a4:b1::b4:11.22.33.44]",
+    "first.last@[IPv6:a1::11.22.33]",
+    "first.last@[IPv6:a1::11.22.33.44.55]",
+    "first.last@[IPv6:a1::b211.22.33.44]",
+    "first.last@[IPv6:a1::b2::11.22.33.44]",
+    "first.last@[IPv6:a1::b3:]",
+    "first.last@[IPv6::a2::b4]",
+    "first.last@[IPv6:a1:a2:a3:a4:b1:b2:b3:]",
+    "first.last@[IPv6::a2:a3:a4:b1:b2:b3:b4]",
+    "first.last@[IPv6:a1:a2:a3:a4::b1:b2:b3:b4]",
+    "first.last@[.12.34.56.78]",
+    "first.last@[12.34.56.789]",
+    "first.last@[::12.34.56.78]",
+    "first.last@[IPv6:::12.34.56.78]",
+    "first.last@[IPv5:::12.34.56.78]",
+    "first.last@[IPv6:1111:2222:3333:4444:5555:12.34.56.78]",
+    "first.last@[IPv6:1111:2222:3333:4444:5555:6666:7777:12.34.56.78]",
+    "first.last@[IPv6:1111:2222:3333:4444:5555:6666:7777:8888:9999]",
+    "first.last@[IPv6:1111:2222::3333::4444:5555:6666]",
+    "first.last@[IPv6:1111:2222:333x::4444:5555]",
+    "first.last@[IPv6:1111:2222:33333::4444:5555]",
+    "first.last@[IPv6:1111:2222:3333:4444:5555:::]",
+    "first.last@[IPv6:1111:2222:3333::5555:6666::]",
+    "first.last@[IPv6:1111:2222:3333::4444:12.34.56.78]",
+    "first.last@[IPv6:1111:2222:3333:4444:5555:6666:12.34.56.78]",
+
+    "MaxMuster(Kommentar)@example.com",
+    "\"MaxMustermann\"@example.com",
+    "Max.\"Musterjunge\".Mustermann@example.com",
+    
+    "\".John.Doe\"@example.com",
+    "\"John.Doe.\"@example.com",
+    "\"John..Doe\"@example.com",
+    "john.smith(comment)@example.com",
+    "(comment)john.smith@example.com",
+    "john.smith@(comment)example.com",
+    "john.smith@example.com(comment)",
+    "john.smith@example.com",
+    "jsmith@[192.168.2.1]",
+    "jsmith@[IPv6:2001:db8::1]",
+    "surelsaya@surabaya.vibriel.net.id",
+    "Marc Dupont <md118@example.com>",
+    
+    "simple@example.com",
+    "very.common@example.com",
+    "disposable.style.email.with+symbol@example.com",
+    "other.email-with-hyphen@example.com",
+    "fully-qualified-domain@example.com",
+    "user.name+tag+sorting@example.com",
+    "user+mailbox/department=shipping@example.com",
+    "!#$%&'*+-/=?^_`.{|}~@example.com",
+    "x@example.com",
+    "info@firma.org",
+    "example-indeed@strange-example.com",
+    "admin@mailserver1",
+    "example@s.example",
+    "\" \"@example.org",
+    "\"john..doe\"@example.org",
+    "mailhost!username@example.org",
+    "user%example.com@example.org",
+    "joe25317@NOSPAMexample.com",
+    
+     "Abc.example.com",
+     "Abc..123@example.com",
+     "A@b@c@example.com",
+     "a\"b(c)d,e:f;g<h>i[j\\k]l@example.com",
+     "just\"not\"right@example.com",
+     "this is\"not\\allowed@example.com",
+     "this\\ still\\\"not\\\\allowed@example.com",
+     "1234567890123456789012345678901234567890123456789012345678901234+x@example.com",
+     "i_like_underscore@but_Underscore_is_not_allowed_in_domain_part.com",
+
+
     "ZZZZ.ZZZZZZ@ZZZZZZZZZZ.ZZ", 
     "zzzz.zzzzzz@zzzzzzzzzz.zz", 
     "AAAA.AAAAAA@AAAAAAAAAA.AA", 
@@ -2445,7 +2982,7 @@ class TestClassSpeed
 
       String home_dir = "/home/ea234";
 
-      //home_dir = "c:/Daten/";
+      home_dir = "c:/Daten/";
 
       schreibeDatei( home_dir + "/log_test_validate_email.txt", getStringBuffer().toString() );
 
@@ -2712,7 +3249,10 @@ class TestClassSpeed
       }
       else if ( pTestNummer == 3 )
       {
-        knz_is_valid = isValidEmailAddresseRegEx1b( test_daten_akt_string );
+        //knz_is_valid = isValidEmailAddresseRegEx1b( test_daten_akt_string );
+        knz_is_valid = isValid( test_daten_akt_string );
+        
+        
       }
       else if ( pTestNummer == 4 )
       {
@@ -3063,6 +3603,22 @@ class TestClassSpeed
 
     return true;
   }
+  
+  public static boolean isValid(String email) 
+  { 
+    /*
+     * 
+     */
+      String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+ 
+                          "[a-zA-Z0-9_+&*-]+)*@" + 
+                          "(?:[a-zA-Z0-9-]+\\.)+[a-z" + 
+                          "A-Z]{2,7}$"; 
+                            
+      Pattern pat = Pattern.compile(emailRegex); 
+      if (email == null) 
+          return false; 
+      return pat.matcher(email).matches(); 
+  } 
 
   private static int indexOfAny( String var0, String var1 )
   {
