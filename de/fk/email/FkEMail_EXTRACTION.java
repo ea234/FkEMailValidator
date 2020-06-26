@@ -1270,6 +1270,10 @@ public class FkEMail_EXTRACTION
           {
             // OK - Sonderzeichen
           }
+          else if ( ( aktuelles_zeichen == '(' ) || ( aktuelles_zeichen == ')' ) || ( aktuelles_zeichen == ',' ) || ( aktuelles_zeichen == ':' ) || ( aktuelles_zeichen == ';' ) || ( aktuelles_zeichen == '<' ) || ( aktuelles_zeichen == '>' ) || ( aktuelles_zeichen == '@' ) || ( aktuelles_zeichen == '[' ) || ( aktuelles_zeichen == ']' ) )
+          {
+            // OK - Sonderzeichen 2 = (),:;<>@[\]
+          }
           else if ( aktuelles_zeichen == '"' )
           {
             // OK - abschliessendes Anfuehrungszeichen 
@@ -1310,7 +1314,7 @@ public class FkEMail_EXTRACTION
              */
             aktuelles_zeichen = pEingabe.charAt( akt_index );
 
-            if ( ( aktuelles_zeichen != '\\' ) && ( aktuelles_zeichen != '@' ) && ( aktuelles_zeichen != ' ' ) && ( aktuelles_zeichen != '\'' ) && ( aktuelles_zeichen != '"' ))
+            if ( ( aktuelles_zeichen != '\\' ) && ( aktuelles_zeichen != '@' ) && ( aktuelles_zeichen != ' ' ) && ( aktuelles_zeichen != '\'' ) && ( aktuelles_zeichen != '"' ) )
             {
               return 84; // String: Ungueltige Escape-Sequenz im String
             }
@@ -1783,14 +1787,14 @@ public class FkEMail_EXTRACTION
                 return 43; // IP6-Adressteil: Zu wenig Trennzeichen  
               }
 
-              /*
-               * Der letzte Punkt darf nicht auf der vorhergehenden Position 
-               * liegen. Ist das der Fall, wird der Fehler 44 zurueckgegeben. 
-               */
-              if ( ( akt_index - position_letzter_punkt ) == 1 )
-              {
-                return 44; // IP6-Adressteil: ungueltige Kombination ":]"
-              }
+//              /*
+//               * Der letzte Punkt darf nicht auf der vorhergehenden Position 
+//               * liegen. Ist das der Fall, wird der Fehler 44 zurueckgegeben. 
+//               */
+//              if ( ( akt_index - position_letzter_punkt ) == 1 )
+//              {
+//                return 44; // IP6-Adressteil: ungueltige Kombination ":]"
+//              }
 
               /*
                * Das Abschlusszeichen muss auf der letzten Stelle des
@@ -2013,7 +2017,7 @@ public class FkEMail_EXTRACTION
                   akt_index--;
                 }
                 else
-                { 
+                {
                   return 60; // IP4-Adressteil: Abschlusszeichen "]" muss am Ende stehen
                 }
               }
@@ -2224,7 +2228,7 @@ public class FkEMail_EXTRACTION
              * Der Leseprozess muss nach naechste Zeichen pruefen. 
              * Der Leseprozessindex wird um ein Zeichen weiter gestellt.
              */
-            akt_index++; 
+            akt_index++;
 
             /*
              * Pruefung: Stringende ?

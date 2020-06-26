@@ -1051,6 +1051,10 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
           {
             // OK - special characters
           }
+          else if ( ( current_character == '(' ) || ( current_character == ')' ) || ( current_character == ',' ) || ( current_character == ':' ) || ( current_character == ';' ) || ( current_character == '<' ) || ( current_character == '>' ) || ( current_character == '@' ) || ( current_character == '[' ) || ( current_character == ']' ) )
+          {
+            // OK - Sonderzeichen 2 = (),:;<>@[\]
+          }
           else if ( current_character == '"' )
           {
             // OK - final quotes
@@ -1091,7 +1095,7 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
              */
             current_character = pInput.charAt( current_index );
 
-            if ( ( current_character != '\\' ) && ( current_character != '@' ) && ( current_character != ' ' ) && ( current_character != '\'' ) && ( current_character != '"' ))
+            if ( ( current_character != '\\' ) && ( current_character != '@' ) && ( current_character != ' ' ) && ( current_character != '\'' ) && ( current_character != '"' ) )
             {
               return 84; // String: Invalid escape sequence in the string
             }
@@ -1550,14 +1554,14 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
                 return 43; // IP6 address part: too few separators
               }
 
-              /*
-               * The last point may not be on the previous position
-               * lie. If so, the error 44 is returned.
-               */
-              if ( ( current_index - position_last_point ) == 1 )
-              {
-                return 44; // IP6 address part: invalid combination ":]"
-              }
+//              /*
+//               * The last point may not be on the previous position
+//               * lie. If so, the error 44 is returned.
+//               */
+//              if ( ( current_index - position_last_point ) == 1 )
+//              {
+//                return 44; // IP6 address part: invalid combination ":]"
+//              }
 
               /*
                * The terminator must be at the last digit of the
@@ -1573,7 +1577,7 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
                  * ABC.DEF@[IPv6:1:2:3::5:6:7:8](comment)
                  */
                 if ( pInput.charAt( current_index + 1 ) == '(' )
-                { 
+                {
                   /*
                     * If the next character after "]" is the opening bracket,
                     * is the sign OK. It becomes the reading index by one position
@@ -1787,7 +1791,7 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
                 else
                 {
                   return 60; // IP4 address part: Terminator "]" must be at the end
-                } 
+                }
               }
 
               /*

@@ -435,7 +435,9 @@ public class FkEMail
    * https://docs.microsoft.com/en-us/dotnet/standard/base-types/how-to-verify-that-strings-are-in-valid-email-format
    *
    * https://www.regular-expressions.info/email.html
+   * https://en.wikipedia.org/wiki/Email_address
    * https://de.wikipedia.org/wiki/Top-Level-Domain
+   * 
    * https://stackoverflow.com/questions/2049502/what-characters-are-allowed-in-an-email-address?rq=1
    * https://tools.ietf.org/id/draft-ietf-behave-address-format-10.html
    * https://www.cocoanetics.com/2014/06/e-mail-validation/
@@ -1303,9 +1305,20 @@ public class FkEMail
           {
             // OK - Zahlen
           }
-          else if ( ( aktuelles_zeichen == '_' ) || ( aktuelles_zeichen == '-' ) || ( aktuelles_zeichen == '@' ) || ( aktuelles_zeichen == '.' ) || ( aktuelles_zeichen == ' ' ) || ( aktuelles_zeichen == '!' ) || ( aktuelles_zeichen == '#' ) || ( aktuelles_zeichen == '$' ) || ( aktuelles_zeichen == '%' ) || ( aktuelles_zeichen == '&' ) || ( aktuelles_zeichen == '\'' ) || ( aktuelles_zeichen == '*' ) || ( aktuelles_zeichen == '+' ) || ( aktuelles_zeichen == '-' ) || ( aktuelles_zeichen == '/' ) || ( aktuelles_zeichen == '=' ) || ( aktuelles_zeichen == '?' ) || ( aktuelles_zeichen == '^' ) || ( aktuelles_zeichen == '`' ) || ( aktuelles_zeichen == '{' ) || ( aktuelles_zeichen == '|' ) || ( aktuelles_zeichen == '}' ) || ( aktuelles_zeichen == '~' ) )
+          else if ( ( aktuelles_zeichen == '_' ) || ( aktuelles_zeichen == '-' ) || ( aktuelles_zeichen == '@' ) || ( aktuelles_zeichen == '.' ) || 
+                    ( aktuelles_zeichen == ' ' ) || ( aktuelles_zeichen == '!' ) || ( aktuelles_zeichen == '#' ) || ( aktuelles_zeichen == '$' ) ||
+                    ( aktuelles_zeichen == '%' ) || ( aktuelles_zeichen == '&' ) || ( aktuelles_zeichen == '\'' ) || ( aktuelles_zeichen == '*' ) || 
+                    ( aktuelles_zeichen == '+' ) || ( aktuelles_zeichen == '-' ) || ( aktuelles_zeichen == '/' ) || ( aktuelles_zeichen == '=' ) || 
+                    ( aktuelles_zeichen == '?' ) || ( aktuelles_zeichen == '^' ) || ( aktuelles_zeichen == '`' ) || ( aktuelles_zeichen == '{' ) ||
+                    ( aktuelles_zeichen == '|' ) || ( aktuelles_zeichen == '}' ) || ( aktuelles_zeichen == '~' ) )
           {
-            // OK - Sonderzeichen
+            // OK - Sonderzeichen 1
+          }
+          else if ( ( aktuelles_zeichen == '(' ) || ( aktuelles_zeichen == ')' ) || ( aktuelles_zeichen == ',' ) || ( aktuelles_zeichen == ':' ) || 
+                    ( aktuelles_zeichen == ';' ) || ( aktuelles_zeichen == '<' ) || ( aktuelles_zeichen == '>' ) || ( aktuelles_zeichen == '@' ) ||
+                    ( aktuelles_zeichen == '[' ) || ( aktuelles_zeichen == ']' )  )
+          {
+            // OK - Sonderzeichen 2 = (),:;<>@[\]
           }
           else if ( aktuelles_zeichen == '"' )
           {
@@ -1806,15 +1819,29 @@ public class FkEMail
               {
                 return 43; // IP6-Adressteil: Zu wenig Trennzeichen  
               }
-
+              
               /*
-               * Der letzte Punkt darf nicht auf der vorhergehenden Position 
-               * liegen. Ist das der Fall, wird der Fehler 44 zurueckgegeben. 
+               * Kombination ":]"
+               * 
+               * "first.last@[IPv6:1111:2222:3333::4444:5555:6666:]" 
+               * "first.last@[IPv6:1111:2222:3333:4444:5555:6666::]"
+               * 
+               * - Es darf die Kombination "::" vorkommen, dass nur einmal. 
+               *   Das wird weiter oben geprueft.
+               *   
+               * - Bei der Kombination ":]" kann es sein, dass eben der letzte Wert
+               *   ausgelassen wurde und somit diese Kombination gueltig ist.
+               * 
                */
-              if ( ( akt_index - position_letzter_punkt ) == 1 )
-              {
-                return 44; // IP6-Adressteil: ungueltige Kombination ":]"
-              }
+
+              ///*
+              // * Der letzte Punkt darf nicht auf der vorhergehenden Position 
+              // * liegen. Ist das der Fall, wird der Fehler 44 zurueckgegeben. 
+              // */
+              //if ( ( akt_index - position_letzter_punkt ) == 1 )
+              //{
+              //  return 44; // IP6-Adressteil: ungueltige Kombination ":]"
+              //}
 
               /*
                * Das Abschlusszeichen muss auf der letzten Stelle des
@@ -1844,7 +1871,7 @@ public class FkEMail
                 else if ( pEingabe.charAt( akt_index + 1 ) == ' ' )
                 {
                   /*
-                   * Ist das naechste Zeichen nach "]" ein Leerzeichen, dann ist der 
+                   * Ist das naechste Zeichen nach "]" ein Leerzeichen, ist der 
                    * Kommentar vom Ende der IP-Adresse durch Leerzeichen getrennt. 
                    * Das Leerzeichen ist OK, der Leseindes wird verringert. 
                    * 
