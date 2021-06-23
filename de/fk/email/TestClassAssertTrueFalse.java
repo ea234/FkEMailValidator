@@ -21,6 +21,10 @@ class TestClassAssertTrueFalse
 
   private static int          F_RESULT_COUNT_EMAIL_IS_FALSE = 0;
 
+  private static int          F_RESULT_COUNT_ERROR          = 0;
+
+  private static int          T_RESULT_COUNT_ERROR          = 0;
+
   private static int          BREITE_SPALTE_EMAIL_AUSGABE   = 60;
 
   private static boolean      KNZ_LOG_AUSGABE               = true;
@@ -2645,20 +2649,20 @@ class TestClassAssertTrueFalse
     double email_false_proz_korrekt_erkannt_insgesamt = ( 100.0 * ( T_RESULT_COUNT_EMAIL_IS_FALSE + F_RESULT_COUNT_EMAIL_IS_TRUE ) ) / ( COUNT_ASSERT_IS_TRUE + COUNT_ASSERT_IS_FALSE );
 
     wl( "" );
-    
+
     wlHeadline( "Statistik" );
-    
-    wl( "  ASSERT_IS_TRUE  " + getStringZahl( COUNT_ASSERT_IS_TRUE ) + "   KORREKT " + getStringZahl( T_RESULT_COUNT_EMAIL_IS_TRUE ) + " = " + getEinzug( email_ok_proz_true_korrekt_erkannt ) + m_number_format.format( email_ok_proz_true_korrekt_erkannt ) + " % | FALSCH ERKANNT " + getStringZahl( T_RESULT_COUNT_EMAIL_IS_FALSE ) + " = " + getEinzug( email_false_proz_true_korrekt_erkannt ) + m_number_format.format( email_false_proz_true_korrekt_erkannt ) + " % " );
-    wl( "  ASSERT_IS_FALSE " + getStringZahl( COUNT_ASSERT_IS_FALSE ) + "   KORREKT " + getStringZahl( F_RESULT_COUNT_EMAIL_IS_FALSE ) + " = " + getEinzug( email_ok_proz_false_korrekt_erkannt ) + m_number_format.format( email_ok_proz_false_korrekt_erkannt ) + " % | FALSCH ERKANNT " + getStringZahl( F_RESULT_COUNT_EMAIL_IS_TRUE ) + " = " + getEinzug( email_false_proz_false_korrekt_erkannt ) + m_number_format.format( email_false_proz_false_korrekt_erkannt ) + " % " );
+
+    wl( "  ASSERT_IS_TRUE  " + getStringZahl( COUNT_ASSERT_IS_TRUE ) + "   KORREKT " + getStringZahl( T_RESULT_COUNT_EMAIL_IS_TRUE ) + " = " + getEinzug( email_ok_proz_true_korrekt_erkannt ) + m_number_format.format( email_ok_proz_true_korrekt_erkannt ) + " % | FALSCH ERKANNT " + getStringZahl( T_RESULT_COUNT_EMAIL_IS_FALSE ) + " = " + getEinzug( email_false_proz_true_korrekt_erkannt ) + m_number_format.format( email_false_proz_true_korrekt_erkannt ) + " % = " + T_RESULT_COUNT_ERROR );
+    wl( "  ASSERT_IS_FALSE " + getStringZahl( COUNT_ASSERT_IS_FALSE ) + "   KORREKT " + getStringZahl( F_RESULT_COUNT_EMAIL_IS_FALSE ) + " = " + getEinzug( email_ok_proz_false_korrekt_erkannt ) + m_number_format.format( email_ok_proz_false_korrekt_erkannt ) + " % | FALSCH ERKANNT " + getStringZahl( F_RESULT_COUNT_EMAIL_IS_TRUE ) + " = " + getEinzug( email_false_proz_false_korrekt_erkannt ) + m_number_format.format( email_false_proz_false_korrekt_erkannt ) + " % = " + F_RESULT_COUNT_ERROR );
     wl( "" );
-    wl( "  GESAMT          " + getStringZahl( COUNT_ASSERT_IS_TRUE + COUNT_ASSERT_IS_FALSE ) + "   KORREKT " + getStringZahl( ( T_RESULT_COUNT_EMAIL_IS_TRUE + F_RESULT_COUNT_EMAIL_IS_FALSE ) ) + " = " + getEinzug( email_ok_proz_korrekt_erkannt_insgesamt ) + m_number_format.format( email_ok_proz_korrekt_erkannt_insgesamt ) + " % | FALSCH ERKANNT " + getStringZahl( F_RESULT_COUNT_EMAIL_IS_TRUE + T_RESULT_COUNT_EMAIL_IS_FALSE ) + " = " + getEinzug( email_false_proz_korrekt_erkannt_insgesamt ) + m_number_format.format( email_false_proz_korrekt_erkannt_insgesamt ) + " %" );
+    wl( "  GESAMT          " + getStringZahl( COUNT_ASSERT_IS_TRUE + COUNT_ASSERT_IS_FALSE ) + "   KORREKT " + getStringZahl( ( T_RESULT_COUNT_EMAIL_IS_TRUE + F_RESULT_COUNT_EMAIL_IS_FALSE ) ) + " = " + getEinzug( email_ok_proz_korrekt_erkannt_insgesamt ) + m_number_format.format( email_ok_proz_korrekt_erkannt_insgesamt ) + " % | FALSCH ERKANNT " + getStringZahl( F_RESULT_COUNT_EMAIL_IS_TRUE + T_RESULT_COUNT_EMAIL_IS_FALSE ) + " = " + getEinzug( email_false_proz_korrekt_erkannt_insgesamt ) + m_number_format.format( email_false_proz_korrekt_erkannt_insgesamt ) + " % = " + ( T_RESULT_COUNT_ERROR + F_RESULT_COUNT_ERROR ) );
     wl( "" );
 
     if ( m_str_buffer != null )
     {
       String home_dir = "/home/ea234";
 
-      home_dir = "c:/Daten/";
+      //home_dir = "c:/Daten/";
 
       schreibeDatei( home_dir + "/log_test_email_assert_true_false.txt", m_str_buffer.toString() );
     }
@@ -2719,38 +2723,49 @@ class TestClassAssertTrueFalse
     boolean knz_is_valid_email_adress = false;
 
     int return_code = 0;
-
-    if ( TEST_B_KNZ_AKTIV )
+    try
     {
-      knz_is_valid_email_adress = TestClassSpeed.isEmailValid( TEST_B_TEST_NR, pString );
-
-      if ( KNZ_LOG_AUSGABE )
+      if ( TEST_B_KNZ_AKTIV )
       {
-        wl( getID() + " - assertIsTrue  " + FkString.getFeldLinksMin( FkString.getJavaString( pString ), BREITE_SPALTE_EMAIL_AUSGABE ) + " = " + ( return_code < 10 ? "  " : ( return_code < 100 ? " " : "" ) ) + return_code + " = " + ( knz_is_valid_email_adress ? " OK " : " #### FEHLER #### " ) );
+        knz_is_valid_email_adress = TestClassSpeed.isEmailValid( TEST_B_TEST_NR, pString );
+
+        if ( KNZ_LOG_AUSGABE )
+        {
+          wl( getID() + " - assertIsTrue  " + FkString.getFeldLinksMin( FkString.getJavaString( pString ), BREITE_SPALTE_EMAIL_AUSGABE ) + " = " + ( return_code < 10 ? "  " : ( return_code < 100 ? " " : "" ) ) + return_code + " = " + ( knz_is_valid_email_adress ? " OK " : " #### FEHLER #### " ) );
+        }
+      }
+      else
+      {
+        return_code = FkEMail.checkEMailAdresse( pString );
+
+        knz_is_valid_email_adress = return_code < 10;
+
+        if ( KNZ_LOG_AUSGABE )
+        {
+          wl( getID() + " - assertIsTrue  " + FkString.getFeldLinksMin( FkString.getJavaString( pString ), BREITE_SPALTE_EMAIL_AUSGABE ) + " = " + ( return_code < 10 ? "  " : ( return_code < 100 ? " " : "" ) ) + return_code + " = " + ( knz_is_valid_email_adress ? " OK " : " #### FEHLER ####    " + FkEMail.getFehlerText( return_code ) ) );
+        }
+      }
+
+      if ( knz_is_valid_email_adress )
+      {
+        T_RESULT_COUNT_EMAIL_IS_TRUE++;
+      }
+      else
+      {
+        T_RESULT_COUNT_EMAIL_IS_FALSE++;
       }
     }
-    else
+    catch ( Exception err_inst )
     {
-      return_code = FkEMail.checkEMailAdresse( pString );
-
-      knz_is_valid_email_adress = return_code < 10;
+      T_RESULT_COUNT_ERROR++;
 
       if ( KNZ_LOG_AUSGABE )
       {
-        wl( getID() + " - assertIsTrue  " + FkString.getFeldLinksMin( FkString.getJavaString( pString ), BREITE_SPALTE_EMAIL_AUSGABE ) + " = " + ( return_code < 10 ? "  " : ( return_code < 100 ? " " : "" ) ) + return_code + " = " + ( knz_is_valid_email_adress ? " OK " : " #### FEHLER ####    " + FkEMail.getFehlerText( return_code ) ) );
+        wl( getID() + " - assertIsTrue " + FkString.getFeldLinksMin( FkString.getJavaString( pString ), BREITE_SPALTE_EMAIL_AUSGABE ) + " = Fehler = " + err_inst.getMessage() );
       }
     }
 
     COUNT_ASSERT_IS_TRUE++;
-
-    if ( knz_is_valid_email_adress )
-    {
-      T_RESULT_COUNT_EMAIL_IS_TRUE++;
-    }
-    else
-    {
-      T_RESULT_COUNT_EMAIL_IS_FALSE++;
-    }
   }
 
   private static void assertIsFalse( String pString )
@@ -2761,37 +2776,53 @@ class TestClassAssertTrueFalse
 
     int return_code = 0;
 
-    if ( TEST_B_KNZ_AKTIV )
+    try
     {
-      knz_is_valid_email_adress = TestClassSpeed.isEmailValid( TEST_B_TEST_NR, pString );
-
-      if ( KNZ_LOG_AUSGABE )
+      if ( TEST_B_KNZ_AKTIV )
       {
-        wl( getID() + " - assertIsFalse " + FkString.getFeldLinksMin( FkString.getJavaString( pString ), BREITE_SPALTE_EMAIL_AUSGABE ) + " = " + ( return_code < 10 ? "  " : ( return_code < 100 ? " " : "" ) ) + return_code + " = " + ( knz_is_valid_email_adress == knz_soll_wert ? " OK " : " #### FEHLER #### " ) );
+        knz_is_valid_email_adress = TestClassSpeed.isEmailValid( TEST_B_TEST_NR, pString );
+
+        //knz_is_valid_email_adress = TestTemp.isEmailValid( pString );
+
+        //knz_is_valid_email_adress = JMail.isValid( pString );
+
+        if ( KNZ_LOG_AUSGABE )
+        {
+          wl( getID() + " - assertIsFalse " + FkString.getFeldLinksMin( FkString.getJavaString( pString ), BREITE_SPALTE_EMAIL_AUSGABE ) + " = " + ( return_code < 10 ? "  " : ( return_code < 100 ? " " : "" ) ) + return_code + " = " + ( knz_is_valid_email_adress == knz_soll_wert ? " OK " : " #### FEHLER #### " ) );
+        }
+      }
+      else
+      {
+        return_code = FkEMail.checkEMailAdresse( pString );
+
+        knz_is_valid_email_adress = return_code < 10;
+
+        if ( KNZ_LOG_AUSGABE )
+        {
+          wl( getID() + " - assertIsFalse " + FkString.getFeldLinksMin( FkString.getJavaString( pString ), BREITE_SPALTE_EMAIL_AUSGABE ) + " = " + ( return_code < 10 ? "  " : ( return_code < 100 ? " " : "" ) ) + return_code + " = " + ( knz_is_valid_email_adress == knz_soll_wert ? " OK " : " #### FEHLER #### " ) + "   " + FkEMail.getFehlerText( return_code ) );
+        }
+      }
+
+      if ( knz_is_valid_email_adress )
+      {
+        F_RESULT_COUNT_EMAIL_IS_TRUE++;
+      }
+      else
+      {
+        F_RESULT_COUNT_EMAIL_IS_FALSE++;
       }
     }
-    else
+    catch ( Exception err_inst )
     {
-      return_code = FkEMail.checkEMailAdresse( pString );
-
-      knz_is_valid_email_adress = return_code < 10;
+      F_RESULT_COUNT_ERROR++;
 
       if ( KNZ_LOG_AUSGABE )
       {
-        wl( getID() + " - assertIsFalse " + FkString.getFeldLinksMin( FkString.getJavaString( pString ), BREITE_SPALTE_EMAIL_AUSGABE ) + " = " + ( return_code < 10 ? "  " : ( return_code < 100 ? " " : "" ) ) + return_code + " = " + ( knz_is_valid_email_adress == knz_soll_wert ? " OK " : " #### FEHLER #### " ) + "   " + FkEMail.getFehlerText( return_code ) );
+        wl( getID() + " - assertIsFalse " + FkString.getFeldLinksMin( FkString.getJavaString( pString ), BREITE_SPALTE_EMAIL_AUSGABE ) + " = Fehler = " + err_inst.getMessage() );
       }
     }
 
     COUNT_ASSERT_IS_FALSE++;
-
-    if ( knz_is_valid_email_adress )
-    {
-      F_RESULT_COUNT_EMAIL_IS_TRUE++;
-    }
-    else
-    {
-      F_RESULT_COUNT_EMAIL_IS_FALSE++;
-    }
   }
 
   /**
@@ -2831,5 +2862,4 @@ class TestClassAssertTrueFalse
 
     return false;
   }
-
 }

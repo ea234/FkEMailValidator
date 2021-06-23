@@ -7,6 +7,8 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+// import com.sanctionco.jmail.JMail;
+
 // import org.hazlewood.connor.bottema.emailaddress.EmailAddressValidator; // https://github.com/bbottema/email-rfc2822-validator
 // import emailvalidator4j.EmailValidator; // https://github.com/egulias/EmailValidator4J
 
@@ -2998,6 +3000,8 @@ class TestClassSpeed
 
       startTestNr( 8, "Jmail" );
 
+      startTestNr( 6, "JMAIL" );
+
       startTestNr( 5, "JAVA 1" );
 
       startTestNr( 2, "REGEXP 1" );
@@ -3092,7 +3096,8 @@ class TestClassSpeed
             }
             else if ( pTestNummer == 6 )
             {
-              knz_is_valid = checkEmail4J( test_daten_akt_string );
+              //knz_is_valid = checkEmail4J( test_daten_akt_string );
+              knz_is_valid = checkJMail( test_daten_akt_string );
             }
             else if ( pTestNummer == 8 )
             {
@@ -3657,6 +3662,16 @@ class TestClassSpeed
 //  }
 //
 //  return m_email4j_v.isValid( pEMailAdresse );
+
+    return false;
+  }
+  
+  private static boolean checkJMail( String pInput ) 
+  {
+//    if ( JMail.isValid( pInput ) )
+//    {
+//      return true;
+//    }
 
     return false;
   }
