@@ -25,6 +25,33 @@ class FkString
     return pInhalt + nZeichen( pMindestLaenge - pInhalt.length(), " " );
   }
 
+  public static String getFeldLinksMin( int pInhalt, int pMindestLaenge )
+  {
+    return getFeldLinksMin( "" + pInhalt, pMindestLaenge );
+  }
+
+  public static String getFeldRechtsMin( String pFeldWert, int pMindestLaenge )
+  {
+    String feld_wert = "" + pFeldWert;
+
+    if ( feld_wert.length() >= pMindestLaenge )
+    {
+      return feld_wert;
+    }
+
+    return nZeichen( pMindestLaenge - feld_wert.length(), " " ) + feld_wert;
+  }
+
+  public static String getFeldRechtsMin( int pFeldWert, int pMindestLaenge )
+  {
+    return getFeldRechtsMin( "" + pFeldWert, pMindestLaenge );
+  }
+
+  public static String getFeldRechtsMin( long pFeldWert, int pMindestLaenge )
+  {
+    return getFeldRechtsMin( "" + pFeldWert, pMindestLaenge );
+  }
+
   /**
    * <pre>
    * Gibt einen String in der angegebenen Laenge und der angegebenen Zeichenfolge zurueck.
@@ -86,13 +113,13 @@ class FkString
     {
       return "null";
     }
-  
+
     StringBuffer str_buffer = new StringBuffer();
-  
+
     str_buffer.append( "\"" );
-  
+
     int akt_index = 0;
-  
+
     while ( akt_index < pEingabe.length() )
     {
       switch ( pEingabe.charAt( akt_index ) )
@@ -100,24 +127,24 @@ class FkString
         case '"' :
           str_buffer.append( "\\\"" );
           break;
-          
+
         case '\n' :
           str_buffer.append( "\\n" );
           break;
-          
+
         case '\r' :
           str_buffer.append( "\\r" );
           break;
-          
+
         default :
           str_buffer.append( pEingabe.charAt( akt_index ) );
       }
-  
+
       akt_index++;
     }
-  
+
     str_buffer.append( "\"" );
-  
+
     return str_buffer.toString();
   }
 
@@ -154,7 +181,7 @@ class FkString
        */
       return pString.substring( Math.max( 0, pString.length() - pAnzahlStellen ), pString.length() );
     }
-  
+
     /*
      * pString nicht gesetzt oder pAnzahlStellen < 0
      */
@@ -233,7 +260,7 @@ class FkString
      */
     return pString;
   }
-  
+
   public static String getSystemInfo()
   {
     Properties prop_sys = System.getProperties();
@@ -248,7 +275,6 @@ class FkString
 
     try
     {
-
       str_ergebnis += "\n java.runtime.name             " + prop_sys.getProperty( "java.runtime.name", str_nicht_vorhanden );
       str_ergebnis += "\n java.vm.version               " + prop_sys.getProperty( "java.vm.version", str_nicht_vorhanden );
       str_ergebnis += "\n java.vm.vendor                " + prop_sys.getProperty( "java.vm.vendor", str_nicht_vorhanden );
@@ -384,6 +410,5 @@ class FkString
 
     return str_ergebnis;
   }
-
 
 }
