@@ -696,6 +696,22 @@ public class FkEMail_ENGLISH_GOOGLE_TRANSLATE
          *
          * According to RFC 952, no part string may start with a number or a dot in the domain part.
          * According to RFC 1123, hostnames may start with numbers.
+         *
+         * https://verifalia.com/help/email-validations/can-email-addresses-have-hyphens-minus-signs-dashes
+         * 
+         * Placement - email addresses cannot have a hyphen (or minus sign, or dash) as the first or last letter in 
+         * the domain part. Similarly, the hyphen cannot be placed directly in front of or following, the dot (.). 
+         * Have a look at some examples of correct vs. incorrect use:
+         * 
+         * Correct
+         * 
+         * username@exam-ple.com
+         * username@e-xample.com
+         * 
+         * Incorrect
+         * 
+         * username@example-.com
+         * username@-example.com
          */
 
         if ( position_at_character > 0 ) // no beginning with a number or special characters in the domain part

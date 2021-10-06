@@ -953,9 +953,31 @@ public class FkEMail
          * 
          * Nach RFC 952 darf im Domain-Part kein Teilstring mit einer Zahl oder einem Punkt starten.
          * Nach RFC 1123 duerfen Hostnamen mit Zahlen starten.
+         *
+         *
+         * https://verifalia.com/help/email-validations/can-email-addresses-have-hyphens-minus-signs-dashes
+         * 
+         * Placement - email addresses cannot have a hyphen (or minus sign, or dash) as the first or last letter in 
+         * the domain part. Similarly, the hyphen cannot be placed directly in front of or following, the dot (.). 
+         * Have a look at some examples of correct vs. incorrect use:
+         * 
+         * Correct
+         * 
+         * username@exam-ple.com
+         * username@e-xample.com
+         * 
+         * Incorrect
+         * 
+         * username@example-.com
+         * username@-example.com
          */
 
-        if ( position_at_zeichen > 0 ) // kein Beginn mit einer Zahl oder Sonderzeichen im Domain-Part
+        /*
+         * Pruefung: Befindet sich der Leseprozess im Domain-Part ?
+         * 
+         * Im Domain-Part ist der Leseprozess, wenn die Position des At-Zeichens groesser als 0 ist.
+         */
+        if ( position_at_zeichen > 0 ) 
         {
           if ( zeichen_zaehler == 0 )
           {
@@ -978,6 +1000,7 @@ public class FkEMail
             {
               return 20; // Trennzeichen: ungueltige Zeichenkombination "-."
             }
+            
             //else if ( pEingabe.charAt( akt_index - 1 ) == '.' )
             //{
             //  return 20; // Trennzeichen: ungueltige Zeichenkombination ".-"
