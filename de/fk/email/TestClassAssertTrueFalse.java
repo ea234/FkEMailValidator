@@ -501,7 +501,7 @@ class TestClassAssertTrueFalse
      *   428 - assertIsFalse "local.name.with.double.at@@.test@domain.com"                =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
      *   429 - assertIsFalse "(comment @) local.name.with.comment.with.at@domain.com"     =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
      *   430 - assertIsTrue  "\"quote@\".local.name.with.qoute.with.at@domain.com"        =   1 =  OK 
-     *   431 - assertIsFalse "\@@at.domain.com"                                           =   0 =  #### FEHLER ####    eMail-Adresse korrekt
+     *   431 - assertIsTrue  "\@@at.domain.com"                                           =   0 =  OK 
      *   432 - assertIsFalse "@@at.domain.com"                                            =  26 =  OK    AT-Zeichen: kein AT-Zeichen am Anfang
      *   433 - assertIsFalse "@@@@@@@at.domain.com"                                       =  26 =  OK    AT-Zeichen: kein AT-Zeichen am Anfang
      *   434 - assertIsFalse "@.@.@.@.@.@@at.domain.com"                                  =  26 =  OK    AT-Zeichen: kein AT-Zeichen am Anfang
@@ -2221,10 +2221,11 @@ class TestClassAssertTrueFalse
      * 
      * ---- Statistik ----------------------------------------------------------------------------------------------------
      * 
-     *   ASSERT_IS_TRUE  1196   KORREKT 1111 =   92.893 % | FALSCH ERKANNT   85 =    7.107 % = Error 0
-     *   ASSERT_IS_FALSE 1196   KORREKT 1179 =   98.579 % | FALSCH ERKANNT   17 =    1.421 % = Error 0
      * 
-     *   GESAMT          2392   KORREKT 2290 =   95.736 % | FALSCH ERKANNT  102 =    4.264 % = Error 0
+     *   ASSERT_IS_TRUE  1195   KORREKT 1110 =   92.887 % | FALSCH ERKANNT   85 =    7.113 % = Error 0
+     *   ASSERT_IS_FALSE 1195   KORREKT 1179 =   98.661 % | FALSCH ERKANNT   16 =    1.339 % = Error 0
+     * 
+     *   GESAMT          2390   KORREKT 2289 =   95.774 % | FALSCH ERKANNT  101 =    4.226 % = Error 0
      * 
      * 
      *   Millisekunden    131 = 0.054765886287625416
@@ -2718,7 +2719,7 @@ class TestClassAssertTrueFalse
       assertIsFalse( "local.name.with.double.at@@.test@domain.com" );
       assertIsFalse( "(comment @) local.name.with.comment.with.at@domain.com" );
       assertIsTrue( "\"quote@\".local.name.with.qoute.with.at@domain.com" );
-      assertIsFalse( "\\@@at.domain.com" );
+      assertIsTrue( "\\@@at.domain.com" );
       assertIsFalse( "@@at.domain.com" );
       assertIsFalse( "@@@@@@@at.domain.com" );
       assertIsFalse( "@.@.@.@.@.@@at.domain.com" );
