@@ -1920,7 +1920,7 @@ class TestClassAssertTrueFalse
      *  1825 - assertIsTrue  "email@domain.com (joe Smith)"                                         =   6 =  OK 
      *  1826 - assertIsFalse "a@abc(bananas)def.com"                                                = 100 =  OK    Kommentar: Kommentar muss am Stringende enden
      * 
-     * ---- Pointy Brackets ----------------------------------------------------------------------------------------------------
+     * ---- Pointy Brackets - also known as "greater than" and "less than"  ----------------------------------------------------------------------------------------------------
      * 
      *  1827 - assertIsTrue  "ABC DEF <ABC.DEF@GHI.JKL>"                                            =   0 =  OK 
      *  1828 - assertIsTrue  "<ABC.DEF@GHI.JKL> ABC DEF"                                            =   0 =  OK 
@@ -3212,35 +3212,37 @@ class TestClassAssertTrueFalse
      *  3084 - assertIsFalse "ip.v6.with.forward.slash@[IPv6:1:22:3:4:5:6:7]/"                      =  45 =  OK    IP6-Adressteil: Abschlusszeichen "]" muss am Ende stehen
      *  3085 - assertIsFalse "ip.v6.with.forward.slash@/[IPv6:1:22:3:4:5:6:7]"                      =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
      *  3086 - assertIsFalse "ip.v6.with.forward.slash@[/IPv6:1:22:3:4:5:6:7]"                      =  59 =  OK    IP4-Adressteil: Falsches Zeichen in der IP-Adresse
+     *  3087 - assertIsFalse "   my.correct.email.adress.com@but.we.dont.trim.the.input.so.the.emailadress.is.false.de   " =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  3088 - assertIsTrue  "my.correct.email.adress.com@but.without.spaces.so.the.emailadress.is.correct.de" =   0 =  OK 
      * 
      * ---- unsupported ----------------------------------------------------------------------------------------------------
      * 
-     *  3087 - assertIsTrue  "Loïc.Accentué@voilà.fr"                                               =  22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  3088 - assertIsTrue  "Ärger.Öde@Übel.de"                                                    =  22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  3089 - assertIsTrue  "Smørrebrød@danmark.dk"                                                =  22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  3090 - assertIsTrue  "ip.without.brackets@1.2.3.4"                                          =  14 =  #### FEHLER ####    Laenge: Top-Level-Domain muss mindestens 2 Stellen lang sein.
-     *  3091 - assertIsTrue  "ip.without.brackets@1:2:3:4:5:6:7:8"                                  =  22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  3092 - assertIsTrue  "(space after comment) john.smith@example.com"                         =  22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  3093 - assertIsTrue  "email.address.without@topleveldomain"                                 =  34 =  #### FEHLER ####    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
-     *  3094 - assertIsTrue  "EmailAddressWithout@PointSeperator"                                   =  34 =  #### FEHLER ####    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
+     *  3089 - assertIsTrue  "Loïc.Accentué@voilà.fr"                                               =  22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  3090 - assertIsTrue  "Ärger.Öde@Übel.de"                                                    =  22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  3091 - assertIsTrue  "Smørrebrød@danmark.dk"                                                =  22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  3092 - assertIsTrue  "ip.without.brackets@1.2.3.4"                                          =  14 =  #### FEHLER ####    Laenge: Top-Level-Domain muss mindestens 2 Stellen lang sein.
+     *  3093 - assertIsTrue  "ip.without.brackets@1:2:3:4:5:6:7:8"                                  =  22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  3094 - assertIsTrue  "(space after comment) john.smith@example.com"                         =  22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  3095 - assertIsTrue  "email.address.without@topleveldomain"                                 =  34 =  #### FEHLER ####    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
+     *  3096 - assertIsTrue  "EmailAddressWithout@PointSeperator"                                   =  34 =  #### FEHLER ####    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
      * 
      * ---- Fillup ----------------------------------------------------------------------------------------------------
      * 
-     *  3095 - assertIsTrue  "valid.email.from.nr1023@fillup.tofalse.com"                           =   0 =  OK 
+     *  3097 - assertIsTrue  "valid.email.from.nr1024@fillup.tofalse.com"                           =   0 =  OK 
      *           ...
-     *  3096 - assertIsTrue  "valid.email.to.nr2072@fillup.tofalse.com"                             =   0 =  OK 
+     *  3098 - assertIsTrue  "valid.email.to.nr2073@fillup.tofalse.com"                             =   0 =  OK 
      * 
      * 
      * ---- Statistik ----------------------------------------------------------------------------------------------------
      * 
-     *   ASSERT_IS_TRUE  2072   KORREKT 1983 =   95.705 % | FALSCH ERKANNT   89 =    4.295 % = Error 0
-     *   ASSERT_IS_FALSE 2072   KORREKT 2060 =   99.421 % | FALSCH ERKANNT   12 =    0.579 % = Error 0
+     *   ASSERT_IS_TRUE  2073   KORREKT 1984 =   95.707 % | FALSCH ERKANNT   89 =    4.293 % = Error 0
+     *   ASSERT_IS_FALSE 2073   KORREKT 2061 =   99.421 % | FALSCH ERKANNT   12 =    0.579 % = Error 0
      * 
-     *   GESAMT          4144   KORREKT 4043 =   97.563 % | FALSCH ERKANNT  101 =    2.437 % = Error 0
+     *   GESAMT          4146   KORREKT 4045 =   97.564 % | FALSCH ERKANNT  101 =    2.436 % = Error 0
      * 
      * 
-     *   Millisekunden    163 = 0.03933397683397683
-     *     
+     *   Millisekunden    138 = 0.03328509406657019
+     *      
      * </pre> 
      */
 
@@ -5318,7 +5320,7 @@ class TestClassAssertTrueFalse
       assertIsTrue( "email@domain.com (joe Smith)" );
       assertIsFalse( "a@abc(bananas)def.com" );
 
-      wlHeadline( "Pointy Brackets" );
+      wlHeadline( "Pointy Brackets - also known as \"greater than\" and \"less than\" " );
 
       assertIsTrue( "ABC DEF <ABC.DEF@GHI.JKL>" );
       assertIsTrue( "<ABC.DEF@GHI.JKL> ABC DEF" );
@@ -6676,6 +6678,9 @@ class TestClassAssertTrueFalse
       assertIsFalse( "ip.v6.with.forward.slash@[IPv6:1:22:3:4:5:6:7]/" );
       assertIsFalse( "ip.v6.with.forward.slash@/[IPv6:1:22:3:4:5:6:7]" );
       assertIsFalse( "ip.v6.with.forward.slash@[/IPv6:1:22:3:4:5:6:7]" );
+
+      assertIsFalse( "   my.correct.email.adress.com@but.we.dont.trim.the.input.so.the.emailadress.is.false.de   " );
+      assertIsTrue( "my.correct.email.adress.com@but.without.spaces.so.the.emailadress.is.correct.de" );
 
       wlHeadline( "unsupported" );
 
