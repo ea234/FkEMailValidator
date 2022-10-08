@@ -1266,7 +1266,15 @@ public class FkEMail
 
         /*
          * Pruefung: Start mit Anfuehrungszeichen 
-         * Sind noch keine Zeichen gelesen worden, wird der Fehler 80 zurueckgegeben.
+         * Ein Anfuehrungszeichen darf nur am Beginn eines Blockes kommen. 
+         * Wurden im aktuellem Block schon zeichen gelesen, ist ein startendes Anfuehrungszeichen
+         * falsch gesetzt. Es wird der Fehler 80 zurueckgegeben.
+         * 
+         * anders:
+         * 
+         * Der Zeichenzaehler muss fuer den aktuellen Block 0 sein. Der Zeichenzaeler ist 
+         * fuer den aktuellen Block 0 am Start oder nach einem Punkt.
+         * 
          */
         if ( zeichen_zaehler > 0 )
         {
