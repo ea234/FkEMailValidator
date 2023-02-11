@@ -5328,7 +5328,7 @@ class TestClassAssertTrueFalse
       assertIsFalse( "A\"B\"C.D\"E\"F@GHI.DE" );
       assertIsFalse( "ABC.DEF@G\"H\"I.DE" );
 
-      assertIsTrue( "\"\".\"\".ABC.DEF@GHI.DE" );
+      assertIsFalse( "\"\".\"\".ABC.DEF@GHI.DE" );
       assertIsFalse( "\"\"\"\"ABC.DEF@GHI.DE" );
       assertIsFalse( "AB\"\"\"\"C.DEF@GHI.DE" );
       assertIsFalse( "ABC.DEF@G\"\"\"\"HI.DE" );
