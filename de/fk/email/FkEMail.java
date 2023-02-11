@@ -616,6 +616,9 @@ public class FkEMail
 
     char aktuelles_zeichen = ' ';
 
+    int email_local_part_start = 0;
+    int email_domain_part_ende = laenge_eingabe_string - 1;
+
     /*
      * Pruefung: Eckige Klammern
      * 
@@ -656,7 +659,6 @@ public class FkEMail
     if ( aktuelles_zeichen == '>' )
     {
       /*
-       * 
        * Das letzte Zeichen ist in diesem Fall eine schliessende eckige Klammer.
        *  
        * Dieses Zeichen darf von der unten stehende while-Schleife nicht 
@@ -771,6 +773,8 @@ public class FkEMail
     }
 
     int email_local_part_gesamt_start = akt_index;
+    
+    email_local_part_start = akt_index;
 
     /*
      * Pruefung: gibt es einen seperat zu pruefenden "nicht eMail-Adress-String" ?
@@ -971,7 +975,20 @@ public class FkEMail
          * username@example-.com
          * username@-example.com
          */
+        
+        if ( akt_index == email_local_part_start )
+        {
+          if ( pEingabe.charAt( akt_index + 1 ) == '\"' )
+          {
+            return 140; // Trennzeichen: ungueltige Zeichenkombination -"
+          }
 
+          if ( pEingabe.charAt( akt_index + 1 ) == '(' )
+          {
+            return 141; // Trennzeichen: ungueltige Zeichenkombination -(
+          }
+        }
+        
         /*
          * Pruefung: Befindet sich der Leseprozess im Domain-Part ?
          * 
@@ -984,7 +1001,7 @@ public class FkEMail
             return 20; // Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
           }
 
-          if ( ( akt_index + 1 ) == laenge_eingabe_string )
+          if ( ( akt_index + 1 ) == laenge_eingabe_string ) // email_local_part_start
           {
             return 24; // Zeichen: Kein Sonderzeichen am Ende der eMail-Adresse
           }
@@ -1034,6 +1051,16 @@ public class FkEMail
           {
             return 30; // Trennzeichen: kein Beginn mit einem Punkt
           }
+          
+          /*
+           * Der erste Punkt darf nicht am gespeicherten Beginn der eMail-Adresse liegen. 
+           * Wichtig bei Eckigen-Klammern, bei welchen die eMail-Adresse nicht am 
+           * Index 0 beginnt.
+           */
+          if ( akt_index == email_local_part_start ) 
+          {
+            return 142; // Trennzeichen: kein Beginn mit einem Punkt
+          }
         }
         else
         {
@@ -1061,9 +1088,13 @@ public class FkEMail
            * Bei der Berechnung wird auf 64 Zeichen geprueft, da so die Subtraktion nicht 
            * verkompliziert werden muss (es wird die Position des letzten Punktes mitgezaehlt).
            * 
+           * Es muss hier der Index fuer den eigentlichen eMail-Start beruecksichtigt werden. 
+           * Normalerweise startet die eMail-Adresse bei Index 0. Bei eMail-Adressen mit 
+           * spitzen Klammern kann der Start spaeter sein.
+           * 
            * Ist der aktuelle Domain-Label zu lang, wird der Fehler 63 zurueckgegeben.
            */
-          if ( ( akt_index - position_letzter_punkt ) > 64 )
+          if ( ( akt_index - position_letzter_punkt ) > email_local_part_start + 64 )
           {
             // System.out.println( " " + ( akt_index - position_letzter_punkt ));
 
@@ -1102,12 +1133,12 @@ public class FkEMail
           return 29; // AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
         }
 
-        if ( akt_index == 0 )
+        if ( akt_index == email_local_part_start )
         {
           return 26; // AT-Zeichen: kein AT-Zeichen am Anfang
         }
 
-        if ( akt_index > 64 )
+        if ( akt_index > email_local_part_start + 64 )
         {
           return 13; // Laenge: RFC 5321 = SMTP-Protokoll = maximale Laenge des Local-Parts sind 64 Bytes
         }
@@ -1280,7 +1311,7 @@ public class FkEMail
         {
           return 80; // String: Ein startendes Anfuehrungszeichen muss am Anfang kommen, der Zeichenzaehler darf nicht groesser als 0 sein
         }
-
+        
         /*
          * Das aktuelle Zeichen ist hier noch ein Anfuehrungszeichen. 
          * Die nachfolgende While-Schleife wuerde nicht starten, wenn 
@@ -2769,7 +2800,11 @@ public class FkEMail
     if ( pFehlerNr == 105 ) return "Kommentar: Leerzeichentrennung im Domain-Part. Oeffnende Klammer erwartet";
 
     if ( pFehlerNr == 106 ) return "Kommentar: Domain-Part mit Kommentar nach AT-Zeichen. Erwartete Zeichenkombination \")[\".";
-
+    
+    if ( pFehlerNr == 140 ) return "Trennzeichen: Kein Start mit der Zeichenfolge -\"";
+    if ( pFehlerNr == 141 ) return "Trennzeichen: Kein Start mit der Zeichenfolge \"-(\"";
+    if ( pFehlerNr == 142 ) return "Trennzeichen: kein Beginn mit einem Punkt";
+    
     return "Unbekannte Fehlernummer " + pFehlerNr;
   }
 
