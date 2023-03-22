@@ -1,6 +1,5 @@
 package de.fk.email;
 
-import java.lang.management.ManagementFactory;
 import java.util.Properties;
 
 class FkString
@@ -346,7 +345,7 @@ class FkString
 
     try
     {
-      nr_of_threads = ManagementFactory.getThreadMXBean().getThreadCount();
+      nr_of_threads = 0; // ManagementFactory.getThreadMXBean().getThreadCount();
     }
     catch ( Exception err_inst )
     {
