@@ -430,7 +430,9 @@ public class FkEMail
    * - Technically some emails can include quotes in the section before the @ symbol with escape characters inside the quotes.
    *    NOBODY DOES THIS EVER! It's obsolete. But, it IS included in the true RFC 2822 standard, and omitted here.
    * 
-   * 
+   * https://www.baeldung.com/java-email-validation-regex
+   * - it can take a lot of effort to validate an email address through string manipulation techniques, 
+   *   as we typically need to count and check all the character types and lengths. 
    * 
    * https://docs.microsoft.com/en-us/dotnet/standard/base-types/how-to-verify-that-strings-are-in-valid-email-format
    *
@@ -773,7 +775,7 @@ public class FkEMail
     }
 
     int email_local_part_gesamt_start = akt_index;
-    
+
     email_local_part_start = akt_index;
 
     /*
@@ -975,7 +977,7 @@ public class FkEMail
          * username@example-.com
          * username@-example.com
          */
-        
+
         if ( akt_index == email_local_part_start )
         {
           if ( pEingabe.charAt( akt_index + 1 ) == '\"' )
@@ -988,13 +990,13 @@ public class FkEMail
             return 141; // Trennzeichen: ungueltige Zeichenkombination -(
           }
         }
-        
+
         /*
          * Pruefung: Befindet sich der Leseprozess im Domain-Part ?
          * 
          * Im Domain-Part ist der Leseprozess, wenn die Position des At-Zeichens groesser als 0 ist.
          */
-        if ( position_at_zeichen > 0 ) 
+        if ( position_at_zeichen > 0 )
         {
           if ( zeichen_zaehler == 0 )
           {
@@ -1017,7 +1019,7 @@ public class FkEMail
             {
               return 20; // Trennzeichen: ungueltige Zeichenkombination "-."
             }
-            
+
             //else if ( pEingabe.charAt( akt_index - 1 ) == '.' )
             //{
             //  return 20; // Trennzeichen: ungueltige Zeichenkombination ".-"
@@ -1051,13 +1053,13 @@ public class FkEMail
           {
             return 30; // Trennzeichen: kein Beginn mit einem Punkt
           }
-          
+
           /*
            * Der erste Punkt darf nicht am gespeicherten Beginn der eMail-Adresse liegen. 
            * Wichtig bei Eckigen-Klammern, bei welchen die eMail-Adresse nicht am 
            * Index 0 beginnt.
            */
-          if ( akt_index == email_local_part_start ) 
+          if ( akt_index == email_local_part_start )
           {
             return 142; // Trennzeichen: kein Beginn mit einem Punkt
           }
@@ -1188,6 +1190,263 @@ public class FkEMail
          * wird auch die Position des letzten Punktes gesetzt.
          */
         position_letzter_punkt = akt_index;
+
+        /*
+         * ------------------------------- IP 4 ohne eckige Klammern ---------------------------------------
+         * 
+         * Nach dem AT-Zeichen kann eine IP4-Adresse ohne eckige Klammern stehen.
+         * Wie z.B. folgende eMail-Adresse:
+         * 
+         *          ip4.without.brackets@127.0.0.1
+         *          
+         * Ist das auf das AT-Zeichen folgende Zeichen eine Zahl, wird in einer 
+         * While-Schleife versucht, eine gueltige IP4 Adresse zu lesen.  
+         * 
+         * Es handelt sich um eine IP4-Adresse, wenn die nachfolgenden Zeichen 
+         * nur Ziffern und 3 Punkte sind. 
+         * 
+         * Ist eine IP4-Adresse erkannt worden, muss die Angabe nicht korrekt sein:
+         *  
+         *  byte.overflow@127.0.999.1
+         *  zu.viele.ziffern@127.0.0001.1
+         *  zu.viele.ziffern@127.0.1234.1
+         *  keine.zahl.zwischen.punkten@127...1
+         *  
+         * Alle anderen Eingaben werden nicht als IP4-Angabe gewertet und werden 
+         * durch die aeussere While-Schleife abgearbeitet. Das koennen folgende 
+         * eMail-Adressen sein:
+         * 
+         *  negative.zahl@127.0.-1.1
+         *  zu.viele.punkte@127.0..0.1
+         *  keinen.punkt.im.domain.part@127001
+         *  punkt.am.ende@127.0.0.
+         *  tld.zu.kurz@127.0.A.1
+         *  zu.viele.angaben@127.0.0.1.127.0.0.1
+         * 
+         */
+
+        char next_char = pEingabe.charAt( akt_index + 1 );
+
+        if ( ( next_char >= '0' ) && ( next_char <= '9' ) )
+        {
+          int knz_ist_ip4_adresse = 0;
+
+          int next_pos = akt_index + 1;
+
+          /*
+           * Innere While-Schleife
+           * In einer inneren While-Schleife wird die IP-Adresse geparst und 
+           * auf Gueltigkeit geprueft. 
+           * 
+           * Die innere While-Schleife laeuft bis zum Ende des Eingabestrings.
+           */
+          int ip_adresse_akt_zahl = 0;
+
+          int ip_adresse_zahlen_zaehler = 0;
+
+          int ip_adresse_zaehler_trennzeichen = 0;
+
+          int ip_adresse_pos_letzter_punkt = 0;
+
+          while ( ( next_pos < laenge_eingabe_string ) && ( next_pos != -1 ) ) //&& ( knz_ist_ip4_adresse == 0 ) )
+          {
+            /*
+             * Aktuelles Pruefzeichen
+             * Das aktuelle Zeichen wird aus der Eingabe am aktuellen Index herausgelesen. 
+             */
+            next_char = pEingabe.charAt( next_pos );
+
+            /*
+             * Die IP-Adresse besteht nur aus Zahlen und Punkten mit einem 
+             * abschliessendem "]"-Zeichen. Alle anderen Zeichen fuehren 
+             * zu dem Fehler 59 = ungueltiges Zeichen.
+             * 
+             * Es wird nur eine IP4 Adresse geprueft.
+             */
+            if ( ( next_char >= '0' ) && ( next_char <= '9' ) )
+            {
+              /*
+               * Zahlen
+               * - nicht mehr als 3 Ziffern
+               * - nicht groesser als 255 (= 1 Byte)
+               */
+
+              /*
+               * Zahlenzaehler
+               * Der Zahlenzaehler wird erhoeht.
+               * Anschliessend wird geprueft, ob schon mehr als 3 Zahlen gelsen wurden. 
+               * Ist das der Fall, wird 53 zurueckgegeben. 
+               */
+              ip_adresse_zahlen_zaehler++;
+
+              if ( ip_adresse_zahlen_zaehler > 3 )
+              {
+                knz_ist_ip4_adresse = 53; // IP4-Adressteil: zu viele Ziffern, maximal 3 Ziffern
+              }
+              else
+              {
+                /*
+                 * Berechnung Akt-Zahl
+                 * Der Wert in der Variablen "akt_zahl" wird mit 10 multipliziert und 
+                 * der Wert des aktullen Zeichens hinzugezaehlt. 
+                 * 
+                 * Der Wert des aktuellen Zeichens ist der Wert des ASCII-Code abzueglich 48.
+                 * 
+                 * Anschliessend wird geprueft, ob die Zahl groesser als 255 ist. 
+                 * Ist die Zahl groesser, wird 54 zurueckgegeben. (Byteoverflow)
+                 */
+                ip_adresse_akt_zahl = ( ip_adresse_akt_zahl * 10 ) + ( ( (int) next_char ) - 48 );
+
+                if ( ip_adresse_akt_zahl > 255 )
+                {
+                  knz_ist_ip4_adresse = 54; // IP4-Adressteil: Byte-Overflow
+                }
+              }
+            }
+            else if ( next_char == '.' )
+            {
+              /*
+               * Punkt (Trennzeichen Zahlen)
+               */
+
+              /*
+               * Pruefung: Zahlen vorhanden ?
+               * 
+               * Steht der Zahlenzaehler auf 0, wurden keine Zahlen gelesen. 
+               * In diesem Fall wird 55 zurueckgegeben.
+               */
+              if ( ip_adresse_zahlen_zaehler == 0 )
+              {
+                knz_ist_ip4_adresse = 55; // IP4-Adressteil: keine Ziffern vorhanden
+              }
+
+              /*
+               * ANMERKUNG FEHLER 63 
+               * Dieser Fehlercode kann nicht kommen, da bei 2 hintereinanderkommenden 
+               * Punkten keine Zahl gelesen worden sein kann. Dieses ist die  
+               * vorhergehende Pruefung.
+               * 
+               * Es kann auch kein anderes Zeichen gelesen worden sein, das 
+               * wuerde einen anderen Fehler verursachen.
+               */
+              // 
+              // /*
+              //  * Pruefung: 2 Punkte hintereinander ?
+              //  * Die letzte Position eines Punktes, darf nicht vor der aktuellen 
+              //  * Lesepostion liegen. Ist das der Fall, wird 63 zurueckgegeben.
+              //  */
+              // if ( ( akt_index - ip_adresse_pos_letzter_punkt ) == 1 )
+              // {
+              //   return 63; // IP4-Adressteil: keine 2 Punkte hintereinander
+              // }
+
+              /*
+               * Anzahl Trennzeichen
+               * Es duerfen nicht mehr als 3 Punkte (=Trennzeichen) gelesen werden. 
+               * Beim 4ten Punkt, wird 56 zurueckgegeben.
+               */
+              ip_adresse_zaehler_trennzeichen++;
+
+              if ( ip_adresse_zaehler_trennzeichen > 3 )
+              {
+                knz_ist_ip4_adresse = 56; // IP4-Adressteil: zu viele Trennzeichen
+              }
+
+              /*
+               * Sind alle Pruefungen fuer einen Punkt durchgefuehrt worden, 
+               * wird die Position des letzten Punktes aktualisiert. 
+               * 
+               * Es wird der Zahlenzaehler und der Wert der aktuellen Zahl auf 0 gestellt.
+               */
+              ip_adresse_pos_letzter_punkt = next_pos;
+
+              ip_adresse_zahlen_zaehler = 0;
+
+              ip_adresse_akt_zahl = 0;
+            }
+            else
+            {
+              /*
+               * Ungueltiges Zeichen
+               * Bei einem ungueltigem Zeichen wird die Variable "next_pos" auf 
+               * -2 gestellt. Nach dem darauffolgendem increment, wird die 
+               * Variable dann den Wert -1 haben, welches eine Bedingung fuer
+               * das Schleifen ende ist.
+               */
+              next_pos = -2;
+            }
+
+            next_pos++;
+          }
+
+          if ( next_pos == -1 )
+          {
+            /*
+             * Es wurde keine gueltige IP4 Adresse gelesen. 
+             * Die aeussere While-Schleife prueft die eMail-Adresse weiter
+             */
+          }
+          else if ( next_pos == laenge_eingabe_string )
+          {
+            /*
+             * Fuer eine gueltige IP4-Adresse muss der Leseprozess sich am Ende der 
+             * Eingabe befinden.
+             */
+
+            /*
+             * Anzahl Trennzeichen
+             * Fuer eine IP4-Adresse muessen 3 Punkte gelesen worden sein. 
+             */
+            if ( ip_adresse_zaehler_trennzeichen == 3 )
+            {
+              /*
+               * Der letzte Punkt darf nicht auf der vorhergehenden Punkt-Position liegen. 
+               */
+              if ( ( next_pos - ip_adresse_pos_letzter_punkt ) != 1 )
+              {
+                if ( knz_ist_ip4_adresse != 0 )
+                {
+                  /*
+                   * Wurde ein Fehler in der While-Schleife festgestellt, 
+                   * wird dieser dem Aufrufer zurueckgegeben.
+                   * 
+                   * Es handelt sich hierbei um eine IP4-Adresse, welche falsch ist.
+                   * Byte-Overflow, zwischen 2 Punkten keine Zahl, zu viele Ziffern.
+                   */
+                  return knz_ist_ip4_adresse;
+                }
+                else
+                {
+                  /*
+                   * Ist die IP4-Adresse korrekt, werden die Variablen der aeusseren 
+                   * While-Schleife auf die gueltigen Werte gesetzt.
+                   */
+                  position_letzter_punkt = ip_adresse_pos_letzter_punkt;
+
+                  akt_index = next_pos - 1; // Eine Stelle zu weit gelesen
+
+                  fkt_ergebnis_email_ok = 2; // Ergebnis ist eine eMail mit einer IP4-Adresse
+                }
+              }
+            }
+          }
+
+          /*
+           * Eine Pruefung auf den Zahlenzaehler bringt nichts. 
+           * Der Zahlenzaehler ist im eventuellen Fehlerfall hier 0. 
+           * Wuerde eine Zahl gelesen, wuerde ein Fehler bei den  
+           * Zahlen geprueft werden.
+           * 
+           * Wuerde versucht werden, den Punkt und das Abschlusszeichen 
+           * mit anderen Zeichen zu trennen, wuerde ein ungueltiges 
+           * Zeichen erkannt werden. 
+           */
+
+        }
+
+        /*
+         * ------------------------------- IP 4 ohne eckige Klammern ---------------------------------------
+         */
       }
       else if ( aktuelles_zeichen == '\\' )
       {
@@ -1200,7 +1459,7 @@ public class FkEMail
          * der Leseprozess im Domain-Part der eMail-Adresse. Dort sind diese 
          * Zeichen nicht erlaubt und es wird 21 zurueckgegeben.
          */
-        if ( position_at_zeichen > 0 ) 
+        if ( position_at_zeichen > 0 )
         {
           return 21; // Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
         }
@@ -1311,7 +1570,7 @@ public class FkEMail
         {
           return 80; // String: Ein startendes Anfuehrungszeichen muss am Anfang kommen, der Zeichenzaehler darf nicht groesser als 0 sein
         }
-        
+
         /*
          * Das aktuelle Zeichen ist hier noch ein Anfuehrungszeichen. 
          * Die nachfolgende While-Schleife wuerde nicht starten, wenn 
@@ -1367,18 +1626,11 @@ public class FkEMail
           {
             // OK - Zahlen
           }
-          else if ( ( aktuelles_zeichen == '_' ) || ( aktuelles_zeichen == '-' ) || ( aktuelles_zeichen == '@' ) || ( aktuelles_zeichen == '.' ) || 
-                    ( aktuelles_zeichen == ' ' ) || ( aktuelles_zeichen == '!' ) || ( aktuelles_zeichen == '#' ) || ( aktuelles_zeichen == '$' ) ||
-                    ( aktuelles_zeichen == '%' ) || ( aktuelles_zeichen == '&' ) || ( aktuelles_zeichen == '\'' ) || ( aktuelles_zeichen == '*' ) || 
-                    ( aktuelles_zeichen == '+' ) || ( aktuelles_zeichen == '-' ) || ( aktuelles_zeichen == '/' ) || ( aktuelles_zeichen == '=' ) || 
-                    ( aktuelles_zeichen == '?' ) || ( aktuelles_zeichen == '^' ) || ( aktuelles_zeichen == '`' ) || ( aktuelles_zeichen == '{' ) ||
-                    ( aktuelles_zeichen == '|' ) || ( aktuelles_zeichen == '}' ) || ( aktuelles_zeichen == '~' ) )
+          else if ( ( aktuelles_zeichen == '_' ) || ( aktuelles_zeichen == '-' ) || ( aktuelles_zeichen == '@' ) || ( aktuelles_zeichen == '.' ) || ( aktuelles_zeichen == ' ' ) || ( aktuelles_zeichen == '!' ) || ( aktuelles_zeichen == '#' ) || ( aktuelles_zeichen == '$' ) || ( aktuelles_zeichen == '%' ) || ( aktuelles_zeichen == '&' ) || ( aktuelles_zeichen == '\'' ) || ( aktuelles_zeichen == '*' ) || ( aktuelles_zeichen == '+' ) || ( aktuelles_zeichen == '-' ) || ( aktuelles_zeichen == '/' ) || ( aktuelles_zeichen == '=' ) || ( aktuelles_zeichen == '?' ) || ( aktuelles_zeichen == '^' ) || ( aktuelles_zeichen == '`' ) || ( aktuelles_zeichen == '{' ) || ( aktuelles_zeichen == '|' ) || ( aktuelles_zeichen == '}' ) || ( aktuelles_zeichen == '~' ) )
           {
             // OK - Sonderzeichen 1
           }
-          else if ( ( aktuelles_zeichen == '(' ) || ( aktuelles_zeichen == ')' ) || ( aktuelles_zeichen == ',' ) || ( aktuelles_zeichen == ':' ) || 
-                    ( aktuelles_zeichen == ';' ) || ( aktuelles_zeichen == '<' ) || ( aktuelles_zeichen == '>' ) || ( aktuelles_zeichen == '@' ) ||
-                    ( aktuelles_zeichen == '[' ) || ( aktuelles_zeichen == ']' )  )
+          else if ( ( aktuelles_zeichen == '(' ) || ( aktuelles_zeichen == ')' ) || ( aktuelles_zeichen == ',' ) || ( aktuelles_zeichen == ':' ) || ( aktuelles_zeichen == ';' ) || ( aktuelles_zeichen == '<' ) || ( aktuelles_zeichen == '>' ) || ( aktuelles_zeichen == '@' ) || ( aktuelles_zeichen == '[' ) || ( aktuelles_zeichen == ']' ) )
           {
             // OK - Sonderzeichen 2 = (),:;<>@[\]
           }
@@ -1881,7 +2133,7 @@ public class FkEMail
               {
                 return 43; // IP6-Adressteil: Zu wenig Trennzeichen  
               }
-              
+
               /*
                * Kombination ":]"
                * 
@@ -2800,11 +3052,11 @@ public class FkEMail
     if ( pFehlerNr == 105 ) return "Kommentar: Leerzeichentrennung im Domain-Part. Oeffnende Klammer erwartet";
 
     if ( pFehlerNr == 106 ) return "Kommentar: Domain-Part mit Kommentar nach AT-Zeichen. Erwartete Zeichenkombination \")[\".";
-    
+
     if ( pFehlerNr == 140 ) return "Trennzeichen: Kein Start mit der Zeichenfolge -\"";
     if ( pFehlerNr == 141 ) return "Trennzeichen: Kein Start mit der Zeichenfolge \"-(\"";
     if ( pFehlerNr == 142 ) return "Trennzeichen: kein Beginn mit einem Punkt";
-    
+
     return "Unbekannte Fehlernummer " + pFehlerNr;
   }
 
