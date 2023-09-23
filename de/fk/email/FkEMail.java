@@ -478,6 +478,8 @@ public class FkEMail
      *    
      *    Zeichen @
      *    
+     *       IP4 Adresse ohne Klammern
+     *    
      *    Zeichen \
      *    
      *    Sonderzeichen Local-Part
@@ -815,6 +817,36 @@ public class FkEMail
         else if ( ( aktuelles_zeichen == ' ' ) || ( aktuelles_zeichen == '(' ) || ( aktuelles_zeichen == ')' ) || ( aktuelles_zeichen == '\"' ) )
         {
           // OK ... eventuell weitere Zeichen hier zulaessig, welche zu ergaenzen waeren
+        }
+        else if ( aktuelles_zeichen == '\\' )
+        {
+
+          /*
+           * Maskiertes Zeichen 
+           * Der Leseprozess muss noch das naechste Zeichen pruefen. 
+           * Der Leseprozessindex wird um ein Zeichen weiter gestellt.
+           */
+          position_letzter_punkt++;
+
+          /*
+           * Pruefung: Stringende ?
+           */
+          if ( position_letzter_punkt == position_kommentar_ende )
+          {
+            return 83; // String: Escape-Zeichen nicht am Ende der Eingabe
+          }
+
+          /*
+           * Zeichen nach dem Backslash lesen. 
+           * Das Zeichen darf ein Backslash oder ein Anfuehrungszeichen sein. 
+           * Alle anderen Zeichen fuehren zum Fehler 84.
+           */
+          aktuelles_zeichen = pEingabe.charAt( position_letzter_punkt );
+
+          if ( ( aktuelles_zeichen != '\\' ) && ( aktuelles_zeichen != '@' ) && ( aktuelles_zeichen != ' ' ) && ( aktuelles_zeichen != '\'' ) && ( aktuelles_zeichen != '\"' ) )
+          {
+            return 84; // String: Ungueltige Escape-Sequenz im String
+          }
         }
         else
         {
@@ -2688,6 +2720,36 @@ public class FkEMail
          * Die Position der abschliessenden Klammer wird gespeichert. 
          */
         position_kommentar_ende = akt_index;
+
+        /*
+         * Leerzeichen nach Kommentar ----------------------------------------------------------------------
+         * 
+         * Nach dem Kommentar koennen noch weitere Leerzeichen bis zur eMail-Adresse folgen.
+         * Diese Leerzeichen werden mittels einer While-Schleife ueberlesen.
+         * 
+         *      "(spaces after comment)     name1.name2@domain1.tld"
+         */
+        if ( ( akt_index + 1 < laenge_eingabe_string ) && ( position_at_zeichen <= 0 ) )
+        {
+          if ( pEingabe.charAt( akt_index + 1 ) == ' ' )
+          {
+            /*
+             * aktuelles Zeichen konsumieren, bzw. Lespositon 1 weiterstellen
+             */
+            akt_index++;
+
+            /*
+             * Ueberlese alle Leerzeichen in einer While-Schleife. 
+             */
+            while ( ( akt_index < laenge_eingabe_string ) && ( pEingabe.charAt( akt_index ) == ' ' ) )
+            {
+              akt_index++;
+            }
+          }
+        }
+        /*
+         * Leerzeichen nach Kommentar ----------------------------------------------------------------------
+         */
       }
       else
       {
