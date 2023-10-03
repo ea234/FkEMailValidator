@@ -445,6 +445,7 @@ public class FkEMail
    * https://www.cocoanetics.com/2014/06/e-mail-validation/
    * https://stackoverflow.com/questions/800123/what-are-best-practices-for-validating-email-addresses-on-ios-2-0
    * https://stackoverflow.com/questions/1365407/c-sharp-code-to-validate-email-address?rq=1
+   * https://stackoverflow.com/questions/12355858/how-many-symbol-can-be-in-an-email-address
    * </pre>
    * 
    * @param pEingabe die auf eine eMail-Adresse zu pruefende Eingabe
@@ -527,6 +528,8 @@ public class FkEMail
      *          Zeichen \
      *          
      *          Zeichen )
+     *          
+     *       Leerzeichen nach Kommentar
      * 
      * Abschlusspruefungen
      */
@@ -2745,6 +2748,14 @@ public class FkEMail
             {
               akt_index++;
             }
+            
+            /*
+             * Am Schleifenende wird die Leseposition erhoeht. 
+             * Es wurde in dieser Bedingung fuer das Ueberlesen von Leerzeichen, der 
+             * aktuelle Index um eine Position zu weit erhoeht. Dass muss korrigiert 
+             * werden. Daher wird der aktuelle Index um 1 vermindert.
+             */
+            akt_index--;
           }
         }
         /*
