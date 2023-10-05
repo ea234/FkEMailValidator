@@ -2769,1175 +2769,1168 @@ class TestClassAssertTrueFalse
      *  2653 - assertIsTrue  "domain.ends.with.digit@domain2.com"                                         =   0 =  OK 
      *  2654 - assertIsFalse "tld.starts.with.digit@domain.2com"                                          =  23 =  OK    Zeichen: Top-Level-Domain darf nicht mit Zahl beginnen
      *  2655 - assertIsTrue  "tld.ends.with.digit@domain.com2"                                            =   0 =  OK 
-     *  2656 - assertIsTrue  "ackerndes.enter@web.de"                                                     =   0 =  OK 
-     *  2657 - assertIsTrue  "baecker den ernst@web.de"                                                   =  22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  2658 - assertIsTrue  "ackerndes.enter@web.de"                                                     =   0 =  OK 
-     *  2659 - assertIsTrue  "baecker.den.ernst@web.de"                                                   =   0 =  OK 
-     *  2660 - assertIsTrue  "denkbares.center@web.de"                                                    =   0 =  OK 
-     *  2661 - assertIsTrue  "rabe.neckt.sender@web.de"                                                   =   0 =  OK 
-     *  2662 - assertIsTrue  "baer.ecken.trends@web.de"                                                   =   0 =  OK 
-     *  2663 - assertIsTrue  "bast.ecken.redner@web.de"                                                   =   0 =  OK 
-     *  2664 - assertIsTrue  "neserdna.trebkce@web.de"                                                    =   0 =  OK 
-     *  2665 - assertIsFalse "email@=qowaiv.com"                                                          =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-     *  2666 - assertIsFalse "email@plus+.com"                                                            =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-     *  2667 - assertIsFalse "email@domain.com>"                                                          =  16 =  OK    Struktur: keine oeffnende eckige Klammer gefunden.
-     *  2668 - assertIsFalse "email@mailto:domain.com"                                                    =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  2669 - assertIsFalse "mailto:mailto:email@domain.com"                                             =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  2670 - assertIsFalse "email@-domain.com"                                                          =  20 =  OK    Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
-     *  2671 - assertIsFalse "email@domain-.com"                                                          =  20 =  OK    Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
-     *  2672 - assertIsFalse "email@domain.com-"                                                          =  24 =  OK    Zeichen: Kein Sonderzeichen am Ende der eMail-Adresse
-     *  2673 - assertIsFalse "email@{leftbracket.com"                                                     =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-     *  2674 - assertIsFalse "email@rightbracket}.com"                                                    =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-     *  2675 - assertIsFalse "email@pp|e.com"                                                             =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-     *  2676 - assertIsTrue  "email@domain.domain.domain.com.com"                                         =   0 =  OK 
-     *  2677 - assertIsTrue  "email@domain.domain.domain.domain.com.com"                                  =   0 =  OK 
-     *  2678 - assertIsTrue  "email@domain.domain.domain.domain.domain.com.com"                           =   0 =  OK 
-     *  2679 - assertIsFalse "unescaped white space@fake$com"                                             =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  2680 - assertIsTrue  "\"Hans.\"@test.de"                                                          =   1 =  OK 
-     *  2681 - assertIsTrue  "\"Hans.\\"\"@test.de"                                                       =   1 =  OK 
-     *  2682 - assertIsTrue  "\"\\"Hans.\\"\"@test.de"                                                    =   1 =  OK 
-     *  2683 - assertIsTrue  "\\\"Hans.\\"\"@test.de"                                                     =   1 =  OK 
-     *  2684 - assertIsTrue  "\".John.Doe\"@example.com"                                                  =   1 =  OK 
-     *  2685 - assertIsTrue  "\"John.Doe.\"@example.com"                                                  =   1 =  OK 
-     *  2686 - assertIsTrue  "\"John..Doe\"@example.com"                                                  =   1 =  OK 
-     *  2687 - assertIsTrue  "john.smith(comment)@example.com"                                            =   6 =  OK 
-     *  2688 - assertIsTrue  "(comment)john.smith@example.com"                                            =   6 =  OK 
-     *  2689 - assertIsTrue  "john.smith@(comment)example.com"                                            =   6 =  OK 
-     *  2690 - assertIsTrue  "john.smith@example.com(comment)"                                            =   6 =  OK 
-     *  2691 - assertIsTrue  "john.smith@example.com"                                                     =   0 =  OK 
-     *  2692 - assertIsTrue  "joeuser+tag@example.com"                                                    =   0 =  OK 
-     *  2693 - assertIsTrue  "jsmith@[192.168.2.1]"                                                       =   2 =  OK 
-     *  2694 - assertIsTrue  "jsmith@[IPv6:2001:db8::1]"                                                  =   4 =  OK 
-     *  2695 - assertIsFalse "john.smith@exampl(comment)e.com"                                            = 100 =  OK    Kommentar: Kommentar muss am Stringende enden
-     *  2696 - assertIsFalse "john.s(comment)mith@example.com"                                            =  97 =  OK    Kommentar: Nach dem Kommentar muss ein AT-Zeichen kommen
-     *  2697 - assertIsFalse "john.smith(comment)@(comment)example.com"                                   =  99 =  OK    Kommentar: kein zweiter Kommentar gueltig
-     *  2698 - assertIsFalse "john.smith(com@ment)example.com"                                            =  97 =  OK    Kommentar: Nach dem Kommentar muss ein AT-Zeichen kommen
-     *  2699 - assertIsFalse "\"\"Joe Smith email@domain.com"                                             =  85 =  OK    String: Leerstring in Anfuehrungszeichen
-     *  2700 - assertIsFalse "\"\"Joe Smith' email@domain.com"                                            =  85 =  OK    String: Leerstring in Anfuehrungszeichen
-     *  2701 - assertIsFalse "\"\"Joe Smith\"\"email@domain.com"                                          =  85 =  OK    String: Leerstring in Anfuehrungszeichen
-     *  2702 - assertIsFalse "\"Joe Smith\" email@domain.com"                                             =  87 =  OK    String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
-     *  2703 - assertIsFalse "\"Joe\tSmith\".email@domain.com"                                            =  84 =  OK    String: Ungueltige Escape-Sequenz im String
-     *  2704 - assertIsFalse "\"Joe\"Smith\" email@domain.com"                                            =  87 =  OK    String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
-     *  2705 - assertIsFalse "\"Joe Smith email@domain.com"                                               =  86 =  OK    String: kein abschliessendes Anfuehrungszeichen gefunden.
-     *  2706 - assertIsFalse "\"Joe Smith' email@domain.com"                                              =  86 =  OK    String: kein abschliessendes Anfuehrungszeichen gefunden.
-     *  2707 - assertIsFalse "\"Joe Smith\"email@domain.com"                                              =  87 =  OK    String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
-     *  2708 - assertIsFalse "Joe Smith &lt;email@domain.com&gt;"                                         =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  2709 - assertIsTrue  "{john'doe}@my.server"                                                       =   0 =  OK 
-     *  2710 - assertIsTrue  "email@domain-one.com"                                                       =   0 =  OK 
-     *  2711 - assertIsTrue  "_______@domain.com"                                                         =   0 =  OK 
-     *  2712 - assertIsTrue  "?????@domain.com"                                                           =   0 =  OK 
-     *  2713 - assertIsFalse "local@?????.com"                                                            =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-     *  2714 - assertIsTrue  "\"B3V3RLY H1LL$\"@example.com"                                              =   1 =  OK 
-     *  2715 - assertIsTrue  "\"-- --- .. -.\"@sh.de"                                                     =   1 =  OK 
-     *  2716 - assertIsTrue  "{{-^-}{-=-}{-^-}}@GHI.JKL"                                                  =   0 =  OK 
-     *  2717 - assertIsTrue  "#!$%&'*+-/=?^_`{}|~@eksample.org"                                           =   0 =  OK 
-     *  2718 - assertIsFalse "eksample@#!$%&'*+-/=?^_`{}|~.org"                                           =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-     *  2719 - assertIsTrue  "$!{${$!{${!{$$$!$!${$!{.${!{$!{$$!${$!$!$$$!$!{$@WeB.dE"                    =   0 =  OK 
-     *  2720 - assertIsFalse "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2.4}"                            =  51 =  OK    IP-Adressteil: IP-Adresse vor AT-Zeichen
-     *  2721 - assertIsTrue  "\"\\" + \\"select * from user\\" + \\"\"@example.de"                        =   1 =  OK 
-     *  2722 - assertIsFalse "${jndi:ldap://CheckThat.HowLovely.com/a}@log4j.com"                         =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  2723 - assertIsFalse "ReDoSaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" =  12 =  OK    Laenge: Laengenbegrenzungen stimmen nicht
-     *  2724 - assertIsFalse "\"Doug \"Ace\" L.\"@example.com"                                            =  87 =  OK    String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
-     *  2725 - assertIsFalse "\"Joe Q. Public\" <john.q.public@example.com>"                              =  18 =  OK    Struktur: Fehler in Adress-String-X
-     *  2726 - assertIsFalse "\"Joe\Blow\"@example.com"                                                   =  84 =  OK    String: Ungueltige Escape-Sequenz im String
-     *  2727 - assertIsFalse "\"qu@example.com"                                                           =  86 =  OK    String: kein abschliessendes Anfuehrungszeichen gefunden.
-     *  2728 - assertIsFalse "\$A12345@example.com"                                                       =  84 =  OK    String: Ungueltige Escape-Sequenz im String
-     *  2729 - assertIsFalse "_@bde.cc,"                                                                  =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  2730 - assertIsFalse "a..b@bde.cc"                                                                =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
-     *  2731 - assertIsFalse "a.\"b@c\".x.\"@\".d.e@f.g@"                                                 =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
-     *  2732 - assertIsFalse "a.b@example,co.de"                                                          =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  2733 - assertIsFalse "a.b@example,com"                                                            =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  2734 - assertIsFalse "a>b@somedomain.com"                                                         =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  2735 - assertIsFalse "a@.com"                                                                     =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
-     *  2736 - assertIsFalse "a@b."                                                                       =  12 =  OK    Laenge: Laengenbegrenzungen stimmen nicht
-     *  2737 - assertIsFalse "a@b.-de.cc"                                                                 =  20 =  OK    Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
-     *  2738 - assertIsFalse "a@b._de.cc"                                                                 =  20 =  OK    Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
-     *  2739 - assertIsFalse "a@bde-.cc"                                                                  =  20 =  OK    Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
-     *  2740 - assertIsFalse "a@bde.c-c"                                                                  =   0 =  #### FEHLER ####    eMail-Adresse korrekt
-     *  2741 - assertIsFalse "a@bde.cc."                                                                  =  36 =  OK    Trennzeichen: der letzte Punkt darf nicht am Ende liegen
-     *  2742 - assertIsFalse "a@bde_.cc"                                                                  =  20 =  OK    Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
-     *  2743 - assertIsFalse "a\"b(c)d.e:f;g<h>i[j\k]l@example.com"                                       =  80 =  OK    String: Ein startendes Anfuehrungszeichen muss am Anfang kommen, der Zeichenzaehler darf nicht groesser als 0 sein
-     *  2744 - assertIsFalse "ab@120.25.1111.120"                                                         =  53 =  OK    IP4-Adressteil: zu viele Ziffern, maximal 3 Ziffern
-     *  2745 - assertIsFalse "ab@120.256.256.120"                                                         =  54 =  OK    IP4-Adressteil: Byte-Overflow
-     *  2746 - assertIsFalse "ab@188.120.150.10]"                                                         =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  2747 - assertIsFalse "ab@988.120.150.10"                                                          =  54 =  OK    IP4-Adressteil: Byte-Overflow
-     *  2748 - assertIsFalse "ab@[188.120.150.10"                                                         =  61 =  OK    IP-Adressteil: Kein Abschluss der IP-Adresse auf ']'
-     *  2749 - assertIsFalse "ab@[188.120.150.10].com"                                                    =  60 =  OK    IP4-Adressteil: Abschlusszeichen "]" muss am Ende stehen
-     *  2750 - assertIsFalse "ab@b+de.cc"                                                                 =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-     *  2751 - assertIsFalse "ab@sd@dd"                                                                   =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
-     *  2752 - assertIsFalse "abc.@somedomain.com"                                                        =  32 =  OK    Trennzeichen: ungueltige Zeichenkombination ".@"
-     *  2753 - assertIsFalse "abc@def@example.com"                                                        =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
-     *  2754 - assertIsFalse "abc@gmail..com"                                                             =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
-     *  2755 - assertIsFalse "abc@gmail.com.."                                                            =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
-     *  2756 - assertIsFalse "abc\"defghi\"xyz@example.com"                                               =  80 =  OK    String: Ein startendes Anfuehrungszeichen muss am Anfang kommen, der Zeichenzaehler darf nicht groesser als 0 sein
-     *  2757 - assertIsFalse "abc\@example.com"                                                           =  28 =  OK    AT-Zeichen: kein AT-Zeichen gefunden
-     *  2758 - assertIsFalse "abc\\"def\\"ghi@example.com"                                                =  84 =  OK    String: Ungueltige Escape-Sequenz im String
-     *  2759 - assertIsFalse "abc\\@def@example.com"                                                      =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
-     *  2760 - assertIsFalse "as3d@dac.coas-"                                                             =  24 =  OK    Zeichen: Kein Sonderzeichen am Ende der eMail-Adresse
-     *  2761 - assertIsFalse "asd@dasd@asd.cm"                                                            =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
-     *  2762 - assertIsFalse "check@this..com"                                                            =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
-     *  2763 - assertIsFalse "check@thiscom"                                                              =  34 =  OK    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
-     *  2764 - assertIsFalse "da23@das..com"                                                              =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
-     *  2765 - assertIsFalse "dad@sds"                                                                    =  34 =  OK    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
-     *  2766 - assertIsFalse "dasddas-@.com"                                                              =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
-     *  2767 - assertIsFalse "david.gilbertson@SOME+THING-ODD!!.com"                                      =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-     *  2768 - assertIsFalse "dot.@example.com"                                                           =  32 =  OK    Trennzeichen: ungueltige Zeichenkombination ".@"
-     *  2769 - assertIsFalse "doug@"                                                                      =  12 =  OK    Laenge: Laengenbegrenzungen stimmen nicht
-     *  2770 - assertIsFalse "email( (nested) )@plus.com"                                                 =  92 =  OK    Kommentar: Ungueltiges Zeichen im Kommentar
-     *  2771 - assertIsFalse "email(with @ in comment)plus.com"                                           =  97 =  OK    Kommentar: Nach dem Kommentar muss ein AT-Zeichen kommen
-     *  2772 - assertIsFalse "email)mirror(@plus.com"                                                     =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  2773 - assertIsFalse "email..email@domain.com"                                                    =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
-     *  2774 - assertIsFalse "email..email@domain.com"                                                    =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
-     *  2775 - assertIsFalse "email.@domain.com"                                                          =  32 =  OK    Trennzeichen: ungueltige Zeichenkombination ".@"
-     *  2776 - assertIsFalse "email.domain.com"                                                           =  28 =  OK    AT-Zeichen: kein AT-Zeichen gefunden
-     *  2777 - assertIsFalse "email@#hash.com"                                                            =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-     *  2778 - assertIsFalse "email@.domain.com"                                                          =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
-     *  2779 - assertIsFalse "email@111.222.333"                                                          =  23 =  OK    Zeichen: Top-Level-Domain darf nicht mit Zahl beginnen
-     *  2780 - assertIsFalse "email@111.222.333.256"                                                      =  54 =  OK    IP4-Adressteil: Byte-Overflow
-     *  2781 - assertIsFalse "email@123.123.123.123]"                                                     =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  2782 - assertIsFalse "email@123.123.[123.123]"                                                    =  52 =  OK    IP-Adressteil: IP-Adresse muss direkt nach dem AT-Zeichen kommen (korrekte Kombination "@[")
-     *  2783 - assertIsFalse "email@=qowaiv.com"                                                          =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-     *  2784 - assertIsFalse "email@[123.123.123.123"                                                     =  61 =  OK    IP-Adressteil: Kein Abschluss der IP-Adresse auf ']'
-     *  2785 - assertIsFalse "email@[123.123.123].123"                                                    =  57 =  OK    IP4-Adressteil: IP-Adresse Trennzeichenanzahl muss 3 sein
-     *  2786 - assertIsFalse "email@caret^xor.com"                                                        =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-     *  2787 - assertIsFalse "email@colon:colon.com"                                                      =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  2788 - assertIsFalse "email@dollar$.com"                                                          =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-     *  2789 - assertIsFalse "email@domain"                                                               =  34 =  OK    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
-     *  2790 - assertIsFalse "email@domain-.com"                                                          =  20 =  OK    Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
-     *  2791 - assertIsFalse "email@domain..com"                                                          =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
-     *  2792 - assertIsFalse "email@domain.com-"                                                          =  24 =  OK    Zeichen: Kein Sonderzeichen am Ende der eMail-Adresse
-     *  2793 - assertIsFalse "email@domain.com."                                                          =  36 =  OK    Trennzeichen: der letzte Punkt darf nicht am Ende liegen
-     *  2794 - assertIsFalse "email@domain.com."                                                          =  36 =  OK    Trennzeichen: der letzte Punkt darf nicht am Ende liegen
-     *  2795 - assertIsFalse "email@domain.com>"                                                          =  16 =  OK    Struktur: keine oeffnende eckige Klammer gefunden.
-     *  2796 - assertIsFalse "email@domain@domain.com"                                                    =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
-     *  2797 - assertIsFalse "email@example"                                                              =  34 =  OK    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
-     *  2798 - assertIsFalse "email@example..com"                                                         =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
-     *  2799 - assertIsFalse "email@example.co.uk."                                                       =  36 =  OK    Trennzeichen: der letzte Punkt darf nicht am Ende liegen
-     *  2800 - assertIsFalse "email@example.com "                                                         =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  2801 - assertIsFalse "email@exclamation!mark.com"                                                 =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-     *  2802 - assertIsFalse "email@grave`accent.com"                                                     =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-     *  2803 - assertIsFalse "email@mailto:domain.com"                                                    =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  2804 - assertIsFalse "email@obelix*asterisk.com"                                                  =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-     *  2805 - assertIsFalse "email@plus+.com"                                                            =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-     *  2806 - assertIsFalse "email@plus.com (not closed comment"                                         =  93 =  OK    Kommentar: kein abschliessendes Zeichen fuer den Komentar gefunden. ')' erwartet
-     *  2807 - assertIsFalse "email@p|pe.com"                                                             =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-     *  2808 - assertIsFalse "email@question?mark.com"                                                    =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-     *  2809 - assertIsFalse "email@r&amp;d.com"                                                          =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-     *  2810 - assertIsFalse "email@rightbracket}.com"                                                    =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-     *  2811 - assertIsFalse "email@wave~tilde.com"                                                       =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-     *  2812 - assertIsFalse "email@{leftbracket.com"                                                     =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-     *  2813 - assertIsFalse "f...bar@gmail.com"                                                          =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
-     *  2814 - assertIsFalse "fa ke@false.com"                                                            =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  2815 - assertIsFalse "fake@-false.com"                                                            =  20 =  OK    Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
-     *  2816 - assertIsFalse "fake@fal se.com"                                                            = 105 =  OK    Kommentar: Leerzeichentrennung im Domain-Part. Oeffnende Klammer erwartet
-     *  2817 - assertIsFalse "fdsa"                                                                       =  12 =  OK    Laenge: Laengenbegrenzungen stimmen nicht
-     *  2818 - assertIsFalse "fdsa@"                                                                      =  12 =  OK    Laenge: Laengenbegrenzungen stimmen nicht
-     *  2819 - assertIsFalse "fdsa@fdsa"                                                                  =  34 =  OK    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
-     *  2820 - assertIsFalse "fdsa@fdsa."                                                                 =  36 =  OK    Trennzeichen: der letzte Punkt darf nicht am Ende liegen
-     *  2821 - assertIsFalse "foo.bar#gmail.co.u"                                                         =  28 =  OK    AT-Zeichen: kein AT-Zeichen gefunden
-     *  2822 - assertIsFalse "foo.bar@machine.sub\@domain.example.museum"                                 =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-     *  2823 - assertIsFalse "foo@bar@machine.subdomain.example.museum"                                   =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
-     *  2824 - assertIsFalse "foo~&(&)(@bar.com"                                                          =  97 =  OK    Kommentar: Nach dem Kommentar muss ein AT-Zeichen kommen
-     *  2825 - assertIsFalse "gatsby@f.sc.ot.t.f.i.tzg.era.l.d."                                          =  36 =  OK    Trennzeichen: der letzte Punkt darf nicht am Ende liegen
-     *  2826 - assertIsFalse "get_at_m.e@gmail"                                                           =  34 =  OK    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
-     *  2827 - assertIsFalse "hallo2ww22@example....caaaao"                                               =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
-     *  2828 - assertIsFalse "hallo@example.coassjj#sswzazaaaa"                                           =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-     *  2829 - assertIsFalse "hello world@example.com"                                                    =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  2830 - assertIsFalse "invalid.email.com"                                                          =  28 =  OK    AT-Zeichen: kein AT-Zeichen gefunden
-     *  2831 - assertIsFalse "invalid@email@domain.com"                                                   =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
-     *  2832 - assertIsFalse "isis@100%.nl"                                                               =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-     *  2833 - assertIsFalse "j..s@proseware.com"                                                         =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
-     *  2834 - assertIsFalse "j.@server1.proseware.com"                                                   =  32 =  OK    Trennzeichen: ungueltige Zeichenkombination ".@"
-     *  2835 - assertIsFalse "jane@jungle.com: | /usr/bin/vacation"                                       =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  2836 - assertIsFalse "journaldev"                                                                 =  34 =  OK    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
-     *  2837 - assertIsFalse "journaldev()*@gmail.com"                                                    =  97 =  OK    Kommentar: Nach dem Kommentar muss ein AT-Zeichen kommen
-     *  2838 - assertIsFalse "journaldev..2002@gmail.com"                                                 =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
-     *  2839 - assertIsFalse "journaldev.@gmail.com"                                                      =  32 =  OK    Trennzeichen: ungueltige Zeichenkombination ".@"
-     *  2840 - assertIsFalse "journaldev123@.com"                                                         =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
-     *  2841 - assertIsFalse "journaldev123@.com.com"                                                     =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
-     *  2842 - assertIsFalse "journaldev123@gmail.a"                                                      =  14 =  OK    Laenge: Top-Level-Domain muss mindestens 2 Stellen lang sein.
-     *  2843 - assertIsFalse "journaldev@%*.com"                                                          =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-     *  2844 - assertIsFalse "journaldev@.com.my"                                                         =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
-     *  2845 - assertIsFalse "journaldev@gmail.com.1a"                                                    =  23 =  OK    Zeichen: Top-Level-Domain darf nicht mit Zahl beginnen
-     *  2846 - assertIsFalse "journaldev@journaldev@gmail.com"                                            =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
-     *  2847 - assertIsFalse "js@proseware..com"                                                          =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
-     *  2848 - assertIsFalse "mailto:email@domain.com"                                                    =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  2849 - assertIsFalse "mailto:mailto:email@domain.com"                                             =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  2850 - assertIsFalse "me..2002@gmail.com"                                                         =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
-     *  2851 - assertIsFalse "me.@gmail.com"                                                              =  32 =  OK    Trennzeichen: ungueltige Zeichenkombination ".@"
-     *  2852 - assertIsFalse "me123@.com"                                                                 =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
-     *  2853 - assertIsFalse "me123@.com.com"                                                             =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
-     *  2854 - assertIsFalse "me@%*.com"                                                                  =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-     *  2855 - assertIsFalse "me@.com.my"                                                                 =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
-     *  2856 - assertIsFalse "me@gmail.com.1a"                                                            =  23 =  OK    Zeichen: Top-Level-Domain darf nicht mit Zahl beginnen
-     *  2857 - assertIsFalse "me@me@gmail.com"                                                            =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
-     *  2858 - assertIsFalse "myemail@@sample.com"                                                        =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
-     *  2859 - assertIsFalse "myemail@sa@mple.com"                                                        =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
-     *  2860 - assertIsFalse "myemailsample.com"                                                          =  28 =  OK    AT-Zeichen: kein AT-Zeichen gefunden
-     *  2861 - assertIsFalse "ote\"@example.com"                                                          =  80 =  OK    String: Ein startendes Anfuehrungszeichen muss am Anfang kommen, der Zeichenzaehler darf nicht groesser als 0 sein
-     *  2862 - assertIsFalse "pio_pio@#factory.com"                                                       =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-     *  2863 - assertIsFalse "pio_pio@factory.c#om"                                                       =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-     *  2864 - assertIsFalse "pio_pio@factory.c*om"                                                       =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-     *  2865 - assertIsFalse "plain.address"                                                              =  28 =  OK    AT-Zeichen: kein AT-Zeichen gefunden
-     *  2866 - assertIsFalse "plainaddress"                                                               =  34 =  OK    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
-     *  2867 - assertIsFalse "tarzan@jungle.org,jane@jungle.org"                                          =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  2868 - assertIsFalse "this is not valid@email$com"                                                =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  2869 - assertIsFalse "this\ still\\"not\allowed@example.com"                                      =  84 =  OK    String: Ungueltige Escape-Sequenz im String
-     *  2870 - assertIsFalse "two..dot@example.com"                                                       =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
-     *  2871 - assertIsFalse "user#domain.com"                                                            =  28 =  OK    AT-Zeichen: kein AT-Zeichen gefunden
-     *  2872 - assertIsFalse "username@yahoo..com"                                                        =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
-     *  2873 - assertIsFalse "username@yahoo.c"                                                           =  14 =  OK    Laenge: Top-Level-Domain muss mindestens 2 Stellen lang sein.
-     *  2874 - assertIsTrue  "username@domain.com"                                                        =   0 =  OK 
-     *  2875 - assertIsTrue  "_username@domain.com"                                                       =   0 =  OK 
-     *  2876 - assertIsTrue  "username_@domain.com"                                                       =   0 =  OK 
-     *  2877 - assertIsFalse "xxx@u*.com"                                                                 =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-     *  2878 - assertIsFalse "xxxx..1234@yahoo.com"                                                       =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
-     *  2879 - assertIsFalse "xxxx.ourearth.com"                                                          =  28 =  OK    AT-Zeichen: kein AT-Zeichen gefunden
-     *  2880 - assertIsFalse "xxxx123@gmail.b"                                                            =  14 =  OK    Laenge: Top-Level-Domain muss mindestens 2 Stellen lang sein.
-     *  2881 - assertIsFalse "xxxx@.com.my"                                                               =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
-     *  2882 - assertIsFalse "xxxx@.org.org"                                                              =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
-     *  2883 - assertIsFalse "xxxxx()*@gmail.com"                                                         =  97 =  OK    Kommentar: Nach dem Kommentar muss ein AT-Zeichen kommen
-     *  2884 - assertIsFalse "{something}@{something}.{something}"                                        =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-     *  2885 - assertIsTrue  "!def!xyz%abc@example.com"                                                   =   0 =  OK 
-     *  2886 - assertIsTrue  "!sd@gh.com"                                                                 =   0 =  OK 
-     *  2887 - assertIsTrue  "$A12345@example.com"                                                        =   0 =  OK 
-     *  2888 - assertIsTrue  "%20f3v34g34@gvvre.com"                                                      =   0 =  OK 
-     *  2889 - assertIsTrue  "%2@gmail.com"                                                               =   0 =  OK 
-     *  2890 - assertIsTrue  "--@ooo.ooo"                                                                 =   0 =  OK 
-     *  2891 - assertIsTrue  "-@bde.cc"                                                                   =   0 =  OK 
-     *  2892 - assertIsTrue  "-asd@das.com"                                                               =   0 =  OK 
-     *  2893 - assertIsTrue  "1234567890@domain.com"                                                      =   0 =  OK 
-     *  2894 - assertIsTrue  "1@domain.com"                                                               =   0 =  OK 
-     *  2895 - assertIsTrue  "1@gmail.com"                                                                =   0 =  OK 
-     *  2896 - assertIsTrue  "1_example@something.gmail.com"                                              =   0 =  OK 
-     *  2897 - assertIsTrue  "2@bde.cc"                                                                   =   0 =  OK 
-     *  2898 - assertIsTrue  "3c296rD3HNEE@d139c.a51"                                                     =   0 =  OK 
-     *  2899 - assertIsTrue  "<boss@nil.test>"                                                            =   0 =  OK 
-     *  2900 - assertIsTrue  "<john@doe.com>"                                                             =   0 =  OK 
-     *  2901 - assertIsTrue  "A__z/J0hn.sm{it!}h_comment@example.com.co"                                  =   0 =  OK 
-     *  2902 - assertIsTrue  "Abc.123@example.com"                                                        =   0 =  OK 
-     *  2903 - assertIsTrue  "Abc@10.42.0.1"                                                              =   2 =  OK 
-     *  2904 - assertIsTrue  "Abc@example.com"                                                            =   0 =  OK 
-     *  2905 - assertIsTrue  "D.Oy'Smith@gmail.com"                                                       =   0 =  OK 
-     *  2906 - assertIsTrue  "Fred\ Bloggs@example.com"                                                   =   0 =  OK 
-     *  2907 - assertIsTrue  "Joe.\\Blow@example.com"                                                     =   0 =  OK 
-     *  2908 - assertIsTrue  "John <john@doe.com>"                                                        =   0 =  OK 
-     *  2909 - assertIsTrue  "mymail\@hello@hotmail.com"                                                  =   0 =  OK 
-     *  2910 - assertIsTrue  "PN=Joe/OU=X400/@gateway.com"                                                =   0 =  OK 
-     *  2911 - assertIsTrue  "This is <john@127.0.0.1>"                                                   =   2 =  OK 
-     *  2912 - assertIsTrue  "This is <john@[127.0.0.1]>"                                                 =   2 =  OK 
-     *  2913 - assertIsTrue  "Who? <one@y.test>"                                                          =  18 =  #### FEHLER ####    Struktur: Fehler in Adress-String-X
-     *  2914 - assertIsTrue  "\" \"@example.org"                                                          =   1 =  OK 
-     *  2915 - assertIsTrue  "\"%2\"@gmail.com"                                                           =   1 =  OK 
-     *  2916 - assertIsTrue  "\"Abc@def\"@example.com"                                                    =   1 =  OK 
-     *  2917 - assertIsTrue  "\"Abc\@def\"@example.com"                                                   =   1 =  OK 
-     *  2918 - assertIsTrue  "\"Doug \\"Ace\\" L.\"@example.com"                                          =   1 =  OK 
-     *  2919 - assertIsTrue  "\"Fred Bloggs\"@example.com"                                                =   1 =  OK 
-     *  2920 - assertIsTrue  "\"Fred\ Bloggs\"@example.com"                                               =   1 =  OK 
-     *  2921 - assertIsTrue  "\"Giant; \\"Big\\" Box\" <sysservices@example.net>"                         =  18 =  #### FEHLER ####    Struktur: Fehler in Adress-String-X
-     *  2922 - assertIsTrue  "\"Joe\\Blow\"@example.com"                                                  =   1 =  OK 
-     *  2923 - assertIsTrue  "\"Look at all these spaces!\"@example.com"                                  =   1 =  OK 
-     *  2924 - assertIsTrue  "\"a..b\"@gmail.com"                                                         =   1 =  OK 
-     *  2925 - assertIsTrue  "\"a@b\"@example.com"                                                        =   1 =  OK 
-     *  2926 - assertIsTrue  "\"a_b\"@gmail.com"                                                          =   1 =  OK 
-     *  2927 - assertIsTrue  "\"abcdefghixyz\"@example.com"                                               =   1 =  OK 
-     *  2928 - assertIsTrue  "\"cogwheel the orange\"@example.com"                                        =   1 =  OK 
-     *  2929 - assertIsTrue  "\"foo\@bar\"@Something.com"                                                 =   1 =  OK 
-     *  2930 - assertIsTrue  "\"j\\"s\"@proseware.com"                                                    =   1 =  OK 
-     *  2931 - assertIsTrue  "\"myemail@sa\"@mple.com"                                                    =   1 =  OK 
-     *  2932 - assertIsTrue  "_-_@bde.cc"                                                                 =   0 =  OK 
-     *  2933 - assertIsTrue  "_@gmail.com"                                                                =   0 =  OK 
-     *  2934 - assertIsTrue  "_dasd@sd.com"                                                               =   0 =  OK 
-     *  2935 - assertIsTrue  "_dasd_das_@9.com"                                                           =   0 =  OK 
-     *  2936 - assertIsTrue  "_somename@example.com"                                                      =   0 =  OK 
-     *  2937 - assertIsTrue  "a&d@somedomain.com"                                                         =   0 =  OK 
-     *  2938 - assertIsTrue  "a*d@somedomain.com"                                                         =   0 =  OK 
-     *  2939 - assertIsTrue  "a+b@bde.cc"                                                                 =   0 =  OK 
-     *  2940 - assertIsTrue  "a+b@c.com"                                                                  =   0 =  OK 
-     *  2941 - assertIsTrue  "a-b@bde.cc"                                                                 =   0 =  OK 
-     *  2942 - assertIsTrue  "a.a@test.com"                                                               =   0 =  OK 
-     *  2943 - assertIsTrue  "a.b@com"                                                                    =  34 =  #### FEHLER ####    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
-     *  2944 - assertIsTrue  "a/d@somedomain.com"                                                         =   0 =  OK 
-     *  2945 - assertIsTrue  "a2@bde.cc"                                                                  =   0 =  OK 
-     *  2946 - assertIsTrue  "a@123.45.67.89"                                                             =   2 =  OK 
-     *  2947 - assertIsTrue  "a@b.c.com"                                                                  =   0 =  OK 
-     *  2948 - assertIsTrue  "a@b.com"                                                                    =   0 =  OK 
-     *  2949 - assertIsTrue  "a@bc.com"                                                                   =   0 =  OK 
-     *  2950 - assertIsTrue  "a@bcom"                                                                     =  34 =  #### FEHLER ####    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
-     *  2951 - assertIsTrue  "a@domain.com"                                                               =   0 =  OK 
-     *  2952 - assertIsTrue  "a__z@provider.com"                                                          =   0 =  OK 
-     *  2953 - assertIsTrue  "a_z%@gmail.com"                                                             =   0 =  OK 
-     *  2954 - assertIsTrue  "aaron@theinfo.org"                                                          =   0 =  OK 
-     *  2955 - assertIsTrue  "ab@288.120.150.10.com"                                                      =   0 =  OK 
-     *  2956 - assertIsTrue  "ab@[120.254.254.120]"                                                       =   2 =  OK 
-     *  2957 - assertIsTrue  "ab@b-de.cc"                                                                 =   0 =  OK 
-     *  2958 - assertIsTrue  "ab@c.com"                                                                   =   0 =  OK 
-     *  2959 - assertIsTrue  "ab_c@bde.cc"                                                                =   0 =  OK 
-     *  2960 - assertIsTrue  "abc.\"defghi\".xyz@example.com"                                             =   1 =  OK 
-     *  2961 - assertIsTrue  "abc.efg@gmail.com"                                                          =   0 =  OK 
-     *  2962 - assertIsTrue  "abc.xyz@gmail.com.in"                                                       =   0 =  OK 
-     *  2963 - assertIsTrue  "abc123xyz@asdf.co.in"                                                       =   0 =  OK 
-     *  2964 - assertIsTrue  "abc1_xyz1@gmail1.com"                                                       =   0 =  OK 
-     *  2965 - assertIsTrue  "abc@abc.abc"                                                                =   0 =  OK 
-     *  2966 - assertIsTrue  "abc@abc.abcd"                                                               =   0 =  OK 
-     *  2967 - assertIsTrue  "abc@abc.abcde"                                                              =   0 =  OK 
-     *  2968 - assertIsTrue  "abc@abc.co.in"                                                              =   0 =  OK 
-     *  2969 - assertIsTrue  "abc@abc.com.com.com.com"                                                    =   0 =  OK 
-     *  2970 - assertIsTrue  "abc@gmail.com.my"                                                           =   0 =  OK 
-     *  2971 - assertIsTrue  "abc\@def@example.com"                                                       =   0 =  OK 
-     *  2972 - assertIsTrue  "abc\\@example.com"                                                          =   0 =  OK 
-     *  2973 - assertIsTrue  "abcxyz123@qwert.com"                                                        =   0 =  OK 
-     *  2974 - assertIsTrue  "alex@example.com"                                                           =   0 =  OK 
-     *  2975 - assertIsTrue  "alireza@test.co.uk"                                                         =   0 =  OK 
-     *  2976 - assertIsTrue  "asd-@asd.com"                                                               =   0 =  OK 
-     *  2977 - assertIsTrue  "begeddov@jfinity.com"                                                       =   0 =  OK 
-     *  2978 - assertIsTrue  "check@this.com"                                                             =   0 =  OK 
-     *  2979 - assertIsTrue  "cog@wheel.com"                                                              =   0 =  OK 
-     *  2980 - assertIsTrue  "customer/department=shipping@example.com"                                   =   0 =  OK 
-     *  2981 - assertIsTrue  "d._.___d@gmail.com"                                                         =   0 =  OK 
-     *  2982 - assertIsTrue  "d.j@server1.proseware.com"                                                  =   0 =  OK 
-     *  2983 - assertIsTrue  "d.oy.smith@gmail.com"                                                       =   0 =  OK 
-     *  2984 - assertIsTrue  "d23d@da9.co9"                                                               =   0 =  OK 
-     *  2985 - assertIsTrue  "d_oy_smith@gmail.com"                                                       =   0 =  OK 
-     *  2986 - assertIsTrue  "dasd-dasd@das.com.das"                                                      =   0 =  OK 
-     *  2987 - assertIsTrue  "dasd.dadas@dasd.com"                                                        =   0 =  OK 
-     *  2988 - assertIsTrue  "dasd_-@jdas.com"                                                            =   0 =  OK 
-     *  2989 - assertIsTrue  "david.jones@proseware.com"                                                  =   0 =  OK 
-     *  2990 - assertIsTrue  "dclo@us.ibm.com"                                                            =   0 =  OK 
-     *  2991 - assertIsTrue  "dda_das@das-dasd.com"                                                       =   0 =  OK 
-     *  2992 - assertIsTrue  "digit-only-domain-with-subdomain@sub.123.com"                               =   0 =  OK 
-     *  2993 - assertIsTrue  "digit-only-domain@123.com"                                                  =   0 =  OK 
-     *  2994 - assertIsTrue  "doysmith@gmail.com"                                                         =   0 =  OK 
-     *  2995 - assertIsTrue  "drp@drp.cz"                                                                 =   0 =  OK 
-     *  2996 - assertIsTrue  "dsq!a?@das.com"                                                             =   0 =  OK 
-     *  2997 - assertIsTrue  "email@domain.co.de"                                                         =   0 =  OK 
-     *  2998 - assertIsTrue  "email@domain.com"                                                           =   0 =  OK 
-     *  2999 - assertIsTrue  "email@example.co.uk"                                                        =   0 =  OK 
-     *  3000 - assertIsTrue  "email@example.com"                                                          =   0 =  OK 
-     *  3001 - assertIsTrue  "email@mail.gmail.com"                                                       =   0 =  OK 
-     *  3002 - assertIsTrue  "email@subdomain.domain.com"                                                 =   0 =  OK 
-     *  3003 - assertIsTrue  "example@example.co"                                                         =   0 =  OK 
-     *  3004 - assertIsTrue  "f.f.f@bde.cc"                                                               =   0 =  OK 
-     *  3005 - assertIsTrue  "f.o.o.b.a.r@gmail.com"                                                      =   0 =  OK 
-     *  3006 - assertIsTrue  "first-name-last-name@d-a-n.com"                                             =   0 =  OK 
-     *  3007 - assertIsTrue  "firstname+lastname@domain.com"                                              =   0 =  OK 
-     *  3008 - assertIsTrue  "firstname-lastname@domain.com"                                              =   0 =  OK 
-     *  3009 - assertIsTrue  "firstname.lastname@domain.com"                                              =   0 =  OK 
-     *  3010 - assertIsTrue  "foo\@bar@machine.subdomain.example.museum"                                  =   0 =  OK 
-     *  3011 - assertIsTrue  "futureTLD@somewhere.fooo"                                                   =   0 =  OK 
-     *  3012 - assertIsTrue  "hello.me_1@email.com"                                                       =   0 =  OK 
-     *  3013 - assertIsTrue  "hello7___@ca.com.pt"                                                        =   0 =  OK 
-     *  3014 - assertIsTrue  "info@ermaelan.com"                                                          =   0 =  OK 
-     *  3015 - assertIsTrue  "j.s@server1.proseware.com"                                                  =   0 =  OK 
-     *  3016 - assertIsTrue  "j@proseware.com9"                                                           =   0 =  OK 
-     *  3017 - assertIsTrue  "j_9@[129.126.118.1]"                                                        =   2 =  OK 
-     *  3018 - assertIsTrue  "jinujawad6s@gmail.com"                                                      =   0 =  OK 
-     *  3019 - assertIsTrue  "john.doe@example.com"                                                       =   0 =  OK 
-     *  3020 - assertIsTrue  "john.o'doe@example.com"                                                     =   0 =  OK 
-     *  3021 - assertIsTrue  "john.smith@example.com"                                                     =   0 =  OK 
-     *  3022 - assertIsTrue  "jones@ms1.proseware.com"                                                    =   0 =  OK 
-     *  3023 - assertIsTrue  "journaldev+100@gmail.com"                                                   =   0 =  OK 
-     *  3024 - assertIsTrue  "journaldev-100@journaldev.net"                                              =   0 =  OK 
-     *  3025 - assertIsTrue  "journaldev-100@yahoo-test.com"                                              =   0 =  OK 
-     *  3026 - assertIsTrue  "journaldev-100@yahoo.com"                                                   =   0 =  OK 
-     *  3027 - assertIsTrue  "journaldev.100@journaldev.com.au"                                           =   0 =  OK 
-     *  3028 - assertIsTrue  "journaldev.100@yahoo.com"                                                   =   0 =  OK 
-     *  3029 - assertIsTrue  "journaldev111@journaldev.com"                                               =   0 =  OK 
-     *  3030 - assertIsTrue  "journaldev@1.com"                                                           =   0 =  OK 
-     *  3031 - assertIsTrue  "journaldev@gmail.com.com"                                                   =   0 =  OK 
-     *  3032 - assertIsTrue  "journaldev@yahoo.com"                                                       =   0 =  OK 
-     *  3033 - assertIsTrue  "journaldev_100@yahoo-test.ABC.CoM"                                          =   0 =  OK 
-     *  3034 - assertIsTrue  "js#internal@proseware.com"                                                  =   0 =  OK 
-     *  3035 - assertIsTrue  "js*@proseware.com"                                                          =   0 =  OK 
-     *  3036 - assertIsTrue  "js@proseware.com9"                                                          =   0 =  OK 
-     *  3037 - assertIsTrue  "me+100@me.com"                                                              =   0 =  OK 
-     *  3038 - assertIsTrue  "me+alpha@example.com"                                                       =   0 =  OK 
-     *  3039 - assertIsTrue  "me-100@me.com"                                                              =   0 =  OK 
-     *  3040 - assertIsTrue  "me-100@me.com.au"                                                           =   0 =  OK 
-     *  3041 - assertIsTrue  "me-100@yahoo-test.com"                                                      =   0 =  OK 
-     *  3042 - assertIsTrue  "me.100@me.com"                                                              =   0 =  OK 
-     *  3043 - assertIsTrue  "me@aaronsw.com"                                                             =   0 =  OK 
-     *  3044 - assertIsTrue  "me@company.co.uk"                                                           =   0 =  OK 
-     *  3045 - assertIsTrue  "me@gmail.com"                                                               =   0 =  OK 
-     *  3046 - assertIsTrue  "me@gmail.com"                                                               =   0 =  OK 
-     *  3047 - assertIsTrue  "me@mail.s2.example.com"                                                     =   0 =  OK 
-     *  3048 - assertIsTrue  "me@me.cu.uk"                                                                =   0 =  OK 
-     *  3049 - assertIsTrue  "my.ownsite@ourearth.org"                                                    =   0 =  OK 
-     *  3050 - assertIsFalse "myemail@sample"                                                             =  34 =  OK    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
-     *  3051 - assertIsTrue  "myemail@sample.com"                                                         =   0 =  OK 
-     *  3052 - assertIsTrue  "mysite@you.me.net"                                                          =   0 =  OK 
-     *  3053 - assertIsTrue  "o'hare@example.com"                                                         =   0 =  OK 
-     *  3054 - assertIsTrue  "peter.example@domain.comau"                                                 =   0 =  OK 
-     *  3055 - assertIsTrue  "peter.piper@example.com"                                                    =   0 =  OK 
-     *  3056 - assertIsTrue  "peter_123@news.com"                                                         =   0 =  OK 
-     *  3057 - assertIsTrue  "pio^_pio@factory.com"                                                       =   0 =  OK 
-     *  3058 - assertIsTrue  "pio_#pio@factory.com"                                                       =   0 =  OK 
-     *  3059 - assertIsTrue  "pio_pio@factory.com"                                                        =   0 =  OK 
-     *  3060 - assertIsTrue  "pio_~pio@factory.com"                                                       =   0 =  OK 
-     *  3061 - assertIsTrue  "piskvor@example.lighting"                                                   =   0 =  OK 
-     *  3062 - assertIsTrue  "rss-dev@yahoogroups.com"                                                    =   0 =  OK 
-     *  3063 - assertIsTrue  "someone+tag@somewhere.net"                                                  =   0 =  OK 
-     *  3064 - assertIsTrue  "someone@somewhere.co.uk"                                                    =   0 =  OK 
-     *  3065 - assertIsTrue  "someone@somewhere.com"                                                      =   0 =  OK 
-     *  3066 - assertIsTrue  "something_valid@somewhere.tld"                                              =   0 =  OK 
-     *  3067 - assertIsTrue  "tvf@tvf.cz"                                                                 =   0 =  OK 
-     *  3068 - assertIsTrue  "user#@domain.co.in"                                                         =   0 =  OK 
-     *  3069 - assertIsTrue  "user'name@domain.co.in"                                                     =   0 =  OK 
-     *  3070 - assertIsTrue  "user+mailbox@example.com"                                                   =   0 =  OK 
-     *  3071 - assertIsTrue  "user-name@domain.co.in"                                                     =   0 =  OK 
-     *  3072 - assertIsTrue  "user.name@domain.com"                                                       =   0 =  OK 
-     *  3073 - assertIsFalse ".user.name@domain.com"                                                      =  30 =  OK    Trennzeichen: kein Beginn mit einem Punkt
-     *  3074 - assertIsFalse "user-name@domain.com."                                                      =  36 =  OK    Trennzeichen: der letzte Punkt darf nicht am Ende liegen
-     *  3075 - assertIsFalse "username@.com"                                                              =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
-     *  3076 - assertIsTrue  "user1@domain.com"                                                           =   0 =  OK 
-     *  3077 - assertIsTrue  "user?name@domain.co.in"                                                     =   0 =  OK 
-     *  3078 - assertIsTrue  "user@domain.co.in"                                                          =   0 =  OK 
-     *  3079 - assertIsTrue  "user@domain.com"                                                            =   0 =  OK 
-     *  3080 - assertIsFalse "user@domaincom"                                                             =  34 =  OK    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
-     *  3081 - assertIsTrue  "user_name@domain.co.in"                                                     =   0 =  OK 
-     *  3082 - assertIsTrue  "user_name@domain.com"                                                       =   0 =  OK 
-     *  3083 - assertIsTrue  "username@yahoo.corporate"                                                   =   0 =  OK 
-     *  3084 - assertIsTrue  "username@yahoo.corporate.in"                                                =   0 =  OK 
-     *  3085 - assertIsTrue  "username+something@domain.com"                                              =   0 =  OK 
-     *  3086 - assertIsTrue  "vdv@dyomedea.com"                                                           =   0 =  OK 
-     *  3087 - assertIsTrue  "xxxx@gmail.com"                                                             =   0 =  OK 
-     *  3088 - assertIsTrue  "xxxxxx@yahoo.com"                                                           =   0 =  OK 
-     *  3089 - assertIsTrue  "user+mailbox/department=shipping@example.com"                               =   0 =  OK 
-     *  3090 - assertIsFalse "first;name)lastname@domain.com(blah"                                        =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  3091 - assertIsTrue  "user@[IPv6:2001:DB8::1]"                                                    =   4 =  OK 
-     *  3092 - assertIsFalse "user@localserver"                                                           =  34 =  OK    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
-     *  3093 - assertIsTrue  "w.b.f@test.com"                                                             =   0 =  OK 
-     *  3094 - assertIsTrue  "w.b.f@test.museum"                                                          =   0 =  OK 
-     *  3095 - assertIsTrue  "yoursite@ourearth.com"                                                      =   0 =  OK 
-     *  3096 - assertIsTrue  "~pio_pio@factory.com"                                                       =   0 =  OK 
-     *  3097 - assertIsTrue  "{^c\@**Dog^}@cartoon.com"                                                   =   0 =  OK 
-     *  3098 - assertIsFalse "the-character-limit@for-each-part.of-the-domain.is-sixty-three-characters.this-is-exactly-sixty-four-characters-so-it-is-invalid-blah-blah.com" =  63 =  OK    Domain-Part: Domain-Label zu lang (maximal 63 Zeichen)
-     *  3099 - assertIsFalse "the-total-length@of-an-entire-address.cannot-be-longer-than-two-hundred-and-fifty-six-characters.and-this-address-is-257-characters-exactly.so-it-should-be-invalid.and-im-going-to-add-some-more-words-here.to-increase-the-lenght-blah-blah-blah-blah-blah-.org" =  12 =  OK    Laenge: Laengenbegrenzungen stimmen nicht
-     *  3100 - assertIsTrue  "the-character-limit@for-each-part.of-the-domain.is-sixty-three-characters.this-is-exactly-sixty-three-characters-so-it-is-valid-blah-blah.com" =   0 =  OK 
-     *  3101 - assertIsTrue  "the-total-length@of-an-entire-address.cannot-be-longer-than-two-hundred-and-fifty-four-characters.and-this-address-is-254-characters-exactly.so-it-should-be-valid.and-im-going-to-add-some-more-words-here.to-increase-the-lenght-blah-blah-blah-blah-bla.org" =   0 =  OK 
-     *  3102 - assertIsFalse "the-local-part-is-invalid-if-it-is-longer-than-sixty-four-characters@sld.net" =  13 =  OK    Laenge: RFC 5321 = SMTP-Protokoll = maximale Laenge des Local-Parts sind 64 Bytes
-     *  3103 - assertIsTrue  "unusual+but+valid+email1900=/!#$%&\'*+-/=?^_`.{|}~@example.com"             =   0 =  OK 
-     *  3104 - assertIsTrue  "valid@[1.1.1.1]"                                                            =   2 =  OK 
-     *  3105 - assertIsTrue  "valid.ipv6v4.addr@[IPv6:aaaa:aaaa:aaaa:aaaa:aaaa:aaaa:127.0.0.1]"           =  47 =  #### FEHLER ####    IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
-     *  3106 - assertIsTrue  "valid.ipv6v4.addr@[IPv6:::12.34.56.78]"                                     =  62 =  #### FEHLER ####    IP6-Adressteil: IPv4 in IPv6 - falsche Angabe der IP4-Einbettung (Zeichenfolge 'ffff' erwartet)
-     *  3107 - assertIsTrue  "valid.ipv6.addr@[IPv6:fe80::230:48ff:fe33:bc33]"                            =   4 =  OK 
-     *  3108 - assertIsTrue  "valid.ipv6.addr@[IPv6:fe80:0000:0000:0000:0202:b3ff:fe1e:8329]"             =   4 =  OK 
-     *  3109 - assertIsTrue  "valid.ipv6.addr@[IPv6:::]"                                                  =   4 =  OK 
-     *  3110 - assertIsTrue  "valid.ipv6.addr@[IPv6:::3333:4444:5555:6666:7777:8888]"                     =   4 =  OK 
-     *  3111 - assertIsTrue  "valid.ipv6.addr@[IPv6:::12.34.56.78]"                                       =  62 =  #### FEHLER ####    IP6-Adressteil: IPv4 in IPv6 - falsche Angabe der IP4-Einbettung (Zeichenfolge 'ffff' erwartet)
-     *  3112 - assertIsTrue  "valid.ipv6.addr@[IPv6:2607:f0d0:1002:51::4]"                                =   4 =  OK 
-     *  3113 - assertIsTrue  "valid.ipv6.addr@[IPv6:0::1]"                                                =   4 =  OK 
-     *  3114 - assertIsTrue  "valid.ipv4.addr@[255.255.255.255]"                                          =   2 =  OK 
-     *  3115 - assertIsTrue  "valid.ipv4.addr@[123.1.72.10]"                                              =   2 =  OK 
-     *  3116 - assertIsFalse "invalid@[10]"                                                               =  57 =  OK    IP4-Adressteil: IP-Adresse Trennzeichenanzahl muss 3 sein
-     *  3117 - assertIsFalse "invalid@[10.1]"                                                             =  57 =  OK    IP4-Adressteil: IP-Adresse Trennzeichenanzahl muss 3 sein
-     *  3118 - assertIsFalse "invalid@[10.1.52]"                                                          =  57 =  OK    IP4-Adressteil: IP-Adresse Trennzeichenanzahl muss 3 sein
-     *  3119 - assertIsFalse "invalid@[256.256.256.256]"                                                  =  54 =  OK    IP4-Adressteil: Byte-Overflow
-     *  3120 - assertIsFalse "invalid@[IPv6:123456]"                                                      =  46 =  OK    IP6-Adressteil: zu viele Ziffern, maximal 4 Ziffern
-     *  3121 - assertIsFalse "invalid@[127.0.0.1.]"                                                       =  56 =  OK    IP4-Adressteil: zu viele Trennzeichen
-     *  3122 - assertIsFalse "invalid@[127.0.0.1]."                                                       =  60 =  OK    IP4-Adressteil: Abschlusszeichen "]" muss am Ende stehen
-     *  3123 - assertIsFalse "invalid@[127.0.0.1]x"                                                       =  60 =  OK    IP4-Adressteil: Abschlusszeichen "]" muss am Ende stehen
-     *  3124 - assertIsFalse "invalid@domain1.com@domain2.com"                                            =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
-     *  3125 - assertIsFalse "\"locál-part\"@example.com"                                                 =  89 =  OK    String: Ungueltiges Zeichen innerhalb Anfuehrungszeichen
-     *  3126 - assertIsFalse "invalid@[IPv6:1::2:]"                                                       =   4 =  #### FEHLER ####    eMail-Adresse korrekt (IP6-Adresse)
-     *  3127 - assertIsFalse "invalid@[IPv6::1::1]"                                                       =   4 =  #### FEHLER ####    eMail-Adresse korrekt (IP6-Adresse)
-     *  3128 - assertIsFalse "invalid@[]"                                                                 =  57 =  OK    IP4-Adressteil: IP-Adresse Trennzeichenanzahl muss 3 sein
-     *  3129 - assertIsFalse "invalid@[111.111.111.111"                                                   =  61 =  OK    IP-Adressteil: Kein Abschluss der IP-Adresse auf ']'
-     *  3130 - assertIsFalse "invalid@[IPv6:2607:f0d0:1002:51::4"                                         =  61 =  OK    IP-Adressteil: Kein Abschluss der IP-Adresse auf ']'
-     *  3131 - assertIsFalse "invalid@[IPv6:1111::1111::1111]"                                            =  50 =  OK    IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
-     *  3132 - assertIsFalse "invalid@[IPv6:1111:::1111::1111]"                                           =  50 =  OK    IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
-     *  3133 - assertIsFalse "invalid@[IPv6:aaaa:aaaa:aaaa:aaaa:aaaa:aaaa:555.666.777.888]"               =  47 =  OK    IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
-     *  3134 - assertIsFalse "invalid@[IPv6:1111:1111]"                                                   =  43 =  OK    IP6-Adressteil: Zu wenig Trennzeichen
-     *  3135 - assertIsFalse "\"invalid-qstring@example.com"                                              =  86 =  OK    String: kein abschliessendes Anfuehrungszeichen gefunden.
+     *  2656 - assertIsTrue  "enrst.den.baecker@web.de"                                                   =   0 =  OK 
+     *  2657 - assertIsTrue  "neserdna.trebkce@web.de"                                                    =   0 =  OK 
+     *  2658 - assertIsFalse "email@=qowaiv.com"                                                          =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+     *  2659 - assertIsFalse "email@plus+.com"                                                            =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+     *  2660 - assertIsFalse "email@domain.com>"                                                          =  16 =  OK    Struktur: keine oeffnende eckige Klammer gefunden.
+     *  2661 - assertIsFalse "email@mailto:domain.com"                                                    =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  2662 - assertIsFalse "mailto:mailto:email@domain.com"                                             =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  2663 - assertIsFalse "email@-domain.com"                                                          =  20 =  OK    Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
+     *  2664 - assertIsFalse "email@domain-.com"                                                          =  20 =  OK    Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
+     *  2665 - assertIsFalse "email@domain.com-"                                                          =  24 =  OK    Zeichen: Kein Sonderzeichen am Ende der eMail-Adresse
+     *  2666 - assertIsFalse "email@{leftbracket.com"                                                     =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+     *  2667 - assertIsFalse "email@rightbracket}.com"                                                    =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+     *  2668 - assertIsFalse "email@pp|e.com"                                                             =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+     *  2669 - assertIsTrue  "email@domain.domain.domain.com.com"                                         =   0 =  OK 
+     *  2670 - assertIsTrue  "email@domain.domain.domain.domain.com.com"                                  =   0 =  OK 
+     *  2671 - assertIsTrue  "email@domain.domain.domain.domain.domain.com.com"                           =   0 =  OK 
+     *  2672 - assertIsFalse "unescaped white space@fake$com"                                             =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  2673 - assertIsTrue  "\"Hans.\"@test.de"                                                          =   1 =  OK 
+     *  2674 - assertIsTrue  "\"Hans.\\"\"@test.de"                                                       =   1 =  OK 
+     *  2675 - assertIsTrue  "\"\\"Hans.\\"\"@test.de"                                                    =   1 =  OK 
+     *  2676 - assertIsTrue  "\\\"Hans.\\"\"@test.de"                                                     =   1 =  OK 
+     *  2677 - assertIsTrue  "\".John.Doe\"@example.com"                                                  =   1 =  OK 
+     *  2678 - assertIsTrue  "\"John.Doe.\"@example.com"                                                  =   1 =  OK 
+     *  2679 - assertIsTrue  "\"John..Doe\"@example.com"                                                  =   1 =  OK 
+     *  2680 - assertIsTrue  "john.smith(comment)@example.com"                                            =   6 =  OK 
+     *  2681 - assertIsTrue  "(comment)john.smith@example.com"                                            =   6 =  OK 
+     *  2682 - assertIsTrue  "john.smith@(comment)example.com"                                            =   6 =  OK 
+     *  2683 - assertIsTrue  "john.smith@example.com(comment)"                                            =   6 =  OK 
+     *  2684 - assertIsTrue  "john.smith@example.com"                                                     =   0 =  OK 
+     *  2685 - assertIsTrue  "joeuser+tag@example.com"                                                    =   0 =  OK 
+     *  2686 - assertIsTrue  "jsmith@[192.168.2.1]"                                                       =   2 =  OK 
+     *  2687 - assertIsTrue  "jsmith@[IPv6:2001:db8::1]"                                                  =   4 =  OK 
+     *  2688 - assertIsFalse "john.smith@exampl(comment)e.com"                                            = 100 =  OK    Kommentar: Kommentar muss am Stringende enden
+     *  2689 - assertIsFalse "john.s(comment)mith@example.com"                                            =  97 =  OK    Kommentar: Nach dem Kommentar muss ein AT-Zeichen kommen
+     *  2690 - assertIsFalse "john.smith(comment)@(comment)example.com"                                   =  99 =  OK    Kommentar: kein zweiter Kommentar gueltig
+     *  2691 - assertIsFalse "john.smith(com@ment)example.com"                                            =  97 =  OK    Kommentar: Nach dem Kommentar muss ein AT-Zeichen kommen
+     *  2692 - assertIsFalse "\"\"Joe Smith email@domain.com"                                             =  85 =  OK    String: Leerstring in Anfuehrungszeichen
+     *  2693 - assertIsFalse "\"\"Joe Smith' email@domain.com"                                            =  85 =  OK    String: Leerstring in Anfuehrungszeichen
+     *  2694 - assertIsFalse "\"\"Joe Smith\"\"email@domain.com"                                          =  85 =  OK    String: Leerstring in Anfuehrungszeichen
+     *  2695 - assertIsFalse "\"Joe Smith\" email@domain.com"                                             =  87 =  OK    String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
+     *  2696 - assertIsFalse "\"Joe\tSmith\".email@domain.com"                                            =  84 =  OK    String: Ungueltige Escape-Sequenz im String
+     *  2697 - assertIsFalse "\"Joe\"Smith\" email@domain.com"                                            =  87 =  OK    String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
+     *  2698 - assertIsFalse "\"Joe Smith email@domain.com"                                               =  86 =  OK    String: kein abschliessendes Anfuehrungszeichen gefunden.
+     *  2699 - assertIsFalse "\"Joe Smith' email@domain.com"                                              =  86 =  OK    String: kein abschliessendes Anfuehrungszeichen gefunden.
+     *  2700 - assertIsFalse "\"Joe Smith\"email@domain.com"                                              =  87 =  OK    String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
+     *  2701 - assertIsFalse "Joe Smith &lt;email@domain.com&gt;"                                         =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  2702 - assertIsTrue  "{john'doe}@my.server"                                                       =   0 =  OK 
+     *  2703 - assertIsTrue  "email@domain-one.com"                                                       =   0 =  OK 
+     *  2704 - assertIsTrue  "_______@domain.com"                                                         =   0 =  OK 
+     *  2705 - assertIsTrue  "?????@domain.com"                                                           =   0 =  OK 
+     *  2706 - assertIsFalse "local@?????.com"                                                            =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+     *  2707 - assertIsTrue  "\"B3V3RLY H1LL$\"@example.com"                                              =   1 =  OK 
+     *  2708 - assertIsTrue  "\"-- --- .. -.\"@sh.de"                                                     =   1 =  OK 
+     *  2709 - assertIsTrue  "{{-^-}{-=-}{-^-}}@GHI.JKL"                                                  =   0 =  OK 
+     *  2710 - assertIsTrue  "#!$%&'*+-/=?^_`{}|~@eksample.org"                                           =   0 =  OK 
+     *  2711 - assertIsFalse "eksample@#!$%&'*+-/=?^_`{}|~.org"                                           =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+     *  2712 - assertIsTrue  "$!{${$!{${!{$$$!$!${$!{.${!{$!{$$!${$!$!$$$!$!{$@WeB.dE"                    =   0 =  OK 
+     *  2713 - assertIsFalse "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2.4}"                            =  51 =  OK    IP-Adressteil: IP-Adresse vor AT-Zeichen
+     *  2714 - assertIsTrue  "\"\\" + \\"select * from user\\" + \\"\"@example.de"                        =   1 =  OK 
+     *  2715 - assertIsFalse "${jndi:ldap://CheckThat.HowLovely.com/a}@log4j.com"                         =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  2716 - assertIsFalse "ReDoSaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" =  12 =  OK    Laenge: Laengenbegrenzungen stimmen nicht
+     *  2717 - assertIsFalse "\"Doug \"Ace\" L.\"@example.com"                                            =  87 =  OK    String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
+     *  2718 - assertIsFalse "\"Joe Q. Public\" <john.q.public@example.com>"                              =  18 =  OK    Struktur: Fehler in Adress-String-X
+     *  2719 - assertIsFalse "\"Joe\Blow\"@example.com"                                                   =  84 =  OK    String: Ungueltige Escape-Sequenz im String
+     *  2720 - assertIsFalse "\"qu@example.com"                                                           =  86 =  OK    String: kein abschliessendes Anfuehrungszeichen gefunden.
+     *  2721 - assertIsFalse "\$A12345@example.com"                                                       =  84 =  OK    String: Ungueltige Escape-Sequenz im String
+     *  2722 - assertIsFalse "_@bde.cc,"                                                                  =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  2723 - assertIsFalse "a..b@bde.cc"                                                                =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
+     *  2724 - assertIsFalse "a.\"b@c\".x.\"@\".d.e@f.g@"                                                 =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
+     *  2725 - assertIsFalse "a.b@example,co.de"                                                          =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  2726 - assertIsFalse "a.b@example,com"                                                            =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  2727 - assertIsFalse "a>b@somedomain.com"                                                         =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  2728 - assertIsFalse "a@.com"                                                                     =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
+     *  2729 - assertIsFalse "a@b."                                                                       =  12 =  OK    Laenge: Laengenbegrenzungen stimmen nicht
+     *  2730 - assertIsFalse "a@b.-de.cc"                                                                 =  20 =  OK    Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
+     *  2731 - assertIsFalse "a@b._de.cc"                                                                 =  20 =  OK    Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
+     *  2732 - assertIsFalse "a@bde-.cc"                                                                  =  20 =  OK    Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
+     *  2733 - assertIsFalse "a@bde.c-c"                                                                  =   0 =  #### FEHLER ####    eMail-Adresse korrekt
+     *  2734 - assertIsFalse "a@bde.cc."                                                                  =  36 =  OK    Trennzeichen: der letzte Punkt darf nicht am Ende liegen
+     *  2735 - assertIsFalse "a@bde_.cc"                                                                  =  20 =  OK    Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
+     *  2736 - assertIsFalse "a\"b(c)d.e:f;g<h>i[j\k]l@example.com"                                       =  80 =  OK    String: Ein startendes Anfuehrungszeichen muss am Anfang kommen, der Zeichenzaehler darf nicht groesser als 0 sein
+     *  2737 - assertIsFalse "ab@120.25.1111.120"                                                         =  53 =  OK    IP4-Adressteil: zu viele Ziffern, maximal 3 Ziffern
+     *  2738 - assertIsFalse "ab@120.256.256.120"                                                         =  54 =  OK    IP4-Adressteil: Byte-Overflow
+     *  2739 - assertIsFalse "ab@188.120.150.10]"                                                         =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  2740 - assertIsFalse "ab@988.120.150.10"                                                          =  54 =  OK    IP4-Adressteil: Byte-Overflow
+     *  2741 - assertIsFalse "ab@[188.120.150.10"                                                         =  61 =  OK    IP-Adressteil: Kein Abschluss der IP-Adresse auf ']'
+     *  2742 - assertIsFalse "ab@[188.120.150.10].com"                                                    =  60 =  OK    IP4-Adressteil: Abschlusszeichen "]" muss am Ende stehen
+     *  2743 - assertIsFalse "ab@b+de.cc"                                                                 =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+     *  2744 - assertIsFalse "ab@sd@dd"                                                                   =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
+     *  2745 - assertIsFalse "abc.@somedomain.com"                                                        =  32 =  OK    Trennzeichen: ungueltige Zeichenkombination ".@"
+     *  2746 - assertIsFalse "abc@def@example.com"                                                        =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
+     *  2747 - assertIsFalse "abc@gmail..com"                                                             =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
+     *  2748 - assertIsFalse "abc@gmail.com.."                                                            =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
+     *  2749 - assertIsFalse "abc\"defghi\"xyz@example.com"                                               =  80 =  OK    String: Ein startendes Anfuehrungszeichen muss am Anfang kommen, der Zeichenzaehler darf nicht groesser als 0 sein
+     *  2750 - assertIsFalse "abc\@example.com"                                                           =  28 =  OK    AT-Zeichen: kein AT-Zeichen gefunden
+     *  2751 - assertIsFalse "abc\\"def\\"ghi@example.com"                                                =  84 =  OK    String: Ungueltige Escape-Sequenz im String
+     *  2752 - assertIsFalse "abc\\@def@example.com"                                                      =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
+     *  2753 - assertIsFalse "as3d@dac.coas-"                                                             =  24 =  OK    Zeichen: Kein Sonderzeichen am Ende der eMail-Adresse
+     *  2754 - assertIsFalse "asd@dasd@asd.cm"                                                            =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
+     *  2755 - assertIsFalse "check@this..com"                                                            =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
+     *  2756 - assertIsFalse "check@thiscom"                                                              =  34 =  OK    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
+     *  2757 - assertIsFalse "da23@das..com"                                                              =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
+     *  2758 - assertIsFalse "dad@sds"                                                                    =  34 =  OK    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
+     *  2759 - assertIsFalse "dasddas-@.com"                                                              =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
+     *  2760 - assertIsFalse "david.gilbertson@SOME+THING-ODD!!.com"                                      =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+     *  2761 - assertIsFalse "dot.@example.com"                                                           =  32 =  OK    Trennzeichen: ungueltige Zeichenkombination ".@"
+     *  2762 - assertIsFalse "doug@"                                                                      =  12 =  OK    Laenge: Laengenbegrenzungen stimmen nicht
+     *  2763 - assertIsFalse "email( (nested) )@plus.com"                                                 =  92 =  OK    Kommentar: Ungueltiges Zeichen im Kommentar
+     *  2764 - assertIsFalse "email(with @ in comment)plus.com"                                           =  97 =  OK    Kommentar: Nach dem Kommentar muss ein AT-Zeichen kommen
+     *  2765 - assertIsFalse "email)mirror(@plus.com"                                                     =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  2766 - assertIsFalse "email..email@domain.com"                                                    =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
+     *  2767 - assertIsFalse "email..email@domain.com"                                                    =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
+     *  2768 - assertIsFalse "email.@domain.com"                                                          =  32 =  OK    Trennzeichen: ungueltige Zeichenkombination ".@"
+     *  2769 - assertIsFalse "email.domain.com"                                                           =  28 =  OK    AT-Zeichen: kein AT-Zeichen gefunden
+     *  2770 - assertIsFalse "email@#hash.com"                                                            =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+     *  2771 - assertIsFalse "email@.domain.com"                                                          =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
+     *  2772 - assertIsFalse "email@111.222.333"                                                          =  23 =  OK    Zeichen: Top-Level-Domain darf nicht mit Zahl beginnen
+     *  2773 - assertIsFalse "email@111.222.333.256"                                                      =  54 =  OK    IP4-Adressteil: Byte-Overflow
+     *  2774 - assertIsFalse "email@123.123.123.123]"                                                     =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  2775 - assertIsFalse "email@123.123.[123.123]"                                                    =  52 =  OK    IP-Adressteil: IP-Adresse muss direkt nach dem AT-Zeichen kommen (korrekte Kombination "@[")
+     *  2776 - assertIsFalse "email@=qowaiv.com"                                                          =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+     *  2777 - assertIsFalse "email@[123.123.123.123"                                                     =  61 =  OK    IP-Adressteil: Kein Abschluss der IP-Adresse auf ']'
+     *  2778 - assertIsFalse "email@[123.123.123].123"                                                    =  57 =  OK    IP4-Adressteil: IP-Adresse Trennzeichenanzahl muss 3 sein
+     *  2779 - assertIsFalse "email@caret^xor.com"                                                        =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+     *  2780 - assertIsFalse "email@colon:colon.com"                                                      =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  2781 - assertIsFalse "email@dollar$.com"                                                          =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+     *  2782 - assertIsFalse "email@domain"                                                               =  34 =  OK    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
+     *  2783 - assertIsFalse "email@domain-.com"                                                          =  20 =  OK    Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
+     *  2784 - assertIsFalse "email@domain..com"                                                          =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
+     *  2785 - assertIsFalse "email@domain.com-"                                                          =  24 =  OK    Zeichen: Kein Sonderzeichen am Ende der eMail-Adresse
+     *  2786 - assertIsFalse "email@domain.com."                                                          =  36 =  OK    Trennzeichen: der letzte Punkt darf nicht am Ende liegen
+     *  2787 - assertIsFalse "email@domain.com."                                                          =  36 =  OK    Trennzeichen: der letzte Punkt darf nicht am Ende liegen
+     *  2788 - assertIsFalse "email@domain.com>"                                                          =  16 =  OK    Struktur: keine oeffnende eckige Klammer gefunden.
+     *  2789 - assertIsFalse "email@domain@domain.com"                                                    =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
+     *  2790 - assertIsFalse "email@example"                                                              =  34 =  OK    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
+     *  2791 - assertIsFalse "email@example..com"                                                         =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
+     *  2792 - assertIsFalse "email@example.co.uk."                                                       =  36 =  OK    Trennzeichen: der letzte Punkt darf nicht am Ende liegen
+     *  2793 - assertIsFalse "email@example.com "                                                         =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  2794 - assertIsFalse "email@exclamation!mark.com"                                                 =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+     *  2795 - assertIsFalse "email@grave`accent.com"                                                     =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+     *  2796 - assertIsFalse "email@mailto:domain.com"                                                    =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  2797 - assertIsFalse "email@obelix*asterisk.com"                                                  =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+     *  2798 - assertIsFalse "email@plus+.com"                                                            =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+     *  2799 - assertIsFalse "email@plus.com (not closed comment"                                         =  93 =  OK    Kommentar: kein abschliessendes Zeichen fuer den Komentar gefunden. ')' erwartet
+     *  2800 - assertIsFalse "email@p|pe.com"                                                             =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+     *  2801 - assertIsFalse "email@question?mark.com"                                                    =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+     *  2802 - assertIsFalse "email@r&amp;d.com"                                                          =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+     *  2803 - assertIsFalse "email@rightbracket}.com"                                                    =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+     *  2804 - assertIsFalse "email@wave~tilde.com"                                                       =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+     *  2805 - assertIsFalse "email@{leftbracket.com"                                                     =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+     *  2806 - assertIsFalse "f...bar@gmail.com"                                                          =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
+     *  2807 - assertIsFalse "fa ke@false.com"                                                            =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  2808 - assertIsFalse "fake@-false.com"                                                            =  20 =  OK    Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
+     *  2809 - assertIsFalse "fake@fal se.com"                                                            = 105 =  OK    Kommentar: Leerzeichentrennung im Domain-Part. Oeffnende Klammer erwartet
+     *  2810 - assertIsFalse "fdsa"                                                                       =  12 =  OK    Laenge: Laengenbegrenzungen stimmen nicht
+     *  2811 - assertIsFalse "fdsa@"                                                                      =  12 =  OK    Laenge: Laengenbegrenzungen stimmen nicht
+     *  2812 - assertIsFalse "fdsa@fdsa"                                                                  =  34 =  OK    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
+     *  2813 - assertIsFalse "fdsa@fdsa."                                                                 =  36 =  OK    Trennzeichen: der letzte Punkt darf nicht am Ende liegen
+     *  2814 - assertIsFalse "foo.bar#gmail.co.u"                                                         =  28 =  OK    AT-Zeichen: kein AT-Zeichen gefunden
+     *  2815 - assertIsFalse "foo.bar@machine.sub\@domain.example.museum"                                 =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+     *  2816 - assertIsFalse "foo@bar@machine.subdomain.example.museum"                                   =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
+     *  2817 - assertIsFalse "foo~&(&)(@bar.com"                                                          =  97 =  OK    Kommentar: Nach dem Kommentar muss ein AT-Zeichen kommen
+     *  2818 - assertIsFalse "gatsby@f.sc.ot.t.f.i.tzg.era.l.d."                                          =  36 =  OK    Trennzeichen: der letzte Punkt darf nicht am Ende liegen
+     *  2819 - assertIsFalse "get_at_m.e@gmail"                                                           =  34 =  OK    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
+     *  2820 - assertIsFalse "hallo2ww22@example....caaaao"                                               =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
+     *  2821 - assertIsFalse "hallo@example.coassjj#sswzazaaaa"                                           =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+     *  2822 - assertIsFalse "hello world@example.com"                                                    =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  2823 - assertIsFalse "invalid.email.com"                                                          =  28 =  OK    AT-Zeichen: kein AT-Zeichen gefunden
+     *  2824 - assertIsFalse "invalid@email@domain.com"                                                   =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
+     *  2825 - assertIsFalse "isis@100%.nl"                                                               =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+     *  2826 - assertIsFalse "j..s@proseware.com"                                                         =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
+     *  2827 - assertIsFalse "j.@server1.proseware.com"                                                   =  32 =  OK    Trennzeichen: ungueltige Zeichenkombination ".@"
+     *  2828 - assertIsFalse "jane@jungle.com: | /usr/bin/vacation"                                       =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  2829 - assertIsFalse "journaldev"                                                                 =  34 =  OK    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
+     *  2830 - assertIsFalse "journaldev()*@gmail.com"                                                    =  97 =  OK    Kommentar: Nach dem Kommentar muss ein AT-Zeichen kommen
+     *  2831 - assertIsFalse "journaldev..2002@gmail.com"                                                 =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
+     *  2832 - assertIsFalse "journaldev.@gmail.com"                                                      =  32 =  OK    Trennzeichen: ungueltige Zeichenkombination ".@"
+     *  2833 - assertIsFalse "journaldev123@.com"                                                         =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
+     *  2834 - assertIsFalse "journaldev123@.com.com"                                                     =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
+     *  2835 - assertIsFalse "journaldev123@gmail.a"                                                      =  14 =  OK    Laenge: Top-Level-Domain muss mindestens 2 Stellen lang sein.
+     *  2836 - assertIsFalse "journaldev@%*.com"                                                          =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+     *  2837 - assertIsFalse "journaldev@.com.my"                                                         =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
+     *  2838 - assertIsFalse "journaldev@gmail.com.1a"                                                    =  23 =  OK    Zeichen: Top-Level-Domain darf nicht mit Zahl beginnen
+     *  2839 - assertIsFalse "journaldev@journaldev@gmail.com"                                            =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
+     *  2840 - assertIsFalse "js@proseware..com"                                                          =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
+     *  2841 - assertIsFalse "mailto:email@domain.com"                                                    =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  2842 - assertIsFalse "mailto:mailto:email@domain.com"                                             =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  2843 - assertIsFalse "me..2002@gmail.com"                                                         =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
+     *  2844 - assertIsFalse "me.@gmail.com"                                                              =  32 =  OK    Trennzeichen: ungueltige Zeichenkombination ".@"
+     *  2845 - assertIsFalse "me123@.com"                                                                 =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
+     *  2846 - assertIsFalse "me123@.com.com"                                                             =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
+     *  2847 - assertIsFalse "me@%*.com"                                                                  =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+     *  2848 - assertIsFalse "me@.com.my"                                                                 =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
+     *  2849 - assertIsFalse "me@gmail.com.1a"                                                            =  23 =  OK    Zeichen: Top-Level-Domain darf nicht mit Zahl beginnen
+     *  2850 - assertIsFalse "me@me@gmail.com"                                                            =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
+     *  2851 - assertIsFalse "myemail@@sample.com"                                                        =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
+     *  2852 - assertIsFalse "myemail@sa@mple.com"                                                        =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
+     *  2853 - assertIsFalse "myemailsample.com"                                                          =  28 =  OK    AT-Zeichen: kein AT-Zeichen gefunden
+     *  2854 - assertIsFalse "ote\"@example.com"                                                          =  80 =  OK    String: Ein startendes Anfuehrungszeichen muss am Anfang kommen, der Zeichenzaehler darf nicht groesser als 0 sein
+     *  2855 - assertIsFalse "pio_pio@#factory.com"                                                       =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+     *  2856 - assertIsFalse "pio_pio@factory.c#om"                                                       =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+     *  2857 - assertIsFalse "pio_pio@factory.c*om"                                                       =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+     *  2858 - assertIsFalse "plain.address"                                                              =  28 =  OK    AT-Zeichen: kein AT-Zeichen gefunden
+     *  2859 - assertIsFalse "plainaddress"                                                               =  34 =  OK    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
+     *  2860 - assertIsFalse "tarzan@jungle.org,jane@jungle.org"                                          =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  2861 - assertIsFalse "this is not valid@email$com"                                                =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  2862 - assertIsFalse "this\ still\\"not\allowed@example.com"                                      =  84 =  OK    String: Ungueltige Escape-Sequenz im String
+     *  2863 - assertIsFalse "two..dot@example.com"                                                       =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
+     *  2864 - assertIsFalse "user#domain.com"                                                            =  28 =  OK    AT-Zeichen: kein AT-Zeichen gefunden
+     *  2865 - assertIsFalse "username@yahoo..com"                                                        =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
+     *  2866 - assertIsFalse "username@yahoo.c"                                                           =  14 =  OK    Laenge: Top-Level-Domain muss mindestens 2 Stellen lang sein.
+     *  2867 - assertIsTrue  "username@domain.com"                                                        =   0 =  OK 
+     *  2868 - assertIsTrue  "_username@domain.com"                                                       =   0 =  OK 
+     *  2869 - assertIsTrue  "username_@domain.com"                                                       =   0 =  OK 
+     *  2870 - assertIsFalse "xxx@u*.com"                                                                 =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+     *  2871 - assertIsFalse "xxxx..1234@yahoo.com"                                                       =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
+     *  2872 - assertIsFalse "xxxx.ourearth.com"                                                          =  28 =  OK    AT-Zeichen: kein AT-Zeichen gefunden
+     *  2873 - assertIsFalse "xxxx123@gmail.b"                                                            =  14 =  OK    Laenge: Top-Level-Domain muss mindestens 2 Stellen lang sein.
+     *  2874 - assertIsFalse "xxxx@.com.my"                                                               =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
+     *  2875 - assertIsFalse "xxxx@.org.org"                                                              =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
+     *  2876 - assertIsFalse "xxxxx()*@gmail.com"                                                         =  97 =  OK    Kommentar: Nach dem Kommentar muss ein AT-Zeichen kommen
+     *  2877 - assertIsFalse "{something}@{something}.{something}"                                        =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+     *  2878 - assertIsTrue  "!def!xyz%abc@example.com"                                                   =   0 =  OK 
+     *  2879 - assertIsTrue  "!sd@gh.com"                                                                 =   0 =  OK 
+     *  2880 - assertIsTrue  "$A12345@example.com"                                                        =   0 =  OK 
+     *  2881 - assertIsTrue  "%20f3v34g34@gvvre.com"                                                      =   0 =  OK 
+     *  2882 - assertIsTrue  "%2@gmail.com"                                                               =   0 =  OK 
+     *  2883 - assertIsTrue  "--@ooo.ooo"                                                                 =   0 =  OK 
+     *  2884 - assertIsTrue  "-@bde.cc"                                                                   =   0 =  OK 
+     *  2885 - assertIsTrue  "-asd@das.com"                                                               =   0 =  OK 
+     *  2886 - assertIsTrue  "1234567890@domain.com"                                                      =   0 =  OK 
+     *  2887 - assertIsTrue  "1@domain.com"                                                               =   0 =  OK 
+     *  2888 - assertIsTrue  "1@gmail.com"                                                                =   0 =  OK 
+     *  2889 - assertIsTrue  "1_example@something.gmail.com"                                              =   0 =  OK 
+     *  2890 - assertIsTrue  "2@bde.cc"                                                                   =   0 =  OK 
+     *  2891 - assertIsTrue  "3c296rD3HNEE@d139c.a51"                                                     =   0 =  OK 
+     *  2892 - assertIsTrue  "<boss@nil.test>"                                                            =   0 =  OK 
+     *  2893 - assertIsTrue  "<john@doe.com>"                                                             =   0 =  OK 
+     *  2894 - assertIsTrue  "A__z/J0hn.sm{it!}h_comment@example.com.co"                                  =   0 =  OK 
+     *  2895 - assertIsTrue  "Abc.123@example.com"                                                        =   0 =  OK 
+     *  2896 - assertIsTrue  "Abc@10.42.0.1"                                                              =   2 =  OK 
+     *  2897 - assertIsTrue  "Abc@example.com"                                                            =   0 =  OK 
+     *  2898 - assertIsTrue  "D.Oy'Smith@gmail.com"                                                       =   0 =  OK 
+     *  2899 - assertIsTrue  "Fred\ Bloggs@example.com"                                                   =   0 =  OK 
+     *  2900 - assertIsTrue  "Joe.\\Blow@example.com"                                                     =   0 =  OK 
+     *  2901 - assertIsTrue  "John <john@doe.com>"                                                        =   0 =  OK 
+     *  2902 - assertIsTrue  "mymail\@hello@hotmail.com"                                                  =   0 =  OK 
+     *  2903 - assertIsTrue  "PN=Joe/OU=X400/@gateway.com"                                                =   0 =  OK 
+     *  2904 - assertIsTrue  "This is <john@127.0.0.1>"                                                   =   2 =  OK 
+     *  2905 - assertIsTrue  "This is <john@[127.0.0.1]>"                                                 =   2 =  OK 
+     *  2906 - assertIsTrue  "Who? <one@y.test>"                                                          =  18 =  #### FEHLER ####    Struktur: Fehler in Adress-String-X
+     *  2907 - assertIsTrue  "\" \"@example.org"                                                          =   1 =  OK 
+     *  2908 - assertIsTrue  "\"%2\"@gmail.com"                                                           =   1 =  OK 
+     *  2909 - assertIsTrue  "\"Abc@def\"@example.com"                                                    =   1 =  OK 
+     *  2910 - assertIsTrue  "\"Abc\@def\"@example.com"                                                   =   1 =  OK 
+     *  2911 - assertIsTrue  "\"Doug \\"Ace\\" L.\"@example.com"                                          =   1 =  OK 
+     *  2912 - assertIsTrue  "\"Fred Bloggs\"@example.com"                                                =   1 =  OK 
+     *  2913 - assertIsTrue  "\"Fred\ Bloggs\"@example.com"                                               =   1 =  OK 
+     *  2914 - assertIsTrue  "\"Giant; \\"Big\\" Box\" <sysservices@example.net>"                         =  18 =  #### FEHLER ####    Struktur: Fehler in Adress-String-X
+     *  2915 - assertIsTrue  "\"Joe\\Blow\"@example.com"                                                  =   1 =  OK 
+     *  2916 - assertIsTrue  "\"Look at all these spaces!\"@example.com"                                  =   1 =  OK 
+     *  2917 - assertIsTrue  "\"a..b\"@gmail.com"                                                         =   1 =  OK 
+     *  2918 - assertIsTrue  "\"a@b\"@example.com"                                                        =   1 =  OK 
+     *  2919 - assertIsTrue  "\"a_b\"@gmail.com"                                                          =   1 =  OK 
+     *  2920 - assertIsTrue  "\"abcdefghixyz\"@example.com"                                               =   1 =  OK 
+     *  2921 - assertIsTrue  "\"cogwheel the orange\"@example.com"                                        =   1 =  OK 
+     *  2922 - assertIsTrue  "\"foo\@bar\"@Something.com"                                                 =   1 =  OK 
+     *  2923 - assertIsTrue  "\"j\\"s\"@proseware.com"                                                    =   1 =  OK 
+     *  2924 - assertIsTrue  "\"myemail@sa\"@mple.com"                                                    =   1 =  OK 
+     *  2925 - assertIsTrue  "_-_@bde.cc"                                                                 =   0 =  OK 
+     *  2926 - assertIsTrue  "_@gmail.com"                                                                =   0 =  OK 
+     *  2927 - assertIsTrue  "_dasd@sd.com"                                                               =   0 =  OK 
+     *  2928 - assertIsTrue  "_dasd_das_@9.com"                                                           =   0 =  OK 
+     *  2929 - assertIsTrue  "_somename@example.com"                                                      =   0 =  OK 
+     *  2930 - assertIsTrue  "a&d@somedomain.com"                                                         =   0 =  OK 
+     *  2931 - assertIsTrue  "a*d@somedomain.com"                                                         =   0 =  OK 
+     *  2932 - assertIsTrue  "a+b@bde.cc"                                                                 =   0 =  OK 
+     *  2933 - assertIsTrue  "a+b@c.com"                                                                  =   0 =  OK 
+     *  2934 - assertIsTrue  "a-b@bde.cc"                                                                 =   0 =  OK 
+     *  2935 - assertIsTrue  "a.a@test.com"                                                               =   0 =  OK 
+     *  2936 - assertIsTrue  "a.b@com"                                                                    =  34 =  #### FEHLER ####    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
+     *  2937 - assertIsTrue  "a/d@somedomain.com"                                                         =   0 =  OK 
+     *  2938 - assertIsTrue  "a2@bde.cc"                                                                  =   0 =  OK 
+     *  2939 - assertIsTrue  "a@123.45.67.89"                                                             =   2 =  OK 
+     *  2940 - assertIsTrue  "a@b.c.com"                                                                  =   0 =  OK 
+     *  2941 - assertIsTrue  "a@b.com"                                                                    =   0 =  OK 
+     *  2942 - assertIsTrue  "a@bc.com"                                                                   =   0 =  OK 
+     *  2943 - assertIsTrue  "a@bcom"                                                                     =  34 =  #### FEHLER ####    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
+     *  2944 - assertIsTrue  "a@domain.com"                                                               =   0 =  OK 
+     *  2945 - assertIsTrue  "a__z@provider.com"                                                          =   0 =  OK 
+     *  2946 - assertIsTrue  "a_z%@gmail.com"                                                             =   0 =  OK 
+     *  2947 - assertIsTrue  "aaron@theinfo.org"                                                          =   0 =  OK 
+     *  2948 - assertIsTrue  "ab@288.120.150.10.com"                                                      =   0 =  OK 
+     *  2949 - assertIsTrue  "ab@[120.254.254.120]"                                                       =   2 =  OK 
+     *  2950 - assertIsTrue  "ab@b-de.cc"                                                                 =   0 =  OK 
+     *  2951 - assertIsTrue  "ab@c.com"                                                                   =   0 =  OK 
+     *  2952 - assertIsTrue  "ab_c@bde.cc"                                                                =   0 =  OK 
+     *  2953 - assertIsTrue  "abc.\"defghi\".xyz@example.com"                                             =   1 =  OK 
+     *  2954 - assertIsTrue  "abc.efg@gmail.com"                                                          =   0 =  OK 
+     *  2955 - assertIsTrue  "abc.xyz@gmail.com.in"                                                       =   0 =  OK 
+     *  2956 - assertIsTrue  "abc123xyz@asdf.co.in"                                                       =   0 =  OK 
+     *  2957 - assertIsTrue  "abc1_xyz1@gmail1.com"                                                       =   0 =  OK 
+     *  2958 - assertIsTrue  "abc@abc.abc"                                                                =   0 =  OK 
+     *  2959 - assertIsTrue  "abc@abc.abcd"                                                               =   0 =  OK 
+     *  2960 - assertIsTrue  "abc@abc.abcde"                                                              =   0 =  OK 
+     *  2961 - assertIsTrue  "abc@abc.co.in"                                                              =   0 =  OK 
+     *  2962 - assertIsTrue  "abc@abc.com.com.com.com"                                                    =   0 =  OK 
+     *  2963 - assertIsTrue  "abc@gmail.com.my"                                                           =   0 =  OK 
+     *  2964 - assertIsTrue  "abc\@def@example.com"                                                       =   0 =  OK 
+     *  2965 - assertIsTrue  "abc\\@example.com"                                                          =   0 =  OK 
+     *  2966 - assertIsTrue  "abcxyz123@qwert.com"                                                        =   0 =  OK 
+     *  2967 - assertIsTrue  "alex@example.com"                                                           =   0 =  OK 
+     *  2968 - assertIsTrue  "alireza@test.co.uk"                                                         =   0 =  OK 
+     *  2969 - assertIsTrue  "asd-@asd.com"                                                               =   0 =  OK 
+     *  2970 - assertIsTrue  "begeddov@jfinity.com"                                                       =   0 =  OK 
+     *  2971 - assertIsTrue  "check@this.com"                                                             =   0 =  OK 
+     *  2972 - assertIsTrue  "cog@wheel.com"                                                              =   0 =  OK 
+     *  2973 - assertIsTrue  "customer/department=shipping@example.com"                                   =   0 =  OK 
+     *  2974 - assertIsTrue  "d._.___d@gmail.com"                                                         =   0 =  OK 
+     *  2975 - assertIsTrue  "d.j@server1.proseware.com"                                                  =   0 =  OK 
+     *  2976 - assertIsTrue  "d.oy.smith@gmail.com"                                                       =   0 =  OK 
+     *  2977 - assertIsTrue  "d23d@da9.co9"                                                               =   0 =  OK 
+     *  2978 - assertIsTrue  "d_oy_smith@gmail.com"                                                       =   0 =  OK 
+     *  2979 - assertIsTrue  "dasd-dasd@das.com.das"                                                      =   0 =  OK 
+     *  2980 - assertIsTrue  "dasd.dadas@dasd.com"                                                        =   0 =  OK 
+     *  2981 - assertIsTrue  "dasd_-@jdas.com"                                                            =   0 =  OK 
+     *  2982 - assertIsTrue  "david.jones@proseware.com"                                                  =   0 =  OK 
+     *  2983 - assertIsTrue  "dclo@us.ibm.com"                                                            =   0 =  OK 
+     *  2984 - assertIsTrue  "dda_das@das-dasd.com"                                                       =   0 =  OK 
+     *  2985 - assertIsTrue  "digit-only-domain-with-subdomain@sub.123.com"                               =   0 =  OK 
+     *  2986 - assertIsTrue  "digit-only-domain@123.com"                                                  =   0 =  OK 
+     *  2987 - assertIsTrue  "doysmith@gmail.com"                                                         =   0 =  OK 
+     *  2988 - assertIsTrue  "drp@drp.cz"                                                                 =   0 =  OK 
+     *  2989 - assertIsTrue  "dsq!a?@das.com"                                                             =   0 =  OK 
+     *  2990 - assertIsTrue  "email@domain.co.de"                                                         =   0 =  OK 
+     *  2991 - assertIsTrue  "email@domain.com"                                                           =   0 =  OK 
+     *  2992 - assertIsTrue  "email@example.co.uk"                                                        =   0 =  OK 
+     *  2993 - assertIsTrue  "email@example.com"                                                          =   0 =  OK 
+     *  2994 - assertIsTrue  "email@mail.gmail.com"                                                       =   0 =  OK 
+     *  2995 - assertIsTrue  "email@subdomain.domain.com"                                                 =   0 =  OK 
+     *  2996 - assertIsTrue  "example@example.co"                                                         =   0 =  OK 
+     *  2997 - assertIsTrue  "f.f.f@bde.cc"                                                               =   0 =  OK 
+     *  2998 - assertIsTrue  "f.o.o.b.a.r@gmail.com"                                                      =   0 =  OK 
+     *  2999 - assertIsTrue  "first-name-last-name@d-a-n.com"                                             =   0 =  OK 
+     *  3000 - assertIsTrue  "firstname+lastname@domain.com"                                              =   0 =  OK 
+     *  3001 - assertIsTrue  "firstname-lastname@domain.com"                                              =   0 =  OK 
+     *  3002 - assertIsTrue  "firstname.lastname@domain.com"                                              =   0 =  OK 
+     *  3003 - assertIsTrue  "foo\@bar@machine.subdomain.example.museum"                                  =   0 =  OK 
+     *  3004 - assertIsTrue  "futureTLD@somewhere.fooo"                                                   =   0 =  OK 
+     *  3005 - assertIsTrue  "hello.me_1@email.com"                                                       =   0 =  OK 
+     *  3006 - assertIsTrue  "hello7___@ca.com.pt"                                                        =   0 =  OK 
+     *  3007 - assertIsTrue  "info@ermaelan.com"                                                          =   0 =  OK 
+     *  3008 - assertIsTrue  "j.s@server1.proseware.com"                                                  =   0 =  OK 
+     *  3009 - assertIsTrue  "j@proseware.com9"                                                           =   0 =  OK 
+     *  3010 - assertIsTrue  "j_9@[129.126.118.1]"                                                        =   2 =  OK 
+     *  3011 - assertIsTrue  "jinujawad6s@gmail.com"                                                      =   0 =  OK 
+     *  3012 - assertIsTrue  "john.doe@example.com"                                                       =   0 =  OK 
+     *  3013 - assertIsTrue  "john.o'doe@example.com"                                                     =   0 =  OK 
+     *  3014 - assertIsTrue  "john.smith@example.com"                                                     =   0 =  OK 
+     *  3015 - assertIsTrue  "jones@ms1.proseware.com"                                                    =   0 =  OK 
+     *  3016 - assertIsTrue  "journaldev+100@gmail.com"                                                   =   0 =  OK 
+     *  3017 - assertIsTrue  "journaldev-100@journaldev.net"                                              =   0 =  OK 
+     *  3018 - assertIsTrue  "journaldev-100@yahoo-test.com"                                              =   0 =  OK 
+     *  3019 - assertIsTrue  "journaldev-100@yahoo.com"                                                   =   0 =  OK 
+     *  3020 - assertIsTrue  "journaldev.100@journaldev.com.au"                                           =   0 =  OK 
+     *  3021 - assertIsTrue  "journaldev.100@yahoo.com"                                                   =   0 =  OK 
+     *  3022 - assertIsTrue  "journaldev111@journaldev.com"                                               =   0 =  OK 
+     *  3023 - assertIsTrue  "journaldev@1.com"                                                           =   0 =  OK 
+     *  3024 - assertIsTrue  "journaldev@gmail.com.com"                                                   =   0 =  OK 
+     *  3025 - assertIsTrue  "journaldev@yahoo.com"                                                       =   0 =  OK 
+     *  3026 - assertIsTrue  "journaldev_100@yahoo-test.ABC.CoM"                                          =   0 =  OK 
+     *  3027 - assertIsTrue  "js#internal@proseware.com"                                                  =   0 =  OK 
+     *  3028 - assertIsTrue  "js*@proseware.com"                                                          =   0 =  OK 
+     *  3029 - assertIsTrue  "js@proseware.com9"                                                          =   0 =  OK 
+     *  3030 - assertIsTrue  "me+100@me.com"                                                              =   0 =  OK 
+     *  3031 - assertIsTrue  "me+alpha@example.com"                                                       =   0 =  OK 
+     *  3032 - assertIsTrue  "me-100@me.com"                                                              =   0 =  OK 
+     *  3033 - assertIsTrue  "me-100@me.com.au"                                                           =   0 =  OK 
+     *  3034 - assertIsTrue  "me-100@yahoo-test.com"                                                      =   0 =  OK 
+     *  3035 - assertIsTrue  "me.100@me.com"                                                              =   0 =  OK 
+     *  3036 - assertIsTrue  "me@aaronsw.com"                                                             =   0 =  OK 
+     *  3037 - assertIsTrue  "me@company.co.uk"                                                           =   0 =  OK 
+     *  3038 - assertIsTrue  "me@gmail.com"                                                               =   0 =  OK 
+     *  3039 - assertIsTrue  "me@gmail.com"                                                               =   0 =  OK 
+     *  3040 - assertIsTrue  "me@mail.s2.example.com"                                                     =   0 =  OK 
+     *  3041 - assertIsTrue  "me@me.cu.uk"                                                                =   0 =  OK 
+     *  3042 - assertIsTrue  "my.ownsite@ourearth.org"                                                    =   0 =  OK 
+     *  3043 - assertIsFalse "myemail@sample"                                                             =  34 =  OK    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
+     *  3044 - assertIsTrue  "myemail@sample.com"                                                         =   0 =  OK 
+     *  3045 - assertIsTrue  "mysite@you.me.net"                                                          =   0 =  OK 
+     *  3046 - assertIsTrue  "o'hare@example.com"                                                         =   0 =  OK 
+     *  3047 - assertIsTrue  "peter.example@domain.comau"                                                 =   0 =  OK 
+     *  3048 - assertIsTrue  "peter.piper@example.com"                                                    =   0 =  OK 
+     *  3049 - assertIsTrue  "peter_123@news.com"                                                         =   0 =  OK 
+     *  3050 - assertIsTrue  "pio^_pio@factory.com"                                                       =   0 =  OK 
+     *  3051 - assertIsTrue  "pio_#pio@factory.com"                                                       =   0 =  OK 
+     *  3052 - assertIsTrue  "pio_pio@factory.com"                                                        =   0 =  OK 
+     *  3053 - assertIsTrue  "pio_~pio@factory.com"                                                       =   0 =  OK 
+     *  3054 - assertIsTrue  "piskvor@example.lighting"                                                   =   0 =  OK 
+     *  3055 - assertIsTrue  "rss-dev@yahoogroups.com"                                                    =   0 =  OK 
+     *  3056 - assertIsTrue  "someone+tag@somewhere.net"                                                  =   0 =  OK 
+     *  3057 - assertIsTrue  "someone@somewhere.co.uk"                                                    =   0 =  OK 
+     *  3058 - assertIsTrue  "someone@somewhere.com"                                                      =   0 =  OK 
+     *  3059 - assertIsTrue  "something_valid@somewhere.tld"                                              =   0 =  OK 
+     *  3060 - assertIsTrue  "tvf@tvf.cz"                                                                 =   0 =  OK 
+     *  3061 - assertIsTrue  "user#@domain.co.in"                                                         =   0 =  OK 
+     *  3062 - assertIsTrue  "user'name@domain.co.in"                                                     =   0 =  OK 
+     *  3063 - assertIsTrue  "user+mailbox@example.com"                                                   =   0 =  OK 
+     *  3064 - assertIsTrue  "user-name@domain.co.in"                                                     =   0 =  OK 
+     *  3065 - assertIsTrue  "user.name@domain.com"                                                       =   0 =  OK 
+     *  3066 - assertIsFalse ".user.name@domain.com"                                                      =  30 =  OK    Trennzeichen: kein Beginn mit einem Punkt
+     *  3067 - assertIsFalse "user-name@domain.com."                                                      =  36 =  OK    Trennzeichen: der letzte Punkt darf nicht am Ende liegen
+     *  3068 - assertIsFalse "username@.com"                                                              =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
+     *  3069 - assertIsTrue  "user1@domain.com"                                                           =   0 =  OK 
+     *  3070 - assertIsTrue  "user?name@domain.co.in"                                                     =   0 =  OK 
+     *  3071 - assertIsTrue  "user@domain.co.in"                                                          =   0 =  OK 
+     *  3072 - assertIsTrue  "user@domain.com"                                                            =   0 =  OK 
+     *  3073 - assertIsFalse "user@domaincom"                                                             =  34 =  OK    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
+     *  3074 - assertIsTrue  "user_name@domain.co.in"                                                     =   0 =  OK 
+     *  3075 - assertIsTrue  "user_name@domain.com"                                                       =   0 =  OK 
+     *  3076 - assertIsTrue  "username@yahoo.corporate"                                                   =   0 =  OK 
+     *  3077 - assertIsTrue  "username@yahoo.corporate.in"                                                =   0 =  OK 
+     *  3078 - assertIsTrue  "username+something@domain.com"                                              =   0 =  OK 
+     *  3079 - assertIsTrue  "vdv@dyomedea.com"                                                           =   0 =  OK 
+     *  3080 - assertIsTrue  "xxxx@gmail.com"                                                             =   0 =  OK 
+     *  3081 - assertIsTrue  "xxxxxx@yahoo.com"                                                           =   0 =  OK 
+     *  3082 - assertIsTrue  "user+mailbox/department=shipping@example.com"                               =   0 =  OK 
+     *  3083 - assertIsFalse "first;name)lastname@domain.com(blah"                                        =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  3084 - assertIsTrue  "user@[IPv6:2001:DB8::1]"                                                    =   4 =  OK 
+     *  3085 - assertIsFalse "user@localserver"                                                           =  34 =  OK    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
+     *  3086 - assertIsTrue  "w.b.f@test.com"                                                             =   0 =  OK 
+     *  3087 - assertIsTrue  "w.b.f@test.museum"                                                          =   0 =  OK 
+     *  3088 - assertIsTrue  "yoursite@ourearth.com"                                                      =   0 =  OK 
+     *  3089 - assertIsTrue  "~pio_pio@factory.com"                                                       =   0 =  OK 
+     *  3090 - assertIsTrue  "{^c\@**Dog^}@cartoon.com"                                                   =   0 =  OK 
+     *  3091 - assertIsFalse "the-character-limit@for-each-part.of-the-domain.is-sixty-three-characters.this-is-exactly-sixty-four-characters-so-it-is-invalid-blah-blah.com" =  63 =  OK    Domain-Part: Domain-Label zu lang (maximal 63 Zeichen)
+     *  3092 - assertIsFalse "the-total-length@of-an-entire-address.cannot-be-longer-than-two-hundred-and-fifty-six-characters.and-this-address-is-257-characters-exactly.so-it-should-be-invalid.and-im-going-to-add-some-more-words-here.to-increase-the-lenght-blah-blah-blah-blah-blah-.org" =  12 =  OK    Laenge: Laengenbegrenzungen stimmen nicht
+     *  3093 - assertIsTrue  "the-character-limit@for-each-part.of-the-domain.is-sixty-three-characters.this-is-exactly-sixty-three-characters-so-it-is-valid-blah-blah.com" =   0 =  OK 
+     *  3094 - assertIsTrue  "the-total-length@of-an-entire-address.cannot-be-longer-than-two-hundred-and-fifty-four-characters.and-this-address-is-254-characters-exactly.so-it-should-be-valid.and-im-going-to-add-some-more-words-here.to-increase-the-lenght-blah-blah-blah-blah-bla.org" =   0 =  OK 
+     *  3095 - assertIsFalse "the-local-part-is-invalid-if-it-is-longer-than-sixty-four-characters@sld.net" =  13 =  OK    Laenge: RFC 5321 = SMTP-Protokoll = maximale Laenge des Local-Parts sind 64 Bytes
+     *  3096 - assertIsTrue  "unusual+but+valid+email1900=/!#$%&\'*+-/=?^_`.{|}~@example.com"             =   0 =  OK 
+     *  3097 - assertIsTrue  "valid@[1.1.1.1]"                                                            =   2 =  OK 
+     *  3098 - assertIsTrue  "valid.ipv6v4.addr@[IPv6:aaaa:aaaa:aaaa:aaaa:aaaa:aaaa:127.0.0.1]"           =  47 =  #### FEHLER ####    IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
+     *  3099 - assertIsTrue  "valid.ipv6v4.addr@[IPv6:::12.34.56.78]"                                     =  62 =  #### FEHLER ####    IP6-Adressteil: IPv4 in IPv6 - falsche Angabe der IP4-Einbettung (Zeichenfolge 'ffff' erwartet)
+     *  3100 - assertIsTrue  "valid.ipv6.addr@[IPv6:fe80::230:48ff:fe33:bc33]"                            =   4 =  OK 
+     *  3101 - assertIsTrue  "valid.ipv6.addr@[IPv6:fe80:0000:0000:0000:0202:b3ff:fe1e:8329]"             =   4 =  OK 
+     *  3102 - assertIsTrue  "valid.ipv6.addr@[IPv6:::]"                                                  =   4 =  OK 
+     *  3103 - assertIsTrue  "valid.ipv6.addr@[IPv6:::3333:4444:5555:6666:7777:8888]"                     =   4 =  OK 
+     *  3104 - assertIsTrue  "valid.ipv6.addr@[IPv6:::12.34.56.78]"                                       =  62 =  #### FEHLER ####    IP6-Adressteil: IPv4 in IPv6 - falsche Angabe der IP4-Einbettung (Zeichenfolge 'ffff' erwartet)
+     *  3105 - assertIsTrue  "valid.ipv6.addr@[IPv6:2607:f0d0:1002:51::4]"                                =   4 =  OK 
+     *  3106 - assertIsTrue  "valid.ipv6.addr@[IPv6:0::1]"                                                =   4 =  OK 
+     *  3107 - assertIsTrue  "valid.ipv4.addr@[255.255.255.255]"                                          =   2 =  OK 
+     *  3108 - assertIsTrue  "valid.ipv4.addr@[123.1.72.10]"                                              =   2 =  OK 
+     *  3109 - assertIsFalse "invalid@[10]"                                                               =  57 =  OK    IP4-Adressteil: IP-Adresse Trennzeichenanzahl muss 3 sein
+     *  3110 - assertIsFalse "invalid@[10.1]"                                                             =  57 =  OK    IP4-Adressteil: IP-Adresse Trennzeichenanzahl muss 3 sein
+     *  3111 - assertIsFalse "invalid@[10.1.52]"                                                          =  57 =  OK    IP4-Adressteil: IP-Adresse Trennzeichenanzahl muss 3 sein
+     *  3112 - assertIsFalse "invalid@[256.256.256.256]"                                                  =  54 =  OK    IP4-Adressteil: Byte-Overflow
+     *  3113 - assertIsFalse "invalid@[IPv6:123456]"                                                      =  46 =  OK    IP6-Adressteil: zu viele Ziffern, maximal 4 Ziffern
+     *  3114 - assertIsFalse "invalid@[127.0.0.1.]"                                                       =  56 =  OK    IP4-Adressteil: zu viele Trennzeichen
+     *  3115 - assertIsFalse "invalid@[127.0.0.1]."                                                       =  60 =  OK    IP4-Adressteil: Abschlusszeichen "]" muss am Ende stehen
+     *  3116 - assertIsFalse "invalid@[127.0.0.1]x"                                                       =  60 =  OK    IP4-Adressteil: Abschlusszeichen "]" muss am Ende stehen
+     *  3117 - assertIsFalse "invalid@domain1.com@domain2.com"                                            =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
+     *  3118 - assertIsFalse "\"locál-part\"@example.com"                                                 =  89 =  OK    String: Ungueltiges Zeichen innerhalb Anfuehrungszeichen
+     *  3119 - assertIsFalse "invalid@[IPv6:1::2:]"                                                       =   4 =  #### FEHLER ####    eMail-Adresse korrekt (IP6-Adresse)
+     *  3120 - assertIsFalse "invalid@[IPv6::1::1]"                                                       =   4 =  #### FEHLER ####    eMail-Adresse korrekt (IP6-Adresse)
+     *  3121 - assertIsFalse "invalid@[]"                                                                 =  57 =  OK    IP4-Adressteil: IP-Adresse Trennzeichenanzahl muss 3 sein
+     *  3122 - assertIsFalse "invalid@[111.111.111.111"                                                   =  61 =  OK    IP-Adressteil: Kein Abschluss der IP-Adresse auf ']'
+     *  3123 - assertIsFalse "invalid@[IPv6:2607:f0d0:1002:51::4"                                         =  61 =  OK    IP-Adressteil: Kein Abschluss der IP-Adresse auf ']'
+     *  3124 - assertIsFalse "invalid@[IPv6:1111::1111::1111]"                                            =  50 =  OK    IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
+     *  3125 - assertIsFalse "invalid@[IPv6:1111:::1111::1111]"                                           =  50 =  OK    IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
+     *  3126 - assertIsFalse "invalid@[IPv6:aaaa:aaaa:aaaa:aaaa:aaaa:aaaa:555.666.777.888]"               =  47 =  OK    IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
+     *  3127 - assertIsFalse "invalid@[IPv6:1111:1111]"                                                   =  43 =  OK    IP6-Adressteil: Zu wenig Trennzeichen
+     *  3128 - assertIsFalse "\"invalid-qstring@example.com"                                              =  86 =  OK    String: kein abschliessendes Anfuehrungszeichen gefunden.
      * 
      * ---- https://github.com/jstedfast/EmailValidation/blob/master/UnitTests/Test.cs --------------------------------------------------
      * 
-     *  3136 - assertIsTrue  "\"\e\s\c\a\p\e\d\"@sld.com"                                                 =  84 =  #### FEHLER ####    String: Ungueltige Escape-Sequenz im String
-     *  3137 - assertIsTrue  "\"back\slash\"@sld.com"                                                     =  84 =  #### FEHLER ####    String: Ungueltige Escape-Sequenz im String
-     *  3138 - assertIsTrue  "\"escaped\\"quote\"@sld.com"                                                =   1 =  OK 
-     *  3139 - assertIsTrue  "\"quoted\"@sld.com"                                                         =   1 =  OK 
-     *  3140 - assertIsTrue  "\"quoted-at-sign@sld.org\"@sld.com"                                         =   1 =  OK 
-     *  3141 - assertIsTrue  "&'*+-./=?^_{}~@other-valid-characters-in-local.net"                         =   0 =  OK 
-     *  3142 - assertIsTrue  "_.-+~^*'`{GEO}`'*^~+-._@example.com"                                        =   0 =  OK 
-     *  3143 - assertIsTrue  "01234567890@numbers-in-local.net"                                           =   0 =  OK 
-     *  3144 - assertIsTrue  "a@single-character-in-local.org"                                            =   0 =  OK 
-     *  3145 - assertIsTrue  "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@letters-in-local.org"  =   0 =  OK 
-     *  3146 - assertIsTrue  "backticksarelegit@test.com"                                                 =   0 =  OK 
-     *  3147 - assertIsTrue  "bracketed-IP-instead-of-domain@[127.0.0.1]"                                 =   2 =  OK 
-     *  3148 - assertIsTrue  "country-code-tld@sld.rw"                                                    =   0 =  OK 
-     *  3149 - assertIsTrue  "country-code-tld@sld.uk"                                                    =   0 =  OK 
-     *  3150 - assertIsTrue  "letters-in-sld@123.com"                                                     =   0 =  OK 
-     *  3151 - assertIsTrue  "local@dash-in-sld.com"                                                      =   0 =  OK 
-     *  3152 - assertIsTrue  "local@sld.newTLD"                                                           =   0 =  OK 
-     *  3153 - assertIsTrue  "local@sub.domains.com"                                                      =   0 =  OK 
-     *  3154 - assertIsTrue  "mixed-1234-in-{+^}-local@sld.net"                                           =   0 =  OK 
-     *  3155 - assertIsTrue  "one-character-third-level@a.example.com"                                    =   0 =  OK 
-     *  3156 - assertIsTrue  "one-letter-sld@x.org"                                                       =   0 =  OK 
-     *  3157 - assertIsTrue  "punycode-numbers-in-tld@sld.xn--3e0b707e"                                   =   0 =  OK 
-     *  3158 - assertIsTrue  "single-character-in-sld@x.org"                                              =   0 =  OK 
-     *  3159 - assertIsTrue  "uncommon-tld@sld.mobi"                                                      =   0 =  OK 
-     *  3160 - assertIsTrue  "uncommon-tld@sld.museum"                                                    =   0 =  OK 
-     *  3161 - assertIsTrue  "uncommon-tld@sld.travel"                                                    =   0 =  OK 
-     *  3162 - assertIsFalse "invalid"                                                                    =  34 =  OK    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
-     *  3163 - assertIsFalse "invalid@"                                                                   =  27 =  OK    AT-Zeichen: kein AT-Zeichen am Ende
-     *  3164 - assertIsFalse "invalid @"                                                                  =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  3165 - assertIsFalse "invalid@[555.666.777.888]"                                                  =  54 =  OK    IP4-Adressteil: Byte-Overflow
-     *  3166 - assertIsFalse "invalid@[IPv6:123456]"                                                      =  46 =  OK    IP6-Adressteil: zu viele Ziffern, maximal 4 Ziffern
-     *  3167 - assertIsFalse "invalid@[127.0.0.1.]"                                                       =  56 =  OK    IP4-Adressteil: zu viele Trennzeichen
-     *  3168 - assertIsFalse "invalid@[127.0.0.1]."                                                       =  60 =  OK    IP4-Adressteil: Abschlusszeichen "]" muss am Ende stehen
-     *  3169 - assertIsFalse "invalid@[127.0.0.1]x"                                                       =  60 =  OK    IP4-Adressteil: Abschlusszeichen "]" muss am Ende stehen
-     *  3170 - assertIsFalse "<>@[]`|@even-more-invalid-characters-in-local.org"                          =  18 =  OK    Struktur: Fehler in Adress-String-X
-     *  3171 - assertIsFalse "@missing-local.org"                                                         =  26 =  OK    AT-Zeichen: kein AT-Zeichen am Anfang
-     *  3172 - assertIsFalse "IP-and-port@127.0.0.1:25"                                                   =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  3173 - assertIsFalse "another-invalid-ip@127.0.0.256"                                             =  54 =  OK    IP4-Adressteil: Byte-Overflow
-     *  3174 - assertIsFalse "ip.range.overflow@[127.0.0.256]"                                            =  54 =  OK    IP4-Adressteil: Byte-Overflow
-     *  3175 - assertIsFalse "invalid-characters-in-sld@! \"#$%()./;<>_[]`|.org"                          =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-     *  3176 - assertIsFalse "invalid-ip@127.0.0.1.26"                                                    =  23 =  OK    Zeichen: Top-Level-Domain darf nicht mit Zahl beginnen
-     *  3177 - assertIsFalse "local-ends-with-dot.@sld.com"                                               =  32 =  OK    Trennzeichen: ungueltige Zeichenkombination ".@"
-     *  3178 - assertIsFalse "missing-at-sign.net"                                                        =  28 =  OK    AT-Zeichen: kein AT-Zeichen gefunden
-     *  3179 - assertIsFalse "missing-sld@.com"                                                           =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
-     *  3180 - assertIsFalse "missing-tld@sld."                                                           =  36 =  OK    Trennzeichen: der letzte Punkt darf nicht am Ende liegen
-     *  3181 - assertIsFalse "sld-ends-with-dash@sld-.com"                                                =  20 =  OK    Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
-     *  3182 - assertIsFalse "sld-starts-with-dash@-sld.com"                                              =  20 =  OK    Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
-     *  3183 - assertIsFalse "two..consecutive-dots@sld.com"                                              =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
-     *  3184 - assertIsTrue  "unbracketed-IP@127.0.0.1"                                                   =   2 =  OK 
-     *  3185 - assertIsFalse "underscore.error@example.com_"                                              =  24 =  OK    Zeichen: Kein Sonderzeichen am Ende der eMail-Adresse
+     *  3129 - assertIsTrue  "\"\e\s\c\a\p\e\d\"@sld.com"                                                 =  84 =  #### FEHLER ####    String: Ungueltige Escape-Sequenz im String
+     *  3130 - assertIsTrue  "\"back\slash\"@sld.com"                                                     =  84 =  #### FEHLER ####    String: Ungueltige Escape-Sequenz im String
+     *  3131 - assertIsTrue  "\"escaped\\"quote\"@sld.com"                                                =   1 =  OK 
+     *  3132 - assertIsTrue  "\"quoted\"@sld.com"                                                         =   1 =  OK 
+     *  3133 - assertIsTrue  "\"quoted-at-sign@sld.org\"@sld.com"                                         =   1 =  OK 
+     *  3134 - assertIsTrue  "&'*+-./=?^_{}~@other-valid-characters-in-local.net"                         =   0 =  OK 
+     *  3135 - assertIsTrue  "_.-+~^*'`{GEO}`'*^~+-._@example.com"                                        =   0 =  OK 
+     *  3136 - assertIsTrue  "01234567890@numbers-in-local.net"                                           =   0 =  OK 
+     *  3137 - assertIsTrue  "a@single-character-in-local.org"                                            =   0 =  OK 
+     *  3138 - assertIsTrue  "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@letters-in-local.org"  =   0 =  OK 
+     *  3139 - assertIsTrue  "backticksarelegit@test.com"                                                 =   0 =  OK 
+     *  3140 - assertIsTrue  "bracketed-IP-instead-of-domain@[127.0.0.1]"                                 =   2 =  OK 
+     *  3141 - assertIsTrue  "country-code-tld@sld.rw"                                                    =   0 =  OK 
+     *  3142 - assertIsTrue  "country-code-tld@sld.uk"                                                    =   0 =  OK 
+     *  3143 - assertIsTrue  "letters-in-sld@123.com"                                                     =   0 =  OK 
+     *  3144 - assertIsTrue  "local@dash-in-sld.com"                                                      =   0 =  OK 
+     *  3145 - assertIsTrue  "local@sld.newTLD"                                                           =   0 =  OK 
+     *  3146 - assertIsTrue  "local@sub.domains.com"                                                      =   0 =  OK 
+     *  3147 - assertIsTrue  "mixed-1234-in-{+^}-local@sld.net"                                           =   0 =  OK 
+     *  3148 - assertIsTrue  "one-character-third-level@a.example.com"                                    =   0 =  OK 
+     *  3149 - assertIsTrue  "one-letter-sld@x.org"                                                       =   0 =  OK 
+     *  3150 - assertIsTrue  "punycode-numbers-in-tld@sld.xn--3e0b707e"                                   =   0 =  OK 
+     *  3151 - assertIsTrue  "single-character-in-sld@x.org"                                              =   0 =  OK 
+     *  3152 - assertIsTrue  "uncommon-tld@sld.mobi"                                                      =   0 =  OK 
+     *  3153 - assertIsTrue  "uncommon-tld@sld.museum"                                                    =   0 =  OK 
+     *  3154 - assertIsTrue  "uncommon-tld@sld.travel"                                                    =   0 =  OK 
+     *  3155 - assertIsFalse "invalid"                                                                    =  34 =  OK    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
+     *  3156 - assertIsFalse "invalid@"                                                                   =  27 =  OK    AT-Zeichen: kein AT-Zeichen am Ende
+     *  3157 - assertIsFalse "invalid @"                                                                  =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  3158 - assertIsFalse "invalid@[555.666.777.888]"                                                  =  54 =  OK    IP4-Adressteil: Byte-Overflow
+     *  3159 - assertIsFalse "invalid@[IPv6:123456]"                                                      =  46 =  OK    IP6-Adressteil: zu viele Ziffern, maximal 4 Ziffern
+     *  3160 - assertIsFalse "invalid@[127.0.0.1.]"                                                       =  56 =  OK    IP4-Adressteil: zu viele Trennzeichen
+     *  3161 - assertIsFalse "invalid@[127.0.0.1]."                                                       =  60 =  OK    IP4-Adressteil: Abschlusszeichen "]" muss am Ende stehen
+     *  3162 - assertIsFalse "invalid@[127.0.0.1]x"                                                       =  60 =  OK    IP4-Adressteil: Abschlusszeichen "]" muss am Ende stehen
+     *  3163 - assertIsFalse "<>@[]`|@even-more-invalid-characters-in-local.org"                          =  18 =  OK    Struktur: Fehler in Adress-String-X
+     *  3164 - assertIsFalse "@missing-local.org"                                                         =  26 =  OK    AT-Zeichen: kein AT-Zeichen am Anfang
+     *  3165 - assertIsFalse "IP-and-port@127.0.0.1:25"                                                   =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  3166 - assertIsFalse "another-invalid-ip@127.0.0.256"                                             =  54 =  OK    IP4-Adressteil: Byte-Overflow
+     *  3167 - assertIsFalse "ip.range.overflow@[127.0.0.256]"                                            =  54 =  OK    IP4-Adressteil: Byte-Overflow
+     *  3168 - assertIsFalse "invalid-characters-in-sld@! \"#$%()./;<>_[]`|.org"                          =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+     *  3169 - assertIsFalse "invalid-ip@127.0.0.1.26"                                                    =  23 =  OK    Zeichen: Top-Level-Domain darf nicht mit Zahl beginnen
+     *  3170 - assertIsFalse "local-ends-with-dot.@sld.com"                                               =  32 =  OK    Trennzeichen: ungueltige Zeichenkombination ".@"
+     *  3171 - assertIsFalse "missing-at-sign.net"                                                        =  28 =  OK    AT-Zeichen: kein AT-Zeichen gefunden
+     *  3172 - assertIsFalse "missing-sld@.com"                                                           =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
+     *  3173 - assertIsFalse "missing-tld@sld."                                                           =  36 =  OK    Trennzeichen: der letzte Punkt darf nicht am Ende liegen
+     *  3174 - assertIsFalse "sld-ends-with-dash@sld-.com"                                                =  20 =  OK    Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
+     *  3175 - assertIsFalse "sld-starts-with-dash@-sld.com"                                              =  20 =  OK    Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
+     *  3176 - assertIsFalse "two..consecutive-dots@sld.com"                                              =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
+     *  3177 - assertIsTrue  "unbracketed-IP@127.0.0.1"                                                   =   2 =  OK 
+     *  3178 - assertIsFalse "underscore.error@example.com_"                                              =  24 =  OK    Zeichen: Kein Sonderzeichen am Ende der eMail-Adresse
      * 
      * ---- https://fightingforalostcause.net/content/misc/2006/compare-email-regex.php -------------------------------------------------
      * 
-     *  3186 - assertIsTrue  "first.last@iana.org"                                                        =   0 =  OK 
-     *  3187 - assertIsTrue  "1234567890123456789012345678901234567890123456789012345678901234@iana.org"  =   0 =  OK 
-     *  3188 - assertIsTrue  "\"first\\"last\"@iana.org"                                                  =   1 =  OK 
-     *  3189 - assertIsTrue  "\"first@last\"@iana.org"                                                    =   1 =  OK 
-     *  3190 - assertIsTrue  "\"first\\last\"@iana.org"                                                   =   1 =  OK 
-     *  3191 - assertIsTrue  "x@x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23" =   0 =  OK 
-     *  3192 - assertIsTrue  "1234567890123456789012345678901234567890123456789012345678@1234567890123456789012345678901234567890123456.de" =   0 =  OK 
-     *  3193 - assertIsTrue  "first.last@[12.34.56.78]"                                                   =   2 =  OK 
-     *  3194 - assertIsTrue  "first.last@[IPv6:::1111:2222:3333:4444:5555:6666]"                          =   4 =  OK 
-     *  3195 - assertIsTrue  "first.last@[IPv6:1111:2222:3333::4444:5555:6666]"                           =   4 =  OK 
-     *  3196 - assertIsTrue  "first.last@[IPv6:1111:2222:3333::4444:5555:6666:]"                          =   4 =  OK 
-     *  3197 - assertIsTrue  "first.last@[IPv6:1111:2222:3333:4444:5555:6666::]"                          =   4 =  OK 
-     *  3198 - assertIsTrue  "first.last@[IPv6:1111:2222:3333:4444:5555:6666:7777:8888]"                  =   4 =  OK 
-     *  3199 - assertIsTrue  "first.last@x23456789012345678901234567890123456789012345678901234567890123.iana.org" =   0 =  OK 
-     *  3200 - assertIsTrue  "first.last@3com.com"                                                        =   0 =  OK 
-     *  3201 - assertIsTrue  "first.last@123.iana.org"                                                    =   0 =  OK 
-     *  3202 - assertIsFalse "first.last@[IPv6:1111:2222:3333::4444:5555:12.34.56.78]"                    =  47 =  OK    IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
-     *  3203 - assertIsTrue  "first.last@[IPv6:1111:2222:3333::4444:5555:6666:7777]"                      =   4 =  OK 
-     *  3204 - assertIsTrue  "\"Abc\@def\"@iana.org"                                                      =   1 =  OK 
-     *  3205 - assertIsTrue  "\"Fred\ Bloggs\"@iana.org"                                                  =   1 =  OK 
-     *  3206 - assertIsTrue  "\"Joe.\\Blow\"@iana.org"                                                    =   1 =  OK 
-     *  3207 - assertIsTrue  "\"Abc@def\"@iana.org"                                                       =   1 =  OK 
-     *  3208 - assertIsTrue  "\"Fred Bloggs\"@iana.orgin"                                                 =   1 =  OK 
-     *  3209 - assertIsTrue  "user+mailbox@iana.org"                                                      =   0 =  OK 
-     *  3210 - assertIsTrue  "$A12345@iana.org"                                                           =   0 =  OK 
-     *  3211 - assertIsTrue  "!def!xyz%abc@iana.org"                                                      =   0 =  OK 
-     *  3212 - assertIsTrue  "_somename@iana.org"                                                         =   0 =  OK 
-     *  3213 - assertIsTrue  "dclo@us.ibm.com"                                                            =   0 =  OK 
-     *  3214 - assertIsTrue  "peter.piper@iana.org"                                                       =   0 =  OK 
-     *  3215 - assertIsTrue  "test@iana.org"                                                              =   0 =  OK 
-     *  3216 - assertIsTrue  "TEST@iana.org"                                                              =   0 =  OK 
-     *  3217 - assertIsTrue  "1234567890@iana.org"                                                        =   0 =  OK 
-     *  3218 - assertIsTrue  "test+test@iana.org"                                                         =   0 =  OK 
-     *  3219 - assertIsTrue  "test-test@iana.org"                                                         =   0 =  OK 
-     *  3220 - assertIsTrue  "t*est@iana.org"                                                             =   0 =  OK 
-     *  3221 - assertIsTrue  "+1~1+@iana.org"                                                             =   0 =  OK 
-     *  3222 - assertIsTrue  "{_test_}@iana.org"                                                          =   0 =  OK 
-     *  3223 - assertIsTrue  "test.test@iana.org"                                                         =   0 =  OK 
-     *  3224 - assertIsTrue  "\"test.test\"@iana.org"                                                     =   1 =  OK 
-     *  3225 - assertIsTrue  "test.\"test\"@iana.org"                                                     =   1 =  OK 
-     *  3226 - assertIsTrue  "\"test@test\"@iana.org"                                                     =   1 =  OK 
-     *  3227 - assertIsTrue  "test@123.123.123.x123"                                                      =   0 =  OK 
-     *  3228 - assertIsTrue  "test@123.123.123.123"                                                       =   2 =  OK 
-     *  3229 - assertIsTrue  "test@[123.123.123.123]"                                                     =   2 =  OK 
-     *  3230 - assertIsTrue  "test@example.iana.org"                                                      =   0 =  OK 
-     *  3231 - assertIsTrue  "test@example.example.iana.org"                                              =   0 =  OK 
-     *  3232 - assertIsTrue  "customer/department@iana.org"                                               =   0 =  OK 
-     *  3233 - assertIsTrue  "_Yosemite.Sam@iana.org"                                                     =   0 =  OK 
-     *  3234 - assertIsTrue  "~@iana.org"                                                                 =   0 =  OK 
-     *  3235 - assertIsTrue  "\"Austin@Powers\"@iana.org"                                                 =   1 =  OK 
-     *  3236 - assertIsTrue  "Ima.Fool@iana.org"                                                          =   0 =  OK 
-     *  3237 - assertIsTrue  "\"Ima.Fool\"@iana.org"                                                      =   1 =  OK 
-     *  3238 - assertIsTrue  "\"Ima Fool\"@iana.orgin"                                                    =   1 =  OK 
-     *  3239 - assertIsTrue  "\"first\".\"last\"@iana.org"                                                =   1 =  OK 
-     *  3240 - assertIsTrue  "\"first\".middle.\"last\"@iana.org"                                         =   1 =  OK 
-     *  3241 - assertIsTrue  "\"first\".last@iana.org"                                                    =   1 =  OK 
-     *  3242 - assertIsTrue  "first.\"last\"@iana.org"                                                    =   1 =  OK 
-     *  3243 - assertIsTrue  "\"first\".\"middle\".\"last\"@iana.org"                                     =   1 =  OK 
-     *  3244 - assertIsTrue  "\"first.middle\".\"last\"@iana.org"                                         =   1 =  OK 
-     *  3245 - assertIsTrue  "\"first.middle.last\"@iana.org"                                             =   1 =  OK 
-     *  3246 - assertIsTrue  "\"first..last\"@iana.org"                                                   =   1 =  OK 
-     *  3247 - assertIsTrue  "first.\"middle\".\"last\"@iana.org"                                         =   1 =  OK 
-     *  3248 - assertIsFalse "first.last @iana.orgin"                                                     =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  3249 - assertIsTrue  "\"test blah\"@iana.orgin"                                                   =   1 =  OK 
-     *  3250 - assertIsTrue  "name.lastname@domain.com"                                                   =   0 =  OK 
-     *  3251 - assertIsTrue  "a@bar.com"                                                                  =   0 =  OK 
-     *  3252 - assertIsTrue  "aaa@[123.123.123.123]"                                                      =   2 =  OK 
-     *  3253 - assertIsTrue  "a-b@bar.com"                                                                =   0 =  OK 
-     *  3254 - assertIsFalse "+@b.c"                                                                      =  12 =  OK    Laenge: Laengenbegrenzungen stimmen nicht
-     *  3255 - assertIsTrue  "+@b.com"                                                                    =   0 =  OK 
-     *  3256 - assertIsTrue  "a@b.co-foo.uk"                                                              =   0 =  OK 
-     *  3257 - assertIsTrue  "\"hello my name is\"@stutter.comin"                                         =   1 =  OK 
-     *  3258 - assertIsTrue  "\"Test \\"Fail\\" Ing\"@iana.orgin"                                         =   1 =  OK 
-     *  3259 - assertIsTrue  "shaitan@my-domain.thisisminekthx"                                           =   0 =  OK 
-     *  3260 - assertIsTrue  "foobar@192.168.0.1"                                                         =   2 =  OK 
-     *  3261 - assertIsTrue  "HM2Kinsists@(that comments are allowed)this.is.ok"                          =   6 =  OK 
-     *  3262 - assertIsTrue  "user%uucp!path@berkeley.edu"                                                =   0 =  OK 
-     *  3263 - assertIsTrue  "cdburgess+!#$%&'*-/=?+_{}|~test@gmail.com"                                  =   0 =  OK 
-     *  3264 - assertIsTrue  "test@test.com"                                                              =   0 =  OK 
-     *  3265 - assertIsTrue  "test@xn--example.com"                                                       =   0 =  OK 
-     *  3266 - assertIsTrue  "test@example.com"                                                           =   0 =  OK 
-     *  3267 - assertIsTrue  "{^c\@**Dog^}@cartoon.com"                                                   =   0 =  OK 
-     *  3268 - assertIsTrue  "first\@last@iana.org"                                                       =   0 =  OK 
-     *  3269 - assertIsTrue  "phil.h\@\@ck@haacked.com"                                                   =   0 =  OK 
-     *  3270 - assertIsFalse "first.last@example.123"                                                     =  23 =  OK    Zeichen: Top-Level-Domain darf nicht mit Zahl beginnen
-     *  3271 - assertIsFalse "first.last@comin"                                                           =  34 =  OK    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
-     *  3272 - assertIsTrue  "\"[[ test ]]\"@iana.orgin"                                                  =   1 =  OK 
-     *  3273 - assertIsTrue  "Abc\@def@iana.org"                                                          =   0 =  OK 
-     *  3274 - assertIsTrue  "Fred\ Bloggs@iana.org"                                                      =   0 =  OK 
-     *  3275 - assertIsFalse "Joe.\Blow@iana.org"                                                         =  84 =  OK    String: Ungueltige Escape-Sequenz im String
-     *  3276 - assertIsTrue  "first.last@sub.do.com"                                                      =   0 =  OK 
-     *  3277 - assertIsFalse "first.last"                                                                 =  28 =  OK    AT-Zeichen: kein AT-Zeichen gefunden
-     *  3278 - assertIsTrue  "wild.wezyr@best-server-ever.com"                                            =   0 =  OK 
-     *  3279 - assertIsTrue  "\"hello world\"@example.com"                                                =   1 =  OK 
-     *  3280 - assertIsFalse "John..\"The*$hizzle*Bizzle\"..Doe@whatever.com"                             =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
-     *  3281 - assertIsTrue  "John.\"The*$hizzle*Bizzle\".Doe@whatever.com"                               =   1 =  OK 
-     *  3282 - assertIsTrue  "example+tag@gmail.com"                                                      =   0 =  OK 
-     *  3283 - assertIsFalse ".ann..other.@example.com"                                                   =  30 =  OK    Trennzeichen: kein Beginn mit einem Punkt
-     *  3284 - assertIsTrue  "ann.other@example.com"                                                      =   0 =  OK 
-     *  3285 - assertIsTrue  "something@something.something"                                              =   0 =  OK 
-     *  3286 - assertIsTrue  "c@(Chris's host.)public.examplein"                                          =   6 =  OK 
-     *  3287 - assertIsFalse "(foo)cal(bar)@(baz)iamcal.com(quux)"                                        =  99 =  OK    Kommentar: kein zweiter Kommentar gueltig
-     *  3288 - assertIsFalse "cal@iamcal(woo).(yay)comin"                                                 = 103 =  OK    Kommentar: Falsche Zeichenkombination ")."
-     *  3289 - assertIsFalse "cal(woo(yay)hoopla)@iamcal.comin"                                           =  92 =  OK    Kommentar: Ungueltiges Zeichen im Kommentar
-     *  3290 - assertIsFalse "cal(foo\@bar)@iamcal.comin"                                                 =  91 =  OK    Kommentar: Ungueltige Escape-Sequenz im Kommentar
-     *  3291 - assertIsFalse "cal(foo\)bar)@iamcal.comin"                                                 =  91 =  OK    Kommentar: Ungueltige Escape-Sequenz im Kommentar
-     *  3292 - assertIsFalse "first().last@iana.orgin"                                                    = 103 =  OK    Kommentar: Falsche Zeichenkombination ")."
-     *  3293 - assertIsFalse "pete(his account)@silly.test(his host)"                                     =  99 =  OK    Kommentar: kein zweiter Kommentar gueltig
-     *  3294 - assertIsFalse "jdoe@machine(comment). examplein"                                           = 103 =  OK    Kommentar: Falsche Zeichenkombination ")."
-     *  3295 - assertIsFalse "first.last@x(1234567890123456789012345678901234567890123456789012345678901234567890).comin" = 103 =  OK    Kommentar: Falsche Zeichenkombination ")."
-     *  3296 - assertIsFalse "a(a(b(c)d(e(f))g)h(i)j)@iana.orgin"                                         =  92 =  OK    Kommentar: Ungueltiges Zeichen im Kommentar
-     *  3297 - assertIsFalse "1234 @ local(blah) .machine .examplein"                                     =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  3298 - assertIsFalse "a@bin"                                                                      =  12 =  OK    Laenge: Laengenbegrenzungen stimmen nicht
-     *  3299 - assertIsFalse "a@barin"                                                                    =  34 =  OK    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
-     *  3300 - assertIsFalse "@about.museum"                                                              =  26 =  OK    AT-Zeichen: kein AT-Zeichen am Anfang
-     *  3301 - assertIsFalse "12345678901234567890123456789012345678901234567890123456789012345@iana.org" =  13 =  OK    Laenge: RFC 5321 = SMTP-Protokoll = maximale Laenge des Local-Parts sind 64 Bytes
-     *  3302 - assertIsFalse ".first.last@iana.org"                                                       =  30 =  OK    Trennzeichen: kein Beginn mit einem Punkt
-     *  3303 - assertIsFalse "first.last.@iana.org"                                                       =  32 =  OK    Trennzeichen: ungueltige Zeichenkombination ".@"
-     *  3304 - assertIsFalse "first..last@iana.org"                                                       =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
-     *  3305 - assertIsFalse "\"first\"last\"@iana.org"                                                   =  87 =  OK    String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
-     *  3306 - assertIsFalse "first.last@"                                                                =  27 =  OK    AT-Zeichen: kein AT-Zeichen am Ende
-     *  3307 - assertIsFalse "first.last@-xample.com"                                                     =  20 =  OK    Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
-     *  3308 - assertIsFalse "first.last@exampl-.com"                                                     =  20 =  OK    Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
-     *  3309 - assertIsFalse "first.last@x234567890123456789012345678901234567890123456789012345678901234.iana.org" =  63 =  OK    Domain-Part: Domain-Label zu lang (maximal 63 Zeichen)
-     *  3310 - assertIsFalse "abc\@iana.org"                                                              =  28 =  OK    AT-Zeichen: kein AT-Zeichen gefunden
-     *  3311 - assertIsFalse "Doug\ \\"Ace\\"\ Lovell@iana.org"                                           =  84 =  OK    String: Ungueltige Escape-Sequenz im String
-     *  3312 - assertIsFalse "abc@def@iana.org"                                                           =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
-     *  3313 - assertIsFalse "@iana.org"                                                                  =  26 =  OK    AT-Zeichen: kein AT-Zeichen am Anfang
-     *  3314 - assertIsFalse "doug@"                                                                      =  12 =  OK    Laenge: Laengenbegrenzungen stimmen nicht
-     *  3315 - assertIsFalse "\"qu@iana.org"                                                              =  86 =  OK    String: kein abschliessendes Anfuehrungszeichen gefunden.
-     *  3316 - assertIsFalse "ote\"@iana.org"                                                             =  80 =  OK    String: Ein startendes Anfuehrungszeichen muss am Anfang kommen, der Zeichenzaehler darf nicht groesser als 0 sein
-     *  3317 - assertIsFalse ".dot@iana.org"                                                              =  30 =  OK    Trennzeichen: kein Beginn mit einem Punkt
-     *  3318 - assertIsFalse "dot.@iana.org"                                                              =  32 =  OK    Trennzeichen: ungueltige Zeichenkombination ".@"
-     *  3319 - assertIsFalse "two..dot@iana.org"                                                          =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
-     *  3320 - assertIsFalse "\"Doug \"Ace\" L.\"@iana.org"                                               =  87 =  OK    String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
-     *  3321 - assertIsFalse "Doug\ \\"Ace\\"\ L\.@iana.org"                                              =  84 =  OK    String: Ungueltige Escape-Sequenz im String
-     *  3322 - assertIsFalse "hello world@iana.org"                                                       =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  3323 - assertIsFalse "gatsby@f.sc.ot.t.f.i.tzg.era.l.d."                                          =  36 =  OK    Trennzeichen: der letzte Punkt darf nicht am Ende liegen
-     *  3324 - assertIsFalse "test.iana.org"                                                              =  28 =  OK    AT-Zeichen: kein AT-Zeichen gefunden
-     *  3325 - assertIsFalse "test.@iana.org"                                                             =  32 =  OK    Trennzeichen: ungueltige Zeichenkombination ".@"
-     *  3326 - assertIsFalse "test..test@iana.org"                                                        =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
-     *  3327 - assertIsFalse ".test@iana.org"                                                             =  30 =  OK    Trennzeichen: kein Beginn mit einem Punkt
-     *  3328 - assertIsFalse "test@test@iana.org"                                                         =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
-     *  3329 - assertIsFalse "test@@iana.org"                                                             =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
-     *  3330 - assertIsFalse "-- test --@iana.org"                                                        =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  3331 - assertIsFalse "[test]@iana.org"                                                            =  51 =  OK    IP-Adressteil: IP-Adresse vor AT-Zeichen
-     *  3332 - assertIsFalse "\"test\"test\"@iana.org"                                                    =  87 =  OK    String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
-     *  3333 - assertIsFalse "()[]\;:.><@iana.org"                                                        =  51 =  OK    IP-Adressteil: IP-Adresse vor AT-Zeichen
-     *  3334 - assertIsFalse "test@."                                                                     =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
-     *  3335 - assertIsFalse "test@example."                                                              =  36 =  OK    Trennzeichen: der letzte Punkt darf nicht am Ende liegen
-     *  3336 - assertIsFalse "test@.org"                                                                  =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
-     *  3337 - assertIsFalse "test@[123.123.123.123"                                                      =  61 =  OK    IP-Adressteil: Kein Abschluss der IP-Adresse auf ']'
-     *  3338 - assertIsFalse "test@123.123.123.123]"                                                      =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  3339 - assertIsFalse "NotAnEmail"                                                                 =  34 =  OK    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
-     *  3340 - assertIsFalse "@NotAnEmail"                                                                =  26 =  OK    AT-Zeichen: kein AT-Zeichen am Anfang
-     *  3341 - assertIsFalse "\"test\"blah\"@iana.org"                                                    =  87 =  OK    String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
-     *  3342 - assertIsFalse ".wooly@iana.org"                                                            =  30 =  OK    Trennzeichen: kein Beginn mit einem Punkt
-     *  3343 - assertIsFalse "wo..oly@iana.org"                                                           =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
-     *  3344 - assertIsFalse "pootietang.@iana.org"                                                       =  32 =  OK    Trennzeichen: ungueltige Zeichenkombination ".@"
-     *  3345 - assertIsFalse ".@iana.org"                                                                 =  30 =  OK    Trennzeichen: kein Beginn mit einem Punkt
-     *  3346 - assertIsFalse "Ima Fool@iana.org"                                                          =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  3347 - assertIsFalse "foo@[\1.2.3.4]"                                                             =  59 =  OK    IP4-Adressteil: Falsches Zeichen in der IP-Adresse
-     *  3348 - assertIsFalse "first.\"\".last@iana.org"                                                   =  85 =  OK    String: Leerstring in Anfuehrungszeichen
-     *  3349 - assertIsFalse "first\last@iana.org"                                                        =  84 =  OK    String: Ungueltige Escape-Sequenz im String
-     *  3350 - assertIsFalse "first.last@[IPv6:1111:2222:3333:4444:5555:6666:12.34.567.89]"               =  47 =  OK    IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
-     *  3351 - assertIsFalse "\"foo\"(yay)@(hoopla)[1.2.3.4]"                                             =  99 =  OK    Kommentar: kein zweiter Kommentar gueltig
-     *  3352 - assertIsFalse "cal(foo(bar)@iamcal.com"                                                    =  92 =  OK    Kommentar: Ungueltiges Zeichen im Kommentar
-     *  3353 - assertIsFalse "cal(foo)bar)@iamcal.com"                                                    =  97 =  OK    Kommentar: Nach dem Kommentar muss ein AT-Zeichen kommen
-     *  3354 - assertIsFalse "cal(foo\)@iamcal.com"                                                       =  91 =  OK    Kommentar: Ungueltige Escape-Sequenz im Kommentar
-     *  3355 - assertIsFalse "first(middle)last@iana.org"                                                 =  97 =  OK    Kommentar: Nach dem Kommentar muss ein AT-Zeichen kommen
-     *  3356 - assertIsFalse "first(abc(\"def\".ghi).mno)middle(abc(\"def\".ghi).mno).last@(abc(\"def\".ghi).mno)example(abc(\"def\".ghi).mno).com" =  92 =  OK    Kommentar: Ungueltiges Zeichen im Kommentar
-     *  3357 - assertIsFalse "a(a(b(c)d(e(f))g)(h(i)j)@iana.org"                                          =  92 =  OK    Kommentar: Ungueltiges Zeichen im Kommentar
-     *  3358 - assertIsFalse ".@"                                                                         =  12 =  OK    Laenge: Laengenbegrenzungen stimmen nicht
-     *  3359 - assertIsFalse "@bar.com"                                                                   =  26 =  OK    AT-Zeichen: kein AT-Zeichen am Anfang
-     *  3360 - assertIsFalse "@@bar.com"                                                                  =  26 =  OK    AT-Zeichen: kein AT-Zeichen am Anfang
-     *  3361 - assertIsFalse "aaa.com"                                                                    =  28 =  OK    AT-Zeichen: kein AT-Zeichen gefunden
-     *  3362 - assertIsFalse "aaa@.com"                                                                   =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
-     *  3363 - assertIsFalse "aaa@.123"                                                                   =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
-     *  3364 - assertIsFalse "aaa@[123.123.123.123]a"                                                     =  60 =  OK    IP4-Adressteil: Abschlusszeichen "]" muss am Ende stehen
-     *  3365 - assertIsFalse "aaa@[123.123.123.333]"                                                      =  54 =  OK    IP4-Adressteil: Byte-Overflow
-     *  3366 - assertIsFalse "a@bar.com."                                                                 =  36 =  OK    Trennzeichen: der letzte Punkt darf nicht am Ende liegen
-     *  3367 - assertIsFalse "a@-b.com"                                                                   =  20 =  OK    Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
-     *  3368 - assertIsFalse "a@b-.com"                                                                   =  20 =  OK    Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
-     *  3369 - assertIsFalse "-@..com"                                                                    =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
-     *  3370 - assertIsFalse "-@a..com"                                                                   =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
-     *  3371 - assertIsFalse "@about.museum-"                                                             =  26 =  OK    AT-Zeichen: kein AT-Zeichen am Anfang
-     *  3372 - assertIsFalse "test@...........com"                                                        =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
-     *  3373 - assertIsFalse "first.last@[IPv6::]"                                                        =  43 =  OK    IP6-Adressteil: Zu wenig Trennzeichen
-     *  3374 - assertIsFalse "first.last@[IPv6::::]"                                                      =  50 =  OK    IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
-     *  3375 - assertIsFalse "first.last@[IPv6::b4]"                                                      =  43 =  OK    IP6-Adressteil: Zu wenig Trennzeichen
-     *  3376 - assertIsFalse "first.last@[IPv6::::b4]"                                                    =  50 =  OK    IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
-     *  3377 - assertIsFalse "first.last@[IPv6::b3:b4]"                                                   =   4 =  #### FEHLER ####    eMail-Adresse korrekt (IP6-Adresse)
-     *  3378 - assertIsFalse "first.last@[IPv6::::b3:b4]"                                                 =  50 =  OK    IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
-     *  3379 - assertIsFalse "first.last@[IPv6:a1:::b4]"                                                  =  50 =  OK    IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
-     *  3380 - assertIsFalse "first.last@[IPv6:a1:]"                                                      =  43 =  OK    IP6-Adressteil: Zu wenig Trennzeichen
-     *  3381 - assertIsFalse "first.last@[IPv6:a1:::]"                                                    =  50 =  OK    IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
-     *  3382 - assertIsFalse "first.last@[IPv6:a1:a2:]"                                                   =   4 =  #### FEHLER ####    eMail-Adresse korrekt (IP6-Adresse)
-     *  3383 - assertIsFalse "first.last@[IPv6:a1:a2:::]"                                                 =  50 =  OK    IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
-     *  3384 - assertIsFalse "first.last@[IPv6::11.22.33.44]"                                             =  47 =  OK    IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
-     *  3385 - assertIsFalse "first.last@[IPv6::::11.22.33.44]"                                           =  50 =  OK    IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
-     *  3386 - assertIsFalse "first.last@[IPv6:a1:11.22.33.44]"                                           =  47 =  OK    IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
-     *  3387 - assertIsFalse "first.last@[IPv6:a1:::11.22.33.44]"                                         =  50 =  OK    IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
-     *  3388 - assertIsFalse "first.last@[IPv6:a1:a2:::11.22.33.44]"                                      =  50 =  OK    IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
-     *  3389 - assertIsFalse "first.last@[IPv6:0123:4567:89ab:cdef::11.22.33.xx]"                         =  47 =  OK    IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
-     *  3390 - assertIsFalse "first.last@[IPv6:0123:4567:89ab:CDEFF::11.22.33.44]"                        =  46 =  OK    IP6-Adressteil: zu viele Ziffern, maximal 4 Ziffern
-     *  3391 - assertIsFalse "first.last@[IPv6:a1::a4:b1::b4:11.22.33.44]"                                =  50 =  OK    IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
-     *  3392 - assertIsFalse "first.last@[IPv6:a1::11.22.33]"                                             =  62 =  OK    IP6-Adressteil: IPv4 in IPv6 - falsche Angabe der IP4-Einbettung (Zeichenfolge 'ffff' erwartet)
-     *  3393 - assertIsFalse "first.last@[IPv6:a1::11.22.33.44.55]"                                       =  62 =  OK    IP6-Adressteil: IPv4 in IPv6 - falsche Angabe der IP4-Einbettung (Zeichenfolge 'ffff' erwartet)
-     *  3394 - assertIsFalse "first.last@[IPv6:a1::b211.22.33.44]"                                        =  48 =  OK    IP6-Adressteil: IPv4 in IPv6 - zu viele Zeichen im ersten IP4-Block
-     *  3395 - assertIsFalse "first.last@[IPv6:a1::b2::11.22.33.44]"                                      =  50 =  OK    IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
-     *  3396 - assertIsFalse "first.last@[IPv6:a1::b3:]"                                                  =   4 =  #### FEHLER ####    eMail-Adresse korrekt (IP6-Adresse)
-     *  3397 - assertIsFalse "first.last@[IPv6::a2::b4]"                                                  =   4 =  #### FEHLER ####    eMail-Adresse korrekt (IP6-Adresse)
-     *  3398 - assertIsFalse "first.last@[IPv6:a1:a2:a3:a4:b1:b2:b3:]"                                    =   4 =  #### FEHLER ####    eMail-Adresse korrekt (IP6-Adresse)
-     *  3399 - assertIsFalse "first.last@[IPv6::a2:a3:a4:b1:b2:b3:b4]"                                    =   4 =  #### FEHLER ####    eMail-Adresse korrekt (IP6-Adresse)
-     *  3400 - assertIsFalse "first.last@[IPv6:a1:a2:a3:a4::b1:b2:b3:b4]"                                 =  42 =  OK    IP6-Adressteil: zu viele Trennzeichen, maximal 8 Trennzeichen
-     *  3401 - assertIsFalse "first.last@[.12.34.56.78]"                                                  =  55 =  OK    IP4-Adressteil: keine Ziffern vorhanden
-     *  3402 - assertIsFalse "first.last@[12.34.56.789]"                                                  =  54 =  OK    IP4-Adressteil: Byte-Overflow
-     *  3403 - assertIsFalse "first.last@[::12.34.56.78]"                                                 =  47 =  OK    IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
-     *  3404 - assertIsFalse "first.last@[IPv6:::12.34.56.78]"                                            =  62 =  OK    IP6-Adressteil: IPv4 in IPv6 - falsche Angabe der IP4-Einbettung (Zeichenfolge 'ffff' erwartet)
-     *  3405 - assertIsFalse "first.last@[IPv5:::12.34.56.78]"                                            =  40 =  OK    IP6-Adressteil: String "IPv6:" erwartet
-     *  3406 - assertIsFalse "first.last@[IPv6:1111:2222:3333:4444:5555:12.34.56.78]"                     =  47 =  OK    IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
-     *  3407 - assertIsFalse "first.last@[IPv6:1111:2222:3333:4444:5555:6666:7777:12.34.56.78]"           =  47 =  OK    IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
-     *  3408 - assertIsFalse "first.last@[IPv6:1111:2222:3333:4444:5555:6666:7777:8888:9999]"             =  42 =  OK    IP6-Adressteil: zu viele Trennzeichen, maximal 8 Trennzeichen
-     *  3409 - assertIsFalse "first.last@[IPv6:1111:2222::3333::4444:5555:6666]"                          =  50 =  OK    IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
-     *  3410 - assertIsFalse "first.last@[IPv6:1111:2222:333x::4444:5555]"                                =  49 =  OK    IP6-Adressteil: Falsches Zeichen in der IP-Adresse
-     *  3411 - assertIsFalse "first.last@[IPv6:1111:2222:33333::4444:5555]"                               =  46 =  OK    IP6-Adressteil: zu viele Ziffern, maximal 4 Ziffern
-     *  3412 - assertIsFalse "first.last@[IPv6:1111:2222:3333:4444:5555:::]"                              =  50 =  OK    IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
-     *  3413 - assertIsFalse "first.last@[IPv6:1111:2222:3333::5555:6666::]"                              =  50 =  OK    IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
-     *  3414 - assertIsFalse "first.last@[IPv6:1111:2222:3333::4444:12.34.56.78]"                         =  47 =  OK    IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
-     *  3415 - assertIsFalse "first.last@[IPv6:1111:2222:3333:4444:5555:6666:12.34.56.78]"                =  47 =  OK    IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
-     *  3416 - assertIsTrue  "first.last@[IPv6:::a2:a3:a4:b1:b2:b3:b4]"                                   =  42 =  #### FEHLER ####    IP6-Adressteil: zu viele Trennzeichen, maximal 8 Trennzeichen
-     *  3417 - assertIsTrue  "first.last@[IPv6:a1:a2:a3:a4:b1:b2:b3::]"                                   =  42 =  #### FEHLER ####    IP6-Adressteil: zu viele Trennzeichen, maximal 8 Trennzeichen
-     *  3418 - assertIsTrue  "first.last@[IPv6:::]"                                                       =   4 =  OK 
-     *  3419 - assertIsTrue  "first.last@[IPv6:::b4]"                                                     =   4 =  OK 
-     *  3420 - assertIsTrue  "first.last@[IPv6:::b3:b4]"                                                  =   4 =  OK 
-     *  3421 - assertIsTrue  "first.last@[IPv6:a1::b4]"                                                   =   4 =  OK 
-     *  3422 - assertIsTrue  "first.last@[IPv6:a1::]"                                                     =   4 =  OK 
-     *  3423 - assertIsTrue  "first.last@[IPv6:a1:a2::]"                                                  =   4 =  OK 
-     *  3424 - assertIsTrue  "first.last@[IPv6:0123:4567:89ab:cdef::]"                                    =   4 =  OK 
-     *  3425 - assertIsTrue  "first.last@[IPv6:0123:4567:89ab:CDEF::]"                                    =   4 =  OK 
-     *  3426 - assertIsTrue  "first.last@[IPv6:::a3:a4:b1:ffff:11.22.33.44]"                              =  47 =  #### FEHLER ####    IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
-     *  3427 - assertIsTrue  "first.last@[IPv6:::a2:a3:a4:b1:ffff:11.22.33.44]"                           =  47 =  #### FEHLER ####    IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
-     *  3428 - assertIsTrue  "first.last@[IPv6:a1:a2:a3:a4::11.22.33.44]"                                 =  47 =  #### FEHLER ####    IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
-     *  3429 - assertIsTrue  "first.last@[IPv6:a1:a2:a3:a4:b1::11.22.33.44]"                              =  47 =  #### FEHLER ####    IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
-     *  3430 - assertIsTrue  "first.last@[IPv6:a1::11.22.33.44]"                                          =  62 =  #### FEHLER ####    IP6-Adressteil: IPv4 in IPv6 - falsche Angabe der IP4-Einbettung (Zeichenfolge 'ffff' erwartet)
-     *  3431 - assertIsTrue  "first.last@[IPv6:a1:a2::11.22.33.44]"                                       =  47 =  #### FEHLER ####    IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
-     *  3432 - assertIsTrue  "first.last@[IPv6:0123:4567:89ab:cdef::11.22.33.44]"                         =  47 =  #### FEHLER ####    IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
-     *  3433 - assertIsTrue  "first.last@[IPv6:0123:4567:89ab:CDEF::11.22.33.44]"                         =  47 =  #### FEHLER ####    IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
-     *  3434 - assertIsTrue  "first.last@[IPv6:a1::b2:11.22.33.44]"                                       =  47 =  #### FEHLER ####    IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
-     *  3435 - assertIsTrue  "first.last@[IPv6:1111:2222:3333:4444:5555:6666:7777]"                       =   4 =  OK 
+     *  3179 - assertIsTrue  "first.last@iana.org"                                                        =   0 =  OK 
+     *  3180 - assertIsTrue  "1234567890123456789012345678901234567890123456789012345678901234@iana.org"  =   0 =  OK 
+     *  3181 - assertIsTrue  "\"first\\"last\"@iana.org"                                                  =   1 =  OK 
+     *  3182 - assertIsTrue  "\"first@last\"@iana.org"                                                    =   1 =  OK 
+     *  3183 - assertIsTrue  "\"first\\last\"@iana.org"                                                   =   1 =  OK 
+     *  3184 - assertIsTrue  "x@x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23" =   0 =  OK 
+     *  3185 - assertIsTrue  "1234567890123456789012345678901234567890123456789012345678@1234567890123456789012345678901234567890123456.de" =   0 =  OK 
+     *  3186 - assertIsTrue  "first.last@[12.34.56.78]"                                                   =   2 =  OK 
+     *  3187 - assertIsTrue  "first.last@[IPv6:::1111:2222:3333:4444:5555:6666]"                          =   4 =  OK 
+     *  3188 - assertIsTrue  "first.last@[IPv6:1111:2222:3333::4444:5555:6666]"                           =   4 =  OK 
+     *  3189 - assertIsTrue  "first.last@[IPv6:1111:2222:3333::4444:5555:6666:]"                          =   4 =  OK 
+     *  3190 - assertIsTrue  "first.last@[IPv6:1111:2222:3333:4444:5555:6666::]"                          =   4 =  OK 
+     *  3191 - assertIsTrue  "first.last@[IPv6:1111:2222:3333:4444:5555:6666:7777:8888]"                  =   4 =  OK 
+     *  3192 - assertIsTrue  "first.last@x23456789012345678901234567890123456789012345678901234567890123.iana.org" =   0 =  OK 
+     *  3193 - assertIsTrue  "first.last@3com.com"                                                        =   0 =  OK 
+     *  3194 - assertIsTrue  "first.last@123.iana.org"                                                    =   0 =  OK 
+     *  3195 - assertIsFalse "first.last@[IPv6:1111:2222:3333::4444:5555:12.34.56.78]"                    =  47 =  OK    IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
+     *  3196 - assertIsTrue  "first.last@[IPv6:1111:2222:3333::4444:5555:6666:7777]"                      =   4 =  OK 
+     *  3197 - assertIsTrue  "\"Abc\@def\"@iana.org"                                                      =   1 =  OK 
+     *  3198 - assertIsTrue  "\"Fred\ Bloggs\"@iana.org"                                                  =   1 =  OK 
+     *  3199 - assertIsTrue  "\"Joe.\\Blow\"@iana.org"                                                    =   1 =  OK 
+     *  3200 - assertIsTrue  "\"Abc@def\"@iana.org"                                                       =   1 =  OK 
+     *  3201 - assertIsTrue  "\"Fred Bloggs\"@iana.orgin"                                                 =   1 =  OK 
+     *  3202 - assertIsTrue  "user+mailbox@iana.org"                                                      =   0 =  OK 
+     *  3203 - assertIsTrue  "$A12345@iana.org"                                                           =   0 =  OK 
+     *  3204 - assertIsTrue  "!def!xyz%abc@iana.org"                                                      =   0 =  OK 
+     *  3205 - assertIsTrue  "_somename@iana.org"                                                         =   0 =  OK 
+     *  3206 - assertIsTrue  "dclo@us.ibm.com"                                                            =   0 =  OK 
+     *  3207 - assertIsTrue  "peter.piper@iana.org"                                                       =   0 =  OK 
+     *  3208 - assertIsTrue  "test@iana.org"                                                              =   0 =  OK 
+     *  3209 - assertIsTrue  "TEST@iana.org"                                                              =   0 =  OK 
+     *  3210 - assertIsTrue  "1234567890@iana.org"                                                        =   0 =  OK 
+     *  3211 - assertIsTrue  "test+test@iana.org"                                                         =   0 =  OK 
+     *  3212 - assertIsTrue  "test-test@iana.org"                                                         =   0 =  OK 
+     *  3213 - assertIsTrue  "t*est@iana.org"                                                             =   0 =  OK 
+     *  3214 - assertIsTrue  "+1~1+@iana.org"                                                             =   0 =  OK 
+     *  3215 - assertIsTrue  "{_test_}@iana.org"                                                          =   0 =  OK 
+     *  3216 - assertIsTrue  "test.test@iana.org"                                                         =   0 =  OK 
+     *  3217 - assertIsTrue  "\"test.test\"@iana.org"                                                     =   1 =  OK 
+     *  3218 - assertIsTrue  "test.\"test\"@iana.org"                                                     =   1 =  OK 
+     *  3219 - assertIsTrue  "\"test@test\"@iana.org"                                                     =   1 =  OK 
+     *  3220 - assertIsTrue  "test@123.123.123.x123"                                                      =   0 =  OK 
+     *  3221 - assertIsTrue  "test@123.123.123.123"                                                       =   2 =  OK 
+     *  3222 - assertIsTrue  "test@[123.123.123.123]"                                                     =   2 =  OK 
+     *  3223 - assertIsTrue  "test@example.iana.org"                                                      =   0 =  OK 
+     *  3224 - assertIsTrue  "test@example.example.iana.org"                                              =   0 =  OK 
+     *  3225 - assertIsTrue  "customer/department@iana.org"                                               =   0 =  OK 
+     *  3226 - assertIsTrue  "_Yosemite.Sam@iana.org"                                                     =   0 =  OK 
+     *  3227 - assertIsTrue  "~@iana.org"                                                                 =   0 =  OK 
+     *  3228 - assertIsTrue  "\"Austin@Powers\"@iana.org"                                                 =   1 =  OK 
+     *  3229 - assertIsTrue  "Ima.Fool@iana.org"                                                          =   0 =  OK 
+     *  3230 - assertIsTrue  "\"Ima.Fool\"@iana.org"                                                      =   1 =  OK 
+     *  3231 - assertIsTrue  "\"Ima Fool\"@iana.orgin"                                                    =   1 =  OK 
+     *  3232 - assertIsTrue  "\"first\".\"last\"@iana.org"                                                =   1 =  OK 
+     *  3233 - assertIsTrue  "\"first\".middle.\"last\"@iana.org"                                         =   1 =  OK 
+     *  3234 - assertIsTrue  "\"first\".last@iana.org"                                                    =   1 =  OK 
+     *  3235 - assertIsTrue  "first.\"last\"@iana.org"                                                    =   1 =  OK 
+     *  3236 - assertIsTrue  "\"first\".\"middle\".\"last\"@iana.org"                                     =   1 =  OK 
+     *  3237 - assertIsTrue  "\"first.middle\".\"last\"@iana.org"                                         =   1 =  OK 
+     *  3238 - assertIsTrue  "\"first.middle.last\"@iana.org"                                             =   1 =  OK 
+     *  3239 - assertIsTrue  "\"first..last\"@iana.org"                                                   =   1 =  OK 
+     *  3240 - assertIsTrue  "first.\"middle\".\"last\"@iana.org"                                         =   1 =  OK 
+     *  3241 - assertIsFalse "first.last @iana.orgin"                                                     =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  3242 - assertIsTrue  "\"test blah\"@iana.orgin"                                                   =   1 =  OK 
+     *  3243 - assertIsTrue  "name.lastname@domain.com"                                                   =   0 =  OK 
+     *  3244 - assertIsTrue  "a@bar.com"                                                                  =   0 =  OK 
+     *  3245 - assertIsTrue  "aaa@[123.123.123.123]"                                                      =   2 =  OK 
+     *  3246 - assertIsTrue  "a-b@bar.com"                                                                =   0 =  OK 
+     *  3247 - assertIsFalse "+@b.c"                                                                      =  12 =  OK    Laenge: Laengenbegrenzungen stimmen nicht
+     *  3248 - assertIsTrue  "+@b.com"                                                                    =   0 =  OK 
+     *  3249 - assertIsTrue  "a@b.co-foo.uk"                                                              =   0 =  OK 
+     *  3250 - assertIsTrue  "\"hello my name is\"@stutter.comin"                                         =   1 =  OK 
+     *  3251 - assertIsTrue  "\"Test \\"Fail\\" Ing\"@iana.orgin"                                         =   1 =  OK 
+     *  3252 - assertIsTrue  "shaitan@my-domain.thisisminekthx"                                           =   0 =  OK 
+     *  3253 - assertIsTrue  "foobar@192.168.0.1"                                                         =   2 =  OK 
+     *  3254 - assertIsTrue  "HM2Kinsists@(that comments are allowed)this.is.ok"                          =   6 =  OK 
+     *  3255 - assertIsTrue  "user%uucp!path@berkeley.edu"                                                =   0 =  OK 
+     *  3256 - assertIsTrue  "cdburgess+!#$%&'*-/=?+_{}|~test@gmail.com"                                  =   0 =  OK 
+     *  3257 - assertIsTrue  "test@test.com"                                                              =   0 =  OK 
+     *  3258 - assertIsTrue  "test@xn--example.com"                                                       =   0 =  OK 
+     *  3259 - assertIsTrue  "test@example.com"                                                           =   0 =  OK 
+     *  3260 - assertIsTrue  "{^c\@**Dog^}@cartoon.com"                                                   =   0 =  OK 
+     *  3261 - assertIsTrue  "first\@last@iana.org"                                                       =   0 =  OK 
+     *  3262 - assertIsTrue  "phil.h\@\@ck@haacked.com"                                                   =   0 =  OK 
+     *  3263 - assertIsFalse "first.last@example.123"                                                     =  23 =  OK    Zeichen: Top-Level-Domain darf nicht mit Zahl beginnen
+     *  3264 - assertIsFalse "first.last@comin"                                                           =  34 =  OK    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
+     *  3265 - assertIsTrue  "\"[[ test ]]\"@iana.orgin"                                                  =   1 =  OK 
+     *  3266 - assertIsTrue  "Abc\@def@iana.org"                                                          =   0 =  OK 
+     *  3267 - assertIsTrue  "Fred\ Bloggs@iana.org"                                                      =   0 =  OK 
+     *  3268 - assertIsFalse "Joe.\Blow@iana.org"                                                         =  84 =  OK    String: Ungueltige Escape-Sequenz im String
+     *  3269 - assertIsTrue  "first.last@sub.do.com"                                                      =   0 =  OK 
+     *  3270 - assertIsFalse "first.last"                                                                 =  28 =  OK    AT-Zeichen: kein AT-Zeichen gefunden
+     *  3271 - assertIsTrue  "wild.wezyr@best-server-ever.com"                                            =   0 =  OK 
+     *  3272 - assertIsTrue  "\"hello world\"@example.com"                                                =   1 =  OK 
+     *  3273 - assertIsFalse "John..\"The*$hizzle*Bizzle\"..Doe@whatever.com"                             =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
+     *  3274 - assertIsTrue  "John.\"The*$hizzle*Bizzle\".Doe@whatever.com"                               =   1 =  OK 
+     *  3275 - assertIsTrue  "example+tag@gmail.com"                                                      =   0 =  OK 
+     *  3276 - assertIsFalse ".ann..other.@example.com"                                                   =  30 =  OK    Trennzeichen: kein Beginn mit einem Punkt
+     *  3277 - assertIsTrue  "ann.other@example.com"                                                      =   0 =  OK 
+     *  3278 - assertIsTrue  "something@something.something"                                              =   0 =  OK 
+     *  3279 - assertIsTrue  "c@(Chris's host.)public.examplein"                                          =   6 =  OK 
+     *  3280 - assertIsFalse "(foo)cal(bar)@(baz)iamcal.com(quux)"                                        =  99 =  OK    Kommentar: kein zweiter Kommentar gueltig
+     *  3281 - assertIsFalse "cal@iamcal(woo).(yay)comin"                                                 = 103 =  OK    Kommentar: Falsche Zeichenkombination ")."
+     *  3282 - assertIsFalse "cal(woo(yay)hoopla)@iamcal.comin"                                           =  92 =  OK    Kommentar: Ungueltiges Zeichen im Kommentar
+     *  3283 - assertIsFalse "cal(foo\@bar)@iamcal.comin"                                                 =  91 =  OK    Kommentar: Ungueltige Escape-Sequenz im Kommentar
+     *  3284 - assertIsFalse "cal(foo\)bar)@iamcal.comin"                                                 =  91 =  OK    Kommentar: Ungueltige Escape-Sequenz im Kommentar
+     *  3285 - assertIsFalse "first().last@iana.orgin"                                                    = 103 =  OK    Kommentar: Falsche Zeichenkombination ")."
+     *  3286 - assertIsFalse "pete(his account)@silly.test(his host)"                                     =  99 =  OK    Kommentar: kein zweiter Kommentar gueltig
+     *  3287 - assertIsFalse "jdoe@machine(comment). examplein"                                           = 103 =  OK    Kommentar: Falsche Zeichenkombination ")."
+     *  3288 - assertIsFalse "first.last@x(1234567890123456789012345678901234567890123456789012345678901234567890).comin" = 103 =  OK    Kommentar: Falsche Zeichenkombination ")."
+     *  3289 - assertIsFalse "a(a(b(c)d(e(f))g)h(i)j)@iana.orgin"                                         =  92 =  OK    Kommentar: Ungueltiges Zeichen im Kommentar
+     *  3290 - assertIsFalse "1234 @ local(blah) .machine .examplein"                                     =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  3291 - assertIsFalse "a@bin"                                                                      =  12 =  OK    Laenge: Laengenbegrenzungen stimmen nicht
+     *  3292 - assertIsFalse "a@barin"                                                                    =  34 =  OK    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
+     *  3293 - assertIsFalse "@about.museum"                                                              =  26 =  OK    AT-Zeichen: kein AT-Zeichen am Anfang
+     *  3294 - assertIsFalse "12345678901234567890123456789012345678901234567890123456789012345@iana.org" =  13 =  OK    Laenge: RFC 5321 = SMTP-Protokoll = maximale Laenge des Local-Parts sind 64 Bytes
+     *  3295 - assertIsFalse ".first.last@iana.org"                                                       =  30 =  OK    Trennzeichen: kein Beginn mit einem Punkt
+     *  3296 - assertIsFalse "first.last.@iana.org"                                                       =  32 =  OK    Trennzeichen: ungueltige Zeichenkombination ".@"
+     *  3297 - assertIsFalse "first..last@iana.org"                                                       =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
+     *  3298 - assertIsFalse "\"first\"last\"@iana.org"                                                   =  87 =  OK    String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
+     *  3299 - assertIsFalse "first.last@"                                                                =  27 =  OK    AT-Zeichen: kein AT-Zeichen am Ende
+     *  3300 - assertIsFalse "first.last@-xample.com"                                                     =  20 =  OK    Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
+     *  3301 - assertIsFalse "first.last@exampl-.com"                                                     =  20 =  OK    Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
+     *  3302 - assertIsFalse "first.last@x234567890123456789012345678901234567890123456789012345678901234.iana.org" =  63 =  OK    Domain-Part: Domain-Label zu lang (maximal 63 Zeichen)
+     *  3303 - assertIsFalse "abc\@iana.org"                                                              =  28 =  OK    AT-Zeichen: kein AT-Zeichen gefunden
+     *  3304 - assertIsFalse "Doug\ \\"Ace\\"\ Lovell@iana.org"                                           =  84 =  OK    String: Ungueltige Escape-Sequenz im String
+     *  3305 - assertIsFalse "abc@def@iana.org"                                                           =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
+     *  3306 - assertIsFalse "@iana.org"                                                                  =  26 =  OK    AT-Zeichen: kein AT-Zeichen am Anfang
+     *  3307 - assertIsFalse "doug@"                                                                      =  12 =  OK    Laenge: Laengenbegrenzungen stimmen nicht
+     *  3308 - assertIsFalse "\"qu@iana.org"                                                              =  86 =  OK    String: kein abschliessendes Anfuehrungszeichen gefunden.
+     *  3309 - assertIsFalse "ote\"@iana.org"                                                             =  80 =  OK    String: Ein startendes Anfuehrungszeichen muss am Anfang kommen, der Zeichenzaehler darf nicht groesser als 0 sein
+     *  3310 - assertIsFalse ".dot@iana.org"                                                              =  30 =  OK    Trennzeichen: kein Beginn mit einem Punkt
+     *  3311 - assertIsFalse "dot.@iana.org"                                                              =  32 =  OK    Trennzeichen: ungueltige Zeichenkombination ".@"
+     *  3312 - assertIsFalse "two..dot@iana.org"                                                          =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
+     *  3313 - assertIsFalse "\"Doug \"Ace\" L.\"@iana.org"                                               =  87 =  OK    String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
+     *  3314 - assertIsFalse "Doug\ \\"Ace\\"\ L\.@iana.org"                                              =  84 =  OK    String: Ungueltige Escape-Sequenz im String
+     *  3315 - assertIsFalse "hello world@iana.org"                                                       =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  3316 - assertIsFalse "gatsby@f.sc.ot.t.f.i.tzg.era.l.d."                                          =  36 =  OK    Trennzeichen: der letzte Punkt darf nicht am Ende liegen
+     *  3317 - assertIsFalse "test.iana.org"                                                              =  28 =  OK    AT-Zeichen: kein AT-Zeichen gefunden
+     *  3318 - assertIsFalse "test.@iana.org"                                                             =  32 =  OK    Trennzeichen: ungueltige Zeichenkombination ".@"
+     *  3319 - assertIsFalse "test..test@iana.org"                                                        =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
+     *  3320 - assertIsFalse ".test@iana.org"                                                             =  30 =  OK    Trennzeichen: kein Beginn mit einem Punkt
+     *  3321 - assertIsFalse "test@test@iana.org"                                                         =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
+     *  3322 - assertIsFalse "test@@iana.org"                                                             =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
+     *  3323 - assertIsFalse "-- test --@iana.org"                                                        =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  3324 - assertIsFalse "[test]@iana.org"                                                            =  51 =  OK    IP-Adressteil: IP-Adresse vor AT-Zeichen
+     *  3325 - assertIsFalse "\"test\"test\"@iana.org"                                                    =  87 =  OK    String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
+     *  3326 - assertIsFalse "()[]\;:.><@iana.org"                                                        =  51 =  OK    IP-Adressteil: IP-Adresse vor AT-Zeichen
+     *  3327 - assertIsFalse "test@."                                                                     =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
+     *  3328 - assertIsFalse "test@example."                                                              =  36 =  OK    Trennzeichen: der letzte Punkt darf nicht am Ende liegen
+     *  3329 - assertIsFalse "test@.org"                                                                  =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
+     *  3330 - assertIsFalse "test@[123.123.123.123"                                                      =  61 =  OK    IP-Adressteil: Kein Abschluss der IP-Adresse auf ']'
+     *  3331 - assertIsFalse "test@123.123.123.123]"                                                      =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  3332 - assertIsFalse "NotAnEmail"                                                                 =  34 =  OK    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
+     *  3333 - assertIsFalse "@NotAnEmail"                                                                =  26 =  OK    AT-Zeichen: kein AT-Zeichen am Anfang
+     *  3334 - assertIsFalse "\"test\"blah\"@iana.org"                                                    =  87 =  OK    String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
+     *  3335 - assertIsFalse ".wooly@iana.org"                                                            =  30 =  OK    Trennzeichen: kein Beginn mit einem Punkt
+     *  3336 - assertIsFalse "wo..oly@iana.org"                                                           =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
+     *  3337 - assertIsFalse "pootietang.@iana.org"                                                       =  32 =  OK    Trennzeichen: ungueltige Zeichenkombination ".@"
+     *  3338 - assertIsFalse ".@iana.org"                                                                 =  30 =  OK    Trennzeichen: kein Beginn mit einem Punkt
+     *  3339 - assertIsFalse "Ima Fool@iana.org"                                                          =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  3340 - assertIsFalse "foo@[\1.2.3.4]"                                                             =  59 =  OK    IP4-Adressteil: Falsches Zeichen in der IP-Adresse
+     *  3341 - assertIsFalse "first.\"\".last@iana.org"                                                   =  85 =  OK    String: Leerstring in Anfuehrungszeichen
+     *  3342 - assertIsFalse "first\last@iana.org"                                                        =  84 =  OK    String: Ungueltige Escape-Sequenz im String
+     *  3343 - assertIsFalse "first.last@[IPv6:1111:2222:3333:4444:5555:6666:12.34.567.89]"               =  47 =  OK    IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
+     *  3344 - assertIsFalse "\"foo\"(yay)@(hoopla)[1.2.3.4]"                                             =  99 =  OK    Kommentar: kein zweiter Kommentar gueltig
+     *  3345 - assertIsFalse "cal(foo(bar)@iamcal.com"                                                    =  92 =  OK    Kommentar: Ungueltiges Zeichen im Kommentar
+     *  3346 - assertIsFalse "cal(foo)bar)@iamcal.com"                                                    =  97 =  OK    Kommentar: Nach dem Kommentar muss ein AT-Zeichen kommen
+     *  3347 - assertIsFalse "cal(foo\)@iamcal.com"                                                       =  91 =  OK    Kommentar: Ungueltige Escape-Sequenz im Kommentar
+     *  3348 - assertIsFalse "first(middle)last@iana.org"                                                 =  97 =  OK    Kommentar: Nach dem Kommentar muss ein AT-Zeichen kommen
+     *  3349 - assertIsFalse "first(abc(\"def\".ghi).mno)middle(abc(\"def\".ghi).mno).last@(abc(\"def\".ghi).mno)example(abc(\"def\".ghi).mno).com" =  92 =  OK    Kommentar: Ungueltiges Zeichen im Kommentar
+     *  3350 - assertIsFalse "a(a(b(c)d(e(f))g)(h(i)j)@iana.org"                                          =  92 =  OK    Kommentar: Ungueltiges Zeichen im Kommentar
+     *  3351 - assertIsFalse ".@"                                                                         =  12 =  OK    Laenge: Laengenbegrenzungen stimmen nicht
+     *  3352 - assertIsFalse "@bar.com"                                                                   =  26 =  OK    AT-Zeichen: kein AT-Zeichen am Anfang
+     *  3353 - assertIsFalse "@@bar.com"                                                                  =  26 =  OK    AT-Zeichen: kein AT-Zeichen am Anfang
+     *  3354 - assertIsFalse "aaa.com"                                                                    =  28 =  OK    AT-Zeichen: kein AT-Zeichen gefunden
+     *  3355 - assertIsFalse "aaa@.com"                                                                   =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
+     *  3356 - assertIsFalse "aaa@.123"                                                                   =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
+     *  3357 - assertIsFalse "aaa@[123.123.123.123]a"                                                     =  60 =  OK    IP4-Adressteil: Abschlusszeichen "]" muss am Ende stehen
+     *  3358 - assertIsFalse "aaa@[123.123.123.333]"                                                      =  54 =  OK    IP4-Adressteil: Byte-Overflow
+     *  3359 - assertIsFalse "a@bar.com."                                                                 =  36 =  OK    Trennzeichen: der letzte Punkt darf nicht am Ende liegen
+     *  3360 - assertIsFalse "a@-b.com"                                                                   =  20 =  OK    Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
+     *  3361 - assertIsFalse "a@b-.com"                                                                   =  20 =  OK    Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
+     *  3362 - assertIsFalse "-@..com"                                                                    =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
+     *  3363 - assertIsFalse "-@a..com"                                                                   =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
+     *  3364 - assertIsFalse "@about.museum-"                                                             =  26 =  OK    AT-Zeichen: kein AT-Zeichen am Anfang
+     *  3365 - assertIsFalse "test@...........com"                                                        =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
+     *  3366 - assertIsFalse "first.last@[IPv6::]"                                                        =  43 =  OK    IP6-Adressteil: Zu wenig Trennzeichen
+     *  3367 - assertIsFalse "first.last@[IPv6::::]"                                                      =  50 =  OK    IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
+     *  3368 - assertIsFalse "first.last@[IPv6::b4]"                                                      =  43 =  OK    IP6-Adressteil: Zu wenig Trennzeichen
+     *  3369 - assertIsFalse "first.last@[IPv6::::b4]"                                                    =  50 =  OK    IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
+     *  3370 - assertIsFalse "first.last@[IPv6::b3:b4]"                                                   =   4 =  #### FEHLER ####    eMail-Adresse korrekt (IP6-Adresse)
+     *  3371 - assertIsFalse "first.last@[IPv6::::b3:b4]"                                                 =  50 =  OK    IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
+     *  3372 - assertIsFalse "first.last@[IPv6:a1:::b4]"                                                  =  50 =  OK    IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
+     *  3373 - assertIsFalse "first.last@[IPv6:a1:]"                                                      =  43 =  OK    IP6-Adressteil: Zu wenig Trennzeichen
+     *  3374 - assertIsFalse "first.last@[IPv6:a1:::]"                                                    =  50 =  OK    IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
+     *  3375 - assertIsFalse "first.last@[IPv6:a1:a2:]"                                                   =   4 =  #### FEHLER ####    eMail-Adresse korrekt (IP6-Adresse)
+     *  3376 - assertIsFalse "first.last@[IPv6:a1:a2:::]"                                                 =  50 =  OK    IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
+     *  3377 - assertIsFalse "first.last@[IPv6::11.22.33.44]"                                             =  47 =  OK    IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
+     *  3378 - assertIsFalse "first.last@[IPv6::::11.22.33.44]"                                           =  50 =  OK    IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
+     *  3379 - assertIsFalse "first.last@[IPv6:a1:11.22.33.44]"                                           =  47 =  OK    IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
+     *  3380 - assertIsFalse "first.last@[IPv6:a1:::11.22.33.44]"                                         =  50 =  OK    IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
+     *  3381 - assertIsFalse "first.last@[IPv6:a1:a2:::11.22.33.44]"                                      =  50 =  OK    IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
+     *  3382 - assertIsFalse "first.last@[IPv6:0123:4567:89ab:cdef::11.22.33.xx]"                         =  47 =  OK    IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
+     *  3383 - assertIsFalse "first.last@[IPv6:0123:4567:89ab:CDEFF::11.22.33.44]"                        =  46 =  OK    IP6-Adressteil: zu viele Ziffern, maximal 4 Ziffern
+     *  3384 - assertIsFalse "first.last@[IPv6:a1::a4:b1::b4:11.22.33.44]"                                =  50 =  OK    IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
+     *  3385 - assertIsFalse "first.last@[IPv6:a1::11.22.33]"                                             =  62 =  OK    IP6-Adressteil: IPv4 in IPv6 - falsche Angabe der IP4-Einbettung (Zeichenfolge 'ffff' erwartet)
+     *  3386 - assertIsFalse "first.last@[IPv6:a1::11.22.33.44.55]"                                       =  62 =  OK    IP6-Adressteil: IPv4 in IPv6 - falsche Angabe der IP4-Einbettung (Zeichenfolge 'ffff' erwartet)
+     *  3387 - assertIsFalse "first.last@[IPv6:a1::b211.22.33.44]"                                        =  48 =  OK    IP6-Adressteil: IPv4 in IPv6 - zu viele Zeichen im ersten IP4-Block
+     *  3388 - assertIsFalse "first.last@[IPv6:a1::b2::11.22.33.44]"                                      =  50 =  OK    IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
+     *  3389 - assertIsFalse "first.last@[IPv6:a1::b3:]"                                                  =   4 =  #### FEHLER ####    eMail-Adresse korrekt (IP6-Adresse)
+     *  3390 - assertIsFalse "first.last@[IPv6::a2::b4]"                                                  =   4 =  #### FEHLER ####    eMail-Adresse korrekt (IP6-Adresse)
+     *  3391 - assertIsFalse "first.last@[IPv6:a1:a2:a3:a4:b1:b2:b3:]"                                    =   4 =  #### FEHLER ####    eMail-Adresse korrekt (IP6-Adresse)
+     *  3392 - assertIsFalse "first.last@[IPv6::a2:a3:a4:b1:b2:b3:b4]"                                    =   4 =  #### FEHLER ####    eMail-Adresse korrekt (IP6-Adresse)
+     *  3393 - assertIsFalse "first.last@[IPv6:a1:a2:a3:a4::b1:b2:b3:b4]"                                 =  42 =  OK    IP6-Adressteil: zu viele Trennzeichen, maximal 8 Trennzeichen
+     *  3394 - assertIsFalse "first.last@[.12.34.56.78]"                                                  =  55 =  OK    IP4-Adressteil: keine Ziffern vorhanden
+     *  3395 - assertIsFalse "first.last@[12.34.56.789]"                                                  =  54 =  OK    IP4-Adressteil: Byte-Overflow
+     *  3396 - assertIsFalse "first.last@[::12.34.56.78]"                                                 =  47 =  OK    IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
+     *  3397 - assertIsFalse "first.last@[IPv6:::12.34.56.78]"                                            =  62 =  OK    IP6-Adressteil: IPv4 in IPv6 - falsche Angabe der IP4-Einbettung (Zeichenfolge 'ffff' erwartet)
+     *  3398 - assertIsFalse "first.last@[IPv5:::12.34.56.78]"                                            =  40 =  OK    IP6-Adressteil: String "IPv6:" erwartet
+     *  3399 - assertIsFalse "first.last@[IPv6:1111:2222:3333:4444:5555:12.34.56.78]"                     =  47 =  OK    IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
+     *  3400 - assertIsFalse "first.last@[IPv6:1111:2222:3333:4444:5555:6666:7777:12.34.56.78]"           =  47 =  OK    IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
+     *  3401 - assertIsFalse "first.last@[IPv6:1111:2222:3333:4444:5555:6666:7777:8888:9999]"             =  42 =  OK    IP6-Adressteil: zu viele Trennzeichen, maximal 8 Trennzeichen
+     *  3402 - assertIsFalse "first.last@[IPv6:1111:2222::3333::4444:5555:6666]"                          =  50 =  OK    IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
+     *  3403 - assertIsFalse "first.last@[IPv6:1111:2222:333x::4444:5555]"                                =  49 =  OK    IP6-Adressteil: Falsches Zeichen in der IP-Adresse
+     *  3404 - assertIsFalse "first.last@[IPv6:1111:2222:33333::4444:5555]"                               =  46 =  OK    IP6-Adressteil: zu viele Ziffern, maximal 4 Ziffern
+     *  3405 - assertIsFalse "first.last@[IPv6:1111:2222:3333:4444:5555:::]"                              =  50 =  OK    IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
+     *  3406 - assertIsFalse "first.last@[IPv6:1111:2222:3333::5555:6666::]"                              =  50 =  OK    IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
+     *  3407 - assertIsFalse "first.last@[IPv6:1111:2222:3333::4444:12.34.56.78]"                         =  47 =  OK    IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
+     *  3408 - assertIsFalse "first.last@[IPv6:1111:2222:3333:4444:5555:6666:12.34.56.78]"                =  47 =  OK    IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
+     *  3409 - assertIsTrue  "first.last@[IPv6:::a2:a3:a4:b1:b2:b3:b4]"                                   =  42 =  #### FEHLER ####    IP6-Adressteil: zu viele Trennzeichen, maximal 8 Trennzeichen
+     *  3410 - assertIsTrue  "first.last@[IPv6:a1:a2:a3:a4:b1:b2:b3::]"                                   =  42 =  #### FEHLER ####    IP6-Adressteil: zu viele Trennzeichen, maximal 8 Trennzeichen
+     *  3411 - assertIsTrue  "first.last@[IPv6:::]"                                                       =   4 =  OK 
+     *  3412 - assertIsTrue  "first.last@[IPv6:::b4]"                                                     =   4 =  OK 
+     *  3413 - assertIsTrue  "first.last@[IPv6:::b3:b4]"                                                  =   4 =  OK 
+     *  3414 - assertIsTrue  "first.last@[IPv6:a1::b4]"                                                   =   4 =  OK 
+     *  3415 - assertIsTrue  "first.last@[IPv6:a1::]"                                                     =   4 =  OK 
+     *  3416 - assertIsTrue  "first.last@[IPv6:a1:a2::]"                                                  =   4 =  OK 
+     *  3417 - assertIsTrue  "first.last@[IPv6:0123:4567:89ab:cdef::]"                                    =   4 =  OK 
+     *  3418 - assertIsTrue  "first.last@[IPv6:0123:4567:89ab:CDEF::]"                                    =   4 =  OK 
+     *  3419 - assertIsTrue  "first.last@[IPv6:::a3:a4:b1:ffff:11.22.33.44]"                              =  47 =  #### FEHLER ####    IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
+     *  3420 - assertIsTrue  "first.last@[IPv6:::a2:a3:a4:b1:ffff:11.22.33.44]"                           =  47 =  #### FEHLER ####    IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
+     *  3421 - assertIsTrue  "first.last@[IPv6:a1:a2:a3:a4::11.22.33.44]"                                 =  47 =  #### FEHLER ####    IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
+     *  3422 - assertIsTrue  "first.last@[IPv6:a1:a2:a3:a4:b1::11.22.33.44]"                              =  47 =  #### FEHLER ####    IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
+     *  3423 - assertIsTrue  "first.last@[IPv6:a1::11.22.33.44]"                                          =  62 =  #### FEHLER ####    IP6-Adressteil: IPv4 in IPv6 - falsche Angabe der IP4-Einbettung (Zeichenfolge 'ffff' erwartet)
+     *  3424 - assertIsTrue  "first.last@[IPv6:a1:a2::11.22.33.44]"                                       =  47 =  #### FEHLER ####    IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
+     *  3425 - assertIsTrue  "first.last@[IPv6:0123:4567:89ab:cdef::11.22.33.44]"                         =  47 =  #### FEHLER ####    IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
+     *  3426 - assertIsTrue  "first.last@[IPv6:0123:4567:89ab:CDEF::11.22.33.44]"                         =  47 =  #### FEHLER ####    IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
+     *  3427 - assertIsTrue  "first.last@[IPv6:a1::b2:11.22.33.44]"                                       =  47 =  #### FEHLER ####    IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
+     *  3428 - assertIsTrue  "first.last@[IPv6:1111:2222:3333:4444:5555:6666:7777]"                       =   4 =  OK 
      * 
      * ---- https://mkyong.com/regular-expressions/how-to-validate-email-address-with-regular-expression/ -------------------------------
      * 
-     *  3436 - assertIsTrue  "hello@example.com"                                                          =   0 =  OK 
-     *  3437 - assertIsTrue  "hello@example.co.uk"                                                        =   0 =  OK 
-     *  3438 - assertIsTrue  "hello-2020@example.com"                                                     =   0 =  OK 
-     *  3439 - assertIsTrue  "hello.2020@example.com"                                                     =   0 =  OK 
-     *  3440 - assertIsTrue  "hello_2020@example.com"                                                     =   0 =  OK 
-     *  3441 - assertIsTrue  "h@example.com"                                                              =   0 =  OK 
-     *  3442 - assertIsTrue  "h@example-example.com"                                                      =   0 =  OK 
-     *  3443 - assertIsTrue  "h@example-example-example.com"                                              =   0 =  OK 
-     *  3444 - assertIsTrue  "h@example.example-example.com"                                              =   0 =  OK 
-     *  3445 - assertIsTrue  "hello.world-2020@example.com"                                               =   0 =  OK 
-     *  3446 - assertIsTrue  "hello@example_example.com"                                                  =   0 =  OK 
-     *  3447 - assertIsTrue  "hello!+2020@example.com"                                                    =   0 =  OK 
-     *  3448 - assertIsFalse "hello"                                                                      =  12 =  OK    Laenge: Laengenbegrenzungen stimmen nicht
-     *  3449 - assertIsFalse "hello@2020@example.com"                                                     =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
-     *  3450 - assertIsTrue  "hello\@2020@example.com"                                                    =   0 =  OK 
-     *  3451 - assertIsTrue  "(comment @) hello\@2020@example.com"                                        =   6 =  OK 
-     *  3452 - assertIsFalse ".hello@example.com"                                                         =  30 =  OK    Trennzeichen: kein Beginn mit einem Punkt
-     *  3453 - assertIsFalse "hello.@example.com"                                                         =  32 =  OK    Trennzeichen: ungueltige Zeichenkombination ".@"
-     *  3454 - assertIsFalse "hello..world@example.com"                                                   =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
-     *  3455 - assertIsTrue  "hello.world.\"string ..\"@example.com"                                      =   1 =  OK 
-     *  3456 - assertIsTrue  "(comment ..) hello.world.\"string ..\"@example.com"                         =   7 =  OK 
-     *  3457 - assertIsTrue  "hello.world.\"string ..\"@example.com (comment ..)"                         =   7 =  OK 
-     *  3458 - assertIsFalse "hello@example.a"                                                            =  14 =  OK    Laenge: Top-Level-Domain muss mindestens 2 Stellen lang sein.
-     *  3459 - assertIsFalse "hello@example..com"                                                         =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
-     *  3460 - assertIsFalse "hello@.com"                                                                 =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
-     *  3461 - assertIsFalse "hello@.com."                                                                =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
-     *  3462 - assertIsFalse "hello@-example.com"                                                         =  20 =  OK    Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
-     *  3463 - assertIsFalse "hello@example.com-"                                                         =  24 =  OK    Zeichen: Kein Sonderzeichen am Ende der eMail-Adresse
-     *  3464 - assertIsFalse "1234567890123456789012345678901234567890123456789012345678901234xx@example.com" =  13 =  OK    Laenge: RFC 5321 = SMTP-Protokoll = maximale Laenge des Local-Parts sind 64 Bytes
-     *  3465 - assertIsTrue  "email@goes_here.com"                                                        =   0 =  OK 
-     *  3466 - assertIsTrue  "double--dash@example.com"                                                   =   0 =  OK 
+     *  3429 - assertIsTrue  "hello@example.com"                                                          =   0 =  OK 
+     *  3430 - assertIsTrue  "hello@example.co.uk"                                                        =   0 =  OK 
+     *  3431 - assertIsTrue  "hello-2020@example.com"                                                     =   0 =  OK 
+     *  3432 - assertIsTrue  "hello.2020@example.com"                                                     =   0 =  OK 
+     *  3433 - assertIsTrue  "hello_2020@example.com"                                                     =   0 =  OK 
+     *  3434 - assertIsTrue  "h@example.com"                                                              =   0 =  OK 
+     *  3435 - assertIsTrue  "h@example-example.com"                                                      =   0 =  OK 
+     *  3436 - assertIsTrue  "h@example-example-example.com"                                              =   0 =  OK 
+     *  3437 - assertIsTrue  "h@example.example-example.com"                                              =   0 =  OK 
+     *  3438 - assertIsTrue  "hello.world-2020@example.com"                                               =   0 =  OK 
+     *  3439 - assertIsTrue  "hello@example_example.com"                                                  =   0 =  OK 
+     *  3440 - assertIsTrue  "hello!+2020@example.com"                                                    =   0 =  OK 
+     *  3441 - assertIsFalse "hello"                                                                      =  12 =  OK    Laenge: Laengenbegrenzungen stimmen nicht
+     *  3442 - assertIsFalse "hello@2020@example.com"                                                     =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
+     *  3443 - assertIsTrue  "hello\@2020@example.com"                                                    =   0 =  OK 
+     *  3444 - assertIsTrue  "(comment @) hello\@2020@example.com"                                        =   6 =  OK 
+     *  3445 - assertIsFalse ".hello@example.com"                                                         =  30 =  OK    Trennzeichen: kein Beginn mit einem Punkt
+     *  3446 - assertIsFalse "hello.@example.com"                                                         =  32 =  OK    Trennzeichen: ungueltige Zeichenkombination ".@"
+     *  3447 - assertIsFalse "hello..world@example.com"                                                   =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
+     *  3448 - assertIsTrue  "hello.world.\"string ..\"@example.com"                                      =   1 =  OK 
+     *  3449 - assertIsTrue  "(comment ..) hello.world.\"string ..\"@example.com"                         =   7 =  OK 
+     *  3450 - assertIsTrue  "hello.world.\"string ..\"@example.com (comment ..)"                         =   7 =  OK 
+     *  3451 - assertIsFalse "hello@example.a"                                                            =  14 =  OK    Laenge: Top-Level-Domain muss mindestens 2 Stellen lang sein.
+     *  3452 - assertIsFalse "hello@example..com"                                                         =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
+     *  3453 - assertIsFalse "hello@.com"                                                                 =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
+     *  3454 - assertIsFalse "hello@.com."                                                                =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
+     *  3455 - assertIsFalse "hello@-example.com"                                                         =  20 =  OK    Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
+     *  3456 - assertIsFalse "hello@example.com-"                                                         =  24 =  OK    Zeichen: Kein Sonderzeichen am Ende der eMail-Adresse
+     *  3457 - assertIsFalse "1234567890123456789012345678901234567890123456789012345678901234xx@example.com" =  13 =  OK    Laenge: RFC 5321 = SMTP-Protokoll = maximale Laenge des Local-Parts sind 64 Bytes
+     *  3458 - assertIsTrue  "email@goes_here.com"                                                        =   0 =  OK 
+     *  3459 - assertIsTrue  "double--dash@example.com"                                                   =   0 =  OK 
      * 
      * ---- https://github.com/dotnet/docs/issues/6620 ----------------------------------------------------------------------------------
      * 
-     *  3467 - assertIsFalse ""                                                                           =  11 =  OK    Laenge: Eingabe ist Leerstring
-     *  3468 - assertIsFalse " "                                                                          =  12 =  OK    Laenge: Laengenbegrenzungen stimmen nicht
-     *  3469 - assertIsFalse " jkt@gmail.com"                                                             =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  3470 - assertIsFalse "jkt@gmail.com "                                                             =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  3471 - assertIsFalse "jkt@ gmail.com"                                                             = 105 =  OK    Kommentar: Leerzeichentrennung im Domain-Part. Oeffnende Klammer erwartet
-     *  3472 - assertIsFalse "jkt@g mail.com"                                                             = 105 =  OK    Kommentar: Leerzeichentrennung im Domain-Part. Oeffnende Klammer erwartet
-     *  3473 - assertIsFalse "jkt @gmail.com"                                                             =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  3474 - assertIsFalse "j kt@gmail.com"                                                             =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  3460 - assertIsFalse ""                                                                           =  11 =  OK    Laenge: Eingabe ist Leerstring
+     *  3461 - assertIsFalse " "                                                                          =  12 =  OK    Laenge: Laengenbegrenzungen stimmen nicht
+     *  3462 - assertIsFalse " jkt@gmail.com"                                                             =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  3463 - assertIsFalse "jkt@gmail.com "                                                             =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  3464 - assertIsFalse "jkt@ gmail.com"                                                             = 105 =  OK    Kommentar: Leerzeichentrennung im Domain-Part. Oeffnende Klammer erwartet
+     *  3465 - assertIsFalse "jkt@g mail.com"                                                             = 105 =  OK    Kommentar: Leerzeichentrennung im Domain-Part. Oeffnende Klammer erwartet
+     *  3466 - assertIsFalse "jkt @gmail.com"                                                             =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  3467 - assertIsFalse "j kt@gmail.com"                                                             =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
      * 
      * ---- https://www.abstractapi.com/guides/java-email-validation --------------------------------------------------------------------
      * 
-     *  3475 - assertIsTrue  "\"test123\"@gmail.com"                                                      =   1 =  OK 
-     *  3476 - assertIsTrue  "test123@gmail.comcomco"                                                     =   0 =  OK 
-     *  3477 - assertIsTrue  "test123@gmail.c"                                                            =  14 =  #### FEHLER ####    Laenge: Top-Level-Domain muss mindestens 2 Stellen lang sein.
-     *  3478 - assertIsTrue  "test1&23@gmail.com"                                                         =   0 =  OK 
-     *  3479 - assertIsTrue  "test123@gmail.com"                                                          =   0 =  OK 
-     *  3480 - assertIsFalse "test123@gmail..com"                                                         =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
-     *  3481 - assertIsFalse ".test123@gmail.com"                                                         =  30 =  OK    Trennzeichen: kein Beginn mit einem Punkt
-     *  3482 - assertIsFalse "test123@gmail.com."                                                         =  36 =  OK    Trennzeichen: der letzte Punkt darf nicht am Ende liegen
-     *  3483 - assertIsFalse "test1Ὠ23@gmail.com"                                                         =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  3468 - assertIsTrue  "\"test123\"@gmail.com"                                                      =   1 =  OK 
+     *  3469 - assertIsTrue  "test123@gmail.comcomco"                                                     =   0 =  OK 
+     *  3470 - assertIsTrue  "test123@gmail.c"                                                            =  14 =  #### FEHLER ####    Laenge: Top-Level-Domain muss mindestens 2 Stellen lang sein.
+     *  3471 - assertIsTrue  "test1&23@gmail.com"                                                         =   0 =  OK 
+     *  3472 - assertIsTrue  "test123@gmail.com"                                                          =   0 =  OK 
+     *  3473 - assertIsFalse "test123@gmail..com"                                                         =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
+     *  3474 - assertIsFalse ".test123@gmail.com"                                                         =  30 =  OK    Trennzeichen: kein Beginn mit einem Punkt
+     *  3475 - assertIsFalse "test123@gmail.com."                                                         =  36 =  OK    Trennzeichen: der letzte Punkt darf nicht am Ende liegen
+     *  3476 - assertIsFalse "test1Ὠ23@gmail.com"                                                         =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
      * 
      * ---- https://www.javatpoint.com/java-email-validation ----------------------------------------------------------------------------
      * 
-     *  3484 - assertIsTrue  "javaTpoint@domain.co.in"                                                    =   0 =  OK 
-     *  3485 - assertIsTrue  "javaTpoint@domain.com"                                                      =   0 =  OK 
-     *  3486 - assertIsTrue  "javaTpoint.name@domain.com"                                                 =   0 =  OK 
-     *  3487 - assertIsTrue  "javaTpoint#@domain.co.in"                                                   =   0 =  OK 
+     *  3477 - assertIsTrue  "javaTpoint@domain.co.in"                                                    =   0 =  OK 
+     *  3478 - assertIsTrue  "javaTpoint@domain.com"                                                      =   0 =  OK 
+     *  3479 - assertIsTrue  "javaTpoint.name@domain.com"                                                 =   0 =  OK 
+     *  3480 - assertIsTrue  "javaTpoint#@domain.co.in"                                                   =   0 =  OK 
+     *  3481 - assertIsTrue  "javaTpoint@domain.com"                                                      =   0 =  OK 
+     *  3482 - assertIsFalse "javaTpoint@domaincom"                                                       =  34 =  OK    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
+     *  3483 - assertIsTrue  "javaTpoint@domain.co.in"                                                    =   0 =  OK 
+     *  3484 - assertIsTrue  "12453@domain.com"                                                           =   0 =  OK 
+     *  3485 - assertIsTrue  "javaTpoint.name@domain.com"                                                 =   0 =  OK 
+     *  3486 - assertIsTrue  "1avaTpoint#@domain.co.in"                                                   =   0 =  OK 
+     *  3487 - assertIsTrue  "javaTpoint@domain.co.in"                                                    =   0 =  OK 
      *  3488 - assertIsTrue  "javaTpoint@domain.com"                                                      =   0 =  OK 
-     *  3489 - assertIsFalse "javaTpoint@domaincom"                                                       =  34 =  OK    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
-     *  3490 - assertIsTrue  "javaTpoint@domain.co.in"                                                    =   0 =  OK 
-     *  3491 - assertIsTrue  "12453@domain.com"                                                           =   0 =  OK 
-     *  3492 - assertIsTrue  "javaTpoint.name@domain.com"                                                 =   0 =  OK 
-     *  3493 - assertIsTrue  "1avaTpoint#@domain.co.in"                                                   =   0 =  OK 
-     *  3494 - assertIsTrue  "javaTpoint@domain.co.in"                                                    =   0 =  OK 
-     *  3495 - assertIsTrue  "javaTpoint@domain.com"                                                      =   0 =  OK 
-     *  3496 - assertIsTrue  "javaTpoint.name@domain.com"                                                 =   0 =  OK 
-     *  3497 - assertIsTrue  "javaTpoint#@domain.co.in"                                                   =   0 =  OK 
-     *  3498 - assertIsTrue  "java'Tpoint@domain.com"                                                     =   0 =  OK 
-     *  3499 - assertIsFalse ".javaTpoint@yahoo.com"                                                      =  30 =  OK    Trennzeichen: kein Beginn mit einem Punkt
-     *  3500 - assertIsFalse "javaTpoint@domain.com."                                                     =  36 =  OK    Trennzeichen: der letzte Punkt darf nicht am Ende liegen
-     *  3501 - assertIsFalse "javaTpoint#domain.com"                                                      =  28 =  OK    AT-Zeichen: kein AT-Zeichen gefunden
-     *  3502 - assertIsFalse "javaTpoint@domain..com"                                                     =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
-     *  3503 - assertIsFalse "@yahoo.com"                                                                 =  26 =  OK    AT-Zeichen: kein AT-Zeichen am Anfang
-     *  3504 - assertIsFalse "javaTpoint#domain.com"                                                      =  28 =  OK    AT-Zeichen: kein AT-Zeichen gefunden
-     *  3505 - assertIsFalse "12javaTpoint#domain.com"                                                    =  28 =  OK    AT-Zeichen: kein AT-Zeichen gefunden
+     *  3489 - assertIsTrue  "javaTpoint.name@domain.com"                                                 =   0 =  OK 
+     *  3490 - assertIsTrue  "javaTpoint#@domain.co.in"                                                   =   0 =  OK 
+     *  3491 - assertIsTrue  "java'Tpoint@domain.com"                                                     =   0 =  OK 
+     *  3492 - assertIsFalse ".javaTpoint@yahoo.com"                                                      =  30 =  OK    Trennzeichen: kein Beginn mit einem Punkt
+     *  3493 - assertIsFalse "javaTpoint@domain.com."                                                     =  36 =  OK    Trennzeichen: der letzte Punkt darf nicht am Ende liegen
+     *  3494 - assertIsFalse "javaTpoint#domain.com"                                                      =  28 =  OK    AT-Zeichen: kein AT-Zeichen gefunden
+     *  3495 - assertIsFalse "javaTpoint@domain..com"                                                     =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
+     *  3496 - assertIsFalse "@yahoo.com"                                                                 =  26 =  OK    AT-Zeichen: kein AT-Zeichen am Anfang
+     *  3497 - assertIsFalse "javaTpoint#domain.com"                                                      =  28 =  OK    AT-Zeichen: kein AT-Zeichen gefunden
+     *  3498 - assertIsFalse "12javaTpoint#domain.com"                                                    =  28 =  OK    AT-Zeichen: kein AT-Zeichen gefunden
      * 
      * ---- https://java2blog.com/validate-email-address-in-java/ -----------------------------------------------------------------------
      * 
-     *  3506 - assertIsTrue  "admin@java2blog.com"                                                        =   0 =  OK 
-     *  3507 - assertIsFalse "@java2blog.com"                                                             =  26 =  OK    AT-Zeichen: kein AT-Zeichen am Anfang
-     *  3508 - assertIsTrue  "arpit.mandliya@java2blog.com"                                               =   0 =  OK 
+     *  3499 - assertIsTrue  "admin@java2blog.com"                                                        =   0 =  OK 
+     *  3500 - assertIsFalse "@java2blog.com"                                                             =  26 =  OK    AT-Zeichen: kein AT-Zeichen am Anfang
+     *  3501 - assertIsTrue  "arpit.mandliya@java2blog.com"                                               =   0 =  OK 
      * 
      * ---- https://www.tutorialspoint.com/javaexamples/regular_email.htm ---------------------------------------------------------------
      * 
-     *  3509 - assertIsTrue  "sairamkrishna@tutorialspoint.com"                                           =   0 =  OK 
-     *  3510 - assertIsTrue  "kittuprasad700@gmail.com"                                                   =   0 =  OK 
-     *  3511 - assertIsFalse "sairamkrishna_mammahe%google-india.com"                                     =  28 =  OK    AT-Zeichen: kein AT-Zeichen gefunden
-     *  3512 - assertIsTrue  "sairam.krishna@gmail-indai.com"                                             =   0 =  OK 
-     *  3513 - assertIsTrue  "sai#@youtube.co.in"                                                         =   0 =  OK 
-     *  3514 - assertIsFalse "kittu@domaincom"                                                            =  34 =  OK    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
-     *  3515 - assertIsFalse "kittu#gmail.com"                                                            =  28 =  OK    AT-Zeichen: kein AT-Zeichen gefunden
-     *  3516 - assertIsFalse "@pindom.com"                                                                =  26 =  OK    AT-Zeichen: kein AT-Zeichen am Anfang
+     *  3502 - assertIsTrue  "sairamkrishna@tutorialspoint.com"                                           =   0 =  OK 
+     *  3503 - assertIsTrue  "kittuprasad700@gmail.com"                                                   =   0 =  OK 
+     *  3504 - assertIsFalse "sairamkrishna_mammahe%google-india.com"                                     =  28 =  OK    AT-Zeichen: kein AT-Zeichen gefunden
+     *  3505 - assertIsTrue  "sairam.krishna@gmail-indai.com"                                             =   0 =  OK 
+     *  3506 - assertIsTrue  "sai#@youtube.co.in"                                                         =   0 =  OK 
+     *  3507 - assertIsFalse "kittu@domaincom"                                                            =  34 =  OK    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
+     *  3508 - assertIsFalse "kittu#gmail.com"                                                            =  28 =  OK    AT-Zeichen: kein AT-Zeichen gefunden
+     *  3509 - assertIsFalse "@pindom.com"                                                                =  26 =  OK    AT-Zeichen: kein AT-Zeichen am Anfang
      * 
      * ---- https://www.rohannagar.com/jmail/ -------------------------------------------------------------------------------------------
      * 
-     *  3517 - assertIsFalse "\"qu@test.org"                                                              =  86 =  OK    String: kein abschliessendes Anfuehrungszeichen gefunden.
-     *  3518 - assertIsFalse "ote\"@test.org"                                                             =  80 =  OK    String: Ein startendes Anfuehrungszeichen muss am Anfang kommen, der Zeichenzaehler darf nicht groesser als 0 sein
-     *  3519 - assertIsFalse "\"().:;<>[\]@example.com"                                                   =  84 =  OK    String: Ungueltige Escape-Sequenz im String
-     *  3520 - assertIsFalse "\"\"\"@iana.org"                                                            =  85 =  OK    String: Leerstring in Anfuehrungszeichen
-     *  3521 - assertIsFalse "Abc.example.com"                                                            =  28 =  OK    AT-Zeichen: kein AT-Zeichen gefunden
-     *  3522 - assertIsFalse "A@b@c@example.com"                                                          =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
-     *  3523 - assertIsFalse "a\"b(c)d.e:f;g<h>i[j\k]l@example.com"                                       =  80 =  OK    String: Ein startendes Anfuehrungszeichen muss am Anfang kommen, der Zeichenzaehler darf nicht groesser als 0 sein
-     *  3524 - assertIsFalse "this is\"not\allowed@example.com"                                           =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  3525 - assertIsFalse "this\ still\"not\allowed@example.com"                                       =  80 =  OK    String: Ein startendes Anfuehrungszeichen muss am Anfang kommen, der Zeichenzaehler darf nicht groesser als 0 sein
-     *  3526 - assertIsFalse "QA[icon]CHOCOLATE[icon]@test.com"                                           =  51 =  OK    IP-Adressteil: IP-Adresse vor AT-Zeichen
-     *  3527 - assertIsFalse "QA\[icon\]CHOCOLATE\[icon\]@test.com"                                       =  84 =  OK    String: Ungueltige Escape-Sequenz im String
-     *  3528 - assertIsFalse "plainaddress"                                                               =  34 =  OK    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
-     *  3529 - assertIsFalse "@example.com"                                                               =  26 =  OK    AT-Zeichen: kein AT-Zeichen am Anfang
-     *  3530 - assertIsFalse ".email@example.com"                                                         =  30 =  OK    Trennzeichen: kein Beginn mit einem Punkt
-     *  3531 - assertIsFalse "email.@example.com"                                                         =  32 =  OK    Trennzeichen: ungueltige Zeichenkombination ".@"
-     *  3532 - assertIsFalse "email..email@example.com"                                                   =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
-     *  3533 - assertIsFalse "email@-example.com"                                                         =  20 =  OK    Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
-     *  3534 - assertIsFalse "email@111.222.333.44444"                                                    =  53 =  OK    IP4-Adressteil: zu viele Ziffern, maximal 3 Ziffern
-     *  3535 - assertIsFalse "this\ is\"really\"not\allowed@example.com"                                  =  80 =  OK    String: Ein startendes Anfuehrungszeichen muss am Anfang kommen, der Zeichenzaehler darf nicht groesser als 0 sein
-     *  3536 - assertIsFalse "email@[12.34.44.56"                                                         =  61 =  OK    IP-Adressteil: Kein Abschluss der IP-Adresse auf ']'
-     *  3537 - assertIsFalse "email@14.44.56.34]"                                                         =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  3538 - assertIsFalse "email@[1.1.23.5f]"                                                          =  59 =  OK    IP4-Adressteil: Falsches Zeichen in der IP-Adresse
-     *  3539 - assertIsFalse "email@[3.256.255.23]"                                                       =  54 =  OK    IP4-Adressteil: Byte-Overflow
-     *  3540 - assertIsTrue  "\"first\\"last\"@test.org"                                                  =   1 =  OK 
-     *  3541 - assertIsFalse "x@x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456" =  12 =  OK    Laenge: Laengenbegrenzungen stimmen nicht
-     *  3542 - assertIsTrue  "first\@last@iana.org"                                                       =   0 =  OK 
-     *  3543 - assertIsFalse "test@example.com "                                                          =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  3544 - assertIsFalse "first.last@[IPv6:1111:2222:3333:4444:5555:6666:7777]"                       =   4 =  #### FEHLER ####    eMail-Adresse korrekt (IP6-Adresse)
-     *  3545 - assertIsFalse "first.last@[IPv6:a1::a4:b1::b4:11.22.33. 44]"                               =  50 =  OK    IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
-     *  3546 - assertIsFalse "invalid@about.museum-"                                                      =  24 =  OK    Zeichen: Kein Sonderzeichen am Ende der eMail-Adresse
-     *  3547 - assertIsFalse "first.last@x234567890123456789012345678901234567890123456789012345678901234.test.org" =  63 =  OK    Domain-Part: Domain-Label zu lang (maximal 63 Zeichen)
-     *  3548 - assertIsFalse "abc@def@test.org"                                                           =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
-     *  3549 - assertIsTrue  "abc\@def@test.org"                                                          =   0 =  OK 
-     *  3550 - assertIsFalse "abc\@test.org"                                                              =  28 =  OK    AT-Zeichen: kein AT-Zeichen gefunden
-     *  3551 - assertIsFalse "@test.org"                                                                  =  26 =  OK    AT-Zeichen: kein AT-Zeichen am Anfang
-     *  3552 - assertIsFalse ".dot@test.org"                                                              =  30 =  OK    Trennzeichen: kein Beginn mit einem Punkt
-     *  3553 - assertIsFalse "dot.@test.org"                                                              =  32 =  OK    Trennzeichen: ungueltige Zeichenkombination ".@"
-     *  3554 - assertIsFalse "two..dot@test.org"                                                          =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
-     *  3555 - assertIsFalse "\"Doug \"Ace\" L.\"@test.org"                                               =  87 =  OK    String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
-     *  3556 - assertIsFalse "Doug\ \"Ace\"\ L\.@test.org"                                                =  80 =  OK    String: Ein startendes Anfuehrungszeichen muss am Anfang kommen, der Zeichenzaehler darf nicht groesser als 0 sein
-     *  3557 - assertIsFalse "hello world@test.org"                                                       =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  3558 - assertIsFalse "first(12345678901234567890123456789012345678901234567890)last@(1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890)test.org" =  12 =  OK    Laenge: Laengenbegrenzungen stimmen nicht
-     *  3559 - assertIsFalse "a(a(b(c)d(e(f))g)(h(i)j)@test.org"                                          =  92 =  OK    Kommentar: Ungueltiges Zeichen im Kommentar
-     *  3560 - assertIsFalse "Doug\ \\"Ace\\"\ Lovell@test.org"                                           =  84 =  OK    String: Ungueltige Escape-Sequenz im String
-     *  3561 - assertIsFalse "test.test.org"                                                              =  28 =  OK    AT-Zeichen: kein AT-Zeichen gefunden
-     *  3562 - assertIsFalse "test.@test.org"                                                             =  32 =  OK    Trennzeichen: ungueltige Zeichenkombination ".@"
-     *  3563 - assertIsFalse "test..test@test.org"                                                        =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
-     *  3564 - assertIsFalse ".test@test.org"                                                             =  30 =  OK    Trennzeichen: kein Beginn mit einem Punkt
-     *  3565 - assertIsFalse "test@test@test.org"                                                         =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
-     *  3566 - assertIsFalse "test@@test.org"                                                             =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
-     *  3567 - assertIsFalse "-- test --@test.org"                                                        =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  3568 - assertIsFalse "[test]@test.org"                                                            =  51 =  OK    IP-Adressteil: IP-Adresse vor AT-Zeichen
-     *  3569 - assertIsFalse "\"test\"test\"@test.org"                                                    =  87 =  OK    String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
-     *  3570 - assertIsFalse "()[]\;:.><@test.org"                                                        =  51 =  OK    IP-Adressteil: IP-Adresse vor AT-Zeichen
-     *  3571 - assertIsFalse "test@123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012.com" =  12 =  OK    Laenge: Laengenbegrenzungen stimmen nicht
-     *  3572 - assertIsFalse ".@test.org"                                                                 =  30 =  OK    Trennzeichen: kein Beginn mit einem Punkt
-     *  3573 - assertIsFalse "Ima Fool@test.org"                                                          =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  3574 - assertIsTrue  "\"first\\"last\"@test.org"                                                  =   1 =  OK 
-     *  3575 - assertIsFalse "foo@[.2.3.4]"                                                              =  59 =  OK    IP4-Adressteil: Falsches Zeichen in der IP-Adresse
-     *  3576 - assertIsFalse "first\last@test.org"                                                        =  84 =  OK    String: Ungueltige Escape-Sequenz im String
-     *  3577 - assertIsFalse "first(abc(\"def\".ghi).mno)middle(abc(\"def\".ghi).mno).last@(abc(\"def\".ghi).mno)exa mple(abc(\"def\".ghi).mno).(abc(\"def\".ghi).mno)com(abc(\"def\".ghi).mno)" =  92 =  OK    Kommentar: Ungueltiges Zeichen im Kommentar
-     *  3578 - assertIsFalse "first(middle)last@test.org"                                                 =  97 =  OK    Kommentar: Nach dem Kommentar muss ein AT-Zeichen kommen
-     *  3579 - assertIsFalse "\"test\"test@test.com"                                                      =  87 =  OK    String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
-     *  3580 - assertIsFalse "()@test.com"                                                                =  98 =  OK    Kommentar: Kein lokaler Part vorhanden
-     *  3581 - assertIsFalse "test@really.long.topleveldomainisnotallowedunfortunatelyforpeoplewholikereallylongtopleveldomainnames" =  15 =  OK    Laenge: Top-Level-Domain darf nicht mehr als 63-Stellen lang sein.
-     *  3582 - assertIsFalse "test@really.long.domainpartisnotallowedunfortunatelyforpeoplewholikereallylongdomainnameparts.com" =  63 =  OK    Domain-Part: Domain-Label zu lang (maximal 63 Zeichen)
-     *  3583 - assertIsFalse "invalid@[1]"                                                                =  57 =  OK    IP4-Adressteil: IP-Adresse Trennzeichenanzahl muss 3 sein
-     *  3584 - assertIsFalse "ä📧@-foo"                                                                   =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  3585 - assertIsFalse "ä📧@foo-"                                                                   =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  3586 - assertIsFalse "first(comment(inner@comment.com"                                            =  92 =  OK    Kommentar: Ungueltiges Zeichen im Kommentar
-     *  3587 - assertIsFalse "Joe A Smith <email@example.com"                                             =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  3588 - assertIsFalse "Joe A Smith email@example.com"                                              =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  3589 - assertIsFalse "Joe A Smith <email@example.com->"                                           =  24 =  OK    Zeichen: Kein Sonderzeichen am Ende der eMail-Adresse
-     *  3590 - assertIsFalse "Joe A Smith <email@-example.com->"                                          =  20 =  OK    Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
-     *  3591 - assertIsFalse "Joe A Smith <email>"                                                        =  12 =  OK    Laenge: Laengenbegrenzungen stimmen nicht
-     *  3592 - assertIsTrue  "\"email\"@example.com"                                                      =   1 =  OK 
-     *  3593 - assertIsTrue  "\"first@last\"@test.org"                                                    =   1 =  OK 
-     *  3594 - assertIsTrue  "very.unusual.\"@\".unusual.com@example.com"                                 =   1 =  OK 
-     *  3595 - assertIsFalse "\"first\"last\"@test.org"                                                   =  87 =  OK    String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
-     *  3596 - assertIsTrue  "much.\"more\ unusual\"@example.com"                                         =   1 =  OK 
-     *  3597 - assertIsFalse "\"first\last\"@test.org"                                                    =  84 =  OK    String: Ungueltige Escape-Sequenz im String
-     *  3598 - assertIsTrue  "\"Abc\@def\"@test.org"                                                      =   1 =  OK 
-     *  3599 - assertIsTrue  "\"Fred\ Bloggs\"@test.org"                                                  =   1 =  OK 
-     *  3600 - assertIsFalse "\"Joe.\Blow\"@test.org"                                                     =  84 =  OK    String: Ungueltige Escape-Sequenz im String
-     *  3601 - assertIsTrue  "\"Abc@def\"@test.org"                                                       =   1 =  OK 
-     *  3602 - assertIsTrue  "\"Fred Bloggs\"@test.org"                                                   =   1 =  OK 
-     *  3603 - assertIsTrue  "\"Doug \\"Ace\\" L.\"@test.org"                                             =   1 =  OK 
-     *  3604 - assertIsTrue  "\"[[ test ]]\"@test.org"                                                    =   1 =  OK 
-     *  3605 - assertIsTrue  "\"test.test\"@test.org"                                                     =   1 =  OK 
-     *  3606 - assertIsTrue  "test.\"test\"@test.org"                                                     =   1 =  OK 
-     *  3607 - assertIsTrue  "\"test@test\"@test.org"                                                     =   1 =  OK 
-     *  3608 - assertIsFalse "\"test tabulator  est\"@test.org"                                           =  89 =  OK    String: Ungueltiges Zeichen innerhalb Anfuehrungszeichen
-     *  3609 - assertIsTrue  "\"first\".\"last\"@test.org"                                                =   1 =  OK 
-     *  3610 - assertIsTrue  "\"first\".middle.\"last\"@test.org"                                         =   1 =  OK 
-     *  3611 - assertIsTrue  "\"first\".last@test.org"                                                    =   1 =  OK 
-     *  3612 - assertIsTrue  "first.\"last\"@test.org"                                                    =   1 =  OK 
-     *  3613 - assertIsTrue  "\"first\".\"middle\".\"last\"@test.org"                                     =   1 =  OK 
-     *  3614 - assertIsTrue  "\"first.middle\".\"last\"@test.org"                                         =   1 =  OK 
-     *  3615 - assertIsTrue  "\"first.middle.last\"@test.org"                                             =   1 =  OK 
-     *  3616 - assertIsTrue  "\"first..last\"@test.org"                                                   =   1 =  OK 
-     *  3617 - assertIsTrue  "\"Unicode NULL \"@char.com"                                                 =   1 =  OK 
-     *  3618 - assertIsFalse "\"test\blah\"@test.org"                                                     =  84 =  OK    String: Ungueltige Escape-Sequenz im String
-     *  3619 - assertIsFalse "\"testlah\"@test.org"                                                      =  89 =  OK    String: Ungueltiges Zeichen innerhalb Anfuehrungszeichen
-     *  3620 - assertIsTrue  "\"test\\"blah\"@test.org"                                                   =   1 =  OK 
-     *  3621 - assertIsTrue  "\"first\\"last\"@test.org"                                                  =   1 =  OK 
-     *  3622 - assertIsTrue  "\"Test \\"Fail\\" Ing\"@test.org"                                           =   1 =  OK 
-     *  3623 - assertIsFalse "\"Test \"Fail\" Ing\"@test.org"                                             =  87 =  OK    String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
-     *  3624 - assertIsTrue  "\"test blah\"@test.org"                                                     =   1 =  OK 
-     *  3625 - assertIsTrue  "first.last@test.org"                                                        =   0 =  OK 
-     *  3626 - assertIsFalse "jdoe@machine(comment).example"                                              = 103 =  OK    Kommentar: Falsche Zeichenkombination ")."
-     *  3627 - assertIsFalse "first.\"\".last@test.org"                                                   =  85 =  OK    String: Leerstring in Anfuehrungszeichen
-     *  3628 - assertIsFalse "\"\"@test.org"                                                              =  85 =  OK    String: Leerstring in Anfuehrungszeichen
-     *  3629 - assertIsTrue  "very.common@example.org"                                                    =   0 =  OK 
-     *  3630 - assertIsTrue  "test/test@test.com"                                                         =   0 =  OK 
-     *  3631 - assertIsTrue  "user-@example.org"                                                          =   0 =  OK 
-     *  3632 - assertIsTrue  "firstname.lastname@example.com"                                             =   0 =  OK 
-     *  3633 - assertIsTrue  "email@subdomain.example.com"                                                =   0 =  OK 
-     *  3634 - assertIsTrue  "firstname+lastname@example.com"                                             =   0 =  OK 
-     *  3635 - assertIsTrue  "1234567890@example.com"                                                     =   0 =  OK 
-     *  3636 - assertIsTrue  "email@example-one.com"                                                      =   0 =  OK 
-     *  3637 - assertIsTrue  "_______@example.com"                                                        =   0 =  OK 
-     *  3638 - assertIsTrue  "email@example.name"                                                         =   0 =  OK 
-     *  3639 - assertIsTrue  "email@example.museum"                                                       =   0 =  OK 
-     *  3640 - assertIsTrue  "email@example.co.jp"                                                        =   0 =  OK 
-     *  3641 - assertIsTrue  "firstname-lastname@example.com"                                             =   0 =  OK 
-     *  3642 - assertIsTrue  "x@x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x2" =   0 =  OK 
-     *  3643 - assertIsTrue  "1234567890123456789012345678901234567890123456789012345678@12345678901234567890123456789012345678901234567890123456789.12345678901234567890123456789012345678901234567890123456789.123456789012345678901234567890123456789012345678901234567890123.test.org" =   0 =  OK 
-     *  3644 - assertIsTrue  "first.last@123.test.org"                                                    =   0 =  OK 
-     *  3645 - assertIsTrue  "first.last@x23456789012345678901234567890123456789012345678901234567890123.test.org" =   0 =  OK 
-     *  3646 - assertIsTrue  "1234567890123456789012345678901234567890123456789012345678901234@test.org"  =   0 =  OK 
-     *  3647 - assertIsTrue  "user+mailbox@test.org"                                                      =   0 =  OK 
-     *  3648 - assertIsTrue  "customer/department=shipping@test.org"                                      =   0 =  OK 
-     *  3649 - assertIsTrue  "$A12345@test.org"                                                           =   0 =  OK 
-     *  3650 - assertIsTrue  "!def!xyz%abc@test.org"                                                      =   0 =  OK 
-     *  3651 - assertIsTrue  "_somename@test.org"                                                         =   0 =  OK 
-     *  3652 - assertIsTrue  "first.last@[IPv6:::12.34.56.78]"                                            =  62 =  #### FEHLER ####    IP6-Adressteil: IPv4 in IPv6 - falsche Angabe der IP4-Einbettung (Zeichenfolge 'ffff' erwartet)
-     *  3653 - assertIsTrue  "first.last@[IPv6:1111:2222:3333::4444:12.34.56.78]"                         =  47 =  #### FEHLER ####    IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
-     *  3654 - assertIsTrue  "first.last@[IPv6:1111:2222:3333:4444:5555:6666:12.34.56.78]"                =  47 =  #### FEHLER ####    IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
-     *  3655 - assertIsTrue  "first.last@[IPv6:1111:2222:3333::4444:5555:12.34.56.78]"                    =  47 =  #### FEHLER ####    IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
-     *  3656 - assertIsTrue  "+@b.c"                                                                      =  12 =  #### FEHLER ####    Laenge: Laengenbegrenzungen stimmen nicht
-     *  3657 - assertIsTrue  "TEST@test.org"                                                              =   0 =  OK 
-     *  3658 - assertIsTrue  "1234567890@test.org"                                                        =   0 =  OK 
-     *  3659 - assertIsTrue  "test-test@test.org"                                                         =   0 =  OK 
-     *  3660 - assertIsTrue  "t*est@test.org"                                                             =   0 =  OK 
-     *  3661 - assertIsTrue  "+1~1+@test.org"                                                             =   0 =  OK 
-     *  3662 - assertIsTrue  "{_test_}@test.org"                                                          =   0 =  OK 
-     *  3663 - assertIsTrue  "valid@about.museum"                                                         =   0 =  OK 
-     *  3664 - assertIsTrue  "a@bar"                                                                      =  12 =  #### FEHLER ####    Laenge: Laengenbegrenzungen stimmen nicht
-     *  3665 - assertIsFalse "cal(foo\@bar)@iamcal.com"                                                   =  91 =  OK    Kommentar: Ungueltige Escape-Sequenz im Kommentar
-     *  3666 - assertIsTrue  "(comment)test@test.org"                                                     =   6 =  OK 
-     *  3667 - assertIsFalse "(foo)cal(bar)@(baz)iamcal.com(quux)"                                        =  99 =  OK    Kommentar: kein zweiter Kommentar gueltig
-     *  3668 - assertIsFalse "cal(foo\)bar)@iamcal.com"                                                   =  91 =  OK    Kommentar: Ungueltige Escape-Sequenz im Kommentar
-     *  3669 - assertIsFalse "first(Welcome to the (\"wonderf ul\" (!)) world of email)@test.org"         =  92 =  OK    Kommentar: Ungueltiges Zeichen im Kommentar
-     *  3670 - assertIsFalse "pete(his account)@silly.test(his host)"                                     =  99 =  OK    Kommentar: kein zweiter Kommentar gueltig
-     *  3671 - assertIsFalse "first(abc\(def)@test.org"                                                   =  91 =  OK    Kommentar: Ungueltige Escape-Sequenz im Kommentar
-     *  3672 - assertIsFalse "a(a(b(c)d(e(f))g)h(i)j)@test.org"                                           =  92 =  OK    Kommentar: Ungueltiges Zeichen im Kommentar
-     *  3673 - assertIsTrue  "c@(Chris's host.)public.example"                                            =   6 =  OK 
-     *  3674 - assertIsTrue  "_Yosemite.Sam@test.org"                                                     =   0 =  OK 
-     *  3675 - assertIsTrue  "~@test.org"                                                                 =   0 =  OK 
-     *  3676 - assertIsTrue  "Iinsist@(that comments are allowed)this.is.ok"                              =   6 =  OK 
-     *  3677 - assertIsTrue  "test@Bücher.ch"                                                             =  22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  3678 - assertIsTrue  "あいうえお@example.com"                                                          =  22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  3679 - assertIsTrue  "Pelé@example.com"                                                           =  22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  3680 - assertIsTrue  "δοκιμή@παράδειγμα.δοκιμή"                                                   =  22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  3681 - assertIsTrue  "我買@屋企.香港"                                                                   =  22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  3682 - assertIsTrue  "二ノ宮@黒川.日本"                                                                  =  22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  3683 - assertIsTrue  "медведь@с-балалайкой.рф"                                                    =  22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  3684 - assertIsTrue  "संपर्क@डाटामेल.भारत"                                                        =  22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  3685 - assertIsTrue  "email@example.com (Joe Smith)"                                              =   6 =  OK 
-     *  3686 - assertIsFalse "cal@iamcal(woo).(yay)com"                                                   = 103 =  OK    Kommentar: Falsche Zeichenkombination ")."
-     *  3687 - assertIsFalse "first(abc.def).last@test.org"                                               = 103 =  OK    Kommentar: Falsche Zeichenkombination ")."
-     *  3688 - assertIsFalse "first(a\"bc.def).last@test.org"                                             =  92 =  OK    Kommentar: Ungueltiges Zeichen im Kommentar
-     *  3689 - assertIsFalse "first.(\")middle.last(\")@test.org"                                         = 101 =  OK    Kommentar: Falsche Zeichenkombination ".(" im Domain Part
-     *  3690 - assertIsFalse "first().last@test.org"                                                      = 103 =  OK    Kommentar: Falsche Zeichenkombination ")."
-     *  3691 - assertIsTrue  "mymail\@hello@hotmail.com"                                                  =   0 =  OK 
-     *  3692 - assertIsTrue  "Abc\@def@test.org"                                                          =   0 =  OK 
-     *  3693 - assertIsTrue  "Fred\ Bloggs@test.org"                                                      =   0 =  OK 
-     *  3694 - assertIsTrue  "Joe.\\Blow@test.org"                                                        =   0 =  OK 
+     *  3510 - assertIsFalse "\"qu@test.org"                                                              =  86 =  OK    String: kein abschliessendes Anfuehrungszeichen gefunden.
+     *  3511 - assertIsFalse "ote\"@test.org"                                                             =  80 =  OK    String: Ein startendes Anfuehrungszeichen muss am Anfang kommen, der Zeichenzaehler darf nicht groesser als 0 sein
+     *  3512 - assertIsFalse "\"().:;<>[\]@example.com"                                                   =  84 =  OK    String: Ungueltige Escape-Sequenz im String
+     *  3513 - assertIsFalse "\"\"\"@iana.org"                                                            =  85 =  OK    String: Leerstring in Anfuehrungszeichen
+     *  3514 - assertIsFalse "Abc.example.com"                                                            =  28 =  OK    AT-Zeichen: kein AT-Zeichen gefunden
+     *  3515 - assertIsFalse "A@b@c@example.com"                                                          =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
+     *  3516 - assertIsFalse "a\"b(c)d.e:f;g<h>i[j\k]l@example.com"                                       =  80 =  OK    String: Ein startendes Anfuehrungszeichen muss am Anfang kommen, der Zeichenzaehler darf nicht groesser als 0 sein
+     *  3517 - assertIsFalse "this is\"not\allowed@example.com"                                           =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  3518 - assertIsFalse "this\ still\"not\allowed@example.com"                                       =  80 =  OK    String: Ein startendes Anfuehrungszeichen muss am Anfang kommen, der Zeichenzaehler darf nicht groesser als 0 sein
+     *  3519 - assertIsFalse "QA[icon]CHOCOLATE[icon]@test.com"                                           =  51 =  OK    IP-Adressteil: IP-Adresse vor AT-Zeichen
+     *  3520 - assertIsFalse "QA\[icon\]CHOCOLATE\[icon\]@test.com"                                       =  84 =  OK    String: Ungueltige Escape-Sequenz im String
+     *  3521 - assertIsFalse "plainaddress"                                                               =  34 =  OK    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
+     *  3522 - assertIsFalse "@example.com"                                                               =  26 =  OK    AT-Zeichen: kein AT-Zeichen am Anfang
+     *  3523 - assertIsFalse ".email@example.com"                                                         =  30 =  OK    Trennzeichen: kein Beginn mit einem Punkt
+     *  3524 - assertIsFalse "email.@example.com"                                                         =  32 =  OK    Trennzeichen: ungueltige Zeichenkombination ".@"
+     *  3525 - assertIsFalse "email..email@example.com"                                                   =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
+     *  3526 - assertIsFalse "email@-example.com"                                                         =  20 =  OK    Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
+     *  3527 - assertIsFalse "email@111.222.333.44444"                                                    =  53 =  OK    IP4-Adressteil: zu viele Ziffern, maximal 3 Ziffern
+     *  3528 - assertIsFalse "this\ is\"really\"not\allowed@example.com"                                  =  80 =  OK    String: Ein startendes Anfuehrungszeichen muss am Anfang kommen, der Zeichenzaehler darf nicht groesser als 0 sein
+     *  3529 - assertIsFalse "email@[12.34.44.56"                                                         =  61 =  OK    IP-Adressteil: Kein Abschluss der IP-Adresse auf ']'
+     *  3530 - assertIsFalse "email@14.44.56.34]"                                                         =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  3531 - assertIsFalse "email@[1.1.23.5f]"                                                          =  59 =  OK    IP4-Adressteil: Falsches Zeichen in der IP-Adresse
+     *  3532 - assertIsFalse "email@[3.256.255.23]"                                                       =  54 =  OK    IP4-Adressteil: Byte-Overflow
+     *  3533 - assertIsTrue  "\"first\\"last\"@test.org"                                                  =   1 =  OK 
+     *  3534 - assertIsFalse "x@x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456" =  12 =  OK    Laenge: Laengenbegrenzungen stimmen nicht
+     *  3535 - assertIsTrue  "first\@last@iana.org"                                                       =   0 =  OK 
+     *  3536 - assertIsFalse "test@example.com "                                                          =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  3537 - assertIsFalse "first.last@[IPv6:1111:2222:3333:4444:5555:6666:7777]"                       =   4 =  #### FEHLER ####    eMail-Adresse korrekt (IP6-Adresse)
+     *  3538 - assertIsFalse "first.last@[IPv6:a1::a4:b1::b4:11.22.33. 44]"                               =  50 =  OK    IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
+     *  3539 - assertIsFalse "invalid@about.museum-"                                                      =  24 =  OK    Zeichen: Kein Sonderzeichen am Ende der eMail-Adresse
+     *  3540 - assertIsFalse "first.last@x234567890123456789012345678901234567890123456789012345678901234.test.org" =  63 =  OK    Domain-Part: Domain-Label zu lang (maximal 63 Zeichen)
+     *  3541 - assertIsFalse "abc@def@test.org"                                                           =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
+     *  3542 - assertIsTrue  "abc\@def@test.org"                                                          =   0 =  OK 
+     *  3543 - assertIsFalse "abc\@test.org"                                                              =  28 =  OK    AT-Zeichen: kein AT-Zeichen gefunden
+     *  3544 - assertIsFalse "@test.org"                                                                  =  26 =  OK    AT-Zeichen: kein AT-Zeichen am Anfang
+     *  3545 - assertIsFalse ".dot@test.org"                                                              =  30 =  OK    Trennzeichen: kein Beginn mit einem Punkt
+     *  3546 - assertIsFalse "dot.@test.org"                                                              =  32 =  OK    Trennzeichen: ungueltige Zeichenkombination ".@"
+     *  3547 - assertIsFalse "two..dot@test.org"                                                          =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
+     *  3548 - assertIsFalse "\"Doug \"Ace\" L.\"@test.org"                                               =  87 =  OK    String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
+     *  3549 - assertIsFalse "Doug\ \"Ace\"\ L\.@test.org"                                                =  80 =  OK    String: Ein startendes Anfuehrungszeichen muss am Anfang kommen, der Zeichenzaehler darf nicht groesser als 0 sein
+     *  3550 - assertIsFalse "hello world@test.org"                                                       =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  3551 - assertIsFalse "first(12345678901234567890123456789012345678901234567890)last@(1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890)test.org" =  12 =  OK    Laenge: Laengenbegrenzungen stimmen nicht
+     *  3552 - assertIsFalse "a(a(b(c)d(e(f))g)(h(i)j)@test.org"                                          =  92 =  OK    Kommentar: Ungueltiges Zeichen im Kommentar
+     *  3553 - assertIsFalse "Doug\ \\"Ace\\"\ Lovell@test.org"                                           =  84 =  OK    String: Ungueltige Escape-Sequenz im String
+     *  3554 - assertIsFalse "test.test.org"                                                              =  28 =  OK    AT-Zeichen: kein AT-Zeichen gefunden
+     *  3555 - assertIsFalse "test.@test.org"                                                             =  32 =  OK    Trennzeichen: ungueltige Zeichenkombination ".@"
+     *  3556 - assertIsFalse "test..test@test.org"                                                        =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
+     *  3557 - assertIsFalse ".test@test.org"                                                             =  30 =  OK    Trennzeichen: kein Beginn mit einem Punkt
+     *  3558 - assertIsFalse "test@test@test.org"                                                         =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
+     *  3559 - assertIsFalse "test@@test.org"                                                             =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
+     *  3560 - assertIsFalse "-- test --@test.org"                                                        =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  3561 - assertIsFalse "[test]@test.org"                                                            =  51 =  OK    IP-Adressteil: IP-Adresse vor AT-Zeichen
+     *  3562 - assertIsFalse "\"test\"test\"@test.org"                                                    =  87 =  OK    String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
+     *  3563 - assertIsFalse "()[]\;:.><@test.org"                                                        =  51 =  OK    IP-Adressteil: IP-Adresse vor AT-Zeichen
+     *  3564 - assertIsFalse "test@123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012.com" =  12 =  OK    Laenge: Laengenbegrenzungen stimmen nicht
+     *  3565 - assertIsFalse ".@test.org"                                                                 =  30 =  OK    Trennzeichen: kein Beginn mit einem Punkt
+     *  3566 - assertIsFalse "Ima Fool@test.org"                                                          =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  3567 - assertIsTrue  "\"first\\"last\"@test.org"                                                  =   1 =  OK 
+     *  3568 - assertIsFalse "foo@[.2.3.4]"                                                              =  59 =  OK    IP4-Adressteil: Falsches Zeichen in der IP-Adresse
+     *  3569 - assertIsFalse "first\last@test.org"                                                        =  84 =  OK    String: Ungueltige Escape-Sequenz im String
+     *  3570 - assertIsFalse "first(abc(\"def\".ghi).mno)middle(abc(\"def\".ghi).mno).last@(abc(\"def\".ghi).mno)exa mple(abc(\"def\".ghi).mno).(abc(\"def\".ghi).mno)com(abc(\"def\".ghi).mno)" =  92 =  OK    Kommentar: Ungueltiges Zeichen im Kommentar
+     *  3571 - assertIsFalse "first(middle)last@test.org"                                                 =  97 =  OK    Kommentar: Nach dem Kommentar muss ein AT-Zeichen kommen
+     *  3572 - assertIsFalse "\"test\"test@test.com"                                                      =  87 =  OK    String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
+     *  3573 - assertIsFalse "()@test.com"                                                                =  98 =  OK    Kommentar: Kein lokaler Part vorhanden
+     *  3574 - assertIsFalse "test@really.long.topleveldomainisnotallowedunfortunatelyforpeoplewholikereallylongtopleveldomainnames" =  15 =  OK    Laenge: Top-Level-Domain darf nicht mehr als 63-Stellen lang sein.
+     *  3575 - assertIsFalse "test@really.long.domainpartisnotallowedunfortunatelyforpeoplewholikereallylongdomainnameparts.com" =  63 =  OK    Domain-Part: Domain-Label zu lang (maximal 63 Zeichen)
+     *  3576 - assertIsFalse "invalid@[1]"                                                                =  57 =  OK    IP4-Adressteil: IP-Adresse Trennzeichenanzahl muss 3 sein
+     *  3577 - assertIsFalse "ä📧@-foo"                                                                   =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  3578 - assertIsFalse "ä📧@foo-"                                                                   =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  3579 - assertIsFalse "first(comment(inner@comment.com"                                            =  92 =  OK    Kommentar: Ungueltiges Zeichen im Kommentar
+     *  3580 - assertIsFalse "Joe A Smith <email@example.com"                                             =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  3581 - assertIsFalse "Joe A Smith email@example.com"                                              =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  3582 - assertIsFalse "Joe A Smith <email@example.com->"                                           =  24 =  OK    Zeichen: Kein Sonderzeichen am Ende der eMail-Adresse
+     *  3583 - assertIsFalse "Joe A Smith <email@-example.com->"                                          =  20 =  OK    Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
+     *  3584 - assertIsFalse "Joe A Smith <email>"                                                        =  12 =  OK    Laenge: Laengenbegrenzungen stimmen nicht
+     *  3585 - assertIsTrue  "\"email\"@example.com"                                                      =   1 =  OK 
+     *  3586 - assertIsTrue  "\"first@last\"@test.org"                                                    =   1 =  OK 
+     *  3587 - assertIsTrue  "very.unusual.\"@\".unusual.com@example.com"                                 =   1 =  OK 
+     *  3588 - assertIsFalse "\"first\"last\"@test.org"                                                   =  87 =  OK    String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
+     *  3589 - assertIsTrue  "much.\"more\ unusual\"@example.com"                                         =   1 =  OK 
+     *  3590 - assertIsFalse "\"first\last\"@test.org"                                                    =  84 =  OK    String: Ungueltige Escape-Sequenz im String
+     *  3591 - assertIsTrue  "\"Abc\@def\"@test.org"                                                      =   1 =  OK 
+     *  3592 - assertIsTrue  "\"Fred\ Bloggs\"@test.org"                                                  =   1 =  OK 
+     *  3593 - assertIsFalse "\"Joe.\Blow\"@test.org"                                                     =  84 =  OK    String: Ungueltige Escape-Sequenz im String
+     *  3594 - assertIsTrue  "\"Abc@def\"@test.org"                                                       =   1 =  OK 
+     *  3595 - assertIsTrue  "\"Fred Bloggs\"@test.org"                                                   =   1 =  OK 
+     *  3596 - assertIsTrue  "\"Doug \\"Ace\\" L.\"@test.org"                                             =   1 =  OK 
+     *  3597 - assertIsTrue  "\"[[ test ]]\"@test.org"                                                    =   1 =  OK 
+     *  3598 - assertIsTrue  "\"test.test\"@test.org"                                                     =   1 =  OK 
+     *  3599 - assertIsTrue  "test.\"test\"@test.org"                                                     =   1 =  OK 
+     *  3600 - assertIsTrue  "\"test@test\"@test.org"                                                     =   1 =  OK 
+     *  3601 - assertIsFalse "\"test tabulator  est\"@test.org"                                           =  89 =  OK    String: Ungueltiges Zeichen innerhalb Anfuehrungszeichen
+     *  3602 - assertIsTrue  "\"first\".\"last\"@test.org"                                                =   1 =  OK 
+     *  3603 - assertIsTrue  "\"first\".middle.\"last\"@test.org"                                         =   1 =  OK 
+     *  3604 - assertIsTrue  "\"first\".last@test.org"                                                    =   1 =  OK 
+     *  3605 - assertIsTrue  "first.\"last\"@test.org"                                                    =   1 =  OK 
+     *  3606 - assertIsTrue  "\"first\".\"middle\".\"last\"@test.org"                                     =   1 =  OK 
+     *  3607 - assertIsTrue  "\"first.middle\".\"last\"@test.org"                                         =   1 =  OK 
+     *  3608 - assertIsTrue  "\"first.middle.last\"@test.org"                                             =   1 =  OK 
+     *  3609 - assertIsTrue  "\"first..last\"@test.org"                                                   =   1 =  OK 
+     *  3610 - assertIsTrue  "\"Unicode NULL \"@char.com"                                                 =   1 =  OK 
+     *  3611 - assertIsFalse "\"test\blah\"@test.org"                                                     =  84 =  OK    String: Ungueltige Escape-Sequenz im String
+     *  3612 - assertIsFalse "\"testlah\"@test.org"                                                      =  89 =  OK    String: Ungueltiges Zeichen innerhalb Anfuehrungszeichen
+     *  3613 - assertIsTrue  "\"test\\"blah\"@test.org"                                                   =   1 =  OK 
+     *  3614 - assertIsTrue  "\"first\\"last\"@test.org"                                                  =   1 =  OK 
+     *  3615 - assertIsTrue  "\"Test \\"Fail\\" Ing\"@test.org"                                           =   1 =  OK 
+     *  3616 - assertIsFalse "\"Test \"Fail\" Ing\"@test.org"                                             =  87 =  OK    String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
+     *  3617 - assertIsTrue  "\"test blah\"@test.org"                                                     =   1 =  OK 
+     *  3618 - assertIsTrue  "first.last@test.org"                                                        =   0 =  OK 
+     *  3619 - assertIsFalse "jdoe@machine(comment).example"                                              = 103 =  OK    Kommentar: Falsche Zeichenkombination ")."
+     *  3620 - assertIsFalse "first.\"\".last@test.org"                                                   =  85 =  OK    String: Leerstring in Anfuehrungszeichen
+     *  3621 - assertIsFalse "\"\"@test.org"                                                              =  85 =  OK    String: Leerstring in Anfuehrungszeichen
+     *  3622 - assertIsTrue  "very.common@example.org"                                                    =   0 =  OK 
+     *  3623 - assertIsTrue  "test/test@test.com"                                                         =   0 =  OK 
+     *  3624 - assertIsTrue  "user-@example.org"                                                          =   0 =  OK 
+     *  3625 - assertIsTrue  "firstname.lastname@example.com"                                             =   0 =  OK 
+     *  3626 - assertIsTrue  "email@subdomain.example.com"                                                =   0 =  OK 
+     *  3627 - assertIsTrue  "firstname+lastname@example.com"                                             =   0 =  OK 
+     *  3628 - assertIsTrue  "1234567890@example.com"                                                     =   0 =  OK 
+     *  3629 - assertIsTrue  "email@example-one.com"                                                      =   0 =  OK 
+     *  3630 - assertIsTrue  "_______@example.com"                                                        =   0 =  OK 
+     *  3631 - assertIsTrue  "email@example.name"                                                         =   0 =  OK 
+     *  3632 - assertIsTrue  "email@example.museum"                                                       =   0 =  OK 
+     *  3633 - assertIsTrue  "email@example.co.jp"                                                        =   0 =  OK 
+     *  3634 - assertIsTrue  "firstname-lastname@example.com"                                             =   0 =  OK 
+     *  3635 - assertIsTrue  "x@x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x23456789.x2" =   0 =  OK 
+     *  3636 - assertIsTrue  "1234567890123456789012345678901234567890123456789012345678@12345678901234567890123456789012345678901234567890123456789.12345678901234567890123456789012345678901234567890123456789.123456789012345678901234567890123456789012345678901234567890123.test.org" =   0 =  OK 
+     *  3637 - assertIsTrue  "first.last@123.test.org"                                                    =   0 =  OK 
+     *  3638 - assertIsTrue  "first.last@x23456789012345678901234567890123456789012345678901234567890123.test.org" =   0 =  OK 
+     *  3639 - assertIsTrue  "1234567890123456789012345678901234567890123456789012345678901234@test.org"  =   0 =  OK 
+     *  3640 - assertIsTrue  "user+mailbox@test.org"                                                      =   0 =  OK 
+     *  3641 - assertIsTrue  "customer/department=shipping@test.org"                                      =   0 =  OK 
+     *  3642 - assertIsTrue  "$A12345@test.org"                                                           =   0 =  OK 
+     *  3643 - assertIsTrue  "!def!xyz%abc@test.org"                                                      =   0 =  OK 
+     *  3644 - assertIsTrue  "_somename@test.org"                                                         =   0 =  OK 
+     *  3645 - assertIsTrue  "first.last@[IPv6:::12.34.56.78]"                                            =  62 =  #### FEHLER ####    IP6-Adressteil: IPv4 in IPv6 - falsche Angabe der IP4-Einbettung (Zeichenfolge 'ffff' erwartet)
+     *  3646 - assertIsTrue  "first.last@[IPv6:1111:2222:3333::4444:12.34.56.78]"                         =  47 =  #### FEHLER ####    IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
+     *  3647 - assertIsTrue  "first.last@[IPv6:1111:2222:3333:4444:5555:6666:12.34.56.78]"                =  47 =  #### FEHLER ####    IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
+     *  3648 - assertIsTrue  "first.last@[IPv6:1111:2222:3333::4444:5555:12.34.56.78]"                    =  47 =  #### FEHLER ####    IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
+     *  3649 - assertIsTrue  "+@b.c"                                                                      =  12 =  #### FEHLER ####    Laenge: Laengenbegrenzungen stimmen nicht
+     *  3650 - assertIsTrue  "TEST@test.org"                                                              =   0 =  OK 
+     *  3651 - assertIsTrue  "1234567890@test.org"                                                        =   0 =  OK 
+     *  3652 - assertIsTrue  "test-test@test.org"                                                         =   0 =  OK 
+     *  3653 - assertIsTrue  "t*est@test.org"                                                             =   0 =  OK 
+     *  3654 - assertIsTrue  "+1~1+@test.org"                                                             =   0 =  OK 
+     *  3655 - assertIsTrue  "{_test_}@test.org"                                                          =   0 =  OK 
+     *  3656 - assertIsTrue  "valid@about.museum"                                                         =   0 =  OK 
+     *  3657 - assertIsTrue  "a@bar"                                                                      =  12 =  #### FEHLER ####    Laenge: Laengenbegrenzungen stimmen nicht
+     *  3658 - assertIsFalse "cal(foo\@bar)@iamcal.com"                                                   =  91 =  OK    Kommentar: Ungueltige Escape-Sequenz im Kommentar
+     *  3659 - assertIsTrue  "(comment)test@test.org"                                                     =   6 =  OK 
+     *  3660 - assertIsFalse "(foo)cal(bar)@(baz)iamcal.com(quux)"                                        =  99 =  OK    Kommentar: kein zweiter Kommentar gueltig
+     *  3661 - assertIsFalse "cal(foo\)bar)@iamcal.com"                                                   =  91 =  OK    Kommentar: Ungueltige Escape-Sequenz im Kommentar
+     *  3662 - assertIsFalse "first(Welcome to the (\"wonderf ul\" (!)) world of email)@test.org"         =  92 =  OK    Kommentar: Ungueltiges Zeichen im Kommentar
+     *  3663 - assertIsFalse "pete(his account)@silly.test(his host)"                                     =  99 =  OK    Kommentar: kein zweiter Kommentar gueltig
+     *  3664 - assertIsFalse "first(abc\(def)@test.org"                                                   =  91 =  OK    Kommentar: Ungueltige Escape-Sequenz im Kommentar
+     *  3665 - assertIsFalse "a(a(b(c)d(e(f))g)h(i)j)@test.org"                                           =  92 =  OK    Kommentar: Ungueltiges Zeichen im Kommentar
+     *  3666 - assertIsTrue  "c@(Chris's host.)public.example"                                            =   6 =  OK 
+     *  3667 - assertIsTrue  "_Yosemite.Sam@test.org"                                                     =   0 =  OK 
+     *  3668 - assertIsTrue  "~@test.org"                                                                 =   0 =  OK 
+     *  3669 - assertIsTrue  "Iinsist@(that comments are allowed)this.is.ok"                              =   6 =  OK 
+     *  3670 - assertIsTrue  "test@Bücher.ch"                                                             =  22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  3671 - assertIsTrue  "あいうえお@example.com"                                                          =  22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  3672 - assertIsTrue  "Pelé@example.com"                                                           =  22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  3673 - assertIsTrue  "δοκιμή@παράδειγμα.δοκιμή"                                                   =  22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  3674 - assertIsTrue  "我買@屋企.香港"                                                                   =  22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  3675 - assertIsTrue  "二ノ宮@黒川.日本"                                                                  =  22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  3676 - assertIsTrue  "медведь@с-балалайкой.рф"                                                    =  22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  3677 - assertIsTrue  "संपर्क@डाटामेल.भारत"                                                        =  22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  3678 - assertIsTrue  "email@example.com (Joe Smith)"                                              =   6 =  OK 
+     *  3679 - assertIsFalse "cal@iamcal(woo).(yay)com"                                                   = 103 =  OK    Kommentar: Falsche Zeichenkombination ")."
+     *  3680 - assertIsFalse "first(abc.def).last@test.org"                                               = 103 =  OK    Kommentar: Falsche Zeichenkombination ")."
+     *  3681 - assertIsFalse "first(a\"bc.def).last@test.org"                                             =  92 =  OK    Kommentar: Ungueltiges Zeichen im Kommentar
+     *  3682 - assertIsFalse "first.(\")middle.last(\")@test.org"                                         = 101 =  OK    Kommentar: Falsche Zeichenkombination ".(" im Domain Part
+     *  3683 - assertIsFalse "first().last@test.org"                                                      = 103 =  OK    Kommentar: Falsche Zeichenkombination ")."
+     *  3684 - assertIsTrue  "mymail\@hello@hotmail.com"                                                  =   0 =  OK 
+     *  3685 - assertIsTrue  "Abc\@def@test.org"                                                          =   0 =  OK 
+     *  3686 - assertIsTrue  "Fred\ Bloggs@test.org"                                                      =   0 =  OK 
+     *  3687 - assertIsTrue  "Joe.\\Blow@test.org"                                                        =   0 =  OK 
      * 
      * ---- https://github.com/bbottema/email-rfc2822-validator/blob/master/src/test/java/demo/TestClass.java ---------------------------
      * 
-     *  3695 - assertIsTrue  "me@example.com"                                                             =   0 =  OK 
-     *  3696 - assertIsTrue  "a.nonymous@example.com"                                                     =   0 =  OK 
-     *  3697 - assertIsTrue  "name+tag@example.com"                                                       =   0 =  OK 
-     *  3698 - assertIsTrue  "!#$%&'+-/=.?^`{|}~@[1.0.0.127]"                                             =   2 =  OK 
-     *  3699 - assertIsTrue  "!#$%&'+-/=.?^`{|}~@[IPv6:0123:4567:89AB:CDEF:0123:4567:89AB:CDEF]"          =   4 =  OK 
-     *  3700 - assertIsTrue  "me(this is a comment)@example.com"                                          =   6 =  OK 
-     *  3701 - assertIsTrue  "\"bob(hi)smith\"@test.com"                                                  =   1 =  OK 
-     *  3702 - assertIsTrue  "\"Bob\" <bob@hi.com>"                                                       =   0 =  OK 
-     *  3703 - assertIsTrue  "me.example@com"                                                             =  34 =  #### FEHLER ####    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
-     *  3704 - assertIsTrue  "309d4696df38ff12c023600e3bc2bd4b@fakedomain.com"                            =   0 =  OK 
-     *  3705 - assertIsTrue  "ewiuhdghiufduhdvjhbajbkerwukhgjhvxbhvbsejskuadukfhgskjebf@gmail.net"        =   0 =  OK 
-     *  3706 - assertIsTrue  "iitakeskus-kauppakeskus-rav.paallikko@fi.xyz.dom"                           =   0 =  OK 
-     *  3707 - assertIsTrue  "i-itakeskus-kauppakeskus-rav.paallikko@fi.xyz.dom"                          =   0 =  OK 
-     *  3708 - assertIsTrue  "ki-itakeskus-kauppakeskus-rav.paallikko@fi.xyz.dom"                         =   0 =  OK 
-     *  3709 - assertIsTrue  "hki-itakeskus-kauppakeskus-rav.paallikko@fi.xyz.dom"                        =   0 =  OK 
-     *  3710 - assertIsFalse "NotAnEmail"                                                                 =  34 =  OK    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
-     *  3711 - assertIsFalse "me@"                                                                        =  12 =  OK    Laenge: Laengenbegrenzungen stimmen nicht
-     *  3712 - assertIsFalse "@example.com"                                                               =  26 =  OK    AT-Zeichen: kein AT-Zeichen am Anfang
-     *  3713 - assertIsFalse ".me@example.com"                                                            =  30 =  OK    Trennzeichen: kein Beginn mit einem Punkt
-     *  3714 - assertIsFalse "me@example..com"                                                            =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
-     *  3715 - assertIsFalse "me\@example.com"                                                            =  28 =  OK    AT-Zeichen: kein AT-Zeichen gefunden
-     *  3716 - assertIsFalse "\"ßoµ\" <notifications@example.com>"                                        =  18 =  OK    Struktur: Fehler in Adress-String-X
-     *  3717 - assertIsFalse "[Kayaks] <kayaks@kayaks.org>"                                               =  18 =  OK    Struktur: Fehler in Adress-String-X
-     *  3718 - assertIsFalse "Kayaks.org <kayaks@kayaks.org>"                                             =  18 =  OK    Struktur: Fehler in Adress-String-X
-     *  3719 - assertIsFalse "semico...@gmail.com"                                                        =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
+     *  3688 - assertIsTrue  "me@example.com"                                                             =   0 =  OK 
+     *  3689 - assertIsTrue  "a.nonymous@example.com"                                                     =   0 =  OK 
+     *  3690 - assertIsTrue  "name+tag@example.com"                                                       =   0 =  OK 
+     *  3691 - assertIsTrue  "!#$%&'+-/=.?^`{|}~@[1.0.0.127]"                                             =   2 =  OK 
+     *  3692 - assertIsTrue  "!#$%&'+-/=.?^`{|}~@[IPv6:0123:4567:89AB:CDEF:0123:4567:89AB:CDEF]"          =   4 =  OK 
+     *  3693 - assertIsTrue  "me(this is a comment)@example.com"                                          =   6 =  OK 
+     *  3694 - assertIsTrue  "\"bob(hi)smith\"@test.com"                                                  =   1 =  OK 
+     *  3695 - assertIsTrue  "\"Bob\" <bob@hi.com>"                                                       =   0 =  OK 
+     *  3696 - assertIsTrue  "me.example@com"                                                             =  34 =  #### FEHLER ####    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
+     *  3697 - assertIsTrue  "309d4696df38ff12c023600e3bc2bd4b@fakedomain.com"                            =   0 =  OK 
+     *  3698 - assertIsTrue  "ewiuhdghiufduhdvjhbajbkerwukhgjhvxbhvbsejskuadukfhgskjebf@gmail.net"        =   0 =  OK 
+     *  3699 - assertIsTrue  "iitakeskus-kauppakeskus-rav.paallikko@fi.xyz.dom"                           =   0 =  OK 
+     *  3700 - assertIsTrue  "i-itakeskus-kauppakeskus-rav.paallikko@fi.xyz.dom"                          =   0 =  OK 
+     *  3701 - assertIsTrue  "ki-itakeskus-kauppakeskus-rav.paallikko@fi.xyz.dom"                         =   0 =  OK 
+     *  3702 - assertIsTrue  "hki-itakeskus-kauppakeskus-rav.paallikko@fi.xyz.dom"                        =   0 =  OK 
+     *  3703 - assertIsFalse "NotAnEmail"                                                                 =  34 =  OK    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
+     *  3704 - assertIsFalse "me@"                                                                        =  12 =  OK    Laenge: Laengenbegrenzungen stimmen nicht
+     *  3705 - assertIsFalse "@example.com"                                                               =  26 =  OK    AT-Zeichen: kein AT-Zeichen am Anfang
+     *  3706 - assertIsFalse ".me@example.com"                                                            =  30 =  OK    Trennzeichen: kein Beginn mit einem Punkt
+     *  3707 - assertIsFalse "me@example..com"                                                            =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
+     *  3708 - assertIsFalse "me\@example.com"                                                            =  28 =  OK    AT-Zeichen: kein AT-Zeichen gefunden
+     *  3709 - assertIsFalse "\"ßoµ\" <notifications@example.com>"                                        =  18 =  OK    Struktur: Fehler in Adress-String-X
+     *  3710 - assertIsFalse "[Kayaks] <kayaks@kayaks.org>"                                               =  18 =  OK    Struktur: Fehler in Adress-String-X
+     *  3711 - assertIsFalse "Kayaks.org <kayaks@kayaks.org>"                                             =  18 =  OK    Struktur: Fehler in Adress-String-X
+     *  3712 - assertIsFalse "semico...@gmail.com"                                                        =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
      * 
      * ---- my old tests ----------------------------------------------------------------------------------------------------------------
      * 
-     *  3720 - assertIsTrue  "A.\"B\"@C.DE"                                                               =   1 =  OK 
-     *  3721 - assertIsTrue  "A.B@[1.2.3.4]"                                                              =   2 =  OK 
-     *  3722 - assertIsTrue  "A.\"B\"@[1.2.3.4]"                                                          =   3 =  OK 
-     *  3723 - assertIsTrue  "A.B@[IPv6:1:2:3:4:5:6:7:8]"                                                 =   4 =  OK 
-     *  3724 - assertIsTrue  "A.\"B\"@[IPv6:1:2:3:4:5:6:7:8]"                                             =   5 =  OK 
-     *  3725 - assertIsTrue  "(A)B@C.DE"                                                                  =   6 =  OK 
-     *  3726 - assertIsTrue  "A(B)@C.DE"                                                                  =   6 =  OK 
-     *  3727 - assertIsTrue  "(A)\"B\"@C.DE"                                                              =   7 =  OK 
-     *  3728 - assertIsTrue  "\"A\"(B)@C.DE"                                                              =   7 =  OK 
-     *  3729 - assertIsTrue  "(A)B@[1.2.3.4]"                                                             =   2 =  OK 
-     *  3730 - assertIsTrue  "A(B)@[1.2.3.4]"                                                             =   2 =  OK 
-     *  3731 - assertIsTrue  "(A)\"B\"@[1.2.3.4]"                                                         =   8 =  OK 
-     *  3732 - assertIsTrue  "\"A\"(B)@[1.2.3.4]"                                                         =   8 =  OK 
-     *  3733 - assertIsTrue  "(A)B@[IPv6:1:2:3:4:5:6:7:8]"                                                =   4 =  OK 
-     *  3734 - assertIsTrue  "A(B)@[IPv6:1:2:3:4:5:6:7:8]"                                                =   4 =  OK 
-     *  3735 - assertIsTrue  "(A)\"B\"@[IPv6:1:2:3:4:5:6:7:8]"                                            =   9 =  OK 
-     *  3736 - assertIsTrue  "\"A\"(B)@[IPv6:1:2:3:4:5:6:7:8]"                                            =   9 =  OK 
-     *  3737 - assertIsTrue  "a.b.c.d@domain.com"                                                         =   0 =  OK 
-     *  3738 - assertIsFalse "ABCDEFGHIJKLMNOP"                                                           =  34 =  OK    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
-     *  3739 - assertIsFalse "ABC.DEF.GHI.JKL"                                                            =  28 =  OK    AT-Zeichen: kein AT-Zeichen gefunden
-     *  3740 - assertIsFalse "ABC.DEF@ GHI.JKL"                                                           = 105 =  OK    Kommentar: Leerzeichentrennung im Domain-Part. Oeffnende Klammer erwartet
-     *  3741 - assertIsFalse "ABC.DEF @GHI.JKL"                                                           =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  3742 - assertIsFalse "ABC.DEF @ GHI.JKL"                                                          =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  3743 - assertIsFalse "ABC.DEF@.@.@GHI.JKL"                                                        =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
-     *  3744 - assertIsFalse "ABC.DEF@"                                                                   =  27 =  OK    AT-Zeichen: kein AT-Zeichen am Ende
-     *  3745 - assertIsFalse "ABC.DEF@@GHI.JKL"                                                           =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
-     *  3746 - assertIsFalse "ABC@DEF@GHI.JKL"                                                            =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
-     *  3747 - assertIsFalse "@%^%#$@#$@#.com"                                                            =  26 =  OK    AT-Zeichen: kein AT-Zeichen am Anfang
-     *  3748 - assertIsFalse "email.domain.com"                                                           =  28 =  OK    AT-Zeichen: kein AT-Zeichen gefunden
-     *  3749 - assertIsFalse "email@domain@domain.com"                                                    =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
-     *  3750 - assertIsFalse "first@last@test.org"                                                        =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
-     *  3751 - assertIsFalse "@test@a.com"                                                                =  26 =  OK    AT-Zeichen: kein AT-Zeichen am Anfang
-     *  3752 - assertIsFalse "@\"someStringThatMightBe@email.com"                                         =  26 =  OK    AT-Zeichen: kein AT-Zeichen am Anfang
-     *  3753 - assertIsFalse "test@@test.com"                                                             =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
-     *  3754 - assertIsFalse "ABCDEF@GHIJKL"                                                              =  34 =  OK    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
-     *  3755 - assertIsFalse "ABC.DEF@GHIJKL"                                                             =  34 =  OK    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
-     *  3756 - assertIsFalse ".ABC.DEF@GHI.JKL"                                                           =  30 =  OK    Trennzeichen: kein Beginn mit einem Punkt
-     *  3757 - assertIsFalse "ABC.DEF@GHI.JKL."                                                           =  36 =  OK    Trennzeichen: der letzte Punkt darf nicht am Ende liegen
-     *  3758 - assertIsFalse "ABC..DEF@GHI.JKL"                                                           =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
-     *  3759 - assertIsFalse "ABC.DEF@GHI..JKL"                                                           =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
-     *  3760 - assertIsFalse "ABC.DEF@GHI.JKL.."                                                          =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
-     *  3761 - assertIsFalse "ABC.DEF.@GHI.JKL"                                                           =  32 =  OK    Trennzeichen: ungueltige Zeichenkombination ".@"
-     *  3762 - assertIsFalse "ABC.DEF@.GHI.JKL"                                                           =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
-     *  3763 - assertIsFalse "ABC.DEF@."                                                                  =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
-     *  3764 - assertIsTrue  "\"ABC..DEF\"@GHI.JKL"                                                       =   1 =  OK 
-     *  3765 - assertIsTrue  "ABC1.DEF2@GHI3.JKL4"                                                        =   0 =  OK 
-     *  3766 - assertIsTrue  "ABC.DEF_@GHI.JKL"                                                           =   0 =  OK 
-     *  3767 - assertIsTrue  "#ABC.DEF@GHI.JKL"                                                           =   0 =  OK 
-     *  3768 - assertIsTrue  "ABC.DEF@GHI.JK2"                                                            =   0 =  OK 
-     *  3769 - assertIsTrue  "ABC.DEF@2HI.JKL"                                                            =   0 =  OK 
-     *  3770 - assertIsFalse "ABC.DEF@GHI.2KL"                                                            =  23 =  OK    Zeichen: Top-Level-Domain darf nicht mit Zahl beginnen
-     *  3771 - assertIsFalse "ABC.DEF@GHI.JK-"                                                            =  24 =  OK    Zeichen: Kein Sonderzeichen am Ende der eMail-Adresse
-     *  3772 - assertIsFalse "ABC.DEF@GHI.JK_"                                                            =  24 =  OK    Zeichen: Kein Sonderzeichen am Ende der eMail-Adresse
-     *  3773 - assertIsFalse "ABC.DEF@-HI.JKL"                                                            =  20 =  OK    Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
-     *  3774 - assertIsFalse "ABC.DEF@_HI.JKL"                                                            =  20 =  OK    Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
-     *  3775 - assertIsFalse "ABC DEF@GHI.DE"                                                             =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  3776 - assertIsFalse "ABC.DEF@GHI DE"                                                             = 105 =  OK    Kommentar: Leerzeichentrennung im Domain-Part. Oeffnende Klammer erwartet
-     *  3777 - assertIsFalse "A . B & C . D"                                                              =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  3778 - assertIsFalse " A . B & C . D"                                                             =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  3779 - assertIsFalse "(?).[!]@{&}.<:>"                                                            =  18 =  OK    Struktur: Fehler in Adress-String-X
-     *  3780 - assertIsFalse "   my.correct.email.adress.com@but.we.dont.trim.the.input.so.the.emailadress.is.false.de   " =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  3781 - assertIsTrue  "my.correct.email.adress.com@but.without.spaces.so.the.emailadress.is.correct.de" =   0 =  OK 
+     *  3713 - assertIsTrue  "A.\"B\"@C.DE"                                                               =   1 =  OK 
+     *  3714 - assertIsTrue  "A.B@[1.2.3.4]"                                                              =   2 =  OK 
+     *  3715 - assertIsTrue  "A.\"B\"@[1.2.3.4]"                                                          =   3 =  OK 
+     *  3716 - assertIsTrue  "A.B@[IPv6:1:2:3:4:5:6:7:8]"                                                 =   4 =  OK 
+     *  3717 - assertIsTrue  "A.\"B\"@[IPv6:1:2:3:4:5:6:7:8]"                                             =   5 =  OK 
+     *  3718 - assertIsTrue  "(A)B@C.DE"                                                                  =   6 =  OK 
+     *  3719 - assertIsTrue  "A(B)@C.DE"                                                                  =   6 =  OK 
+     *  3720 - assertIsTrue  "(A)\"B\"@C.DE"                                                              =   7 =  OK 
+     *  3721 - assertIsTrue  "\"A\"(B)@C.DE"                                                              =   7 =  OK 
+     *  3722 - assertIsTrue  "(A)B@[1.2.3.4]"                                                             =   2 =  OK 
+     *  3723 - assertIsTrue  "A(B)@[1.2.3.4]"                                                             =   2 =  OK 
+     *  3724 - assertIsTrue  "(A)\"B\"@[1.2.3.4]"                                                         =   8 =  OK 
+     *  3725 - assertIsTrue  "\"A\"(B)@[1.2.3.4]"                                                         =   8 =  OK 
+     *  3726 - assertIsTrue  "(A)B@[IPv6:1:2:3:4:5:6:7:8]"                                                =   4 =  OK 
+     *  3727 - assertIsTrue  "A(B)@[IPv6:1:2:3:4:5:6:7:8]"                                                =   4 =  OK 
+     *  3728 - assertIsTrue  "(A)\"B\"@[IPv6:1:2:3:4:5:6:7:8]"                                            =   9 =  OK 
+     *  3729 - assertIsTrue  "\"A\"(B)@[IPv6:1:2:3:4:5:6:7:8]"                                            =   9 =  OK 
+     *  3730 - assertIsTrue  "a.b.c.d@domain.com"                                                         =   0 =  OK 
+     *  3731 - assertIsFalse "ABCDEFGHIJKLMNOP"                                                           =  34 =  OK    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
+     *  3732 - assertIsFalse "ABC.DEF.GHI.JKL"                                                            =  28 =  OK    AT-Zeichen: kein AT-Zeichen gefunden
+     *  3733 - assertIsFalse "ABC.DEF@ GHI.JKL"                                                           = 105 =  OK    Kommentar: Leerzeichentrennung im Domain-Part. Oeffnende Klammer erwartet
+     *  3734 - assertIsFalse "ABC.DEF @GHI.JKL"                                                           =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  3735 - assertIsFalse "ABC.DEF @ GHI.JKL"                                                          =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  3736 - assertIsFalse "ABC.DEF@.@.@GHI.JKL"                                                        =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
+     *  3737 - assertIsFalse "ABC.DEF@"                                                                   =  27 =  OK    AT-Zeichen: kein AT-Zeichen am Ende
+     *  3738 - assertIsFalse "ABC.DEF@@GHI.JKL"                                                           =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
+     *  3739 - assertIsFalse "ABC@DEF@GHI.JKL"                                                            =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
+     *  3740 - assertIsFalse "@%^%#$@#$@#.com"                                                            =  26 =  OK    AT-Zeichen: kein AT-Zeichen am Anfang
+     *  3741 - assertIsFalse "email.domain.com"                                                           =  28 =  OK    AT-Zeichen: kein AT-Zeichen gefunden
+     *  3742 - assertIsFalse "email@domain@domain.com"                                                    =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
+     *  3743 - assertIsFalse "first@last@test.org"                                                        =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
+     *  3744 - assertIsFalse "@test@a.com"                                                                =  26 =  OK    AT-Zeichen: kein AT-Zeichen am Anfang
+     *  3745 - assertIsFalse "@\"someStringThatMightBe@email.com"                                         =  26 =  OK    AT-Zeichen: kein AT-Zeichen am Anfang
+     *  3746 - assertIsFalse "test@@test.com"                                                             =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
+     *  3747 - assertIsFalse "ABCDEF@GHIJKL"                                                              =  34 =  OK    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
+     *  3748 - assertIsFalse "ABC.DEF@GHIJKL"                                                             =  34 =  OK    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
+     *  3749 - assertIsFalse ".ABC.DEF@GHI.JKL"                                                           =  30 =  OK    Trennzeichen: kein Beginn mit einem Punkt
+     *  3750 - assertIsFalse "ABC.DEF@GHI.JKL."                                                           =  36 =  OK    Trennzeichen: der letzte Punkt darf nicht am Ende liegen
+     *  3751 - assertIsFalse "ABC..DEF@GHI.JKL"                                                           =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
+     *  3752 - assertIsFalse "ABC.DEF@GHI..JKL"                                                           =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
+     *  3753 - assertIsFalse "ABC.DEF@GHI.JKL.."                                                          =  31 =  OK    Trennzeichen: keine zwei Punkte hintereinander
+     *  3754 - assertIsFalse "ABC.DEF.@GHI.JKL"                                                           =  32 =  OK    Trennzeichen: ungueltige Zeichenkombination ".@"
+     *  3755 - assertIsFalse "ABC.DEF@.GHI.JKL"                                                           =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
+     *  3756 - assertIsFalse "ABC.DEF@."                                                                  =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
+     *  3757 - assertIsTrue  "\"ABC..DEF\"@GHI.JKL"                                                       =   1 =  OK 
+     *  3758 - assertIsTrue  "ABC1.DEF2@GHI3.JKL4"                                                        =   0 =  OK 
+     *  3759 - assertIsTrue  "ABC.DEF_@GHI.JKL"                                                           =   0 =  OK 
+     *  3760 - assertIsTrue  "#ABC.DEF@GHI.JKL"                                                           =   0 =  OK 
+     *  3761 - assertIsTrue  "ABC.DEF@GHI.JK2"                                                            =   0 =  OK 
+     *  3762 - assertIsTrue  "ABC.DEF@2HI.JKL"                                                            =   0 =  OK 
+     *  3763 - assertIsFalse "ABC.DEF@GHI.2KL"                                                            =  23 =  OK    Zeichen: Top-Level-Domain darf nicht mit Zahl beginnen
+     *  3764 - assertIsFalse "ABC.DEF@GHI.JK-"                                                            =  24 =  OK    Zeichen: Kein Sonderzeichen am Ende der eMail-Adresse
+     *  3765 - assertIsFalse "ABC.DEF@GHI.JK_"                                                            =  24 =  OK    Zeichen: Kein Sonderzeichen am Ende der eMail-Adresse
+     *  3766 - assertIsFalse "ABC.DEF@-HI.JKL"                                                            =  20 =  OK    Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
+     *  3767 - assertIsFalse "ABC.DEF@_HI.JKL"                                                            =  20 =  OK    Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
+     *  3768 - assertIsFalse "ABC DEF@GHI.DE"                                                             =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  3769 - assertIsFalse "ABC.DEF@GHI DE"                                                             = 105 =  OK    Kommentar: Leerzeichentrennung im Domain-Part. Oeffnende Klammer erwartet
+     *  3770 - assertIsFalse "A . B & C . D"                                                              =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  3771 - assertIsFalse " A . B & C . D"                                                             =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  3772 - assertIsFalse "(?).[!]@{&}.<:>"                                                            =  18 =  OK    Struktur: Fehler in Adress-String-X
+     *  3773 - assertIsFalse "   my.correct.email.adress.com@but.we.dont.trim.the.input.so.the.emailadress.is.false.de   " =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  3774 - assertIsTrue  "my.correct.email.adress.com@but.without.spaces.so.the.emailadress.is.correct.de" =   0 =  OK 
      * 
      * ---- unsupported -----------------------------------------------------------------------------------------------------------------
      * 
-     *  3782 - assertIsTrue  "Loïc.Accentué@voilà.fr"                                                     =  22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  3783 - assertIsTrue  "Ärger.Öde@Übel.de"                                                          =  22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  3784 - assertIsTrue  "Smørrebrød@danmark.dk"                                                      =  22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  3785 - assertIsTrue  "ip6.without.brackets@1:2:3:4:5:6:7:8"                                       =  22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-     *  3786 - assertIsTrue  "email.address.without@topleveldomain"                                       =  34 =  #### FEHLER ####    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
-     *  3787 - assertIsTrue  "EmailAddressWithout@PointSeperator"                                         =  34 =  #### FEHLER ####    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
-     *  3788 - assertIsFalse "@1st.relay,@2nd.relay:user@final.domain"                                    =  26 =  OK    AT-Zeichen: kein AT-Zeichen am Anfang
+     *  3775 - assertIsTrue  "Loïc.Accentué@voilà.fr"                                                     =  22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  3776 - assertIsTrue  "Ärger.Öde@Übel.de"                                                          =  22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  3777 - assertIsTrue  "Smørrebrød@danmark.dk"                                                      =  22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  3778 - assertIsTrue  "ip6.without.brackets@1:2:3:4:5:6:7:8"                                       =  22 =  #### FEHLER ####    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+     *  3779 - assertIsTrue  "email.address.without@topleveldomain"                                       =  34 =  #### FEHLER ####    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
+     *  3780 - assertIsTrue  "EmailAddressWithout@PointSeperator"                                         =  34 =  #### FEHLER ####    Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
+     *  3781 - assertIsFalse "@1st.relay,@2nd.relay:user@final.domain"                                    =  26 =  OK    AT-Zeichen: kein AT-Zeichen am Anfang
      * 
      * ---- Fillup ----------------------------------------------------------------------------------------------------------------------
      * 
@@ -3946,14 +3939,14 @@ class TestClassAssertTrueFalse
      * 
      * ---- Statistik -------------------------------------------------------------------------------------------------------------------
      * 
-     *   ASSERT_IS_TRUE  1281   KORREKT 1233 =   96.253 % | FALSCH ERKANNT   48 =    3.747 % = Error 0
+     *   ASSERT_IS_TRUE  1274   KORREKT 1227 =   96.311 % | FALSCH ERKANNT   47 =    3.689 % = Error 0
      *   ASSERT_IS_FALSE 2507   KORREKT 2493 =   99.442 % | FALSCH ERKANNT   14 =    0.558 % = Error 0
      * 
-     *   GESAMT          3788   KORREKT 3726 =   98.363 % | FALSCH ERKANNT   62 =    1.637 % = Error 0
+     *   GESAMT          3781   KORREKT 3720 =   98.387 % | FALSCH ERKANNT   61 =    1.613 % = Error 0
      * 
      * 
-     *   Millisekunden    127 = 0.03352692713833157
-     *    
+     *   Millisekunden    148 = 0.0391430838402539
+     *     
      * </pre> 
      */
 
@@ -6975,14 +6968,7 @@ class TestClassAssertTrueFalse
       assertIsTrue( "domain.ends.with.digit@domain2.com" );
       assertIsFalse( "tld.starts.with.digit@domain.2com" );
       assertIsTrue( "tld.ends.with.digit@domain.com2" );
-      assertIsTrue( "ackerndes.enter@web.de" );
-      assertIsTrue( "baecker den ernst@web.de" );
-      assertIsTrue( "ackerndes.enter@web.de" );
-      assertIsTrue( "baecker.den.ernst@web.de" );
-      assertIsTrue( "denkbares.center@web.de" );
-      assertIsTrue( "rabe.neckt.sender@web.de" );
-      assertIsTrue( "baer.ecken.trends@web.de" );
-      assertIsTrue( "bast.ecken.redner@web.de" );
+      assertIsTrue( "enrst.den.baecker@web.de" );
       assertIsTrue( "neserdna.trebkce@web.de" );
       assertIsFalse( "email@=qowaiv.com" );
       assertIsFalse( "email@plus+.com" );
