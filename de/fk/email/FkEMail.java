@@ -1054,6 +1054,14 @@ public class FkEMail
             {
               return 20; // Trennzeichen: ungueltige Zeichenkombination "-."
             }
+            
+            // ? Doppelte Bindestriche zulassen im Domainpart ?
+            //
+            //if ( ( aktuelles_zeichen == '-' ) && ( pEingabe.charAt( akt_index - 1 ) == '-' ) )
+            //{
+            //  return 25; // Zeichen: ungueltige Zeichenkombination "--" im Domain-Part
+            //}
+
 
             //else if ( pEingabe.charAt( akt_index - 1 ) == '.' )
             //{
@@ -1901,7 +1909,7 @@ public class FkEMail
                * Am schleifenende wird der Prozess nochmals um eine Position weitergestellt.
                * 
                * 01234567890123456789
-               * ABC@[IPv6::ffff:127.0.0.1]" );
+               * ABC@[IPv6::ffff:127.0.0.1]"
                */
               akt_index += 5;
 
@@ -2008,7 +2016,7 @@ public class FkEMail
 
               if ( ip_adresse_zahlen_zaehler > 4 )
               {
-                return 46; // IP6-Adressteil: zu viele Ziffern, maximal 4 Ziffern
+                return 46; // IP6-Adressteil: zu viele Zeichen, maximal 4 Zeichen
               }
             }
             else if ( aktuelles_zeichen == '.' )
@@ -2543,7 +2551,7 @@ public class FkEMail
         if ( position_at_zeichen > 0 )
         {
           /*
-           * Wurde schon ein AT-Zeichen gelesen, muss der Kommentar nicht auch einem AT-Zeichen enden. 
+           * Wurde schon ein AT-Zeichen gelesen, darf der Kommentar nicht auf einem AT-Zeichen enden. 
            */
           knz_abschluss_mit_at_zeichen = false;
 
@@ -3054,6 +3062,7 @@ public class FkEMail
     if ( pFehlerNr == 22 ) return "Zeichen: ungueltiges Zeichen in der Eingabe gefunden";
     if ( pFehlerNr == 23 ) return "Zeichen: Top-Level-Domain darf nicht mit Zahl beginnen";
     if ( pFehlerNr == 24 ) return "Zeichen: Kein Sonderzeichen am Ende der eMail-Adresse";
+    //if ( pFehlerNr == 25 ) return "Zeichen: Keine zwei Bindestriche im Domain-Part erlaubt";
 
     if ( pFehlerNr == 26 ) return "AT-Zeichen: kein AT-Zeichen am Anfang";
     if ( pFehlerNr == 27 ) return "AT-Zeichen: kein AT-Zeichen am Ende";
