@@ -2723,7 +2723,7 @@ public class FkEMail
 
           if ( knz_kommentar_abschluss_am_stringende )
           {
-            return 100; // Kommentar: Kommentar muss am Strinende enden
+            return 100; // Kommentar: Kommentar muss am Stringende enden
           }
         }
 
@@ -2745,7 +2745,7 @@ public class FkEMail
           if ( pEingabe.charAt( akt_index + 1 ) == ' ' )
           {
             /*
-             * aktuelles Zeichen konsumieren, bzw. Lespositon 1 weiterstellen
+             * aktuelles Zeichen konsumieren, bzw. Leseposition um eine Position weiterstellen
              */
             akt_index++;
 
@@ -2784,7 +2784,7 @@ public class FkEMail
         if ( ( aktuelles_zeichen == ' ' ) && ( position_at_zeichen > 0 ) )
         {
           /*
-           * aktuelles Zeichen konsumieren, bzw. Lespositon 1 weiterstellen
+           * aktuelles Zeichen konsumieren, bzw. Lesepositon 1 weiterstellen
            */
           akt_index++;
 
