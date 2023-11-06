@@ -64,9 +64,9 @@ class TestClassAssertIsTrueFalse
   /*
    * <pre>
    * Testcases for eMail Validation
-   *  
+ 
    * 
-   * Datum 06.11.2023 06:26:16:965
+   * Datum 06.11.2023 06:03:44:728
    * 
    * 
    * ---- To be Fixed -----------------------------------------------------------------------------------------------------------------
@@ -313,59 +313,59 @@ class TestClassAssertIsTrueFalse
    *   225 - assertIsFalse "\local\\part\with\@slash.com"                                                   =  84 =  OK    String: Ungueltige Escape-Sequenz im String
    *   226 - assertIsFalse "\"str\"local\"str\"\"str\"part\"str\"with\"str\"@string.com"                    =  87 =  OK    String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
    *   227 - assertIsFalse "(comment)local(comment)(comment)part(comment)with(comment)@comment.com"         =  99 =  OK    Kommentar: kein zweiter Kommentar gueltig
-   *   228 - assertIsFalse "local.part@;domain;;part;with;.semicoloncom"                                    =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-   *   229 - assertIsFalse "local.part@.domain..part.with..dotcom"                                          =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
-   *   230 - assertIsFalse "local.part@..domain....part..with...double.dotcom"                              =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
-   *   231 - assertIsFalse "local.part@&domain&&part&with&.ampcom"                                          =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-   *   232 - assertIsFalse "local.part@*domain**part*with*.asteriskcom"                                     =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-   *   233 - assertIsFalse "local.part@_domain__part_with_.underscorecom"                                   =  20 =  OK    Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
-   *   234 - assertIsFalse "local.part@$domain$$part$with$.dollarcom"                                       =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-   *   235 - assertIsFalse "local.part@=domain==part=with=.equalitycom"                                     =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-   *   236 - assertIsFalse "local.part@!domain!!part!with!.exclamationcom"                                  =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-   *   237 - assertIsFalse "local.part@?domain??part?with?.questioncom"                                     =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-   *   238 - assertIsFalse "local.part@`domain``part`with`.grave-accentcom"                                 =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-   *   239 - assertIsFalse "local.part@#domain##part#with#.hashcom"                                         =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-   *   240 - assertIsFalse "local.part@%domain%%part%with%.percentagecom"                                   =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-   *   241 - assertIsFalse "local.part@|domain||part|with|.pipecom"                                         =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-   *   242 - assertIsFalse "local.part@+domain++part+with+.pluscom"                                         =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-   *   243 - assertIsFalse "local.part@{domain{{part{with{.leftbracketcom"                                  =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-   *   244 - assertIsFalse "local.part@}domain}}part}with}.rightbracketcom"                                 =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-   *   245 - assertIsFalse "local.part@(domain((part(with(.leftbracketcom"                                  =  92 =  OK    Kommentar: Ungueltiges Zeichen im Kommentar
-   *   246 - assertIsFalse "local.part@)domain))part)with).rightbracketcom"                                 =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-   *   247 - assertIsFalse "local.part@[domain[[part[with[.leftbracketcom"                                  =  59 =  OK    IP4-Adressteil: Falsches Zeichen in der IP-Adresse
-   *   248 - assertIsFalse "local.part@]domain]]part]with].rightbracketcom"                                 =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-   *   249 - assertIsFalse "local.part@()domain()()part()with().empty.bracketcom"                           =  99 =  OK    Kommentar: kein zweiter Kommentar gueltig
-   *   250 - assertIsFalse "local.part@{}domain{}{}part{}with{}.empty.bracketcom"                           =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-   *   251 - assertIsFalse "local.part@[]domain[][]part[]with[].empty.bracketcom"                           =  57 =  OK    IP4-Adressteil: IP-Adresse Trennzeichenanzahl muss 3 sein
-   *   252 - assertIsFalse "local.part@<>domain<><>part<>with<>.empty.bracketcom"                           =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-   *   253 - assertIsFalse "local.part@)(domain)()(part)(with)(.false.bracket1com"                          =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-   *   254 - assertIsFalse "local.part@}{domain}{}{part}{with}{.false.bracket2com"                          =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-   *   255 - assertIsFalse "local.part@][domain][][part][with][.false.bracket3com"                          =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-   *   256 - assertIsFalse "local.part@><domain><><part><with><.false.bracket4com"                          =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-   *   257 - assertIsFalse "local.part@<domain<<part<with<.lower.thancom"                                   =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-   *   258 - assertIsFalse "local.part@>domain>>part>with>.greater.thancom"                                 =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-   *   259 - assertIsFalse "local.part@~domain~~part~with~.tildecom"                                        =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-   *   260 - assertIsFalse "local.part@^domain^^part^with^.xorcom"                                          =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-   *   261 - assertIsFalse "local.part@:domain::part:with:.coloncom"                                        =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-   *   262 - assertIsFalse "local.part@ domain  part with .spacecom"                                        = 105 =  OK    Kommentar: Leerzeichentrennung im Domain-Part. Oeffnende Klammer erwartet
-   *   263 - assertIsFalse "local.part@,domain,,part,with,.commacom"                                        =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-   *   264 - assertIsFalse "local.part@@domain@@part@with@.atcom"                                           =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
-   *   265 - assertIsFalse "local.part@§domain§§part§with§.paragraphcom"                                    =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-   *   266 - assertIsFalse "local.part@'domain''part'with'.double.quotecom"                                 =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-   *   267 - assertIsFalse "local.part@/domain//part/with/.forward.slashcom"                                =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-   *   268 - assertIsFalse "local.part@-domain--part-with-.hyphencom"                                       =  20 =  OK    Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
-   *   269 - assertIsFalse "local.part@\"\"domain\"\"\"\"part\"\"with\"\".empty.string1com"                 =  82 =  OK    String: kein Anfuehrungszeichen nach dem AT-Zeichen
-   *   270 - assertIsFalse "local.part@a\"\"bdomaina\"\"ba\"\"bparta\"\"bwitha\"\"b.empty.string2com"       =  82 =  OK    String: kein Anfuehrungszeichen nach dem AT-Zeichen
-   *   271 - assertIsFalse "local.part@\"\"\"\"domain\"\"\"\"\"\"\"\"part\"\"\"\"with\"\"\"\".double.empty.string1com" =  82 =  OK    String: kein Anfuehrungszeichen nach dem AT-Zeichen
-   *   272 - assertIsFalse "local.part@\"\".\"\"domain\"\".\"\"\"\".\"\"part\"\".\"\"with\"\".\"\".double.empty.string2com" =  82 =  OK    String: kein Anfuehrungszeichen nach dem AT-Zeichen
-   *   273 - assertIsTrue  "local.part@0domain00part0with0.number0com"                                      =   0 =  OK 
-   *   274 - assertIsTrue  "local.part@9domain99part9with9.number9com"                                      =   0 =  OK 
-   *   275 - assertIsFalse "local.part@0123456789domain01234567890123456789part0123456789with0123456789.numberscom" =  63 =  OK    Domain-Part: Domain-Label zu lang (maximal 63 Zeichen)
-   *   276 - assertIsTrue  "local.part@999domain999999part999with999.byte.overflowcom"                      =   0 =  OK 
-   *   277 - assertIsTrue  "local.part@xyzdomainxyzxyzpartxyzwithxyz.no.hex.numbercom"                      =   0 =  OK 
-   *   278 - assertIsFalse "local.part@\domain\\part\with\.slashcom"                                        =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-   *   279 - assertIsFalse "local.part@\"str\"domain\"str\"\"str\"part\"str\"with\"str\".stringcom"         =  82 =  OK    String: kein Anfuehrungszeichen nach dem AT-Zeichen
-   *   280 - assertIsFalse "local.part@(comment)domain(comment)(comment)part(comment)with(comment).commentcom" =  99 =  OK    Kommentar: kein zweiter Kommentar gueltig
+   *   228 - assertIsFalse "local.part@;domain;;part;with;.semicolon.com"                                   =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+   *   229 - assertIsFalse "local.part@.domain..part.with..dot.com"                                         =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
+   *   230 - assertIsFalse "local.part@..domain....part..with...double.dot.com"                             =  33 =  OK    Trennzeichen: ungueltige Zeichenkombination "@."
+   *   231 - assertIsFalse "local.part@&domain&&part&with&.amp.com"                                         =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+   *   232 - assertIsFalse "local.part@*domain**part*with*.asterisk.com"                                    =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+   *   233 - assertIsFalse "local.part@_domain__part_with_.underscore.com"                                  =  20 =  OK    Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
+   *   234 - assertIsFalse "local.part@$domain$$part$with$.dollar.com"                                      =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+   *   235 - assertIsFalse "local.part@=domain==part=with=.equality.com"                                    =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+   *   236 - assertIsFalse "local.part@!domain!!part!with!.exclamation.com"                                 =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+   *   237 - assertIsFalse "local.part@?domain??part?with?.question.com"                                    =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+   *   238 - assertIsFalse "local.part@`domain``part`with`.grave-accent.com"                                =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+   *   239 - assertIsFalse "local.part@#domain##part#with#.hash.com"                                        =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+   *   240 - assertIsFalse "local.part@%domain%%part%with%.percentage.com"                                  =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+   *   241 - assertIsFalse "local.part@|domain||part|with|.pipe.com"                                        =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+   *   242 - assertIsFalse "local.part@+domain++part+with+.plus.com"                                        =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+   *   243 - assertIsFalse "local.part@{domain{{part{with{.leftbracket.com"                                 =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+   *   244 - assertIsFalse "local.part@}domain}}part}with}.rightbracket.com"                                =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+   *   245 - assertIsFalse "local.part@(domain((part(with(.leftbracket.com"                                 =  92 =  OK    Kommentar: Ungueltiges Zeichen im Kommentar
+   *   246 - assertIsFalse "local.part@)domain))part)with).rightbracket.com"                                =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+   *   247 - assertIsFalse "local.part@[domain[[part[with[.leftbracket.com"                                 =  59 =  OK    IP4-Adressteil: Falsches Zeichen in der IP-Adresse
+   *   248 - assertIsFalse "local.part@]domain]]part]with].rightbracket.com"                                =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+   *   249 - assertIsFalse "local.part@()domain()()part()with().empty.bracket.com"                          =  99 =  OK    Kommentar: kein zweiter Kommentar gueltig
+   *   250 - assertIsFalse "local.part@{}domain{}{}part{}with{}.empty.bracket.com"                          =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+   *   251 - assertIsFalse "local.part@[]domain[][]part[]with[].empty.bracket.com"                          =  57 =  OK    IP4-Adressteil: IP-Adresse Trennzeichenanzahl muss 3 sein
+   *   252 - assertIsFalse "local.part@<>domain<><>part<>with<>.empty.bracket.com"                          =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+   *   253 - assertIsFalse "local.part@)(domain)()(part)(with)(.false.bracket1.com"                         =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+   *   254 - assertIsFalse "local.part@}{domain}{}{part}{with}{.false.bracket2.com"                         =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+   *   255 - assertIsFalse "local.part@][domain][][part][with][.false.bracket3.com"                         =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+   *   256 - assertIsFalse "local.part@><domain><><part><with><.false.bracket4.com"                         =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+   *   257 - assertIsFalse "local.part@<domain<<part<with<.lower.than.com"                                  =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+   *   258 - assertIsFalse "local.part@>domain>>part>with>.greater.than.com"                                =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+   *   259 - assertIsFalse "local.part@~domain~~part~with~.tilde.com"                                       =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+   *   260 - assertIsFalse "local.part@^domain^^part^with^.xor.com"                                         =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+   *   261 - assertIsFalse "local.part@:domain::part:with:.colon.com"                                       =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+   *   262 - assertIsFalse "local.part@ domain  part with .space.com"                                       = 105 =  OK    Kommentar: Leerzeichentrennung im Domain-Part. Oeffnende Klammer erwartet
+   *   263 - assertIsFalse "local.part@,domain,,part,with,.comma.com"                                       =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+   *   264 - assertIsFalse "local.part@@domain@@part@with@.at.com"                                          =  29 =  OK    AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
+   *   265 - assertIsFalse "local.part@§domain§§part§with§.paragraph.com"                                   =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+   *   266 - assertIsFalse "local.part@'domain''part'with'.double.quote.com"                                =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+   *   267 - assertIsFalse "local.part@/domain//part/with/.forward.slash.com"                               =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+   *   268 - assertIsFalse "local.part@-domain--part-with-.hyphen.com"                                      =  20 =  OK    Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
+   *   269 - assertIsFalse "local.part@\"\"domain\"\"\"\"part\"\"with\"\".empty.string1.com"                =  82 =  OK    String: kein Anfuehrungszeichen nach dem AT-Zeichen
+   *   270 - assertIsFalse "local.part@a\"\"bdomaina\"\"ba\"\"bparta\"\"bwitha\"\"b.empty.string2.com"      =  82 =  OK    String: kein Anfuehrungszeichen nach dem AT-Zeichen
+   *   271 - assertIsFalse "local.part@\"\"\"\"domain\"\"\"\"\"\"\"\"part\"\"\"\"with\"\"\"\".double.empty.string1.com" =  82 =  OK    String: kein Anfuehrungszeichen nach dem AT-Zeichen
+   *   272 - assertIsFalse "local.part@\"\".\"\"domain\"\".\"\"\"\".\"\"part\"\".\"\"with\"\".\"\".double.empty.string2.com" =  82 =  OK    String: kein Anfuehrungszeichen nach dem AT-Zeichen
+   *   273 - assertIsTrue  "local.part@0domain00part0with0.number0.com"                                     =   0 =  OK 
+   *   274 - assertIsTrue  "local.part@9domain99part9with9.number9.com"                                     =   0 =  OK 
+   *   275 - assertIsFalse "local.part@0123456789domain01234567890123456789part0123456789with0123456789.numbers.com" =  63 =  OK    Domain-Part: Domain-Label zu lang (maximal 63 Zeichen)
+   *   276 - assertIsTrue  "local.part@999domain999999part999with999.byte.overflow.com"                     =   0 =  OK 
+   *   277 - assertIsTrue  "local.part@xyzdomainxyzxyzpartxyzwithxyz.no.hex.number.com"                     =   0 =  OK 
+   *   278 - assertIsFalse "local.part@\domain\\part\with\.slash.com"                                       =  21 =  OK    Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+   *   279 - assertIsFalse "local.part@\"str\"domain\"str\"\"str\"part\"str\"with\"str\".string.com"        =  82 =  OK    String: kein Anfuehrungszeichen nach dem AT-Zeichen
+   *   280 - assertIsFalse "local.part@(comment)domain(comment)(comment)part(comment)with(comment).comment.com" =  99 =  OK    Kommentar: kein zweiter Kommentar gueltig
    *   281 - assertIsTrue  "local.part@domain--part.double.dash.com"                                        =   0 =  OK 
    *   282 - assertIsFalse ";.local.part.starts.with.semicolon@domain.com"                                  =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
    *   283 - assertIsFalse "local.part.ends.with.semicolon;@domain.com"                                     =  22 =  OK    Zeichen: ungueltiges Zeichen in der Eingabe gefunden
@@ -4347,10 +4347,10 @@ class TestClassAssertIsTrueFalse
    *   GESAMT          4172   KORREKT 4069 =   97.531 % | FALSCH ERKANNT  103 =    2.469 % = Error 0
    * 
    * 
-   *   Millisekunden    192 = 0.046021093000958774
+   *   Millisekunden    257 = 0.061601150527325024
    * 
-   *   Datum 06.11.2023 06:26:17:141
-   * 
+   *   Datum 06.11.2023 06:03:44:966
+   *  
    * </pre> 
    */
 
@@ -7447,59 +7447,59 @@ class TestClassAssertIsTrueFalse
     assertIsFalse( "(comment)local(comment)(comment)part(comment)with(comment)@comment.com" );
 
 
-    assertIsFalse( "local.part@;domain;;part;with;.semicoloncom" );
-    assertIsFalse( "local.part@.domain..part.with..dotcom" );
-    assertIsFalse( "local.part@..domain....part..with...double.dotcom" );
-    assertIsFalse( "local.part@&domain&&part&with&.ampcom" );
-    assertIsFalse( "local.part@*domain**part*with*.asteriskcom" );
-    assertIsFalse( "local.part@_domain__part_with_.underscorecom" );
-    assertIsFalse( "local.part@$domain$$part$with$.dollarcom" );
-    assertIsFalse( "local.part@=domain==part=with=.equalitycom" );
-    assertIsFalse( "local.part@!domain!!part!with!.exclamationcom" );
-    assertIsFalse( "local.part@?domain??part?with?.questioncom" );
-    assertIsFalse( "local.part@`domain``part`with`.grave-accentcom" );
-    assertIsFalse( "local.part@#domain##part#with#.hashcom" );
-    assertIsFalse( "local.part@%domain%%part%with%.percentagecom" );
-    assertIsFalse( "local.part@|domain||part|with|.pipecom" );
-    assertIsFalse( "local.part@+domain++part+with+.pluscom" );
-    assertIsFalse( "local.part@{domain{{part{with{.leftbracketcom" );
-    assertIsFalse( "local.part@}domain}}part}with}.rightbracketcom" );
-    assertIsFalse( "local.part@(domain((part(with(.leftbracketcom" );
-    assertIsFalse( "local.part@)domain))part)with).rightbracketcom" );
-    assertIsFalse( "local.part@[domain[[part[with[.leftbracketcom" );
-    assertIsFalse( "local.part@]domain]]part]with].rightbracketcom" );
-    assertIsFalse( "local.part@()domain()()part()with().empty.bracketcom" );
-    assertIsFalse( "local.part@{}domain{}{}part{}with{}.empty.bracketcom" );
-    assertIsFalse( "local.part@[]domain[][]part[]with[].empty.bracketcom" );
-    assertIsFalse( "local.part@<>domain<><>part<>with<>.empty.bracketcom" );
-    assertIsFalse( "local.part@)(domain)()(part)(with)(.false.bracket1com" );
-    assertIsFalse( "local.part@}{domain}{}{part}{with}{.false.bracket2com" );
-    assertIsFalse( "local.part@][domain][][part][with][.false.bracket3com" );
-    assertIsFalse( "local.part@><domain><><part><with><.false.bracket4com" );
-    assertIsFalse( "local.part@<domain<<part<with<.lower.thancom" );
-    assertIsFalse( "local.part@>domain>>part>with>.greater.thancom" );
-    assertIsFalse( "local.part@~domain~~part~with~.tildecom" );
-    assertIsFalse( "local.part@^domain^^part^with^.xorcom" );
-    assertIsFalse( "local.part@:domain::part:with:.coloncom" );
-    assertIsFalse( "local.part@ domain  part with .spacecom" );
-    assertIsFalse( "local.part@,domain,,part,with,.commacom" );
-    assertIsFalse( "local.part@@domain@@part@with@.atcom" );
-    assertIsFalse( "local.part@§domain§§part§with§.paragraphcom" );
-    assertIsFalse( "local.part@'domain''part'with'.double.quotecom" );
-    assertIsFalse( "local.part@/domain//part/with/.forward.slashcom" );
-    assertIsFalse( "local.part@-domain--part-with-.hyphencom" );
-    assertIsFalse( "local.part@\"\"domain\"\"\"\"part\"\"with\"\".empty.string1com" );
-    assertIsFalse( "local.part@a\"\"bdomaina\"\"ba\"\"bparta\"\"bwitha\"\"b.empty.string2com" );
-    assertIsFalse( "local.part@\"\"\"\"domain\"\"\"\"\"\"\"\"part\"\"\"\"with\"\"\"\".double.empty.string1com" );
-    assertIsFalse( "local.part@\"\".\"\"domain\"\".\"\"\"\".\"\"part\"\".\"\"with\"\".\"\".double.empty.string2com" );
-    assertIsTrue( "local.part@0domain00part0with0.number0com" );
-    assertIsTrue( "local.part@9domain99part9with9.number9com" );
-    assertIsFalse( "local.part@0123456789domain01234567890123456789part0123456789with0123456789.numberscom" );
-    assertIsTrue( "local.part@999domain999999part999with999.byte.overflowcom" );
-    assertIsTrue( "local.part@xyzdomainxyzxyzpartxyzwithxyz.no.hex.numbercom" );
-    assertIsFalse( "local.part@\\domain\\\\part\\with\\.slashcom" );
-    assertIsFalse( "local.part@\"str\"domain\"str\"\"str\"part\"str\"with\"str\".stringcom" );
-    assertIsFalse( "local.part@(comment)domain(comment)(comment)part(comment)with(comment).commentcom" );
+    assertIsFalse( "local.part@;domain;;part;with;.semicolon.com" );
+    assertIsFalse( "local.part@.domain..part.with..dot.com" );
+    assertIsFalse( "local.part@..domain....part..with...double.dot.com" );
+    assertIsFalse( "local.part@&domain&&part&with&.amp.com" );
+    assertIsFalse( "local.part@*domain**part*with*.asterisk.com" );
+    assertIsFalse( "local.part@_domain__part_with_.underscore.com" );
+    assertIsFalse( "local.part@$domain$$part$with$.dollar.com" );
+    assertIsFalse( "local.part@=domain==part=with=.equality.com" );
+    assertIsFalse( "local.part@!domain!!part!with!.exclamation.com" );
+    assertIsFalse( "local.part@?domain??part?with?.question.com" );
+    assertIsFalse( "local.part@`domain``part`with`.grave-accent.com" );
+    assertIsFalse( "local.part@#domain##part#with#.hash.com" );
+    assertIsFalse( "local.part@%domain%%part%with%.percentage.com" );
+    assertIsFalse( "local.part@|domain||part|with|.pipe.com" );
+    assertIsFalse( "local.part@+domain++part+with+.plus.com" );
+    assertIsFalse( "local.part@{domain{{part{with{.leftbracket.com" );
+    assertIsFalse( "local.part@}domain}}part}with}.rightbracket.com" );
+    assertIsFalse( "local.part@(domain((part(with(.leftbracket.com" );
+    assertIsFalse( "local.part@)domain))part)with).rightbracket.com" );
+    assertIsFalse( "local.part@[domain[[part[with[.leftbracket.com" );
+    assertIsFalse( "local.part@]domain]]part]with].rightbracket.com" );
+    assertIsFalse( "local.part@()domain()()part()with().empty.bracket.com" );
+    assertIsFalse( "local.part@{}domain{}{}part{}with{}.empty.bracket.com" );
+    assertIsFalse( "local.part@[]domain[][]part[]with[].empty.bracket.com" );
+    assertIsFalse( "local.part@<>domain<><>part<>with<>.empty.bracket.com" );
+    assertIsFalse( "local.part@)(domain)()(part)(with)(.false.bracket1.com" );
+    assertIsFalse( "local.part@}{domain}{}{part}{with}{.false.bracket2.com" );
+    assertIsFalse( "local.part@][domain][][part][with][.false.bracket3.com" );
+    assertIsFalse( "local.part@><domain><><part><with><.false.bracket4.com" );
+    assertIsFalse( "local.part@<domain<<part<with<.lower.than.com" );
+    assertIsFalse( "local.part@>domain>>part>with>.greater.than.com" );
+    assertIsFalse( "local.part@~domain~~part~with~.tilde.com" );
+    assertIsFalse( "local.part@^domain^^part^with^.xor.com" );
+    assertIsFalse( "local.part@:domain::part:with:.colon.com" );
+    assertIsFalse( "local.part@ domain  part with .space.com" );
+    assertIsFalse( "local.part@,domain,,part,with,.comma.com" );
+    assertIsFalse( "local.part@@domain@@part@with@.at.com" );
+    assertIsFalse( "local.part@§domain§§part§with§.paragraph.com" );
+    assertIsFalse( "local.part@'domain''part'with'.double.quote.com" );
+    assertIsFalse( "local.part@/domain//part/with/.forward.slash.com" );
+    assertIsFalse( "local.part@-domain--part-with-.hyphen.com" );
+    assertIsFalse( "local.part@\"\"domain\"\"\"\"part\"\"with\"\".empty.string1.com" );
+    assertIsFalse( "local.part@a\"\"bdomaina\"\"ba\"\"bparta\"\"bwitha\"\"b.empty.string2.com" );
+    assertIsFalse( "local.part@\"\"\"\"domain\"\"\"\"\"\"\"\"part\"\"\"\"with\"\"\"\".double.empty.string1.com" );
+    assertIsFalse( "local.part@\"\".\"\"domain\"\".\"\"\"\".\"\"part\"\".\"\"with\"\".\"\".double.empty.string2.com" );
+    assertIsTrue( "local.part@0domain00part0with0.number0.com" );
+    assertIsTrue( "local.part@9domain99part9with9.number9.com" );
+    assertIsFalse( "local.part@0123456789domain01234567890123456789part0123456789with0123456789.numbers.com" );
+    assertIsTrue( "local.part@999domain999999part999with999.byte.overflow.com" );
+    assertIsTrue( "local.part@xyzdomainxyzxyzpartxyzwithxyz.no.hex.number.com" );
+    assertIsFalse( "local.part@\\domain\\\\part\\with\\.slash.com" );
+    assertIsFalse( "local.part@\"str\"domain\"str\"\"str\"part\"str\"with\"str\".string.com" );
+    assertIsFalse( "local.part@(comment)domain(comment)(comment)part(comment)with(comment).comment.com" );
     
 
     assertIsTrue( "local.part@domain--part.double.dash.com" ); 
@@ -9532,7 +9532,7 @@ class TestClassAssertIsTrueFalse
 //    wl( "      assertIsFalse( \"ip.v6.with." + pName + "@[" + pCharacter + "IPv6:1:22:3:4:5:6:7]\" );" );
     
     wl( "      assertIsTrue( \"" + pCharacter + "local" + pCharacter + "" + pCharacter + "part" + pCharacter + "with" + pCharacter + "@" + pName + ".com\" );" );
-    wl( "      assertIsFalse( \"local.part@" + pCharacter + "domain" + pCharacter + "" + pCharacter + "part" + pCharacter + "with" + pCharacter + "." + pName + "com\" );" );
+    wl( "      assertIsFalse( \"local.part@" + pCharacter + "domain" + pCharacter + "" + pCharacter + "part" + pCharacter + "with" + pCharacter + "." + pName + ".com\" );" );
 
   }
 
