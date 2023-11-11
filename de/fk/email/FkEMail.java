@@ -76,7 +76,7 @@ public class FkEMail
    * 
    *    40 IP6-Adressteil: String "IPv6:" erwartet
    *    41 IP6-Adressteil: Trennzeichenanzahl ist 0
-   *    42 IP6-Adressteil: zu viele Trennzeichen, maximal 8 Trennzeichen
+   *    42 IP6-Adressteil: zu viele Trennzeichen, maximal 7 Trennzeichen
    *    43 IP6-Adressteil: Zu wenig Trennzeichen
    *    44 IP6-Adressteil: ungueltige Kombination ":]"
    *    45 IP6-Adressteil: Abschlusszeichen "]" muss am Ende stehen
@@ -271,7 +271,7 @@ public class FkEMail
    * FkEMail.checkEMailAdresse( "ABC@[IPv6:1:2:3:4:5:6]"         ) =  4 = eMail-Adresse korrekt (IP6-Adresse)
    * FkEMail.checkEMailAdresse( "ABC@[IPv6:1:2:3:4:5:6:7]"       ) =  4 = eMail-Adresse korrekt (IP6-Adresse)
    * FkEMail.checkEMailAdresse( "ABC@[IPv6:1:2:3:4:5:6:7:8]"     ) =  4 = eMail-Adresse korrekt (IP6-Adresse)
-   * FkEMail.checkEMailAdresse( "ABC@[IPv6:1:2:3:4:5:6:7:8:9]"   ) = 42 = IP6-Adressteil: zu viele Trennzeichen, maximal 8 Trennzeichen
+   * FkEMail.checkEMailAdresse( "ABC@[IPv6:1:2:3:4:5:6:7:8:9]"   ) = 42 = IP6-Adressteil: zu viele Trennzeichen, maximal 7 Trennzeichen
    * 
    * FkEMail.checkEMailAdresse( "ABC@[IPv4:1:2:3:4]"             ) = 40 = IP6-Adressteil: String "IPv6:" erwartet
    * FkEMail.checkEMailAdresse( "ABC@[I127.0.0.1]"               ) = 40 = IP6-Adressteil: String "IPv6:" erwartet
@@ -1918,12 +1918,6 @@ public class FkEMail
                * Die Kennzeichenvariable wird auf 1 gestellt.
                */
               knz_ipv6 = 1;
-
-              /*
-               * Es wurde 1 Trennzeichen gelesen.
-               * (Trennzeichen zaehlt?)
-               */
-              ip_adresse_zaehler_trennzeichen++;
             }
             else
             {
@@ -1979,6 +1973,98 @@ public class FkEMail
          * 
          * Ebenfalls darf fuer die letzten beiden Bloecke (vier Bytes, also 32 Bits) der Adresse die herkoemmliche dezimale Notation mit Punkten als Trennzeichen verwendet werden. 
          * So ist ::ffff:127.0.0.1 eine alternative Schreibweise fuer ::ffff:7f00:1. Diese Schreibweise wird vor allem bei Einbettung des IPv4-Adressraums in den IPv6-Adressraum verwendet.
+         * 
+         * 
+         * 
+         * https://www.ibm.com/docs/en/ts4500-tape-library?topic=functionality-ipv4-ipv6-address-formats
+         * 
+         * 
+         * An IPv6 address can have either of the following two formats:
+         *     Normal - Pure IPv6 format
+         *     Dual   - IPv6 plus IPv4 formats
+         *     
+         * An IPv6 (normal) address has the format y:y:y:y:y:y:y:y, where y is called a segment and can 
+         * be any hexadecimal value between 0 and FFFF. The segments are separated by colons, not periods. 
+         * An IPv6 normal address must have eight segments; however, a short form notation can be used in
+         * the TS4500 management GUI for segments that are zero, or those that have leading zeros.
+         * 
+         * The following are examples of valid IPv6 (normal) addresses:
+         *     2001:db8:3333:4444:5555:6666:7777:8888
+         *     2001:db8:3333:4444:CCCC:DDDD:EEEE:FFFF
+         *     ::                                      (implies all 8 segments are zero)
+         *     2001:db8::                              (implies that the last six segments are zero)
+         *     ::1234:5678                             (implies that the first six segments are zero)
+         *     2001:db8::1234:5678                     (implies that the middle four segments are zero)
+         *     2001:0db8:0001:0000:0000:0ab9:C0A8:0102 (This can be compressed to eliminate leading zeros, as follows: 2001:db8:1::ab9:C0A8:102 )
+         * 
+         * 
+         * An IPv6 (dual) address combines an IPv6 and an IPv4 address and has the following format: y:y:y:y:y:y:x.x.x.x. 
+         * 
+         * The IPv6 portion of the address (indicated with y's) is always at the beginning, followed by the IPv4 portion (indicated with x's).
+         * 
+         * In the IPv6 portion of the address, y is called a segment and can be any hexadecimal value between 0 and FFFF. 
+         * The segments are separated by colons, not periods. 
+         * The IPv6 portion of the address must have six segments but there is a short form notation for segments that are zero.
+         * 
+         * In the IPv4 portion of the address x is called an octet and must be a decimal value between 0 and 255. 
+         * The octets are separated by periods. 
+         * The IPv4 portion of the address must contain three periods and four octets.
+         * 
+         * The following are examples of valid IPv6 (dual) addresses:
+         *     2001:db8:3333:4444:5555:6666:1.2.3.4
+         *     ::11.22.33.44                          (implies all six IPv6 segments are zero)
+         *     2001:db8::123.123.123.123              (implies that the last four IPv6 segments are zero)
+         *     ::1234:5678:91.123.4.56                (implies that the first four IPv6 segments are zero)
+         *     ::1234:5678:1.2.3.4                    (implies that the first four IPv6 segments are zero)
+         *     2001:db8::1234:5678:5.6.7.8            (implies that the middle two IPv6 segments are zero)
+         *     
+         *     
+         * https://stackoverflow.com/questions/18128697/ipv6-address-as-the-domain-portion-of-an-email-address
+         * https://www.rfc-editor.org/rfc/rfc5321#section-4.1.3    
+         * 
+         * Sometimes a host is not known to the domain name system and communication is blocked.  
+         * To bypass this barrier, a special literal form of the address is allowed as an alternative to a domain name.
+         * 
+         * For IPv4 addresses, this form uses four small decimal integers separated by dots and enclosed by brackets such as [123.255.37.2],
+         * which indicates an (IPv4) Internet Address in sequence-of-octets form. 
+         * 
+         * For IPv6 and other forms of addressing that might eventually be standardized, the form consists of a standardized "tag" that
+         * identifies the address syntax, a colon, and the address itself, in a format specified as part of the relevant standards
+         * (i.e., RFC 4291[8] for IPv6).
+         * 
+         * Specifically:
+         * IPv4-address-literal  = Snum 3("."  Snum)
+         * IPv6-address-literal  = "IPv6:" IPv6-addr
+         * 
+         * 
+         *    dcontent       = %d33-90 / ; Printable US-ASCII
+         *                   %d94-126 ; excl. "[", "\", "]"
+         * 
+         *    Snum           = 1*3DIGIT
+         *                   ; representing a decimal integer
+         *                   ; value in the range 0 through 255
+         * 
+         *    IPv6-addr      = IPv6-full / IPv6-comp / IPv6v4-full / IPv6v4-comp
+         * 
+         *    IPv6-hex       = 1*4HEXDIG
+         * 
+         *    IPv6-full      = IPv6-hex 7(":" IPv6-hex)
+         * 
+         *    IPv6-comp      = [IPv6-hex *5(":" IPv6-hex)] "::"
+         *                   [IPv6-hex *5(":" IPv6-hex)]
+         *                   ; The "::" represents at least 2 16-bit groups of
+         *                   ; zeros.  No more than 6 groups in addition to the
+         *                   ; "::" may be present.
+         * 
+         *    IPv6v4-full    = IPv6-hex 5(":" IPv6-hex) ":" IPv4-address-literal
+         * 
+         *    IPv6v4-comp    = [IPv6-hex *3(":" IPv6-hex)] "::"
+         *                   [IPv6-hex *3(":" IPv6-hex) ":"]
+         *                   IPv4-address-literal
+         *                   ; The "::" represents at least 2 16-bit groups of
+         *                   ; zeros.  No more than 4 groups in addition to the
+         *                   ; "::" and IPv4-address-literal may be present.
+         * 
          */
 
         /*
@@ -2036,12 +2122,18 @@ public class FkEMail
                */
 
               /*
-               * Ist eine IP4-Adresse eingebettet worden, muessen Trennzeichen 
-               * der IPv6-Adresse gefunden worden sein.  
+               * Ist eine IP4-Adresse eingebettet worden, muss mindestens 1 Trennzeichen 
+               * der IPv6-Adresse gefunden worden sein. Es duerfen aber nicht mehr als 
+               * 5 Trennzeichen vorhanden sein. 
                * 
-               * (Nach dem aktuellem Verstaendnis von IP6-Adressen, muessen es 3 sein)
+               * IPv6v4-full    = IPv6-hex 5(":" IPv6-hex) ":" IPv4-address-literal
+               * 
+               *  OK              A.B@[IPv6:::11.22.33.44]
+               * Trennzeichen-Nr            12 
+               * 
+               * (Nach dem aktuellem Verstaendnis von IP6-Adressen, muessen es 2 sein)
                */
-              if ( ip_adresse_zaehler_trennzeichen != 3 )
+              if ( ( ip_adresse_zaehler_trennzeichen < 1 ) || ( ip_adresse_zaehler_trennzeichen > 5 ) )
               {
                 return 47; // IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch 
               }
@@ -2063,27 +2155,6 @@ public class FkEMail
                * Zeichens der IP4-Adresse ergibt.
                */
               akt_index = position_letzter_punkt; // +1 am Schleifenende
-
-              /*
-               * Sicherstellung, dass die Einbettung der IP4-Adresse mit "ffff" startet.
-               * Es ist hier sichergestellt, dass mindestens 5 Zeichen vor dem Trennzeichen vorhanden sind.
-               * Es muessen 5 Zeichen mindestens vorhanden sein, damit eine IP6-Adresse geparst wird.
-               */
-              if ( ( pEingabe.charAt( akt_index - 1 ) == 'f' ) && ( pEingabe.charAt( akt_index - 2 ) == 'f' ) && ( pEingabe.charAt( akt_index - 3 ) == 'f' ) && ( pEingabe.charAt( akt_index - 4 ) == 'f' ) )
-              {
-                // OK - ffff gefunden
-              }
-              else
-              {
-                if ( ( pEingabe.charAt( akt_index - 1 ) == 'F' ) && ( pEingabe.charAt( akt_index - 2 ) == 'F' ) && ( pEingabe.charAt( akt_index - 3 ) == 'F' ) && ( pEingabe.charAt( akt_index - 4 ) == 'F' ) )
-                {
-                  // OK - FFFF gefunden - Wobei die Frage offen bleibt, ob die Grossschreibung hier so in Ordnung ist. 
-                }
-                else
-                {
-                  return 62; // IP6-Adressteil: IPv4 in IPv6 - falsche Angabe der IP4-Einbettung (Zeichenfolge 'ffff' erwartet)
-                }
-              }
 
               /*
                * Der Zahlenzaehler wird auf 0 gestellt, da nun eine IP4-Adresse gelesen wird
@@ -2113,14 +2184,22 @@ public class FkEMail
                * Es gibt maximal 8 Bloecke. 
                * Das ergibt eine maximale Anzahl von 7 Trennzeichen.
                * 
+               * IPv6-full      = IPv6-hex 7(":" IPv6-hex)
+               * 
+               *  OK              A.B@[IPv6:1111:2222:3333:4444:5555:6666:7777:8888]
+               * Trennzeichen-Nr                1    2    3    4    5    6    7
+               * 
+               *  Falsch          A.B@[IPv6:1111:2222:3333:4444:5555:6666:7777:8888:]
+               * Trennzeichen-Nr                1    2    3    4    5    6    7    8
+               * 
                * Es duerfen nicht mehr als 7 Trennzeichen gelesen werden. 
                * Beim 8ten Trennzeichen, wird der Fehler 42 zurueckgegeben.
                */
               ip_adresse_zaehler_trennzeichen++;
 
-              if ( ip_adresse_zaehler_trennzeichen > 8 )
+              if ( ip_adresse_zaehler_trennzeichen > 7 )
               {
-                return 42; // IP6-Adressteil: zu viele Trennzeichen, maximal 8 Trennzeichen
+                return 42; // IP6-Adressteil: zu viele Trennzeichen, maximal 7 Trennzeichen
               }
 
               /*
@@ -2162,19 +2241,44 @@ public class FkEMail
                * IP6-Adressteil - Abschlusszeichen "]" 
                */
 
-              if ( ip_adresse_zaehler_trennzeichen == 0 )
-              {
-                return 41; // IP6-Adressteil: Trennzeichenanzahl ist 0 
-              }
+//              if ( ip_adresse_zaehler_trennzeichen == 0 )
+//              {
+//                return 41; // IP6-Adressteil: Trennzeichenanzahl ist 0 
+//              }
+//
+//              /*
+//               * Anzahl Trennzeichen
+//               * Fuer eine IP6-Adresse muessen mindestens 3 Trennzeichen gelesen worden sein. 
+//               * Ist das nicht der Fall, wird der Fehler 43 zurueckgegeben.
+//               */
+//              if ( ip_adresse_zaehler_trennzeichen < 3 )
+//              {
+//                return 43; // IP6-Adressteil: Zu wenig Trennzeichen  
+//              }
 
               /*
-               * Anzahl Trennzeichen
-               * Fuer eine IP6-Adresse muessen mindestens 3 Trennzeichen gelesen worden sein. 
-               * Ist das nicht der Fall, wird der Fehler 43 zurueckgegeben.
+               * IPv6-Adresse ohne Trennzeichen
+               * 
+               * Es gibt 2 Arten, wie so ein Zustand erreicht werden kann.
+               *  
+               * - IP-Adresse mit nur einem Octett, aber keinem Trennzeichen wie z.B.  ABC.DEF@[IPv6:1]
+               * - eine falsche Eingabe mit nur dem Einleitenden "IPv6:" Tag.  ABC.DEF@[IPv6:]
+               * 
+               * Im erstem Fall ist die IP-Adresse korrekt, und es wurde mindestens eine Zeichen der 
+               * IP-Adresse gelesen, welches den Zahlen-Zaehler erhoeht hat. 
+               * 
+               * Wurde kein Trennzeichen gefunden, ist die Variable "position_letzter_punkt" gleich 0.
+               * Um den Fehler 34 zu verhindern, wird die Position des letzten Punktes auf -2 gestellt.
+               * 
                */
-              if ( ip_adresse_zaehler_trennzeichen < 3 )
+              if (( ip_adresse_zaehler_trennzeichen == 0 ) && ( ip_adresse_zahlen_zaehler > 0 ) )
               {
-                return 43; // IP6-Adressteil: Zu wenig Trennzeichen  
+                position_letzter_punkt = -2;  
+              }
+
+              if (( ip_adresse_zaehler_trennzeichen == 0 ) && ( ip_adresse_zahlen_zaehler == 0 ) )
+              {
+                return 62; // IP6-Adressteil: Keine IP-Adresse angegeben
               }
 
               /*
@@ -2230,7 +2334,7 @@ public class FkEMail
                   /*
                    * Ist das naechste Zeichen nach "]" ein Leerzeichen, ist der 
                    * Kommentar vom Ende der IP-Adresse durch Leerzeichen getrennt. 
-                   * Das Leerzeichen ist OK, der Leseindes wird verringert. 
+                   * Das Leerzeichen ist OK, der Leseindex wird verringert. 
                    * 
                    * Der Leseprozess wird im naechsten Durchgang das Leerzeichen 
                    * erkennen und in den letzten else-Zweig gefuehrt werden. Dort 
@@ -3079,7 +3183,7 @@ public class FkEMail
 
     if ( pFehlerNr == 40 ) return "IP6-Adressteil: String \"IPv6:\" erwartet";
     if ( pFehlerNr == 41 ) return "IP6-Adressteil: Trennzeichenanzahl ist 0";
-    if ( pFehlerNr == 42 ) return "IP6-Adressteil: zu viele Trennzeichen, maximal 8 Trennzeichen";
+    if ( pFehlerNr == 42 ) return "IP6-Adressteil: zu viele Trennzeichen, maximal 7 Trennzeichen";
     if ( pFehlerNr == 43 ) return "IP6-Adressteil: Zu wenig Trennzeichen";
     if ( pFehlerNr == 44 ) return "IP6-Adressteil: ungueltige Kombination \":]\"";
     if ( pFehlerNr == 45 ) return "IP6-Adressteil: Abschlusszeichen \"]\" muss am Ende stehen";
@@ -3099,9 +3203,12 @@ public class FkEMail
     if ( pFehlerNr == 59 ) return "IP4-Adressteil: Falsches Zeichen in der IP-Adresse";
     if ( pFehlerNr == 60 ) return "IP4-Adressteil: Abschlusszeichen \"]\" muss am Ende stehen";
     if ( pFehlerNr == 61 ) return "IP-Adressteil: Kein Abschluss der IP-Adresse auf ']'";
-    if ( pFehlerNr == 62 ) return "IP6-Adressteil: IPv4 in IPv6 - falsche Angabe der IP4-Einbettung (Zeichenfolge 'ffff' erwartet)";
+    if ( pFehlerNr == 62 ) return "IP6-Adressteil: Keine IP-Adresse vorhanden";
 
     if ( pFehlerNr == 63 ) return "Domain-Part: Domain-Label zu lang (maximal 63 Zeichen)";
+    
+
+
 
     if ( pFehlerNr == 80 ) return "String: Ein startendes Anfuehrungszeichen muss am Anfang kommen, der Zeichenzaehler darf nicht groesser als 0 sein";
     if ( pFehlerNr == 81 ) return "String: Ein startendes Anfuehrungezeichen muss direkt nach einem Punkt kommen";
