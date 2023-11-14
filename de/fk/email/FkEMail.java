@@ -30,97 +30,104 @@ public class FkEMail
    * 
    * Folgende Rueckgaben sind moeglich:
    * 
-   *     0 = eMail-Adresse korrekt
-   *     1 = eMail-Adresse korrekt (Local Part mit String)
-   *     2 = eMail-Adresse korrekt (IP4-Adresse)
-   *     3 = eMail-Adresse korrekt (Local Part mit String und IP4-Adresse)
-   *     4 = eMail-Adresse korrekt (IP6-Adresse)
-   *     5 = eMail-Adresse korrekt (Local Part mit String und IP6-Adresse)
-   *     6 = eMail-Adresse korrekt (Kommentar)
-   *     7 = eMail-Adresse korrekt (Kommentar, String)
-   *     8 = eMail-Adresse korrekt (Kommentar, String, IP4-Adresse)
-   *     9 = eMail-Adresse korrekt (Kommentar, String, IP6-Adresse)
-   *         
+   *    0 = eMail-Adresse korrekt
+   *    1 = eMail-Adresse korrekt (Local Part mit String)
+   *    2 = eMail-Adresse korrekt (IP4-Adresse)
+   *    3 = eMail-Adresse korrekt (Local Part mit String und IP4-Adresse)
+   *    4 = eMail-Adresse korrekt (IP6-Adresse)
+   *    5 = eMail-Adresse korrekt (Local Part mit String und IP6-Adresse)
+   *    6 = eMail-Adresse korrekt (Kommentar)
+   *    7 = eMail-Adresse korrekt (Kommentar, String)
+   *    8 = eMail-Adresse korrekt (Kommentar, String, IP4-Adresse)
+   *    9 = eMail-Adresse korrekt (Kommentar, String, IP6-Adresse)
    *    
-   *    10 Laenge: Eingabe ist null
-   *    11 Laenge: Eingabe ist Leerstring
-   *    12 Laenge: Laengenbegrenzungen stimmen nicht
-   *    13 Laenge: RFC 5321 = SMTP-Protokoll = maximale Laenge des Local-Parts sind 64 Bytes
-   *    14 Laenge: Top-Level-Domain muss mindestens 2 Stellen lang sein.
-   *    15 Laenge: Top-Level-Domain darf nicht mehr als X-Stellen lang sein. (X ist hier 10)
-   *    
-   *    16 Struktur: keine oeffnende eckige Klammer gefunden.
-   *    17 Struktur: keine schliessende eckige Klammer gefunden.
-   *    18 Struktur: Fehler in Adress-String-X
-   *    
-   *    20 Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
-   *    21 Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
-   *    22 Zeichen: ungueltiges Zeichen in der Eingabe gefunden
-   *    23 Zeichen: Top-Level-Domain darf nicht mit Zahl beginnen
-   *    24 Zeichen: Kein Sonderzeichen am Ende der eMail-Adresse
-   *    
-   *    26 AT-Zeichen: kein AT-Zeichen am Anfang
-   *    27 AT-Zeichen: kein AT-Zeichen am Ende
-   *    28 AT-Zeichen: kein AT-Zeichen gefunden
-   *    29 AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
-   *    
-   *    30 Trennzeichen: kein Beginn mit einem Punkt
-   *    31 Trennzeichen: keine zwei Punkte hintereinander
-   *    32 Trennzeichen: ungueltige Zeichenkombination ".@"
-   *    33 Trennzeichen: ungueltige Zeichenkombination "@."
-   *    34 Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
-   *    35 Trennzeichen: der letzte Punkt muss nach dem AT-Zeichen liegen
-   *    36 Trennzeichen: der letzte Punkt darf nicht am Ende liegen
-   *    
-   * Domain-Name mit IP-Adresse:
-   * 
-   *    40 IP6-Adressteil: String "IPv6:" erwartet
-   *    41 IP6-Adressteil: Trennzeichenanzahl ist 0
-   *    42 IP6-Adressteil: zu viele Trennzeichen, maximal 7 Trennzeichen
-   *    43 IP6-Adressteil: Zu wenig Trennzeichen
-   *    44 IP6-Adressteil: ungueltige Kombination ":]"
-   *    45 IP6-Adressteil: Abschlusszeichen "]" muss am Ende stehen
-   *    46 IP6-Adressteil: zu viele Ziffern, maximal 4 Ziffern
-   *    47 IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
-   *    48 IP6-Adressteil: IPv4 in IPv6 - zu viele Zeichen im ersten IP4-Block
-   *    49 IP6-Adressteil: Falsches Zeichen in der IP-Adresse
-   *    50 IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
-   *    51 IP-Adressteil: IP-Adresse vor AT-Zeichen
-   *    52 IP-Adressteil: IP-Adresse muss direkt nach dem AT-Zeichen kommen (korrekte Kombination "@[")
-   *    53 IP4-Adressteil: zu viele Ziffern, maximal 3 Ziffern
-   *    54 IP4-Adressteil: Byte-Overflow
-   *    55 IP4-Adressteil: keine Ziffern vorhanden
-   *    56 IP4-Adressteil: zu viele Trennzeichen
-   *    57 IP4-Adressteil: IP-Adresse Trennzeichenanzahl muss 3 sein
-   *    58 IP4-Adressteil: ungueltige Kombination ".]"
-   *    59 IP4-Adressteil: Falsches Zeichen in der IP-Adresse
-   *    60 IP4-Adressteil: Abschlusszeichen "]" muss am Ende stehen
-   *    61 IP-Adressteil: Kein Abschluss der IP-Adresse auf ']'
-   *        
-   * Local-Part mit Anfuehrungszeichen 
-   *        
-   *    80 String: Ein startendes Anfuehrungszeichen muss am Anfang kommen, der Zeichenzaehler darf nicht groesser als 0 sein
-   *    81 String: Ein startendes Anfuehrungezeichen muss direkt nach einem Punkt kommen
-   *    82 String: kein Anfuehrungszeichen nach dem AT-Zeichen
-   *    83 String: Escape-Zeichen nicht am Ende der Eingabe
-   *    84 String: Ungueltige Escape-Sequenz im String
-   *    85 String: Leerstring in Anfuehrungszeichen
-   *    86 String: kein abschliessendes Anfuehrungszeichen gefunden.
-   *    87 String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
-   *    88 String: Der String endet am Stringende (Vorzeitiges Ende der Eingabe)
-   *    89 String: Ungueltiges Zeichen innerhalb Anfuehrungszeichen
-   *    
-   * Kommentare
-   * 
-   *    91 Kommentar: Ungueltige Escape-Sequenz im Kommentar
-   *    92 Kommentar: Ungueltiges Zeichen im Kommentar
-   *    93 Kommentar: kein abschliessendes Zeichen fuer den Komentar gefunden. ')' erwartet
-   *    94 Kommentar: kein Kommentar nach dem AT-Zeichen
-   *    95 Kommentar: Der Kommentar endet am Stringende (Vorzeitiges Ende der Eingabe)
-   *    96 Kommentar: Escape-Zeichen nicht am Ende der Eingabe
-   *    97 Kommentar: Nach dem Kommentar muss ein AT-Zeichen kommen
-   *    98 Kommentar: Kein lokaler Part vorhanden
-   *    99 Kommentar: kein zweiter Kommentar gueltig
+   *   10 = Laenge: Eingabe ist null
+   *   11 = Laenge: Eingabe ist Leerstring
+   *   12 = Laenge: Laengenbegrenzungen stimmen nicht
+   *   13 = Laenge: RFC 5321 = SMTP-Protokoll = maximale Laenge des Local-Parts sind 64 Bytes
+   *   14 = Laenge: Top-Level-Domain muss mindestens 2 Stellen lang sein.
+   *   15 = Laenge: Top-Level-Domain darf nicht mehr als 63-Stellen lang sein.
+   *   
+   *   16 = Struktur: keine oeffnende eckige Klammer gefunden.
+   *   17 = Struktur: keine schliessende eckige Klammer gefunden.
+   *   18 = Struktur: Fehler in Adress-String-X
+   *   
+   *   20 = Zeichen: Zahl oder Sonderzeichen nur nach einem Buchstaben (Teilstring darf nicht mit Zahl oder Sonderzeichen beginnen)
+   *   21 = Zeichen: Sonderzeichen im Domain-Part nicht erlaubt
+   *   22 = Zeichen: ungueltiges Zeichen in der Eingabe gefunden
+   *   23 = Zeichen: Top-Level-Domain darf nicht mit Zahl beginnen
+   *   24 = Zeichen: Kein Sonderzeichen am Ende der eMail-Adresse
+   *   
+   *   26 = AT-Zeichen: kein AT-Zeichen am Anfang
+   *   27 = AT-Zeichen: kein AT-Zeichen am Ende
+   *   28 = AT-Zeichen: kein AT-Zeichen gefunden
+   *   29 = AT-Zeichen: kein weiteres AT-Zeichen zulassen, wenn schon AT-Zeichen gefunden wurde
+   *   
+   *   30 = Trennzeichen: kein Beginn mit einem Punkt
+   *   31 = Trennzeichen: keine zwei Punkte hintereinander
+   *   32 = Trennzeichen: ungueltige Zeichenkombination ".@"
+   *   33 = Trennzeichen: ungueltige Zeichenkombination "@."
+   *   34 = Trennzeichen: keinen Punkt gefunden (Es muss mindestens ein Punkt fuer den Domain-Trenner vorhanden sein)
+   *   35 = Trennzeichen: der letzte Punkt muss nach dem AT-Zeichen liegen
+   *   36 = Trennzeichen: der letzte Punkt darf nicht am Ende liegen
+   *   
+   *   40 = IP6-Adressteil: String "IPv6:" erwartet
+   *   41 = IP6-Adressteil: Trennzeichenanzahl ist 0
+   *   42 = IP6-Adressteil: zu viele Trennzeichen, maximal 7 Trennzeichen
+   *   43 = IP6-Adressteil: Zu wenig Trennzeichen
+   *   44 = IP6-Adressteil: ungueltige Kombination ":]"
+   *   45 = IP6-Adressteil: Abschlusszeichen "]" muss am Ende stehen
+   *   46 = IP6-Adressteil: zu viele Ziffern, maximal 4 Ziffern
+   *   47 = IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch
+   *   48 = IP6-Adressteil: IPv4 in IPv6 - zu viele Zeichen im ersten IP4-Block
+   *   49 = IP6-Adressteil: Falsches Zeichen in der IP-Adresse
+   *   50 = IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
+   *   51 = IP-Adressteil: IP-Adresse vor AT-Zeichen
+   *   52 = IP-Adressteil: IP-Adresse muss direkt nach dem AT-Zeichen kommen (korrekte Kombination "@[")
+   *   53 = IP4-Adressteil: zu viele Ziffern, maximal 3 Ziffern
+   *   54 = IP4-Adressteil: Byte-Overflow
+   *   55 = IP4-Adressteil: keine Ziffern vorhanden bzw. zwei Doppelpunkte hintereinander
+   *   56 = IP4-Adressteil: zu viele Trennzeichen
+   *   57 = IP4-Adressteil: IP-Adresse Trennzeichenanzahl muss 3 sein
+   *   58 = IP4-Adressteil: ungueltige Kombination ".]"
+   *   59 = IP4-Adressteil: Falsches Zeichen in der IP-Adresse
+   *   60 = IP4-Adressteil: Abschlusszeichen "]" muss am Ende stehen
+   *   61 = IP-Adressteil: Kein Abschluss der IP-Adresse auf ']'
+   *   62 = IP6-Adressteil: Keine IP-Adresse vorhanden
+   *   
+   *   63 = Domain-Part: Domain-Label zu lang (maximal 63 Zeichen)
+   *   
+   *   80 = String: Ein startendes Anfuehrungszeichen muss am Anfang kommen, der Zeichenzaehler darf nicht groesser als 0 sein
+   *   81 = String: Ein startendes Anfuehrungezeichen muss direkt nach einem Punkt kommen
+   *   82 = String: kein Anfuehrungszeichen nach dem AT-Zeichen
+   *   83 = String: Escape-Zeichen nicht am Ende der Eingabe
+   *   84 = String: Ungueltige Escape-Sequenz im String
+   *   85 = String: Leerstring in Anfuehrungszeichen
+   *   86 = String: kein abschliessendes Anfuehrungszeichen gefunden.
+   *   87 = String: Nach einem abschliessendem Anfuehrungszeichen muss ein AT-Zeichen oder ein Punkt folgen
+   *   88 = String: Der String endet am Stringende (Vorzeitiges Ende der Eingabe)
+   *   89 = String: Ungueltiges Zeichen innerhalb Anfuehrungszeichen
+   *   
+   *   91 = Kommentar: Ungueltige Escape-Sequenz im Kommentar
+   *   92 = Kommentar: Ungueltiges Zeichen im Kommentar
+   *   93 = Kommentar: kein abschliessendes Zeichen fuer den Komentar gefunden. ')' erwartet
+   *   94 = Kommentar: kein Kommentar nach dem AT-Zeichen
+   *   95 = Kommentar: Der Kommentar endet am Stringende (Vorzeitiges Ende der Eingabe)
+   *   96 = Kommentar: Escape-Zeichen nicht am Ende der Eingabe
+   *   97 = Kommentar: Nach dem Kommentar muss ein AT-Zeichen kommen
+   *   98 = Kommentar: Kein lokaler Part vorhanden
+   *   99 = Kommentar: kein zweiter Kommentar gueltig
+   *  100 = Kommentar: Kommentar muss am Stringende enden
+   *  101 = Kommentar: Falsche Zeichenkombination ".(" im Domain Part
+   *  102 = Kommentar: Falsche Zeichenkombination ".(" im Local Part
+   *  103 = Kommentar: Falsche Zeichenkombination ")."
+   *  105 = Kommentar: Leerzeichentrennung im Domain-Part. Oeffnende Klammer erwartet
+   *  
+   *  106 = Kommentar: Domain-Part mit Kommentar nach AT-Zeichen. Erwartete Zeichenkombination ")[".
+   *  140 = Trennzeichen: Kein Start mit der Zeichenfolge -"
+   *  141 = Trennzeichen: Kein Start mit der Zeichenfolge "-("
+   *  142 = Trennzeichen: kein Beginn mit einem Punkt
+  
    *    
    *    
    * FkEMail.checkEMailAdresse( "A.B@C.DE"                       ) =  0 = eMail-Adresse korrekt
@@ -238,8 +245,8 @@ public class FkEMail
    * FkEMail.checkEMailAdresse( "ABC.DEF@MyDomain[1.2.3.4]"      ) = 52 = IP-Adressteil: IP-Adresse muss direkt nach dem AT-Zeichen kommen (korrekte Kombination "@[")
    * FkEMail.checkEMailAdresse( "ABC.DEF@[1.00002.3.4]"          ) = 53 = IP4-Adressteil: zu viele Ziffern, maximal 3 Ziffern
    * FkEMail.checkEMailAdresse( "ABC.DEF@[1.2.3.456]"            ) = 54 = IP4-Adressteil: Byte-Overflow
-   * FkEMail.checkEMailAdresse( "ABC.DEF@[..]"                   ) = 55 = IP4-Adressteil: keine Ziffern vorhanden
-   * FkEMail.checkEMailAdresse( "ABC.DEF@[.2.3.4]"               ) = 55 = IP4-Adressteil: keine Ziffern vorhanden
+   * FkEMail.checkEMailAdresse( "ABC.DEF@[..]"                   ) = 55 = IP4-Adressteil: keine Ziffern vorhanden bzw. zwei Doppelpunkte hintereinander
+   * FkEMail.checkEMailAdresse( "ABC.DEF@[.2.3.4]"               ) = 55 = IP4-Adressteil: keine Ziffern vorhanden bzw. zwei Doppelpunkte hintereinander
    * 
    * FkEMail.checkEMailAdresse( "ABC.DEF@[]"                     ) = 57 = IP4-Adressteil: IP-Adresse Trennzeichenanzahl muss 3 sein
    * FkEMail.checkEMailAdresse( "ABC.DEF@[1]"                    ) = 57 = IP4-Adressteil: IP-Adresse Trennzeichenanzahl muss 3 sein
@@ -283,7 +290,7 @@ public class FkEMail
    *  
    * FkEMail.checkEMailAdresse( "ABC.DEF@[IPv6:1:2:3::5:6:7:8]"  ) =  4 = eMail-Adresse korrekt (IP6-Adresse)
    * FkEMail.checkEMailAdresse( "ABC.DEF@[IPv6:1:2:3::5::7:8]"   ) = 50 = IP6-Adressteil: Es darf nur einmal ein Zweier-Doppelpunkt vorhanden sein.
-   * FkEMail.checkEMailAdresse( "ABC.DEF@[IPv6::ffff:.127.0.1]"  ) = 55 = IP4-Adressteil: keine Ziffern vorhanden (erste Ziffer IPv4-Adresse fehlt)
+   * FkEMail.checkEMailAdresse( "ABC.DEF@[IPv6::ffff:.127.0.1]"  ) = 55 = IP4-Adressteil: keine Ziffern vorhanden bzw. zwei Doppelpunkte hintereinander (erste Ziffer IPv4-Adresse fehlt)
    * FkEMail.checkEMailAdresse( "ABC.DEF@[IPv6::FFFF:127.0.0.1]" ) =  4 = eMail-Adresse korrekt (IP6-Adresse)
    * FkEMail.checkEMailAdresse( "ABC.DEF@[IPv6::ffff:127.0.0.1]" ) =  4 = eMail-Adresse korrekt (IP6-Adresse)
    * FkEMail.checkEMailAdresse( "ABC.DEF@[IPv6::fff:127.0.0.1]"  ) = 62 = IP6-Adressteil: IPv4 in IPv6 - falsche Angabe der IP4-Einbettung (Zeichenfolge 'ffff' erwartet)
@@ -298,7 +305,7 @@ public class FkEMail
    * FkEMail.checkEMailAdresse( "ABC.DEF@[1.2.3.4] "             ) = 60 = IP4-Adressteil: Abschlusszeichen "]" muss am Ende stehen
    * FkEMail.checkEMailAdresse( "ABC.DEF@[1.2.3.4"               ) = 61 = IP-Adressteil: Kein Abschluss der IP-Adresse auf ']'
    * FkEMail.checkEMailAdresse( "ABC.DEF@[1234.5.6.7]"           ) = 53 = IP4-Adressteil: zu viele Ziffern, maximal 3 Ziffern
-   * FkEMail.checkEMailAdresse( "ABC.DEF@[1.2...3.4]"            ) = 55 = IP4-Adressteil: keine Ziffern vorhanden
+   * FkEMail.checkEMailAdresse( "ABC.DEF@[1.2...3.4]"            ) = 55 = IP4-Adressteil: keine Ziffern vorhanden bzw. zwei Doppelpunkte hintereinander
    * 
    * FkEMail.checkEMailAdresse( "ABC.DEF@[IPv6:1:2:3:4:5:6]"     ) =  4 = eMail-Adresse korrekt (IP6-Adresse)
    * FkEMail.checkEMailAdresse( "ABC.DEF@[IPv6:1:2:3:4:5:Z]"     ) = 49 = IP6-Adressteil: Falsches Zeichen in der IP-Adresse
@@ -381,29 +388,13 @@ public class FkEMail
    *                                                          ALTERNATIV: Fehler 34 und Fehler 35 spezifizieren genau diesen FALL.
    *                                                                      Diese Fehlernummern koennen als korrekt akzeptiert werden, wenn
    *                                                                      solche eMail-Adressangaben zugelassen werden sollen
-   *
    * 
    * nicht geklaert ---------------------------------------------------------------------------------------------------
-   *
-   * Kommentar am Ende der eMail-Adresse korrekt?
-   * Darf eine eMail-Domain mit einer Zahl enden? 
-   * 
-   * IPv6-Adressangaben werden nicht 100%ig korrekt erkannt
-   * - Overflow in den Angaben werden nicht erkannt
-   * 
-   * ABC@[IPv6123::ffff:127.0.0.1] = Praefix "IPv6" oder "IPv6:" (Ohne oder mit Doppelpunkt als Trennzeichen?)
    * 
    * ABC.DEF@192.0.2.123         = IP4-Adressangabe ohne eckige Klammern gueltig ?
    * 
-   * "-- --- .. -."@sh.de        = Zeichenkombination ". oder ." im String korrekt ?
-   *                               (sonst gibt es einen "... .... .. -"@storm.de)
-   * 
    * "(A(B(C)DEF@GHI.JKL"        = In einem Kommentar auch oeffnende Klammer '(' zulassen ?
    * 
-   * "<ABC.DEF@GHI.JKL>"         = korrekte eMail-Adressangabe ?
-   * "<ABC.DEF@GHI.JKL> ABC DEF" = korrekte eMail-Adressangabe ? (... das die Klammern am Start des Strings kommen)
-   * 
-   *
    * ------------------------------------------------------------------------------------------------------------------
    * 
    * " + ( FkEMail.checkEMailAdresse( str_email_adresse ) < 10 ? "eMail-Adresse OK" : " eMail-Adresse ungueltig " ) + "
@@ -535,6 +526,42 @@ public class FkEMail
      */
 
     /*
+     * IETF documents: 
+     *     RFC 1035 "Domain Implementation and Specification"
+     *     RFC 2234 "ABNF for Syntax Specifications"
+     *     RFC 2821 "Simple Mail Transfer Protocol"
+     *     RFC 2822 "Internet Message Format", in addition to RFC 3696 (referenced earlier), all contain information relevant to e-mail address validation.
+     *     
+     *     RFC 2822 supersedes RFC 822 "Standard for ARPA Internet Text Messages" and makes it obsolete.
+     * 
+     * Following are the requirements for an e-mail address, with relevant references:
+     * 
+     *     An e-mail address consists of local part and domain separated by an at sign (@) character (RFC 2822 3.4.1).
+     * 
+     *     The local part may consist of alphabetic characters, numeric characters and the following 
+     *     characters: !, #, $, %, &, ', *, +, -, /, =, ?, ^, _, `, {, |, } and ~ 
+     *     possibly with dot separators (.), inside, but not at the start, end or next to another dot separator (RFC 2822 3.2.4).
+     * 
+     *     The local part may consist of a quoted string—that is, anything within quotes ("), including spaces (RFC 2822 3.2.5).
+     * 
+     *     Quoted pairs (such as \@) are valid components of a local part, through an obsolete form from RFC 822 (RFC 2822 4.4).
+     * 
+     *     The maximum length of a local part is 64 characters (RFC 2821 4.5.3.1).
+     * 
+     *     A domain consists of labels separated by dot separators (RFC1035 2.3.1).
+     * 
+     *     Domain labels start with an alphabetic character followed by zero or more alphabetic characters, numeric characters or the hyphen (-), 
+     *     ending with an alphabetic or numeric character (RFC 1035 2.3.1).
+     * 
+     *     The maximum length of a label is 63 characters (RFC 1035 2.3.1).
+     * 
+     *     The maximum length of a domain is 255 characters (RFC 2821 4.5.3.1).
+     * 
+     *     The domain must be fully qualified and resolvable to a type A or type MX DNS address record (RFC 2821 3.6). 
+     * 
+     */
+
+    /*
      * Pruefung: Eingabe gleich "null" ? 
      * 
      * Ist die Eingabe gleich "null", ist es keine gueltige eMail-Adresse. 
@@ -548,8 +575,8 @@ public class FkEMail
     /*
      * Pruefung: Eingabelaenge gleich 0 ?
      * 
-     * Es wird kein Trim gemacht, da ein Trim Zeit verbrauchen wuerde. 
-     * Diese Funktion soll den String so pruefen, wie dieser uebergeben wurde.
+     * Es wird kein Trim auf die Eingabe gemacht, da ein Trim Zeit verbrauchen wuerde. 
+     * Diese Funktion soll den Eingabestring so pruefen, wie dieser uebergeben wurde.
      * Es ist nicht die Aufgabe dieser Funktion, die Eingabe zu manipulieren.
      * Besteht die Eingabe nur aus Leerzeichen, wird beim ersten Leerzeichen  
      * ein ungueltiges Zeichen erkannt und der Fehler 29 zurueckgegeben.
@@ -823,7 +850,6 @@ public class FkEMail
         }
         else if ( aktuelles_zeichen == '\\' )
         {
-
           /*
            * Maskiertes Zeichen 
            * Der Leseprozess muss noch das naechste Zeichen pruefen. 
@@ -1054,14 +1080,13 @@ public class FkEMail
             {
               return 20; // Trennzeichen: ungueltige Zeichenkombination "-."
             }
-            
+
             // ? Doppelte Bindestriche zulassen im Domainpart ?
             //
             //if ( ( aktuelles_zeichen == '-' ) && ( pEingabe.charAt( akt_index - 1 ) == '-' ) )
             //{
             //  return 25; // Zeichen: ungueltige Zeichenkombination "--" im Domain-Part
             //}
-
 
             //else if ( pEingabe.charAt( akt_index - 1 ) == '.' )
             //{
@@ -1360,7 +1385,7 @@ public class FkEMail
                */
               if ( ip_adresse_zahlen_zaehler == 0 )
               {
-                knz_ist_ip4_adresse = 55; // IP4-Adressteil: keine Ziffern vorhanden
+                knz_ist_ip4_adresse = 55; // IP4-Adressteil: keine Ziffern vorhanden bzw. zwei Doppelpunkte hintereinander
               }
 
               /*
@@ -1675,7 +1700,7 @@ public class FkEMail
           }
           else if ( ( aktuelles_zeichen == '(' ) || ( aktuelles_zeichen == ')' ) || ( aktuelles_zeichen == ',' ) || ( aktuelles_zeichen == ':' ) || ( aktuelles_zeichen == ';' ) || ( aktuelles_zeichen == '<' ) || ( aktuelles_zeichen == '>' ) || ( aktuelles_zeichen == '@' ) || ( aktuelles_zeichen == '[' ) || ( aktuelles_zeichen == ']' ) )
           {
-            // OK - Sonderzeichen 2 = (),:;<>@[\]
+            // OK - Sonderzeichen 2 = (),:;<>@[]
           }
           else if ( aktuelles_zeichen == '"' )
           {
@@ -1924,25 +1949,6 @@ public class FkEMail
               return 40; // IP6-Adressteil: String "IPv6:" erwartet
             }
           }
-          else if ( ( pEingabe.charAt( akt_index + 1 ) == ':' ) || ( pEingabe.charAt( akt_index + 2 ) == ':' ) || ( pEingabe.charAt( akt_index + 3 ) == ':' ) || ( pEingabe.charAt( akt_index + 4 ) == ':' ) || ( pEingabe.charAt( akt_index + 5 ) == ':' ) )
-          {
-            /*
-             * Einbettung IP-V6-Adresse ohne Praefix "IPv6"
-             * 
-             * Wird der Praefix "IPv6" nicht gefunden, wird auf das vorhandensein 
-             * eines Doppelpunktes innerhalb der naechsten 5 Zeichen geprueft.
-             * Wird ein Doppelpunkt gefunden, ist dieses das Kennzeichen, dass 
-             * eine IP-V6 Adresse vorhanden ist. 
-             * 
-             * Das erste Zeichen wird auch mit geprueft, da die IP-V6-Adresse mit "::" starten koennte.
-             */
-
-            /*
-             * Der Leseprozess befindet sich in einer IPv6 Adresse.
-             * Die Kennzeichenvariable wird auf 1 gestellt.
-             */
-            knz_ipv6 = 1;
-          }
         }
 
         /*
@@ -2064,7 +2070,108 @@ public class FkEMail
          *                   ; The "::" represents at least 2 16-bit groups of
          *                   ; zeros.  No more than 4 groups in addition to the
          *                   ; "::" and IPv4-address-literal may be present.
+         *                   
          * 
+         *  https://stackoverflow.com/questions/53497/regular-expression-that-matches-valid-ipv6-addresses?rq=3
+         *  
+         *  Kentzo Mar 13, 2014 at 12:48
+         *  You IPv4 regex does not match IPs like 127.000.000.001
+         *  
+         *  par Jul 25, 2014 at 21:56
+         *  IPv4 segments should not include leading zeros. 
+         *  If a leading zero is present, the IPv4 segment should be interpreted in octal. 
+         *  So the IPV4SEG above is correct in not allowing '000'.
+         *  It does however permit '00' which it should not.
+         *  
+         *  https://superuser.com/questions/857603/are-ip-addresses-with-and-without-leading-zeroes-the-same 
+         *  
+         *  
+         *  
+         *  C:\Daten\00_SRC\vbMrStringer>ping heise.de -4
+         *  
+         *  Ping wird ausgeführt für heise.de [193.99.144.80] mit 32 Bytes Daten:
+         *  Antwort von 193.99.144.80: Bytes=32 Zeit=22ms TTL=246
+         *  Antwort von 193.99.144.80: Bytes=32 Zeit=20ms TTL=246
+         *  Antwort von 193.99.144.80: Bytes=32 Zeit=12ms TTL=246
+         *  Antwort von 193.99.144.80: Bytes=32 Zeit=15ms TTL=246
+         *  
+         *  Ping-Statistik für 193.99.144.80:
+         *      Pakete: Gesendet = 4, Empfangen = 4, Verloren = 0
+         *      (0% Verlust),
+         *  Ca. Zeitangaben in Millisek.:
+         *      Minimum = 12ms, Maximum = 22ms, Mittelwert = 17ms
+         *  
+         *  C:\Daten\00_SRC\vbMrStringer>ping 193.99.144.80
+         *  
+         *  Ping wird ausgeführt für 193.99.144.80 mit 32 Bytes Daten:
+         *  Antwort von 193.99.144.80: Bytes=32 Zeit=13ms TTL=246
+         *  Antwort von 193.99.144.80: Bytes=32 Zeit=16ms TTL=246
+         *  Antwort von 193.99.144.80: Bytes=32 Zeit=13ms TTL=246
+         *  Antwort von 193.99.144.80: Bytes=32 Zeit=13ms TTL=246
+         *  
+         *  Ping-Statistik für 193.99.144.80:
+         *      Pakete: Gesendet = 4, Empfangen = 4, Verloren = 0
+         *      (0% Verlust),
+         *  Ca. Zeitangaben in Millisek.:
+         *      Minimum = 13ms, Maximum = 16ms, Mittelwert = 13ms
+         *  
+         *  C:\Daten\00_SRC\vbMrStringer>ping 193.99.144.080
+         *  Ping-Anforderung konnte Host "193.99.144.080" nicht finden. Überprüfen Sie den Namen, und versuchen Sie es erneut.
+         *  
+         *  C:\Daten\00_SRC\vbMrStringer>ping 193.099.144.80
+         *  Ping-Anforderung konnte Host "193.099.144.80" nicht finden. Überprüfen Sie den Namen, und versuchen Sie es erneut.
+         *  
+         *  C:\Daten\00_SRC\vbMrStringer>
+         *  
+         *  
+         *  99 in Octal = 143
+         *  
+         *  C:\Daten\00_SRC\vbMrStringer>ping 193.0143.144.80
+         *  
+         *  Ping wird ausgeführt für 193.99.144.80 mit 32 Bytes Daten:
+         *  Antwort von 193.99.144.80: Bytes=32 Zeit=14ms TTL=246
+         *  Antwort von 193.99.144.80: Bytes=32 Zeit=14ms TTL=246
+         *  Antwort von 193.99.144.80: Bytes=32 Zeit=15ms TTL=246
+         *  Antwort von 193.99.144.80: Bytes=32 Zeit=15ms TTL=246
+         *  
+         *  Ping-Statistik für 193.99.144.80:
+         *      Pakete: Gesendet = 4, Empfangen = 4, Verloren = 0
+         *      (0% Verlust),
+         *  Ca. Zeitangaben in Millisek.:
+         *      Minimum = 14ms, Maximum = 15ms, Mittelwert = 14ms
+         *  
+         *  C:\Daten\00_SRC\vbMrStringer>ping 127.000.000.001
+         *  
+         *  Ping wird ausgeführt für 127.0.0.1 mit 32 Bytes Daten:
+         *  Antwort von 127.0.0.1: Bytes=32 Zeit<1ms TTL=128
+         *  Antwort von 127.0.0.1: Bytes=32 Zeit<1ms TTL=128
+         *  Antwort von 127.0.0.1: Bytes=32 Zeit<1ms TTL=128
+         *  Antwort von 127.0.0.1: Bytes=32 Zeit<1ms TTL=128
+         *  
+         *  Ping-Statistik für 127.0.0.1:
+         *      Pakete: Gesendet = 4, Empfangen = 4, Verloren = 0
+         *      (0% Verlust),
+         *  Ca. Zeitangaben in Millisek.:
+         *      Minimum = 0ms, Maximum = 0ms, Mittelwert = 0ms
+         *  
+         *  C:\Daten\00_SRC\vbMrStringer>ping 0177.0.0.1
+         *  
+         *  Ping wird ausgeführt für 127.0.0.1 mit 32 Bytes Daten:
+         *  Antwort von 127.0.0.1: Bytes=32 Zeit<1ms TTL=128
+         *  Antwort von 127.0.0.1: Bytes=32 Zeit<1ms TTL=128
+         *  Antwort von 127.0.0.1: Bytes=32 Zeit<1ms TTL=128
+         *  Antwort von 127.0.0.1: Bytes=32 Zeit<1ms TTL=128
+         *  
+         *  Ping-Statistik für 127.0.0.1:
+         *      Pakete: Gesendet = 4, Empfangen = 4, Verloren = 0
+         *      (0% Verlust),
+         *  Ca. Zeitangaben in Millisek.:
+         *      Minimum = 0ms, Maximum = 0ms, Mittelwert = 0ms
+         *  
+         *  C:\Daten\00_SRC\vbMrStringer>
+        
+         *  
+         *  
          */
 
         /*
@@ -2124,16 +2231,12 @@ public class FkEMail
               /*
                * Ist eine IP4-Adresse eingebettet worden, muss mindestens 1 Trennzeichen 
                * der IPv6-Adresse gefunden worden sein. Es duerfen aber nicht mehr als 
-               * 5 Trennzeichen vorhanden sein. 
+               * 6 Trennzeichen vorhanden sein. 
                * 
                * IPv6v4-full    = IPv6-hex 5(":" IPv6-hex) ":" IPv4-address-literal
                * 
-               *  OK              A.B@[IPv6:::11.22.33.44]
-               * Trennzeichen-Nr            12 
-               * 
-               * (Nach dem aktuellem Verstaendnis von IP6-Adressen, muessen es 2 sein)
                */
-              if ( ( ip_adresse_zaehler_trennzeichen < 1 ) || ( ip_adresse_zaehler_trennzeichen > 5 ) )
+              if ( ( ip_adresse_zaehler_trennzeichen < 1 ) || ( ip_adresse_zaehler_trennzeichen > 6 ) )
               {
                 return 47; // IP6-Adressteil: IPv4 in IPv6 - Trennzeichenanzahl falsch 
               }
@@ -2191,6 +2294,9 @@ public class FkEMail
                * 
                *  Falsch          A.B@[IPv6:1111:2222:3333:4444:5555:6666:7777:8888:]
                * Trennzeichen-Nr                1    2    3    4    5    6    7    8
+               * 
+               *  Falsch          A.B@[IPv6:1111:2222:3333:4444:5555:6666::7777:8888]
+               * Trennzeichen-Nr                1    2    3    4    5    67    8
                * 
                * Es duerfen nicht mehr als 7 Trennzeichen gelesen werden. 
                * Beim 8ten Trennzeichen, wird der Fehler 42 zurueckgegeben.
@@ -2271,12 +2377,12 @@ public class FkEMail
                * Um den Fehler 34 zu verhindern, wird die Position des letzten Punktes auf -2 gestellt.
                * 
                */
-              if (( ip_adresse_zaehler_trennzeichen == 0 ) && ( ip_adresse_zahlen_zaehler > 0 ) )
+              if ( ( ip_adresse_zaehler_trennzeichen == 0 ) && ( ip_adresse_zahlen_zaehler > 0 ) )
               {
-                position_letzter_punkt = -2;  
+                position_letzter_punkt = -2;
               }
 
-              if (( ip_adresse_zaehler_trennzeichen == 0 ) && ( ip_adresse_zahlen_zaehler == 0 ) )
+              if ( ( ip_adresse_zaehler_trennzeichen == 0 ) && ( ip_adresse_zahlen_zaehler == 0 ) )
               {
                 return 62; // IP6-Adressteil: Keine IP-Adresse angegeben
               }
@@ -2370,6 +2476,182 @@ public class FkEMail
           else
           {
             /*
+             * Eine 0 nach dem Trennzeichen.
+             * Nach einem Trennzeichen, oder auch am Start eines IP4-Blockes ist der 
+             * Zeichenzaehler gleich 0. Wenn dem so ist, koennen 3 Dinge der Fall sein:
+             * 
+             * 1. Dezimale 0
+             *    - Es handelt sich um eine dezimale 0, wenn nach der 0 gleich wieder ein 
+             *      Trennzeichen kommt.
+             *      
+             * 2. Hexadezimale 0
+             *    - Es handelt sich um eine oktale Zahlenangabe, wenn das Zeichen 
+             */
+            if ( ( aktuelles_zeichen == '0' ) && ( ip_adresse_zahlen_zaehler == 0 ) )
+            {
+              /*
+               * Pruefung: Ist noch Platz fuer ein Zeichen vorhanden ?
+               */
+              if ( ( akt_index + 1 ) >= laenge_eingabe_string )
+              {
+                return 171; // IP4: Hex-Zahl: Unerwartetes Ende der Eingabe - kein Platz fuer das naechste Zeichen
+              }
+
+              if ( ( pEingabe.charAt( akt_index + 1 ) == '.' ) || ( pEingabe.charAt( akt_index + 1 ) == ']' ) )
+              {
+                // Es handelt sich um eine dezimale 0, da nach der aktuellen 0 ein Trennzeichen folgt
+              }
+              else if ( pEingabe.charAt( akt_index + 1 ) == 'x' )
+              {
+                /*
+                 * Zeichenfolge "0x" gefunden. 
+                 * Die naechsten beiden Zahlen muessen 1-9 oder A-F sein
+                 * Kommen mehr als 3 Zeichen, kann die Hex-Zahl nicht mehr in einem Byte dargestellt werden.
+                 * Mehr als 3 Zeichen liegen ausserhalb des gueltigen Bereiches fuer eine IP4-Zahl.
+                 * 
+                 * Es koennen die Zeichen "0" und "x" vom Leseprozess "konsumiert" werden. 
+                 * Dafuer wird der Leseprozessindex um 2 Zeichen weitergestellt.
+                 */
+
+                akt_index += 2;
+
+                int hex_zahl_index = akt_index;
+                int hex_zahl_wert = 0;
+
+                while ( ( hex_zahl_index < laenge_eingabe_string ) && ( aktuelles_zeichen != '.' ) && ( aktuelles_zeichen != ']' ) )
+                {
+                  aktuelles_zeichen = pEingabe.charAt( hex_zahl_index );
+
+                  if ( ( aktuelles_zeichen >= '0' ) && ( aktuelles_zeichen <= '9' ) )
+                  {
+                    hex_zahl_wert = ( hex_zahl_wert * 16 ) + ( ( (int) aktuelles_zeichen ) - 48 );
+
+                    hex_zahl_index++;
+                  }
+                  else if ( ( aktuelles_zeichen >= 'a' ) && ( aktuelles_zeichen <= 'f' ) )
+                  {
+                    hex_zahl_wert = ( hex_zahl_wert * 16 ) + ( ( (int) aktuelles_zeichen ) - 87 );
+                    // a = 97
+
+                    hex_zahl_index++;
+                  }
+                  else if ( ( aktuelles_zeichen >= 'A' ) && ( aktuelles_zeichen <= 'F' ) )
+                  {
+                    hex_zahl_wert = ( hex_zahl_wert * 16 ) + ( ( (int) aktuelles_zeichen ) - 55 );
+                    // A = 65
+
+                    hex_zahl_index++;
+                  }
+                  else if ( ( aktuelles_zeichen != '.' ) && ( aktuelles_zeichen != ']' ) )
+                  {
+                    return 172; // IP4: Hex-Zahl: Falsches Zeichen bei Hex-Zahl Angabe
+                  }
+
+                  if ( hex_zahl_wert > 255 )
+                  {
+                    return 173; // IP4: Hex-Zahl: Byte-Overflow bei Hex-Zahl Angabe
+                  }
+                }
+
+                /*
+                 * Fehler: Keine Zahl gelesen
+                 */
+
+                if ( hex_zahl_index == akt_index )
+                {
+                  return 174; // IP4: Hex-Zahl: Keine Hexadezimale-Zahl angegeben.
+                }
+
+                if ( ( hex_zahl_index == laenge_eingabe_string ) && ( ( aktuelles_zeichen != '.' ) || ( aktuelles_zeichen != ']' ) ) )
+                {
+                  return 175; // IP4: Hex-Zahl: Die Hex-Zahl endet an der Eingabe
+                }
+
+                /*
+                 * Es wurde eine Hex-Zahl gelsen.
+                 * Der Zeichenzaehler muss auf einen Wert gestellt werden, welcher 
+                 * in der Dezimal-Parser-Routine keinen Fehle macht. 
+                 * Der Zeichenzaehler wird auf 3 gestellt.
+                 */
+                ip_adresse_zahlen_zaehler = 3;
+
+                /*
+                 * Anpassung Lese-Index
+                 * Es wurden von der Eingabe die Zeichen der Hexadezimalen-Zahl gelesen. 
+                 *  
+                 */
+
+                akt_index = hex_zahl_index;
+              }
+              else
+              {
+                /*
+                 * Oktale Zahlenangabe 
+                 * Es kann das einleitende Zeichen "0" vom Leseprozess "konsumiert" werden. 
+                 * Dafuer wird der Leseprozessindex um 1 Zeichen weitergestellt.
+                 */
+
+                akt_index += 1;
+
+                int okt_zahl_index = akt_index;
+                int okt_zahl_wert = 0;
+
+                while ( ( okt_zahl_index < laenge_eingabe_string ) && ( aktuelles_zeichen != '.' ) && ( aktuelles_zeichen != ']' ) )
+                {
+                  aktuelles_zeichen = pEingabe.charAt( okt_zahl_index );
+
+                  if ( ( aktuelles_zeichen >= '0' ) && ( aktuelles_zeichen <= '7' ) )
+                  {
+                    okt_zahl_wert = ( okt_zahl_wert * 8 ) + ( ( (int) aktuelles_zeichen ) - 48 );
+
+                    okt_zahl_index++;
+                  }
+                  else if ( ( aktuelles_zeichen != '.' ) && ( aktuelles_zeichen != ']' ) )
+                  {
+                    return 182; // IP4: Oktale-Zahl: Falsches Zeichen bei der Oktalen-Zahlen Angabe
+                  }
+
+                  if ( okt_zahl_wert > 255 )
+                  {
+                    return 183; // IP4: Oktale-Zahl: Byte-Overflow bei der Oktalen-Zahlen Angabe
+                  }
+                }
+
+                /*
+                 * Fehler: Keine Zahl gelesen
+                 * 
+                 * 
+                 */
+
+                if ( okt_zahl_index == akt_index )
+                {
+                  return 184; // IP4: Oktale-Zahl: Keine oktale Zahl angegeben.
+                }
+
+                if ( ( okt_zahl_index == laenge_eingabe_string ) && ( ( aktuelles_zeichen != '.' ) || ( aktuelles_zeichen != ']' ) ) )
+                {
+                  return 185; // IP4: Oktale-Zahl: Die oktale Zahl endet an der Eingabe
+                }
+
+                /*
+                 * Es wurde eine Hex-Zahl gelsen.
+                 * Der Zeichenzaehler muss auf einen Wert gestellt werden, welcher 
+                 * in der Dezimal-Parser-Routine keinen Fehle macht. 
+                 * Der Zeichenzaehler wird auf 3 gestellt.
+                 */
+                ip_adresse_zahlen_zaehler = 3;
+
+                /*
+                 * Anpassung Lese-Index
+                 * Es wurden von der Eingabe die Zeichen der Hexadezimalen-Zahl gelesen. 
+                 *  
+                 */
+
+                akt_index = okt_zahl_index;
+              }
+            }
+
+            /*
              * Die IP-Adresse besteht nur aus Zahlen und Punkten mit einem 
              * abschliessendem "]"-Zeichen. Alle anderen Zeichen fuehren 
              * zu dem Fehler 59 = ungueltiges Zeichen.
@@ -2428,7 +2710,7 @@ public class FkEMail
                */
               if ( ip_adresse_zahlen_zaehler == 0 )
               {
-                return 55; // IP4-Adressteil: keine Ziffern vorhanden
+                return 55; // IP4-Adressteil: keine Ziffern vorhanden bzw. zwei Doppelpunkte hintereinander
               }
 
               /*
@@ -2860,7 +3142,7 @@ public class FkEMail
             {
               akt_index++;
             }
-            
+
             /*
              * Am Schleifenende wird die Leseposition erhoeht. 
              * Es wurde in dieser Bedingung fuer das Ueberlesen von Leerzeichen, der 
@@ -3196,7 +3478,7 @@ public class FkEMail
     if ( pFehlerNr == 52 ) return "IP-Adressteil: IP-Adresse muss direkt nach dem AT-Zeichen kommen (korrekte Kombination \"@[\")";
     if ( pFehlerNr == 53 ) return "IP4-Adressteil: zu viele Ziffern, maximal 3 Ziffern";
     if ( pFehlerNr == 54 ) return "IP4-Adressteil: Byte-Overflow";
-    if ( pFehlerNr == 55 ) return "IP4-Adressteil: keine Ziffern vorhanden";
+    if ( pFehlerNr == 55 ) return "IP4-Adressteil: keine Ziffern vorhanden bzw. zwei Doppelpunkte hintereinander";
     if ( pFehlerNr == 56 ) return "IP4-Adressteil: zu viele Trennzeichen";
     if ( pFehlerNr == 57 ) return "IP4-Adressteil: IP-Adresse Trennzeichenanzahl muss 3 sein";
     if ( pFehlerNr == 58 ) return "IP4-Adressteil: ungueltige Kombination \".]\"";
@@ -3206,9 +3488,6 @@ public class FkEMail
     if ( pFehlerNr == 62 ) return "IP6-Adressteil: Keine IP-Adresse vorhanden";
 
     if ( pFehlerNr == 63 ) return "Domain-Part: Domain-Label zu lang (maximal 63 Zeichen)";
-    
-
-
 
     if ( pFehlerNr == 80 ) return "String: Ein startendes Anfuehrungszeichen muss am Anfang kommen, der Zeichenzaehler darf nicht groesser als 0 sein";
     if ( pFehlerNr == 81 ) return "String: Ein startendes Anfuehrungezeichen muss direkt nach einem Punkt kommen";
@@ -3246,6 +3525,17 @@ public class FkEMail
     if ( pFehlerNr == 141 ) return "Trennzeichen: Kein Start mit der Zeichenfolge \"-(\"";
     if ( pFehlerNr == 142 ) return "Trennzeichen: kein Beginn mit einem Punkt";
 
+    if ( pFehlerNr == 171 ) return "IP4: Hex-Zahl: Unerwartetes Ende der Eingabe - kein Platz fuer das naechste Zeichen";
+    if ( pFehlerNr == 172 ) return "IP4: Hex-Zahl: Falsches Zeichen bei Hex-Zahl Angabe";
+    if ( pFehlerNr == 173 ) return "IP4: Hex-Zahl: Byte-Overflow bei Hex-Zahl Angabe";
+    if ( pFehlerNr == 174 ) return "IP4: Hex-Zahl: Keine Hexadezimale-Zahl angegeben.";
+    if ( pFehlerNr == 175 ) return "IP4: Hex-Zahl: Die Hex-Zahl endet an der Eingabe";
+
+    if ( pFehlerNr == 182 ) return "IP4: Oktale-Zahl: Falsches Zeichen bei der Oktalen-Zahlen Angabe";
+    if ( pFehlerNr == 183 ) return "IP4: Oktale-Zahl: Byte-Overflow bei der Oktalen-Zahlen Angabe";
+    if ( pFehlerNr == 184 ) return "IP4: Oktale-Zahl: Keine oktale Zahl angegeben.";
+    if ( pFehlerNr == 185 ) return "IP4: Oktale-Zahl: Die oktale Zahl endet an der Eingabe";
+
     return "Unbekannte Fehlernummer " + pFehlerNr;
   }
 
@@ -3269,6 +3559,11 @@ public class FkEMail
     boolean is_true = return_code < 10;
 
     System.out.println( "assertIsFalse " + FkString.getFeldLinksMin( ( pString == null ? "null" : pString ), 50 ) + " = " + ( return_code < 10 ? " " : "" ) + return_code + " = " + ( is_true == knz_soll_wert ? " OK " : " #### FEHLER #### " ) + "   " + getFehlerText( return_code ) );
+  }
+
+  public static void wlFehler( int pFehlerNr )
+  {
+    System.out.println( "   * " + FkString.getFeldRechtsMin( pFehlerNr, 4 ) + " = " + getFehlerText( pFehlerNr ) );
   }
 
   public static void main( String[] args )
@@ -3466,6 +3761,109 @@ public class FkEMail
       assertIsTrue( "()DEF@GHI.JKL" );
       assertIsTrue( "DEF()@GHI.JKL" );
 
+      wlFehler( 0 );
+      wlFehler( 1 );
+      wlFehler( 2 );
+      wlFehler( 3 );
+      wlFehler( 4 );
+      wlFehler( 5 );
+
+      wlFehler( 6 );
+      wlFehler( 7 );
+      wlFehler( 8 );
+      wlFehler( 9 );
+
+      wlFehler( 10 );
+      wlFehler( 11 );
+      wlFehler( 12 );
+      wlFehler( 13 );
+      wlFehler( 14 );
+      wlFehler( 15 );
+
+      wlFehler( 16 );
+      wlFehler( 17 );
+      wlFehler( 18 );
+
+      wlFehler( 20 );
+      wlFehler( 21 );
+      wlFehler( 22 );
+      wlFehler( 23 );
+      wlFehler( 24 );
+
+      wlFehler( 26 );
+      wlFehler( 27 );
+      wlFehler( 28 );
+      wlFehler( 29 );
+
+      wlFehler( 30 );
+      wlFehler( 31 );
+      wlFehler( 32 );
+      wlFehler( 33 );
+      wlFehler( 34 );
+      wlFehler( 35 );
+      wlFehler( 36 );
+
+      wlFehler( 40 );
+      wlFehler( 41 );
+      wlFehler( 42 );
+      wlFehler( 43 );
+      wlFehler( 44 );
+      wlFehler( 45 );
+      wlFehler( 46 );
+      wlFehler( 47 );
+      wlFehler( 48 );
+      wlFehler( 49 );
+      wlFehler( 50 );
+      wlFehler( 51 );
+      wlFehler( 52 );
+      wlFehler( 53 );
+      wlFehler( 54 );
+      wlFehler( 55 );
+      wlFehler( 56 );
+      wlFehler( 57 );
+      wlFehler( 58 );
+      wlFehler( 59 );
+      wlFehler( 60 );
+      wlFehler( 61 );
+      wlFehler( 62 );
+
+      wlFehler( 63 );
+
+      wlFehler( 80 );
+      wlFehler( 81 );
+      wlFehler( 82 );
+      wlFehler( 83 );
+      wlFehler( 84 );
+      wlFehler( 85 );
+      wlFehler( 86 );
+      wlFehler( 87 );
+      wlFehler( 88 );
+      wlFehler( 89 );
+
+      wlFehler( 91 );
+      wlFehler( 92 );
+      wlFehler( 93 );
+      wlFehler( 94 );
+      wlFehler( 95 );
+      wlFehler( 96 );
+      wlFehler( 97 );
+      wlFehler( 98 );
+      wlFehler( 99 );
+
+      wlFehler( 100 );
+
+      wlFehler( 101 );
+      wlFehler( 102 );
+
+      wlFehler( 103 );
+
+      wlFehler( 105 );
+
+      wlFehler( 106 );
+
+      wlFehler( 140 );
+      wlFehler( 141 );
+      wlFehler( 142 );
     }
     catch ( Exception err_inst )
     {
