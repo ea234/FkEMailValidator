@@ -2485,7 +2485,7 @@ public class FkEMail
              *      Trennzeichen kommt.
              *      
              * 2. Hexadezimale 0
-             *    - Es handelt sich um eine oktale Zahlenangabe, wenn das Zeichen 
+             *    - Es handelt sich um eine oktale Zahlenangabe, wenn das Zeichen ...
              */
             if ( ( aktuelles_zeichen == '0' ) && ( ip_adresse_zahlen_zaehler == 0 ) )
             {
@@ -2494,14 +2494,14 @@ public class FkEMail
                */
               if ( ( akt_index + 1 ) >= laenge_eingabe_string )
               {
-                return 171; // IP4: Hex-Zahl: Unerwartetes Ende der Eingabe - kein Platz fuer das naechste Zeichen
+                return 171; // IP4: Zahl-X: Unerwartetes Ende der Eingabe - kein Platz fuer das naechste Zeichen
               }
 
               if ( ( pEingabe.charAt( akt_index + 1 ) == '.' ) || ( pEingabe.charAt( akt_index + 1 ) == ']' ) )
               {
                 // Es handelt sich um eine dezimale 0, da nach der aktuellen 0 ein Trennzeichen folgt
               }
-              else if ( pEingabe.charAt( akt_index + 1 ) == 'x' )
+              else
               {
                 /*
                  * Zeichenfolge "0x" gefunden. 
@@ -2513,43 +2513,60 @@ public class FkEMail
                  * Dafuer wird der Leseprozessindex um 2 Zeichen weitergestellt.
                  */
 
-                akt_index += 2;
+                boolean knz_ist_hexadezimal_zahl = ( pEingabe.charAt( akt_index + 1 ) == 'x' );
 
-                int hex_zahl_index = akt_index;
-                int hex_zahl_wert = 0;
+                akt_index += knz_ist_hexadezimal_zahl ? 2 : 1;
 
-                while ( ( hex_zahl_index < laenge_eingabe_string ) && ( aktuelles_zeichen != '.' ) && ( aktuelles_zeichen != ']' ) )
+                int ip4_zahl_index = akt_index;
+                
+                ip_adresse_akt_zahl = 0;
+
+                while ( ( ip4_zahl_index < laenge_eingabe_string ) && ( aktuelles_zeichen != '.' ) && ( aktuelles_zeichen != ']' ) )
                 {
-                  aktuelles_zeichen = pEingabe.charAt( hex_zahl_index );
+                  aktuelles_zeichen = pEingabe.charAt( ip4_zahl_index );
 
-                  if ( ( aktuelles_zeichen >= '0' ) && ( aktuelles_zeichen <= '9' ) )
+                  if ( knz_ist_hexadezimal_zahl )
                   {
-                    hex_zahl_wert = ( hex_zahl_wert * 16 ) + ( ( (int) aktuelles_zeichen ) - 48 );
+                    if ( ( aktuelles_zeichen >= '0' ) && ( aktuelles_zeichen <= '9' ) )
+                    {
+                      ip_adresse_akt_zahl = ( ip_adresse_akt_zahl * 16 ) + ( ( (int) aktuelles_zeichen ) - 48 );
 
-                    hex_zahl_index++;
+                      ip4_zahl_index++;
+                    }
+                    else if ( ( aktuelles_zeichen >= 'a' ) && ( aktuelles_zeichen <= 'f' ) )
+                    {
+                      ip_adresse_akt_zahl = ( ip_adresse_akt_zahl * 16 ) + ( ( (int) aktuelles_zeichen ) - 87 ); // a = 97
+
+                      ip4_zahl_index++;
+                    }
+                    else if ( ( aktuelles_zeichen >= 'A' ) && ( aktuelles_zeichen <= 'F' ) )
+                    {
+                      ip_adresse_akt_zahl = ( ip_adresse_akt_zahl * 16 ) + ( ( (int) aktuelles_zeichen ) - 55 ); // A = 65
+
+                      ip4_zahl_index++;
+                    }
+                    else if ( ( aktuelles_zeichen != '.' ) && ( aktuelles_zeichen != ']' ) )
+                    {
+                      return 172; // IP4: Zahl-X: Falsches Zeichen bei Hex-Zahl Angabe
+                    }
                   }
-                  else if ( ( aktuelles_zeichen >= 'a' ) && ( aktuelles_zeichen <= 'f' ) )
+                  else
                   {
-                    hex_zahl_wert = ( hex_zahl_wert * 16 ) + ( ( (int) aktuelles_zeichen ) - 87 );
-                    // a = 97
+                    if ( ( aktuelles_zeichen >= '0' ) && ( aktuelles_zeichen <= '7' ) )
+                    {
+                      ip_adresse_akt_zahl = ( ip_adresse_akt_zahl * 8 ) + ( ( (int) aktuelles_zeichen ) - 48 );
 
-                    hex_zahl_index++;
-                  }
-                  else if ( ( aktuelles_zeichen >= 'A' ) && ( aktuelles_zeichen <= 'F' ) )
-                  {
-                    hex_zahl_wert = ( hex_zahl_wert * 16 ) + ( ( (int) aktuelles_zeichen ) - 55 );
-                    // A = 65
-
-                    hex_zahl_index++;
-                  }
-                  else if ( ( aktuelles_zeichen != '.' ) && ( aktuelles_zeichen != ']' ) )
-                  {
-                    return 172; // IP4: Hex-Zahl: Falsches Zeichen bei Hex-Zahl Angabe
+                      ip4_zahl_index++;
+                    }
+                    else if ( ( aktuelles_zeichen != '.' ) && ( aktuelles_zeichen != ']' ) )
+                    {
+                      return 182; // IP4: Oktale-Zahl: Falsches Zeichen bei der Oktalen-Zahlen Angabe
+                    }
                   }
 
-                  if ( hex_zahl_wert > 255 )
+                  if ( ip_adresse_akt_zahl > 255 )
                   {
-                    return 173; // IP4: Hex-Zahl: Byte-Overflow bei Hex-Zahl Angabe
+                    return 173; // IP4: Zahl-X: Byte-Overflow bei Zahl Angabe
                   }
                 }
 
@@ -2557,14 +2574,25 @@ public class FkEMail
                  * Fehler: Keine Zahl gelesen
                  */
 
-                if ( hex_zahl_index == akt_index )
+                if ( ip4_zahl_index == akt_index )
                 {
-                  return 174; // IP4: Hex-Zahl: Keine Hexadezimale-Zahl angegeben.
+                  return 174; // IP4: Zahl-X: Keine Zahl angegeben.
                 }
 
-                if ( ( hex_zahl_index == laenge_eingabe_string ) && ( ( aktuelles_zeichen != '.' ) || ( aktuelles_zeichen != ']' ) ) )
+                if ( ip4_zahl_index - akt_index > 64  )
                 {
-                  return 175; // IP4: Hex-Zahl: Die Hex-Zahl endet an der Eingabe
+                  return 176; // IP4: Zahl-X: Eingabelaenge zu lang
+                }
+
+                /*
+                 * Die While-Schleife fuer das Einlesen der Zahl muss auf einem Trennzeichen enden.
+                 * Oder anders: Die Angabe der Zahl muss mit einem Trennzeichen enden.
+                 * 
+                 * Ist der Leseindex "ip4_zahl_index" gleich 
+                 */
+                if ( ( ip4_zahl_index == laenge_eingabe_string ) && ( ( aktuelles_zeichen != '.' ) || ( aktuelles_zeichen != ']' ) ) )
+                {
+                  return 175; // IP4: Zahl-X: Die Zahl endet an der Eingabe
                 }
 
                 /*
@@ -2581,73 +2609,7 @@ public class FkEMail
                  *  
                  */
 
-                akt_index = hex_zahl_index;
-              }
-              else
-              {
-                /*
-                 * Oktale Zahlenangabe 
-                 * Es kann das einleitende Zeichen "0" vom Leseprozess "konsumiert" werden. 
-                 * Dafuer wird der Leseprozessindex um 1 Zeichen weitergestellt.
-                 */
-
-                akt_index += 1;
-
-                int okt_zahl_index = akt_index;
-                int okt_zahl_wert = 0;
-
-                while ( ( okt_zahl_index < laenge_eingabe_string ) && ( aktuelles_zeichen != '.' ) && ( aktuelles_zeichen != ']' ) )
-                {
-                  aktuelles_zeichen = pEingabe.charAt( okt_zahl_index );
-
-                  if ( ( aktuelles_zeichen >= '0' ) && ( aktuelles_zeichen <= '7' ) )
-                  {
-                    okt_zahl_wert = ( okt_zahl_wert * 8 ) + ( ( (int) aktuelles_zeichen ) - 48 );
-
-                    okt_zahl_index++;
-                  }
-                  else if ( ( aktuelles_zeichen != '.' ) && ( aktuelles_zeichen != ']' ) )
-                  {
-                    return 182; // IP4: Oktale-Zahl: Falsches Zeichen bei der Oktalen-Zahlen Angabe
-                  }
-
-                  if ( okt_zahl_wert > 255 )
-                  {
-                    return 183; // IP4: Oktale-Zahl: Byte-Overflow bei der Oktalen-Zahlen Angabe
-                  }
-                }
-
-                /*
-                 * Fehler: Keine Zahl gelesen
-                 * 
-                 * 
-                 */
-
-                if ( okt_zahl_index == akt_index )
-                {
-                  return 184; // IP4: Oktale-Zahl: Keine oktale Zahl angegeben.
-                }
-
-                if ( ( okt_zahl_index == laenge_eingabe_string ) && ( ( aktuelles_zeichen != '.' ) || ( aktuelles_zeichen != ']' ) ) )
-                {
-                  return 185; // IP4: Oktale-Zahl: Die oktale Zahl endet an der Eingabe
-                }
-
-                /*
-                 * Es wurde eine Hex-Zahl gelsen.
-                 * Der Zeichenzaehler muss auf einen Wert gestellt werden, welcher 
-                 * in der Dezimal-Parser-Routine keinen Fehle macht. 
-                 * Der Zeichenzaehler wird auf 3 gestellt.
-                 */
-                ip_adresse_zahlen_zaehler = 3;
-
-                /*
-                 * Anpassung Lese-Index
-                 * Es wurden von der Eingabe die Zeichen der Hexadezimalen-Zahl gelesen. 
-                 *  
-                 */
-
-                akt_index = okt_zahl_index;
+                akt_index = ip4_zahl_index;
               }
             }
 
@@ -3525,16 +3487,13 @@ public class FkEMail
     if ( pFehlerNr == 141 ) return "Trennzeichen: Kein Start mit der Zeichenfolge \"-(\"";
     if ( pFehlerNr == 142 ) return "Trennzeichen: kein Beginn mit einem Punkt";
 
-    if ( pFehlerNr == 171 ) return "IP4: Hex-Zahl: Unerwartetes Ende der Eingabe - kein Platz fuer das naechste Zeichen";
-    if ( pFehlerNr == 172 ) return "IP4: Hex-Zahl: Falsches Zeichen bei Hex-Zahl Angabe";
-    if ( pFehlerNr == 173 ) return "IP4: Hex-Zahl: Byte-Overflow bei Hex-Zahl Angabe";
-    if ( pFehlerNr == 174 ) return "IP4: Hex-Zahl: Keine Hexadezimale-Zahl angegeben.";
-    if ( pFehlerNr == 175 ) return "IP4: Hex-Zahl: Die Hex-Zahl endet an der Eingabe";
-
+    if ( pFehlerNr == 171 ) return "IP4: Zahl-X: Unerwartetes Ende der Eingabe - kein Platz fuer das naechste Zeichen";
+    if ( pFehlerNr == 172 ) return "IP4: Zahl-X: Falsches Zeichen bei Hex-Zahl Angabe";
+    if ( pFehlerNr == 173 ) return "IP4: Zahl-X: Byte-Overflow bei Zahl Angabe";
+    if ( pFehlerNr == 174 ) return "IP4: Zahl-X: Keine Zahl angegeben.";
+    if ( pFehlerNr == 175 ) return "IP4: Zahl-X: Die Zahl endet an der Eingabe";
+    if ( pFehlerNr == 176 ) return "IP4: Zahl-X: Eingabelaenge der Zahl zu lang";
     if ( pFehlerNr == 182 ) return "IP4: Oktale-Zahl: Falsches Zeichen bei der Oktalen-Zahlen Angabe";
-    if ( pFehlerNr == 183 ) return "IP4: Oktale-Zahl: Byte-Overflow bei der Oktalen-Zahlen Angabe";
-    if ( pFehlerNr == 184 ) return "IP4: Oktale-Zahl: Keine oktale Zahl angegeben.";
-    if ( pFehlerNr == 185 ) return "IP4: Oktale-Zahl: Die oktale Zahl endet an der Eingabe";
 
     return "Unbekannte Fehlernummer " + pFehlerNr;
   }
