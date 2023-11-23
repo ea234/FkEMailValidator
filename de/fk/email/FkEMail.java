@@ -542,7 +542,7 @@ public class FkEMail
      *     characters: !, #, $, %, &, ', *, +, -, /, =, ?, ^, _, `, {, |, } and ~ 
      *     possibly with dot separators (.), inside, but not at the start, end or next to another dot separator (RFC 2822 3.2.4).
      * 
-     *     The local part may consist of a quoted string—that is, anything within quotes ("), including spaces (RFC 2822 3.2.5).
+     *     The local part may consist of a quoted stringï¿½that is, anything within quotes ("), including spaces (RFC 2822 3.2.5).
      * 
      *     Quoted pairs (such as \@) are valid components of a local part, through an obsolete form from RFC 822 (RFC 2822 4.4).
      * 
@@ -852,6 +852,9 @@ public class FkEMail
         {
           /*
            * Maskiertes Zeichen 
+           * 
+           * https://datatracker.ietf.org/doc/html/rfc3696#page-6
+           * 
            * Der Leseprozess muss noch das naechste Zeichen pruefen. 
            * Der Leseprozessindex wird um ein Zeichen weiter gestellt.
            */
@@ -2086,16 +2089,17 @@ public class FkEMail
          *  https://superuser.com/questions/857603/are-ip-addresses-with-and-without-leading-zeroes-the-same 
          *  
          *  
+              *  
          *  
          *  C:\Daten\00_SRC\vbMrStringer>ping heise.de -4
          *  
-         *  Ping wird ausgeführt für heise.de [193.99.144.80] mit 32 Bytes Daten:
+         *  Ping wird ausgefuehrt fuer heise.de [193.99.144.80] mit 32 Bytes Daten:
          *  Antwort von 193.99.144.80: Bytes=32 Zeit=22ms TTL=246
          *  Antwort von 193.99.144.80: Bytes=32 Zeit=20ms TTL=246
          *  Antwort von 193.99.144.80: Bytes=32 Zeit=12ms TTL=246
          *  Antwort von 193.99.144.80: Bytes=32 Zeit=15ms TTL=246
          *  
-         *  Ping-Statistik für 193.99.144.80:
+         *  Ping-Statistik fuer 193.99.144.80:
          *      Pakete: Gesendet = 4, Empfangen = 4, Verloren = 0
          *      (0% Verlust),
          *  Ca. Zeitangaben in Millisek.:
@@ -2103,23 +2107,23 @@ public class FkEMail
          *  
          *  C:\Daten\00_SRC\vbMrStringer>ping 193.99.144.80
          *  
-         *  Ping wird ausgeführt für 193.99.144.80 mit 32 Bytes Daten:
+         *  Ping wird ausgefuehrt fuer 193.99.144.80 mit 32 Bytes Daten:
          *  Antwort von 193.99.144.80: Bytes=32 Zeit=13ms TTL=246
          *  Antwort von 193.99.144.80: Bytes=32 Zeit=16ms TTL=246
          *  Antwort von 193.99.144.80: Bytes=32 Zeit=13ms TTL=246
          *  Antwort von 193.99.144.80: Bytes=32 Zeit=13ms TTL=246
          *  
-         *  Ping-Statistik für 193.99.144.80:
+         *  Ping-Statistik fuer 193.99.144.80:
          *      Pakete: Gesendet = 4, Empfangen = 4, Verloren = 0
          *      (0% Verlust),
          *  Ca. Zeitangaben in Millisek.:
          *      Minimum = 13ms, Maximum = 16ms, Mittelwert = 13ms
          *  
          *  C:\Daten\00_SRC\vbMrStringer>ping 193.99.144.080
-         *  Ping-Anforderung konnte Host "193.99.144.080" nicht finden. Überprüfen Sie den Namen, und versuchen Sie es erneut.
+         *  Ping-Anforderung konnte Host "193.99.144.080" nicht finden. Ueberpruefen Sie den Namen, und versuchen Sie es erneut.
          *  
          *  C:\Daten\00_SRC\vbMrStringer>ping 193.099.144.80
-         *  Ping-Anforderung konnte Host "193.099.144.80" nicht finden. Überprüfen Sie den Namen, und versuchen Sie es erneut.
+         *  Ping-Anforderung konnte Host "193.099.144.80" nicht finden. Ueberpruefen Sie den Namen, und versuchen Sie es erneut.
          *  
          *  C:\Daten\00_SRC\vbMrStringer>
          *  
@@ -2128,13 +2132,13 @@ public class FkEMail
          *  
          *  C:\Daten\00_SRC\vbMrStringer>ping 193.0143.144.80
          *  
-         *  Ping wird ausgeführt für 193.99.144.80 mit 32 Bytes Daten:
+         *  Ping wird ausgefuehrt fuer 193.99.144.80 mit 32 Bytes Daten:
          *  Antwort von 193.99.144.80: Bytes=32 Zeit=14ms TTL=246
          *  Antwort von 193.99.144.80: Bytes=32 Zeit=14ms TTL=246
          *  Antwort von 193.99.144.80: Bytes=32 Zeit=15ms TTL=246
          *  Antwort von 193.99.144.80: Bytes=32 Zeit=15ms TTL=246
          *  
-         *  Ping-Statistik für 193.99.144.80:
+         *  Ping-Statistik fuer 193.99.144.80:
          *      Pakete: Gesendet = 4, Empfangen = 4, Verloren = 0
          *      (0% Verlust),
          *  Ca. Zeitangaben in Millisek.:
@@ -2142,13 +2146,13 @@ public class FkEMail
          *  
          *  C:\Daten\00_SRC\vbMrStringer>ping 127.000.000.001
          *  
-         *  Ping wird ausgeführt für 127.0.0.1 mit 32 Bytes Daten:
+         *  Ping wird ausgefuehrt fuer 127.0.0.1 mit 32 Bytes Daten:
          *  Antwort von 127.0.0.1: Bytes=32 Zeit<1ms TTL=128
          *  Antwort von 127.0.0.1: Bytes=32 Zeit<1ms TTL=128
          *  Antwort von 127.0.0.1: Bytes=32 Zeit<1ms TTL=128
          *  Antwort von 127.0.0.1: Bytes=32 Zeit<1ms TTL=128
          *  
-         *  Ping-Statistik für 127.0.0.1:
+         *  Ping-Statistik fuer 127.0.0.1:
          *      Pakete: Gesendet = 4, Empfangen = 4, Verloren = 0
          *      (0% Verlust),
          *  Ca. Zeitangaben in Millisek.:
@@ -2156,20 +2160,19 @@ public class FkEMail
          *  
          *  C:\Daten\00_SRC\vbMrStringer>ping 0177.0.0.1
          *  
-         *  Ping wird ausgeführt für 127.0.0.1 mit 32 Bytes Daten:
+         *  Ping wird ausgefuehrt fuer 127.0.0.1 mit 32 Bytes Daten:
          *  Antwort von 127.0.0.1: Bytes=32 Zeit<1ms TTL=128
          *  Antwort von 127.0.0.1: Bytes=32 Zeit<1ms TTL=128
          *  Antwort von 127.0.0.1: Bytes=32 Zeit<1ms TTL=128
          *  Antwort von 127.0.0.1: Bytes=32 Zeit<1ms TTL=128
          *  
-         *  Ping-Statistik für 127.0.0.1:
+         *  Ping-Statistik fuer 127.0.0.1:
          *      Pakete: Gesendet = 4, Empfangen = 4, Verloren = 0
          *      (0% Verlust),
          *  Ca. Zeitangaben in Millisek.:
          *      Minimum = 0ms, Maximum = 0ms, Mittelwert = 0ms
          *  
          *  C:\Daten\00_SRC\vbMrStringer>
-        
          *  
          *  
          */
